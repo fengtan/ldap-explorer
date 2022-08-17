@@ -1,25 +1,41 @@
 {
-  "name": "vscode-ldap",
-  "displayName": "vscode-ldap",
-  "description": "LDAP browser for VS Code.",
+  "name": "ldap-browser",
+  "displayName": "LDAP browser",
+  "description": "LDAP browser for VS Code",
   "version": "0.0.1",
   "engines": {
     "vscode": "^1.70.0"
   },
+  "repository": "https://github.com/fengtan/ldap-browser",
+  "publisher": "fengtan",
+  "keywords": [
+    "ldap",
+    "ad",
+    "active directory"
+  ],
   "categories": [
     "Other"
   ],
-  "activationEvents": [
-    "onCommand:vscode-ldap.helloWorld"
-  ],
   "main": "./out/extension.js",
+  "activationEvents": [],
   "contributes": {
-    "commands": [
-      {
-        "command": "vscode-ldap.helloWorld",
-        "title": "Hello World"
-      }
-    ]
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "ldap-browser-container",
+          "title": "LDAP browser",
+          "icon": "media/icon.svg"
+        }
+      ]
+    },
+    "views": {
+      "ldap-browser-container": [
+        {
+          "id": "ldap-browser-view",
+          "name": "LDAP browser"
+        }
+      ]
+    }
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",

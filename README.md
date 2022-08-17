@@ -1,13 +1,32 @@
 TODO
 - pre-commit
-- linter
-- documentation in README (screenshot etc) - pointer to https://code.visualstudio.com/api
+  - (install automatically in devcontainer's postCreateAction) - run eslint automatically
+  - linter
+  - npm validate (is this a thing ?) similar to composer validate
+  - add eslint extension to devcontainer.json
+- documentation in README
+  - screenshot etc
+  - pointer to https://code.visualstudio.com/api
+  - how to test:
+    1. Open project in vscode (using remote-containers extension)
+    2. Hit F5 - should open a new instance of VS Code with the extension running
+    0 prolly need to run `npm install` too (add `npm install` to devcontainer.json's postCreateAction as well)
+  - icon at (media/icon.png) requires a hyperlink to author, add hyperlink or find another one
+  - URL of project on github
+- metadata
+  - license (in package.json and in README.md)
+  - make sure the repo URL listed in package.json is correct
+  - add 'categories' to package.json
+  - branch master -> main
+- autotests
+- clean up
+  - drop anything "helloworld" -i || "hello world" -i
+  - egrep todo
 
 
+# ldap-browser README
 
-# vscode-ldap README
-
-This is the README for your extension "vscode-ldap". After writing up a brief description, we recommend including the following sections.
+This is the README for your extension "ldap-browser". After writing up a brief description, we recommend including the following sections.
 
 ## Features
 
