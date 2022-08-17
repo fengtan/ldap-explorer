@@ -5,5 +5,14 @@
   },
   "extensions": [
     "dbaeumer.vscode-eslint"
-  ]
+  ],
+  "settings": {
+    "files.exclude": {
+      "out": false
+    },
+    "search.exclude": {
+      "out": true
+    },
+    "typescript.tsc.autoDetect": "off"
+  }
 }

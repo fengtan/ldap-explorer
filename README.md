@@ -3,7 +3,6 @@ TODO
   - (install automatically in devcontainer's postCreateAction) - run eslint automatically
   - linter
   - npm validate (is this a thing ?) similar to composer validate
-  - add eslint extension to devcontainer.json
 - documentation in README
   - screenshot etc
   - pointer to https://code.visualstudio.com/api
@@ -13,11 +12,13 @@ TODO
     0 prolly need to run `npm install` too (add `npm install` to devcontainer.json's postCreateAction as well)
   - icon at (media/icon.png) requires a hyperlink to author, add hyperlink or find another one
   - URL of project on github
+  - drop of reference vsc-extension-quickstart.md
 - metadata
   - license (in package.json and in README.md)
   - make sure the repo URL listed in package.json is correct
   - add 'categories' to package.json
   - branch master -> main
+  - move repo from vscode-ldap to ldap-browser
 - autotests
 - clean up
   - drop anything "helloworld" -i || "hello world" -i
