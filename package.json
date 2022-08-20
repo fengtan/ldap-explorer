@@ -17,7 +17,9 @@
     "Other"
   ],
   "main": "./out/extension.js",
-  "activationEvents": [],
+  "activationEvents": [
+    "onView:ldap-browser-view"
+  ],
   "contributes": {
     "viewsContainers": {
       "activitybar": [
