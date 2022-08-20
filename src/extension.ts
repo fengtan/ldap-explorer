@@ -5,7 +5,7 @@ import { LdapProvider } from './provider';
 export function activate(context: vscode.ExtensionContext) {
 	
 	// @todo drop
-	console.log('test');
+	console.log('test activate');
 
 	// @todo uncomment
 	/*vscode.window.createTreeView('ldap-browser-view', {
@@ -18,5 +18,7 @@ export function activate(context: vscode.ExtensionContext) {
 export function deactivate() {
 
 	// @todo clear provider ? See todo-tree
+	console.log('test deactivate');
+
 
 }
