@@ -27,7 +27,7 @@
         {
           "id": "ldap-browser-container",
           "title": "LDAP browser",
-          "icon": "media/icon.svg"
+          "icon": "$(type-hierarchy-sub)"
         }
       ]
     },
@@ -43,9 +43,18 @@
       {
         "command": "ldap-browser.add-connection",
         "title": "Add new connection",
-        "category": "LDAP browser"
+        "category": "LDAP browser",
+        "icon": "$(plus)" // @todo does not show up
       }
-    ]
+    ],
+    "menus": {
+      "view/title": [
+        {
+          "command": "ldap-browser.add-connection",
+          "when": "view =~ /ldap-browser-view/"
+        }
+      ]
+    }
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",
