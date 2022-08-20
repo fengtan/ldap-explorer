@@ -18,6 +18,7 @@
   ],
   "main": "./out/extension.js",
   "activationEvents": [
+    "onCommand:ldap-browser.add-connection",
     "onView:ldap-browser-view"
   ],
   "contributes": {
@@ -37,7 +38,13 @@
           "name": "LDAP browser"
         }
       ]
-    }
+    },
+    "commands": [
+      {
+        "command": "ldap-browser.add-connection",
+        "title": "LDAP browser: Add new connection"
+      }
+    ]
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",

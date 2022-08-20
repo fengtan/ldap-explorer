@@ -23,6 +23,8 @@ TODO
 - clean up
   - drop anything "helloworld" -i || "hello world" -i
   - egrep todo
+- best practices
+  - define strings in package.nl.json so they are translatable and common
 
 
 # ldap-browser README
