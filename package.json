@@ -42,7 +42,8 @@
     "commands": [
       {
         "command": "ldap-browser.add-connection",
-        "title": "LDAP browser: Add new connection"
+        "title": "Add new connection",
+        "category": "LDAP browser"
       }
     ]
   },
