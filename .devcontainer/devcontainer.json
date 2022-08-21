@@ -1,8 +1,9 @@
 {
   "name": "ldap-browser",
-  "build": {
-    "dockerfile": "Dockerfile"
-  },
+  "dockerComposeFile": "docker-compose.yml",
+  "service": "node",
+  "workspaceFolder": "/workspaces/ldap-browser",
+  "shutdownAction": "stopCompose",
   "extensions": [
     "dbaeumer.vscode-eslint"
   ],

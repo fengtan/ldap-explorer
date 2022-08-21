@@ -1,0 +1,8 @@
+version: '3'
+services:
+  node:
+    build: .
+    command: sleep infinity
+    volumes:
+      - ..:/workspaces/ldap-browser:cached
+# TODO add openldap https://hub.docker.com/r/bitnami/openldap/

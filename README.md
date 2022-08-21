@@ -29,6 +29,7 @@ features
   - command "Connect to..." (quick pick server)
   - command "Delete connection..." (?)
   - command icon (top-right corner of the view)
+  - button "test connection" / verifies credentials
 
 
 # ldap-browser README
