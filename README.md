@@ -17,10 +17,8 @@ TODO
   - make sure the repo URL listed in package.json is correct
   - add 'categories' to package.json
   - branch master -> main
-  - move repo from vscode-ldap to ldap-browser
 - autotests
 - clean up
-  - drop anything "helloworld" -i || "hello world" -i
   - egrep todo
   - list anything that is not required for prod in .vscodeignore (e.g. devcontainer.json)
 - best practices
@@ -30,6 +28,7 @@ features
   - command "Delete connection..." (?)
   - command icon (top-right corner of the view)
   - button "test connection" / verifies credentials
+  - ability to *edit* a connection's settings (not just add and delete)
 
 
 # ldap-browser README
