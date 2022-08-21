@@ -22,6 +22,7 @@ TODO
 - clean up
   - drop anything "helloworld" -i || "hello world" -i
   - egrep todo
+  - list anything that is not required for prod in .vscodeignore (e.g. devcontainer.json)
 - best practices
   - define strings in package.nl.json so they are translatable and common
 features

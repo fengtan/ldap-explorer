@@ -11,11 +11,15 @@ export function activate(context: vscode.ExtensionContext) {
 	});
 
 	// Implementation of commands defined in package.json.
-	// @todo actually add a connection
-	let disposable = vscode.commands.registerCommand('ldap-browser.add-connection', () => {
-		vscode.window.showInformationMessage('Adding a connection');
-	});
-	context.subscriptions.push(disposable);
+	context.subscriptions.push(vscode.commands.registerCommand('ldap-browser.add-connection', () => {
+		// @todo drop vscode.window.showInformationMessage('Adding a connection');
+		const panel = vscode.window.createWebviewPanel(
+			'ldap-browser.add-connection',
+			'LDAP browser: Add new connection',
+			vscode.ViewColumn.One,
+			{}
+		);
+	}));
 	
 }
 
