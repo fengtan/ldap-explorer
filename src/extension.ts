@@ -19,6 +19,7 @@ export function activate(context: vscode.ExtensionContext) {
 			vscode.ViewColumn.One,
 			{}
 		);
+		panel.webview.html = getAddNewConnectionWebviewContent();
 	}));
 	
 }
@@ -28,4 +29,21 @@ export function deactivate() {
 
 	// @todo clear provider ? See todo-tree
 
+}
+
+
+function getAddNewConnectionWebviewContent() {
+	return `<!DOCTYPE html>
+	<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>LDAP Browser: Add new connection</title>
+	</head>
+	<body>
+		<input type="text" /> <!-- TODO complete form -->
+		<button type="button">Save</button>
+	</body>
+	</html>`;
+	// @todo on save: should focus on LDAP view
 }
