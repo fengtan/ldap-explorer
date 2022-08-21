@@ -1,8 +1,7 @@
 import * as vscode from 'vscode';
 import { LdapProvider } from './provider';
 
-// This method is called when the extension is activated.
-// The extension is activated when the view is shown (see activationEvents in package.json).
+// This method is called when the extension is activated (see activationEvents in package.json).
 export function activate(context: vscode.ExtensionContext) {
 
 	// Populate view with our data provider.
