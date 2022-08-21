@@ -12,6 +12,7 @@ TODO
     0 prolly need to run `npm install` too (add `npm install` to devcontainer.json's postCreateAction as well)
   - URL of project on github
   - drop of reference vsc-extension-quickstart.md
+  - warn that credentials are stored unencrypted (encrypt ? See secret storage api https://www.eliostruyf.com/devhack-code-extension-storage-options/)
 - metadata
   - license (in package.json and in README.md)
   - make sure the repo URL listed in package.json is correct

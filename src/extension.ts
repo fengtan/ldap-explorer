@@ -41,8 +41,10 @@ function getAddNewConnectionWebviewContent() {
 		<title>LDAP Browser: Add new connection</title>
 	</head>
 	<body>
+		<h1>LDAP Browser: Add new connection</h1>
 		<input type="text" /> <!-- TODO complete form -->
-		<button type="button">Save</button>
+		<button type="button" onClick="{saveConnection}">Save</button>
+		<!-- TODO vscode-button id="howdy">Howdy!</vscode-button-->
 	</body>
 	</html>`;
 	// @todo on save: should focus on LDAP view
