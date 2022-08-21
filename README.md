@@ -31,6 +31,7 @@ features
   - button "test connection" / verifies credentials
   - ability to *edit* a connection's settings (not just add and delete)
   - creating a new connection should open focus on our view
+  - button should be styled as blue vscode button: try <vscode-button>Save</vscode-button>
 
 
 # ldap-browser README
