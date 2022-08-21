@@ -10,7 +10,6 @@ TODO
     1. Open project in vscode (using remote-containers extension)
     2. Hit F5 - should open a new instance of VS Code with the extension running
     0 prolly need to run `npm install` too (add `npm install` to devcontainer.json's postCreateAction as well)
-  - icon at (media/icon.png) requires a hyperlink to author, add hyperlink or find another one
   - URL of project on github
   - drop of reference vsc-extension-quickstart.md
 - metadata
@@ -25,6 +24,10 @@ TODO
   - egrep todo
 - best practices
   - define strings in package.nl.json so they are translatable and common
+features
+  - command "Connect to..." (quick pick server)
+  - command "Delete connection..." (?)
+  - command icon (top-right corner of the view)
 
 
 # ldap-browser README

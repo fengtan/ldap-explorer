@@ -43,8 +43,7 @@
       {
         "command": "ldap-browser.add-connection",
         "title": "Add new connection",
-        "category": "LDAP browser",
-        "icon": "$(plus)" // @todo does not show up
+        "category": "LDAP browser"
       }
     ],
     "menus": {
