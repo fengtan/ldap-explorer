@@ -15,7 +15,7 @@ export function activate(context: vscode.ExtensionContext) {
 		// @todo drop vscode.window.showInformationMessage('Adding a connection');
 		const panel = vscode.window.createWebviewPanel(
 			'ldap-browser.add-connection',
-			'LDAP browser: Add new connection',
+			'LDAP Browser: Add new connection',
 			vscode.ViewColumn.One,
 			{}
 		);

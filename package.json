@@ -1,7 +1,7 @@
 {
   "name": "ldap-browser",
-  "displayName": "LDAP browser",
-  "description": "LDAP browser for VS Code",
+  "displayName": "LDAP Browser",
+  "description": "LDAP Browser for VS Code",
   "version": "0.0.1",
   "engines": {
     "vscode": "^1.70.0"
@@ -26,7 +26,7 @@
       "activitybar": [
         {
           "id": "ldap-browser-container",
-          "title": "LDAP browser",
+          "title": "LDAP Browser",
           "icon": "$(type-hierarchy-sub)"
         }
       ]
@@ -35,7 +35,7 @@
       "ldap-browser-container": [
         {
           "id": "ldap-browser-view",
-          "name": "LDAP browser"
+          "name": "LDAP Browser"
         }
       ]
     },
@@ -43,7 +43,7 @@
       {
         "command": "ldap-browser.add-connection",
         "title": "Add new connection",
-        "category": "LDAP browser"
+        "category": "LDAP Browser"
       }
     ],
     "menus": {
