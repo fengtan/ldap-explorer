@@ -29,7 +29,7 @@ export function activate(context: vscode.ExtensionContext) {
 		panel.webview.onDidReceiveMessage(
 			message => {
 			  switch (message.command) {
-				case 'alert':
+				case 'save':
 				  vscode.window.showErrorMessage(message.text);
 				  return;
 			  }
@@ -58,14 +58,15 @@ function getAddNewConnectionWebviewContent() {
 	</head>
 	<body>
 		<h1>LDAP Browser: Add new connection</h1>
-		<input type="text" /> <!-- TODO complete form -->
+		<label for="name">Name</label>
+		<input type="text" name="name" id="name" />
+		<!-- TODO complete form -->
 		<button type="button" id="save">Save</button>
 		<script>
-			(function() {
-				const vscode = acquireVsCodeApi();
-				console.log("document loaded"); // @todo drop
-				vscode.postMessage({command: 'alert', text: 'foo bar'});
-			}())
+			const vscode = acquireVsCodeApi();
+			document.addEventListener("DOMContentLoaded", function(){
+				vscode.postMessage({command: 'save', text: 'foo bar'});
+			});
 		</script>
 	</body>
 	</html>`;
