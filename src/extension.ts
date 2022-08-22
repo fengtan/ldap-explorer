@@ -6,7 +6,7 @@ export function activate(context: vscode.ExtensionContext) {
 
 	// Populate view with our data provider.
 	vscode.window.createTreeView('ldap-browser-view', {
-		treeDataProvider: new LdapProvider()
+		treeDataProvider: new LdapProvider(context.globalState.get("mykey") ?? "") // @todo mykey
 	});
 
 	// Implementation of commands defined in package.json.
@@ -30,7 +30,8 @@ export function activate(context: vscode.ExtensionContext) {
 			message => {
 			  switch (message.command) {
 				case 'save':
-				  vscode.window.showErrorMessage(message.text);
+				  context.globalState.update('mykey', 'myvalue'); // @todo mykey, myvalue
+				  // @todo UX: add notification "connection saved" ? vscode.window.showInformationMessage() ; see what sqltools does
 				  return;
 			  }
 			},
