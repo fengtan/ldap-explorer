@@ -12,13 +12,31 @@ export function activate(context: vscode.ExtensionContext) {
 	// Implementation of commands defined in package.json.
 	context.subscriptions.push(vscode.commands.registerCommand('ldap-browser.add-connection', () => {
 		// @todo drop vscode.window.showInformationMessage('Adding a connection');
+		// Create webview.
 		const panel = vscode.window.createWebviewPanel(
 			'ldap-browser.add-connection',
 			'LDAP Browser: Add new connection',
 			vscode.ViewColumn.One,
-			{}
+			{
+				enableScripts: true
+			}
 		);
+
+		// Populate webview content.
 		panel.webview.html = getAddNewConnectionWebviewContent();
+
+		// Handle messages from webview to the extension.
+		panel.webview.onDidReceiveMessage(
+			message => {
+			  switch (message.command) {
+				case 'alert':
+				  vscode.window.showErrorMessage(message.text);
+				  return;
+			  }
+			},
+			undefined,
+			context.subscriptions
+		  );
 	}));
 	
 }
@@ -29,7 +47,6 @@ export function deactivate() {
 	// @todo clear provider ? See todo-tree
 
 }
-
 
 function getAddNewConnectionWebviewContent() {
 	return `<!DOCTYPE html>
@@ -42,7 +59,14 @@ function getAddNewConnectionWebviewContent() {
 	<body>
 		<h1>LDAP Browser: Add new connection</h1>
 		<input type="text" /> <!-- TODO complete form -->
-		<button type="button">Save</button>
+		<button type="button" id="save">Save</button>
+		<script>
+			(function() {
+				const vscode = acquireVsCodeApi();
+				console.log("document loaded"); // @todo drop
+				vscode.postMessage({command: 'alert', text: 'foo bar'});
+			}())
+		</script>
 	</body>
 	</html>`;
 }
