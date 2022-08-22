@@ -30,7 +30,8 @@ export function activate(context: vscode.ExtensionContext) {
 			message => {
 			  switch (message.command) {
 				case 'save':
-				  context.globalState.update('connectionName', message.connectionName); // @todo mykey, myvalue
+				  context.globalState.update('connectionName', message.connectionName);
+				  // @todo should refresh TreeView so the change is visible
 				  // @todo UX: add notification "connection saved" ? vscode.window.showInformationMessage() ; see what sqltools does
 				  return;
 			  }
@@ -62,10 +63,10 @@ function getAddNewConnectionWebviewContent() {
 		<label for="name">Name</label>
 		<input type="text" name="name" id="name"/>
 		<!-- TODO complete form -->
-		<button type="button" id="save" onClick="save()">Save</button>
+		<button type="button" onClick="save()">Save</button>
 		<script>
 			const vscode = acquireVsCodeApi();
-			function save(element) {
+			function save() {
 				vscode.postMessage({command: 'save', connectionName: document.getElementById("name").value});
 			}
 		</script>
