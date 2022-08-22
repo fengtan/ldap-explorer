@@ -6,7 +6,7 @@ export function activate(context: vscode.ExtensionContext) {
 
 	// Populate view with our data provider.
 	vscode.window.createTreeView('ldap-browser-view', {
-		treeDataProvider: new LdapProvider(context.globalState.get("mykey") ?? "") // @todo mykey
+		treeDataProvider: new LdapProvider(context.globalState.get("connectionName") ?? "") // @todo mykey
 	});
 
 	// Implementation of commands defined in package.json.
@@ -30,7 +30,7 @@ export function activate(context: vscode.ExtensionContext) {
 			message => {
 			  switch (message.command) {
 				case 'save':
-				  context.globalState.update('mykey', 'myvalue'); // @todo mykey, myvalue
+				  context.globalState.update('connectionName', message.connectionName); // @todo mykey, myvalue
 				  // @todo UX: add notification "connection saved" ? vscode.window.showInformationMessage() ; see what sqltools does
 				  return;
 			  }
@@ -60,13 +60,13 @@ function getAddNewConnectionWebviewContent() {
 	<body>
 		<h1>LDAP Browser: Add new connection</h1>
 		<label for="name">Name</label>
-		<input type="text" name="name" />
+		<input type="text" name="name" id="name"/>
 		<!-- TODO complete form -->
 		<button type="button" id="save" onClick="save()">Save</button>
 		<script>
 			const vscode = acquireVsCodeApi();
-			function save() {
-				vscode.postMessage({command: 'save', text: 'babar'});
+			function save(element) {
+				vscode.postMessage({command: 'save', connectionName: document.getElementById("name").value});
 			}
 		</script>
 	</body>
