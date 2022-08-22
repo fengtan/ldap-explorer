@@ -59,14 +59,14 @@ function getAddNewConnectionWebviewContent() {
 	<body>
 		<h1>LDAP Browser: Add new connection</h1>
 		<label for="name">Name</label>
-		<input type="text" name="name" id="name" />
+		<input type="text" name="name" />
 		<!-- TODO complete form -->
-		<button type="button" id="save">Save</button>
+		<button type="button" id="save" onClick="save()">Save</button>
 		<script>
 			const vscode = acquireVsCodeApi();
-			document.addEventListener("DOMContentLoaded", function(){
-				vscode.postMessage({command: 'save', text: 'foo bar'});
-			});
+			function save() {
+				vscode.postMessage({command: 'save', text: 'babar'});
+			}
 		</script>
 	</body>
 	</html>`;
