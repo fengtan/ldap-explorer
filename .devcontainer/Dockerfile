@@ -1,4 +1,5 @@
-FROM node:18-slim
+# Same version of nodejs as that used for vscode itself https://github.com/Microsoft/vscode/wiki/How-to-Contribute#prerequisites
+FROM node:16-slim
 
 # Packages
 # Includes fix for "debconf: delaying package configuration, since apt-utils is not installed"
