@@ -4,7 +4,7 @@ import { LdapConnection } from "./ldapConnection";
 import * as ldapjs from 'ldapjs'; // @todo may not need to import *
 import * as vscode from 'vscode';
 
-export class LdapTreeItem {
+export class LdapTreeItem extends vscode.TreeItem {
 
   private connection: LdapConnection;
   private dn?: string;
@@ -12,40 +12,42 @@ export class LdapTreeItem {
   // Parameter "dn" is expected to be set when creating a TreeItem for *LDAP results*.
   // It is not expected to be set for *connections* TreeItems (e.g. top-level TreeItems) as they already include a baseDN.
   constructor(connection: LdapConnection, dn?: string) {
+    // Label of the TreeItem:
+    // - If the TreeItem is an LDAP result, then show its DN.
+    // - If the TreeItem is a connection, then show its connection name.
+    const label = dn ?? connection.name;
+
+    // Whether the TreeItem is expandable:
+    // - If the TreeItem is an LDAP result, then it is expandable only if its DN does not start with CN
+    //   as the latter is not supposed to have children ; other designators (OU, DC) are containers
+    //   and may have children in the LDAP hierarchy.
+    // - If the TreeItem is a connection, then it is always expandable (and expanding it means opening
+    //   the root of LDAP hierarchy).
+    const expandable = dn ? !dn.startsWith("cn") : true;
+    const collapsibleState = expandable ? vscode.TreeItemCollapsibleState.Collapsed : vscode.TreeItemCollapsibleState.None;
+  
+    // Call parent cosntructor.
+    super(label, collapsibleState);
+
+    // Populate attributes specific to LdapTreeItem (i.e. not inherited from TreeItem).
     this.connection = connection;
     this.dn = dn;
-  }
 
-  // Label of the TreeItem:
-  // - If the TreeItem is an LDAP result, then show its DN.
-  // - If the TreeItem is a connection, then show its connection name.
-  getLabel(): string {
-    return this.dn ?? this.connection.name;
-  }
+    // Description of the TreeItem:
+    // - If the TreeItem is an LDAP result, then show no description.
+    // - If the TreeItem is a connection, then show its connection string.
+    this.description = this.dn ? "" : this.connection.getUrl();
 
-  // Description of the TreeItem:
-  // - If the TreeItem is an LDAP result, then show no description.
-  // - If the TreeItem is a connection, then show its connection string.
-  getDescription(): string {
-    return this.dn ? "" : this.connection.getUrl();
-  }
-
-  // Whether the TreeItem is expandable:
-  // - If the TreeItem is an LDAP result, then it is expandable only if its DN does not start with CN
-  //   as the latter is not supposed to have children ; other designators (OU, DC) are containers
-  //   and may have children in the LDAP hierarchy.
-  // - If the TreeItem is a connection, then it is always expandable (and expanding it means opening
-  //   the root of LDAP hierarchy).
-  isExpandable(): boolean {
-    return this.dn ? !this.dn.startsWith("cn") : true;
-  }
-
-  getCommand(): any {
-    return this.dn ? {
-      command: "ldap-browser.show-attributes",
-      title: "Show Attributes",
+    // Command to call when the TreeItem is clicked:
+    // - If the TreeItem is an LDAP result, then call the command that lists its attributes.
+    // - If the TreeItem is a connection, then do nothing.
+    if (this.dn) {
+      this.command =  {
+        command: "ldap-browser.show-attributes",
+        title: "Show Attributes",
         arguments: [this.dn] // @todo should likely pass this instead of this.dn (the command needs the whole connection object in order to connect to the ldap server)
-    } : {}; // @todo generates error in console when clicking on connection TreeItem
+      };
+    }
   }
 
   // @todo drop, as well as isExpandable() and getCommand() --> merge with LdapDataProvider, similar to Dependency
@@ -76,6 +78,7 @@ export class LdapTreeItem {
         // - If the TreeItem is an LDAP result, then we will query its regular DN.
         // - If the TreeItem is a connection, then we will query the base DN configured by the user.
         const dn = this.dn ?? this.connection.basedn;
+
         // Search.
         // @todo set additional options ? Second argument of the search() method
         // @todo clean this messy search() call - should call reject() or resolve() etc

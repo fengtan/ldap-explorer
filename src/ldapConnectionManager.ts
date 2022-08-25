@@ -33,14 +33,14 @@ export class LdapConnectionManager {
 
     // Remove existing connection from settings.
     // @todo removal operation seems to remove the wrong connection
-    static removeConnection(name: string) {
+    static removeConnection(connection: LdapConnection) {
         // Get list of existing connections.
 		let connections = this.getConnections();
 
         // Get index of connection to delete.
-		const index = connections.findIndex(connection => connection.name === name);
+		const index = connections.findIndex(con => con.name === connection.name);
 		if (index < 0 ) {
-			vscode.window.showInformationMessage(`Unable to delete '${name}': connection does not exist.`);
+			vscode.window.showInformationMessage(`Unable to delete '${connection.name}': connection does not exist.`);
 		}
 
         // Remove connection from the list.

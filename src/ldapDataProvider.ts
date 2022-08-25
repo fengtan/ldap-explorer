@@ -7,12 +7,8 @@ import { LdapTreeItem } from './ldapTreeItem';
 export class LdapDataProvider implements vscode.TreeDataProvider<LdapTreeItem> {
 
   getTreeItem(treeItem: LdapTreeItem): vscode.TreeItem {
-    // @todo move this logic into LdapTreeItem and just return treeItem (have LdapTreeItem extend TreeItem)
-    const collapsiblestate = treeItem.isExpandable() ? vscode.TreeItemCollapsibleState.Collapsed : vscode.TreeItemCollapsibleState.None;
-    let item = new vscode.TreeItem(treeItem.getLabel(), collapsiblestate);
-    item.description = treeItem.getDescription();
-    item.command = treeItem.getCommand();
-    return item;
+    // LdapTreeItem extends TreeItem so we can just return treeItem.
+    return treeItem;
   }
 
   getChildren(treeItem?: LdapTreeItem): Thenable<LdapTreeItem[]> {
