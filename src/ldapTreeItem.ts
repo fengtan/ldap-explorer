@@ -91,7 +91,7 @@ export class LdapTreeItem extends vscode.TreeItem {
             console.log('searchRequest: ', searchRequest.messageID);
           });
           res.on('searchEntry', (entry) => {
-            results.push(new LdapTreeItem(this.connection, entry.dn)); // @todo best to show only the OU/CN name instead of the full DN ? For UX
+            results.push(new LdapTreeItem(this.connection, entry.dn)); // @todo best to show only the OU/CN name instead of the full DN ? For UX. The full DN can remain as a tooltip
             console.log('entry: ' + JSON.stringify(entry.object));
           });
           res.on('searchReference', (referral) => {
