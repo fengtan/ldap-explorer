@@ -2,26 +2,60 @@
 
 import { LdapConnection } from "./ldapConnection";
 
-export interface LdapNode {
+export class LdapNode {
 
-  // Label that should show in the tree view.
-  getLabel(): string;
-  
-  // Description that should show in the tree view.
-  getDescription(): string;
+  private connection: LdapConnection;
+  private dn?: string;
 
-  // LDAP Connection that relates to this node.
-  getLdapConnection(): LdapConnection;
+  // Parameter "dn" is expected to be set when creating a node for LDAP results.
+  // It is not expected to be set for nodes for connections (e.g. top-level TreeItems) as they already include a baseDN.
+  constructor(connection: LdapConnection, dn?: string) {
+    this.connection = connection;
+    this.dn = dn;
+  }
 
-  // DN (distinguished name) of this node.
-  getDN(): string;
+  // Label of the TreeItem:
+  // - If the node is an LDAP result, then show its DN.
+  // - If the node is a connection, then show its connection name.
+  getLabel(): string {
+    return this.dn ?? this.connection.name;
+  }
 
-  // Whether this node is expandable or not in the tree view.
-  isExpandable(): boolean;
+  // Description of the TreeItem:
+  // - If the node is an LDAP result, then show no description.
+  // - If the node is a connection, then show its connection string.
+  getDescription(): string {
+    return this.dn ? "" : this.connection.getUrl();
+  }
 
-  // Command to run when item is clicked in tree view.
-  getCommand(): any; // @todo any
+  // Whether the TreeItem is expandable:
+  // - If the node is an LDAP result, then it is expandable only if its DN does not start with CN
+  //   as the latter is not supposed to have children ; other designators (OU, DC) are containers
+  //   and may have children in the LDAP hierarchy.
+  // - If the node is a connection, then it is always expandable (and expanding it means opening
+  //   the root of LDAP hierarchy).
+  isExpandable(): boolean {
+    return this.dn ? !this.dn.startsWith("cn") : true;
+  }
 
-  // @todo merge ldapResult.ts and ldapConnection.ts really, they are almost the same.
+  getCommand(): any {
+    return this.dn ? {
+      command: "ldap-browser.show-attributes",
+      title: "Show Attributes",
+        arguments: [this.dn] // @todo should likely pass this instead of this.dn (the command needs the whole connection object in order to connect to the ldap server)
+    } : {}; // @todo generates error in console when clicking on connection TreeItem
+  }
+
+  // @todo drop, as well as isExpandable() and getCommand() --> merge with LdapDataProvider, similar to Dependency
+  getLdapConnection(): LdapConnection {
+    return this.connection;
+  }
+
+  // DN representing the node
+  // - If the node is an LDAP result, then this is its regular DN.
+  // - If the node is a connection, then the DN its the base DB configured by the user.
+  getDN(): string {
+    return this.dn ?? this.connection.basedn;
+  }
 
 }

@@ -3,7 +3,6 @@
 import * as vscode from 'vscode';
 import { LdapConnectionManager } from './ldapConnectionManager';
 import { LdapNode } from './ldapNode';
-import { LdapResult } from './ldapResult';
 import * as ldapjs from 'ldapjs'; // @todo may not need to import *
 
 export class LdapDataProvider implements vscode.TreeDataProvider<LdapNode> {
@@ -20,7 +19,7 @@ export class LdapDataProvider implements vscode.TreeDataProvider<LdapNode> {
     // No element passed i.e. we are at the root of the tree.
     // Build list of connections from settings.
     if (!node) {
-      return Promise.resolve(LdapConnectionManager.getConnections());
+      return Promise.resolve(LdapConnectionManager.getConnections().map(connection => new LdapNode(connection)));
     }
 
     // A valid element was passed i.e. we need to list the LDAP nodes (CN, OU, etc) of this parent.
@@ -48,12 +47,12 @@ export class LdapDataProvider implements vscode.TreeDataProvider<LdapNode> {
         client.search(node.getDN(), {"scope": "one"}, (err, res) => {
           console.log(err); // @todo handle and return if there is an error
   
-          let results: LdapResult[] = [];
+          let results: LdapNode[] = [];
           res.on('searchRequest', (searchRequest) => {
             console.log('searchRequest: ', searchRequest.messageID);
           });
           res.on('searchEntry', (entry) => {
-            results.push(new LdapResult(entry.dn, connection)); // @todo best to show only the OU/CN name instead of the full DN ? For UX
+            results.push(new LdapNode(connection, entry.dn)); // @todo best to show only the OU/CN name instead of the full DN ? For UX
             console.log('entry: ' + JSON.stringify(entry.object));
           });
           res.on('searchReference', (referral) => {
