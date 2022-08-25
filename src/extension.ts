@@ -91,7 +91,7 @@ export function activate(context: vscode.ExtensionContext) {
 		);
 		
 		// Populate webview content.
-		panel.webview.html = getShowAttributesWebviewContent();
+		panel.webview.html = getShowAttributesWebviewContent(dn);
 	}));
 
 	// @todo is it necessary to pass all registered commands through context.subscriptions.push() ?
@@ -164,7 +164,7 @@ function getAddNewConnectionWebviewContent() {
 	</html>`;
 }
 
-function getShowAttributesWebviewContent() {
+function getShowAttributesWebviewContent(dn: string) {
 	return `<!DOCTYPE html>
 	<html lang="en">
 	<head>
@@ -173,7 +173,7 @@ function getShowAttributesWebviewContent() {
 		<title>LDAP Browser: Show Attributes</title>
 	</head>
 	<body>
-		Hello world TODO
+		Hello world TODO ${dn}
 	</body>
 	</html>`;
 }
