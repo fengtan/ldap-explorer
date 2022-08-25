@@ -2,28 +2,28 @@
 
 import * as vscode from 'vscode';
 import { LdapConnectionManager } from './ldapConnectionManager';
-import { LdapNode } from './ldapNode';
+import { LdapTreeItem } from './ldapTreeItem';
 import * as ldapjs from 'ldapjs'; // @todo may not need to import *
 
-export class LdapDataProvider implements vscode.TreeDataProvider<LdapNode> {
+export class LdapDataProvider implements vscode.TreeDataProvider<LdapTreeItem> {
 
-  getTreeItem(node: LdapNode): vscode.TreeItem {
-    const collapsiblestate = node.isExpandable() ? vscode.TreeItemCollapsibleState.Collapsed : vscode.TreeItemCollapsibleState.None;
-    let item = new vscode.TreeItem(node.getLabel(), collapsiblestate);
-    item.description = node.getDescription();
-    item.command = node.getCommand();
+  getTreeItem(treeItem: LdapTreeItem): vscode.TreeItem {
+    const collapsiblestate = treeItem.isExpandable() ? vscode.TreeItemCollapsibleState.Collapsed : vscode.TreeItemCollapsibleState.None;
+    let item = new vscode.TreeItem(treeItem.getLabel(), collapsiblestate);
+    item.description = treeItem.getDescription();
+    item.command = treeItem.getCommand();
     return item;
   }
 
-  getChildren(node?: LdapNode): Thenable<LdapNode[]> {
+  getChildren(treeItem?: LdapTreeItem): Thenable<LdapTreeItem[]> {
     // No element passed i.e. we are at the root of the tree.
     // Build list of connections from settings.
-    if (!node) {
-      return Promise.resolve(LdapConnectionManager.getConnections().map(connection => new LdapNode(connection)));
+    if (!treeItem) {
+      return Promise.resolve(LdapConnectionManager.getConnections().map(connection => new LdapTreeItem(connection)));
     }
 
-    // A valid element was passed i.e. we need to list the LDAP nodes (CN, OU, etc) of this parent.
-    const connection = node.getLdapConnection();
+    // A valid element was passed i.e. we need to list the LDAP children (CN, OU, etc) of this parent.
+    const connection = treeItem.getLdapConnection();
     return new Promise((resolve, reject) => {
       // Create LDAP object.
       const client = ldapjs.createClient({
@@ -44,15 +44,15 @@ export class LdapDataProvider implements vscode.TreeDataProvider<LdapNode> {
         // @todo set additional options ? Second argument of the search() method
         // @todo clean this messy search() call - should call reject() or resolve() etc
         // Set LDAP search scope of "one" so we get only immediate subordinates of the base DN https://ldapwiki.com/wiki/SingleLevel
-        client.search(node.getDN(), {"scope": "one"}, (err, res) => {
+        client.search(treeItem.getDN(), {"scope": "one"}, (err, res) => {
           console.log(err); // @todo handle and return if there is an error
   
-          let results: LdapNode[] = [];
+          let results: LdapTreeItem[] = [];
           res.on('searchRequest', (searchRequest) => {
             console.log('searchRequest: ', searchRequest.messageID);
           });
           res.on('searchEntry', (entry) => {
-            results.push(new LdapNode(connection, entry.dn)); // @todo best to show only the OU/CN name instead of the full DN ? For UX
+            results.push(new LdapTreeItem(connection, entry.dn)); // @todo best to show only the OU/CN name instead of the full DN ? For UX
             console.log('entry: ' + JSON.stringify(entry.object));
           });
           res.on('searchReference', (referral) => {
@@ -88,9 +88,9 @@ export class LdapDataProvider implements vscode.TreeDataProvider<LdapNode> {
 
   // Logic to refresh the view.
   // @see https://code.visualstudio.com/api/extension-guides/tree-view#updating-tree-view-content
-  private _onDidChangeTreeData: vscode.EventEmitter<LdapNode | undefined | null | void> = new vscode.EventEmitter<LdapNode | undefined | null | void>();
+  private _onDidChangeTreeData: vscode.EventEmitter<LdapTreeItem | undefined | null | void> = new vscode.EventEmitter<LdapTreeItem | undefined | null | void>();
 
-  readonly onDidChangeTreeData: vscode.Event<LdapNode | undefined | null | void> = this._onDidChangeTreeData.event;
+  readonly onDidChangeTreeData: vscode.Event<LdapTreeItem | undefined | null | void> = this._onDidChangeTreeData.event;
 
   refresh(): void {
     this._onDidChangeTreeData.fire();

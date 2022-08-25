@@ -2,7 +2,7 @@ import * as vscode from 'vscode';
 import { LdapConnectionManager } from './ldapConnectionManager';
 import { LdapConnection } from './ldapConnection';
 import { LdapDataProvider } from './ldapDataProvider';
-import { LdapNode } from './ldapNode';
+import { LdapTreeItem } from './ldapTreeItem';
 
 // This method is called when the extension is activated (see activationEvents in package.json).
 export function activate(context: vscode.ExtensionContext) {
@@ -57,12 +57,12 @@ export function activate(context: vscode.ExtensionContext) {
 	}));
 
 	// Implement "Delete connection" command.
-	context.subscriptions.push(vscode.commands.registerCommand('ldap-browser.delete-connection', (ldapNode: LdapNode) => {
+	context.subscriptions.push(vscode.commands.registerCommand('ldap-browser.delete-connection', (treeItem: LdapTreeItem) => {
 		// Extract name of the connection to be deleted.
 		// This will work only if the command fired from the contextual menu in the tree view.
 		// If the command fired from the command palette then 'item' is empty.
 		// This is why the command is configured to not show up in the command palette (see package.json).
-		const name = ldapNode.getLabel();
+		const name = treeItem.getLabel();
 
 		// Ask for confirmation.
 		vscode.window.showInformationMessage(`Are you sure you want to remove the connection '${name}' ?`, { modal: true}, "Yes").then((confirm) => {
@@ -81,7 +81,7 @@ export function activate(context: vscode.ExtensionContext) {
 		ldapDataProvider.refresh();
 	}));
 
-	// Implement "Show attributes" command (details attributes of a node).
+	// Implement "Show attributes" command (details attributes of an LDAP result).
 	context.subscriptions.push(vscode.commands.registerCommand('ldap-browser.show-attributes', (dn: string) => {
 		// Create webview.
 		const panel = vscode.window.createWebviewPanel(
