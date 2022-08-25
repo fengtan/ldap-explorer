@@ -45,7 +45,7 @@ export class LdapTreeItem extends vscode.TreeItem {
       this.command =  {
         command: "ldap-browser.show-attributes",
         title: "Show Attributes",
-        arguments: [this.dn] // @todo should likely pass this instead of this.dn (the command needs the whole connection object in order to connect to the ldap server)
+        arguments: [this]
       };
     }
   }
@@ -123,6 +123,21 @@ export class LdapTreeItem extends vscode.TreeItem {
       return Promise.resolve([]);
     });
     */    
+  }
+
+  // HTML that lists all attributes of this TreeItem.
+  getAttributesHTML(): string {
+    return `<!DOCTYPE html>
+    <html lang="en">
+      <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>LDAP Browser: Show Attributes</title>
+      </head>
+      <body>
+        Hello world TODO ${this.dn} ${this.getLdapConnection().name}
+      </body>
+    </html>`;
   }
 
 }

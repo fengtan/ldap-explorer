@@ -60,6 +60,7 @@ features
   - UX: Add icon next to nodes so you quickly know if this is a user or a group (based on objectClass) https://ldapwiki.com/wiki/ObjectClass
   - UX: when clicking the "plus" icon, this opens multiple webviews to add connections ; ideally you would have only one window for adding connection. See what options are possible when creating the webview (constructor)
   - UX: should multiple webviews "show-details" be allowed ? Autoclose by default, similar to VSCode editor ?
+  - add command "show-details" to command palette so you can check the contents of an AD group via Quick Pick that would be really awesome
 
 # ldap-browser README
 

@@ -24,7 +24,7 @@ export function activate(context: vscode.ExtensionContext) {
 		);
 
 		// Populate webview content.
-		panel.webview.html = getAddNewConnectionWebviewContent();
+		panel.webview.html = getAddNewConnectionHTML();
 
 		// Handle messages from webview to the extension.
 		panel.webview.onDidReceiveMessage(
@@ -82,7 +82,7 @@ export function activate(context: vscode.ExtensionContext) {
 	}));
 
 	// Implement "Show attributes" command (details attributes of an LDAP result).
-	context.subscriptions.push(vscode.commands.registerCommand('ldap-browser.show-attributes', (dn: string) => {
+	context.subscriptions.push(vscode.commands.registerCommand('ldap-browser.show-attributes', (treeItem: LdapTreeItem) => {
 		// Create webview.
 		const panel = vscode.window.createWebviewPanel(
 			'ldap-browser.show-attributes',
@@ -91,7 +91,7 @@ export function activate(context: vscode.ExtensionContext) {
 		);
 		
 		// Populate webview content.
-		panel.webview.html = getShowAttributesWebviewContent(dn);
+		panel.webview.html = treeItem.getAttributesHTML();
 	}));
 
 	// @todo is it necessary to pass all registered commands through context.subscriptions.push() ?
@@ -106,74 +106,60 @@ export function deactivate() {
 
 }
 
-function getAddNewConnectionWebviewContent() {
+function getAddNewConnectionHTML() {
 	// @todo ideally generate the form by inspecting package.json configuration contribution
 	return `<!DOCTYPE html>
 	<html lang="en">
-	<head>
-		<meta charset="UTF-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<title>LDAP Browser: Add new connection</title>
-	</head>
-	<body>
-		<label for="name">Connection name</label>
-		<input type="text" name="name" id="name"/>
+		<head>
+			<meta charset="UTF-8">
+			<meta name="viewport" content="width=device-width, initial-scale=1.0">
+			<title>LDAP Browser: Add new connection</title>
+		</head>
+		<body>
+			<label for="name">Connection name</label>
+			<input type="text" name="name" id="name"/>
 
-		<label for="protocol">Protocol</label>
-		<select name="protocol" id="protocol">
-			<option value="ldap">ldap</option>
-			<option value="ldaps">ldaps</option>
-		</select>
+			<label for="protocol">Protocol</label>
+			<select name="protocol" id="protocol">
+				<option value="ldap">ldap</option>
+				<option value="ldaps">ldaps</option>
+			</select>
 
-		<label for="host">Host</label>
-		<input type="text" name="host" id="host"/>
+			<label for="host">Host</label>
+			<input type="text" name="host" id="host"/>
 
-		<label for="port">Port</label>
-		<input type="text" name="port" id="port"/>
+			<label for="port">Port</label>
+			<input type="text" name="port" id="port"/>
 
-		<label for="binddn">Bind DN</label>
-		<input type="text" name="binddn" id="binddn"/>
+			<label for="binddn">Bind DN</label>
+			<input type="text" name="binddn" id="binddn"/>
 
-		<label for="bindpwd">Bind password</label>
-		<input type="text" name="bindpwd" id="bindpwd"/>
+			<label for="bindpwd">Bind password</label>
+			<input type="text" name="bindpwd" id="bindpwd"/>
 
-		<label for="basedn">Base DN</label>
-		<input type="text" name="basedn" id="basedn"/>
+			<label for="basedn">Base DN</label>
+			<input type="text" name="basedn" id="basedn"/>
 
-		<!-- TODO complete form -->
-		<!-- TODO complain if the connection name submitted already exists (must be unique) -->
-		<!-- TODO some form elements should be mandatory -->
-		<!-- TODO set defaults (same as those defined in package.json) -->
-		<button type="button" onClick="save()">Save</button>
-		<script>
-			const vscode = acquireVsCodeApi();
-			function save() {
-				vscode.postMessage({
-					command: 'save',
-					name: document.getElementById("name").value,
-					protocol: document.getElementById("protocol").value,
-					host: document.getElementById("host").value,
-					port: document.getElementById("port").value,
-					binddn: document.getElementById("binddn").value,
-					bindpwd: document.getElementById("bindpwd").value,
-					basedn: document.getElementById("basedn").value
-				});
-			}
-		</script>
-	</body>
-	</html>`;
-}
-
-function getShowAttributesWebviewContent(dn: string) {
-	return `<!DOCTYPE html>
-	<html lang="en">
-	<head>
-		<meta charset="UTF-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<title>LDAP Browser: Show Attributes</title>
-	</head>
-	<body>
-		Hello world TODO ${dn}
-	</body>
+			<!-- TODO complete form -->
+			<!-- TODO complain if the connection name submitted already exists (must be unique) -->
+			<!-- TODO some form elements should be mandatory -->
+			<!-- TODO set defaults (same as those defined in package.json) -->
+			<button type="button" onClick="save()">Save</button>
+			<script>
+				const vscode = acquireVsCodeApi();
+				function save() {
+					vscode.postMessage({
+						command: 'save',
+						name: document.getElementById("name").value,
+						protocol: document.getElementById("protocol").value,
+						host: document.getElementById("host").value,
+						port: document.getElementById("port").value,
+						binddn: document.getElementById("binddn").value,
+						bindpwd: document.getElementById("bindpwd").value,
+						basedn: document.getElementById("basedn").value
+					});
+				}
+			</script>
+		</body>
 	</html>`;
 }
