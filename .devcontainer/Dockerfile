@@ -11,6 +11,7 @@ RUN \
 # Tools
 RUN apt-get -y install \
   git \
+  ldap-utils \
   less \
   sudo \
   vim

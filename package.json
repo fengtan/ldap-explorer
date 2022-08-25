@@ -43,16 +43,110 @@
       {
         "command": "ldap-browser.add-connection",
         "title": "Add new connection",
+        "category": "LDAP Browser",
+        "icon": "$(add)"
+      },
+      {
+        "command": "ldap-browser.delete-connection",
+        "title": "Delete connection",
+        "category": "LDAP Browser"
+      },
+      {
+        "command": "ldap-browser.refresh-view",
+        "title": "Refresh",
+        "category": "LDAP Browser",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "ldap-browser.show-attributes",
+        "title": "Show Attributes",
         "category": "LDAP Browser"
       }
     ],
     "menus": {
+      "commandPalette": [
+        {
+          "command": "ldap-browser.delete-connection",
+          "when": "false"
+        },
+        {
+          "command": "ldap-browser.refresh-view",
+          "when": "false"
+        },
+        {
+          "command": "ldap-browser.show-attributes",
+          "when": "false"
+        }
+      ],
       "view/title": [
         {
           "command": "ldap-browser.add-connection",
-          "when": "view =~ /ldap-browser-view/"
+          "when": "view == ldap-browser-view",
+          "group": "navigation"
+        },
+        {
+          "command": "ldap-browser.refresh-view",
+          "when": "view == ldap-browser-view",
+          "group": "navigation"
+        }
+      ],
+      "view/item/context": [
+        {
+          "command": "ldap-browser.delete-connection",
+          "when": "view == ldap-browser-view"
         }
       ]
+    },
+    "configuration": {
+      "type": "object",
+      "title": "LDAP Browser settings",
+      "properties": {
+        "ldap-browser.connections": {
+          "type": "array",
+          "markdownDescription": "Connections list",
+          "default": [],
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Connection name"
+              },
+              "protocol": {
+                "type": "string",
+                "description": "Protocol",
+                "default": "ldap",
+                "enum": ["ldap", "ldaps"]
+              },
+              "host": {
+                "type": "string",
+                "description": "Host",
+                "default": "localhost"
+              },
+              "port": {
+                "type": "number",
+                "description": "Port",
+                "default": "389"
+              },
+              "binddn": {
+                "type": "string",
+                "description": "Bind DN",
+                "default": ""
+              },
+              "bindpwd": {
+                "type": "string",
+                "description": "Bind password",
+                "default": ""
+              },
+              "basedn": {
+                "type": "string",
+                "description": "Base DN",
+                "default": ""
+              }
+            }
+          }
+        }
+      }
     }
   },
   "scripts": {
@@ -64,16 +158,20 @@
     "test": "node ./out/test/runTest.js"
   },
   "devDependencies": {
-    "@types/vscode": "^1.70.0",
     "@types/glob": "^7.2.0",
+    "@types/ldapjs": "^2.2.3",
     "@types/mocha": "^9.1.1",
-    "@types/node": "16.x",
-    "@typescript-eslint/eslint-plugin": "^5.31.0",
-    "@typescript-eslint/parser": "^5.31.0",
+    "@types/node": "^16.11.54",
+    "@types/vscode": "^1.70.0",
+    "@typescript-eslint/eslint-plugin": "^5.34.0",
+    "@typescript-eslint/parser": "^5.34.0",
+    "@vscode/test-electron": "^2.1.5",
     "eslint": "^8.20.0",
     "glob": "^8.0.3",
     "mocha": "^10.0.0",
-    "typescript": "^4.7.4",
-    "@vscode/test-electron": "^2.1.5"
+    "typescript": "^4.7.4"
+  },
+  "dependencies": {
+    "ldapjs": "^2.3.3"
   }
 }

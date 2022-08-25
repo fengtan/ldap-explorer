@@ -1,7 +1,7 @@
 TODO
 - pre-commit
   - (install automatically in devcontainer's postCreateAction) - run eslint automatically
-  - linter
+  - linter (for typescript + for package.json)
   - npm validate (is this a thing ?) similar to composer validate
 - documentation in README
   - screenshot etc
@@ -12,28 +12,54 @@ TODO
     0 prolly need to run `npm install` too (add `npm install` to devcontainer.json's postCreateAction as well)
   - URL of project on github
   - drop of reference vsc-extension-quickstart.md
-  - warn that credentials are stored unencrypted (encrypt ? See secret storage api https://www.eliostruyf.com/devhack-code-extension-storage-options/)
+  - option to ask for password on connect (same as sqltools) for security purposes
+  - run this command in (devcontainer) terminal to list dummy users ; explain how to fill in the form (webview) to get similar results (e.g. set base DN to dc=example,dc=org)
+  ```
+  ldapsearch -x -b "dc=example,dc=org" -H ldap://ldap:1389 -D "cn=admin,dc=example,dc=org" -w foobar -LLL
+  ```
+  - make sure the code is well documented and consistent
+  - explain Base DN, see that documentation drupal provides
+  - list alternatives in README.md (container-based software I listed in jira, as well as Jxplorer)
 - metadata
   - license (in package.json and in README.md)
   - make sure the repo URL listed in package.json is correct
-  - add 'categories' to package.json
   - branch master -> main
+  - rename ldap-browser -> ldap-explorer
 - autotests
 - clean up
   - egrep todo
   - list anything that is not required for prod in .vscodeignore (e.g. devcontainer.json)
+  - list all registered commands in package.json's activationEvents
+  - contextual menu "Delete connection" (see view/item/context in package.json) shows up on all items of the hierarchy: it is supposed to show up only on connection ; see sqltools.deleteConnection, we need a condition on viewItem
+  - `import * as vscode from 'vscode';` -> we prolly do not need to import everything
 - best practices
   - define strings in package.nl.json so they are translatable and common
 features
   - command "Connect to..." (quick pick server)
-  - command "Delete connection..." (?)
-  - command icon (top-right corner of the view)
+  - command *palette* "Delete connection..." (currently disabled in command palette)
+  - command "ldap-browser.show-attributes" should show in command palette (open a quick pick so the user can paste the DN) ; document this feature in README.md
   - button "test connection" / verifies credentials
   - ability to *edit* a connection's settings (not just add and delete)
   - creating a new connection should open focus on our view
   - button should be styled as blue vscode button: try <vscode-button>Save</vscode-button>
   - webview values are disposed when go to background
-
+  - setting to limit number of results to display (1,000 in jxplorer)
+  - show details of connection in tree view (same as sqltools: username@localhost:3306/foo)
+  - add support for filters (with built-in UI in vscode) ? http://ldapjs.org/filters.html
+  - dump ldapsearch commands in console as ldap queries are sent ? See ldapjs's "log" option http://ldapjs.org/client.html
+  - implement pager for folders that include > 1,000 items
+  - support for add/update/delete operations i.e. not a readonly connection ?
+  - most settings should be set globally and not be connection-specific (e.g. timeout) http://ldapjs.org/client.html
+  - see what bind options are possible with ldapjs (take drupal as reference)
+  - bookmarks feature (with favorite OU's) ?
+  - option to sort results ?
+  - somehow an option to search e.g. which groups a user belongs to
+  - UX: display list of connections as drop down (same as Debug or Remote Explorer in activity bar) ? Would need to adjust view/item/context (contextual menu) in package.json too
+  - Add welcome content https://code.visualstudio.com/api/extension-guides/tree-view#welcome-content
+  - add icon next to connections / top-level nodes ? Similar to todo-tree
+  - UX: Add icon next to nodes so you quickly know if this is a user or a group (based on objectClass) https://ldapwiki.com/wiki/ObjectClass
+  - UX: when clicking the "plus" icon, this opens multiple webviews to add connections ; ideally you would have only one window for adding connection. See what options are possible when creating the webview (constructor)
+  - UX: should multiple webviews "show-details" be allowed ? Autoclose by default, similar to VSCode editor ?
 
 # ldap-browser README
 
