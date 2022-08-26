@@ -87,11 +87,14 @@ export function activate(context: vscode.ExtensionContext) {
 		const panel = vscode.window.createWebviewPanel(
 			'ldap-browser.show-attributes',
 			treeItem.label?.toString() ?? "LDAP Browser",
-			vscode.ViewColumn.One
+			vscode.ViewColumn.One,
+			{
+				enableScripts: true,
+			}	  
 		);
 		
 		// Populate webview content.
-		treeItem.getAttributesHTML(panel);
+		treeItem.getAttributesHTML(panel, context);
 	}));
 
 	// @todo is it necessary to pass all registered commands through context.subscriptions.push() ?

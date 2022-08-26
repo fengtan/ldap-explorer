@@ -64,8 +64,8 @@ export class LdapTreeItem extends vscode.TreeItem {
   }
 
   // HTML that lists all attributes of this TreeItem.
-  // @todo passing the webviewPanel as an argument is not a good idea: the two classes should be loosely coupled
-  getAttributesHTML(webviewPanel: vscode.WebviewPanel) {
+  // @todo passing the webviewPanel and context as an argument is really, really not a good idea: the two classes should be loosely coupled
+  getAttributesHTML(webviewPanel: vscode.WebviewPanel, context: vscode.ExtensionContext) {
     // Scope is set to "base" so we only get attributes about the current (base) node https://ldapwiki.com/wiki/BaseObject
     // @todo implement onRejected callback of the thenable
     this.connection.search({scope: "base"}, this.dn).then(entries => {
@@ -82,18 +82,62 @@ export class LdapTreeItem extends vscode.TreeItem {
         });
       });
 
+      const toolkitUri = this.getUri(webviewPanel.webview, context.extensionUri, [
+        "node_modules",
+        "@vscode",
+        "webview-ui-toolkit",
+        "dist",
+        "toolkit.js",
+      ]);
+  
+
       webviewPanel.webview.html =
       `<!DOCTYPE html>
       <html lang="en">
+        <head>
+          <script type="module" src="${toolkitUri}"></script>
+        </head>
         <body>
           <h1>${this.dn}</h1>
           <!-- TODO the is probably is nicer way to render a table -->
           <ul>
             ${attrs.join("\n")}
           </ul>
+
+          <vscode-data-grid aria-label="Basic">
+  <vscode-data-grid-row row-type="header">
+    <vscode-data-grid-cell cell-type="columnheader" grid-column="1">Header 1</vscode-data-grid-cell>
+    <vscode-data-grid-cell cell-type="columnheader" grid-column="2">Header 2</vscode-data-grid-cell>
+    <vscode-data-grid-cell cell-type="columnheader" grid-column="3">Header 3</vscode-data-grid-cell>
+    <vscode-data-grid-cell cell-type="columnheader" grid-column="3">Header 4</vscode-data-grid-cell>
+  </vscode-data-grid-row>
+  <vscode-data-grid-row>
+    <vscode-data-grid-cell grid-column="1">Cell Data</vscode-data-grid-cell>
+    <vscode-data-grid-cell grid-column="2">Cell Data</vscode-data-grid-cell>
+    <vscode-data-grid-cell grid-column="3">Cell Data</vscode-data-grid-cell>
+    <vscode-data-grid-cell grid-column="4">Cell Data</vscode-data-grid-cell>
+  </vscode-data-grid-row>
+  <vscode-data-grid-row>
+    <vscode-data-grid-cell grid-column="1">Cell Data</vscode-data-grid-cell>
+    <vscode-data-grid-cell grid-column="2">Cell Data</vscode-data-grid-cell>
+    <vscode-data-grid-cell grid-column="3">Cell Data</vscode-data-grid-cell>
+    <vscode-data-grid-cell grid-column="4">Cell Data</vscode-data-grid-cell>
+  </vscode-data-grid-row>
+  <vscode-data-grid-row>
+    <vscode-data-grid-cell grid-column="1">Cell Data</vscode-data-grid-cell>
+    <vscode-data-grid-cell grid-column="2">Cell Data</vscode-data-grid-cell>
+    <vscode-data-grid-cell grid-column="3">Cell Data</vscode-data-grid-cell>
+    <vscode-data-grid-cell grid-column="4">Cell Data</vscode-data-grid-cell>
+  </vscode-data-grid-row>
+</vscode-data-grid>
         </body>
       </html>`;
     });
+  }
+
+  // @todo rename / move somewhere else ?
+  getUri(webview: vscode.Webview, extensionUri: vscode.Uri, pathList: string[]) {
+    return webview.asWebviewUri(vscode.Uri.joinPath(extensionUri, ...pathList));
   }
 
 }
