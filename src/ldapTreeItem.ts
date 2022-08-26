@@ -85,6 +85,7 @@ export class LdapTreeItem extends vscode.TreeItem {
       const toolkitUri = this.getWebviewUiTollkitUri(webviewPanel.webview, context.extensionUri);
   
 
+      // @todo move the html and the script to separate files (see samples) e.g /webview-ui/show-attributes/*
       webviewPanel.webview.html =
       `<!DOCTYPE html>
       <html lang="en">
@@ -99,6 +100,17 @@ export class LdapTreeItem extends vscode.TreeItem {
           </ul>
           <vscode-data-grid id="grid" aria-label="Attributes"></vscode-data-grid>
           <script>
+
+
+
+          <!-- TODO
+          Turn listing above (attrs) into something beautiful like below (data-grid) by passing a message from the extension to the webview
+          https://code.visualstudio.com/api/extension-guides/webview#passing-messages-from-an-extension-to-a-webview
+          -->
+
+
+
+          
           const grid = document.getElementById("grid");
 
           // Populate grid with data

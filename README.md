@@ -63,6 +63,7 @@ features
   - add command "show-details" to command palette so you can check the contents of an AD group via Quick Pick that would be really awesome
   - when creating a connection, have the option to read the bind password from a file or from an environment variable (so you can add the settings from devcontainer.json without putting the password in git)
   - in TreeView: best to show only the OU/CN name instead of the full DN ? For UX. The full DN can remain as a tooltip
+  - implement security recommendations https://code.visualstudio.com/api/extension-guides/webview#security
 
 # ldap-browser README
 
