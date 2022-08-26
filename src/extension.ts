@@ -86,12 +86,12 @@ export function activate(context: vscode.ExtensionContext) {
 		// Create webview.
 		const panel = vscode.window.createWebviewPanel(
 			'ldap-browser.show-attributes',
-			'LDAP Browser: Add new connection',
+			treeItem.label?.toString() ?? "LDAP Browser",
 			vscode.ViewColumn.One
 		);
 		
 		// Populate webview content.
-		panel.webview.html = treeItem.getAttributesHTML();
+		treeItem.getAttributesHTML(panel);
 	}));
 
 	// @todo is it necessary to pass all registered commands through context.subscriptions.push() ?
@@ -110,11 +110,6 @@ function getAddNewConnectionHTML() {
 	// @todo ideally generate the form by inspecting package.json configuration contribution
 	return `<!DOCTYPE html>
 	<html lang="en">
-		<head>
-			<meta charset="UTF-8">
-			<meta name="viewport" content="width=device-width, initial-scale=1.0">
-			<title>LDAP Browser: Add new connection</title>
-		</head>
 		<body>
 			<label for="name">Connection name</label>
 			<input type="text" name="name" id="name"/>

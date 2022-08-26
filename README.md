@@ -56,11 +56,13 @@ features
   - somehow an option to search e.g. which groups a user belongs to
   - UX: display list of connections as drop down (same as Debug or Remote Explorer in activity bar) ? Would need to adjust view/item/context (contextual menu) in package.json too
   - Add welcome content https://code.visualstudio.com/api/extension-guides/tree-view#welcome-content
-  - add icon next to connections / top-level nodes ? Similar to todo-tree
+  - add icon next to connections / top-level nodes ? Similar to todo-tree (see codicons "server", "node", "folder")
   - UX: Add icon next to nodes so you quickly know if this is a user or a group (based on objectClass) https://ldapwiki.com/wiki/ObjectClass
   - UX: when clicking the "plus" icon, this opens multiple webviews to add connections ; ideally you would have only one window for adding connection. See what options are possible when creating the webview (constructor)
   - UX: should multiple webviews "show-details" be allowed ? Autoclose by default, similar to VSCode editor ?
   - add command "show-details" to command palette so you can check the contents of an AD group via Quick Pick that would be really awesome
+  - when creating a connection, have the option to read the bind password from a file or from an environment variable (so you can add the settings from devcontainer.json without putting the password in git)
+  - in TreeView: best to show only the OU/CN name instead of the full DN ? For UX. The full DN can remain as a tooltip
 
 # ldap-browser README
 

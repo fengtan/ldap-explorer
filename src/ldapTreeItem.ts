@@ -1,7 +1,6 @@
 // Represents an item in the tree view (either a connection or an lDAP result).
 
 import { LdapConnection } from "./ldapConnection";
-import * as ldapjs from 'ldapjs'; // @todo may not need to import *
 import * as vscode from 'vscode';
 
 export class LdapTreeItem extends vscode.TreeItem {
@@ -57,87 +56,44 @@ export class LdapTreeItem extends vscode.TreeItem {
 
   // Get children of this tree item.
   getChildren(): Thenable<LdapTreeItem[]> {
-    return new Promise((resolve, reject) => {
-
-      // Create LDAP object.
-      const client = ldapjs.createClient({
-        url: [this.connection.getUrl()]
-      });
-
-      // Bind.
-      client.bind(this.connection.binddn, this.connection.bindpwd, (err) => {
-        if (err) {
-          // @todo same comments as client.on below.
-          console.log(err); // @todo drop ?
-          vscode.window.showErrorMessage(`Error when binding: ${err}`); // @todo no, should throw exception and handle error in LdapDataProvider.ts, this class should only be about ldapjs, not about VS Code UI
-          client.destroy(); // @todo should destroy client at any other place where we handle an error
-          return resolve([]); // @todo should reject() instead of resolve([])
-        }
-
-        // Prepare the DN we will query.
-        // - If the TreeItem is an LDAP result, then we will query its regular DN.
-        // - If the TreeItem is a connection, then we will query the base DN configured by the user.
-        const dn = this.dn ?? this.connection.basedn;
-
-        // Search.
-        // @todo set additional options ? Second argument of the search() method
-        // @todo clean this messy search() call - should call reject() or resolve() etc
-        // Set LDAP search scope of "one" so we get only immediate subordinates of the base DN https://ldapwiki.com/wiki/SingleLevel
-        client.search(dn, {"scope": "one"}, (err, res) => {
-          console.log(err); // @todo handle and return if there is an error
-  
-          let results: LdapTreeItem[] = [];
-          res.on('searchRequest', (searchRequest) => {
-            console.log('searchRequest: ', searchRequest.messageID);
-          });
-          res.on('searchEntry', (entry) => {
-            results.push(new LdapTreeItem(this.connection, entry.dn)); // @todo best to show only the OU/CN name instead of the full DN ? For UX. The full DN can remain as a tooltip
-            console.log('entry: ' + JSON.stringify(entry.object));
-          });
-          res.on('searchReference', (referral) => {
-            console.log('referral: ' + referral.uris.join());
-          });
-          res.on('error', (err) => {
-            console.error('error: ' + err.message);
-          });
-          res.on('end', (result) => {
-            // @todo verify status is 0 ?
-            console.log('status: ' + result!.status);
-            return resolve(results);
-          });
-        });
-
-        // @todo should unbind somewhere (maybe in a callback) see https://github.com/ldapjs/node-ldapjs/issues/428
-      });
-    });
-
-
-    /*
-    @todo uncomment ?
-    client.on('error', (err) => {
-      // @todo wording (find something better than just "Error: XX")
-      // @todo handle different types of error ? http://ldapjs.org/errors.html
-      // @todo test (when host is invalid, when bind dn does not work, when password does not work, etc)
-      console.log(err);
-      vscode.window.showErrorMessage(`Error (regular): ${err}`);
-      return Promise.resolve([]);
-    });
-    */    
+    // Search and convert LDAP results into tree items.
+    // @todo set additional options ? Second argument of the search() method. Same for search() call in getAttributesHTML()
+    // Set LDAP search scope of "one" so we get only immediate subordinates of the base DN https://ldapwiki.com/wiki/SingleLevel
+    // @todo we only implement the onfullfilled callback of the thenable here, should probably also implement onRejected
+    return this.connection.search({scope: "one"}, this.dn).then(entries => entries.map(entry => new LdapTreeItem(this.connection, entry.dn)));
   }
 
   // HTML that lists all attributes of this TreeItem.
-  getAttributesHTML(): string {
-    return `<!DOCTYPE html>
-    <html lang="en">
-      <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>LDAP Browser: Show Attributes</title>
-      </head>
-      <body>
-        Hello world TODO ${this.dn} ${this.getLdapConnection().name}
-      </body>
-    </html>`;
+  // @todo passing the webviewPanel as an argument is not a good idea: the two classes should be loosely coupled
+  getAttributesHTML(webviewPanel: vscode.WebviewPanel) {
+    // Scope is set to "base" so we only get attributes about the current (base) node https://ldapwiki.com/wiki/BaseObject
+    // @todo implement onRejected callback of the thenable
+    this.connection.search({scope: "base"}, this.dn).then(entries => {
+
+      // @todo using an intermediate variable attrs is ugly - find something more elegant
+      // @todo log warning if entries has > 1 items, it is not supposed to
+      let attrs: string[] = [];
+      entries.forEach(entry => {
+        entry.attributes.forEach(attribute => {
+          const vals: string[] = Array.isArray(attribute.vals) ? attribute.vals : [attribute.vals];
+          vals.forEach(val => {
+            attrs.push("<li>" + attribute.type + ": " + val + "</li>"); // @todo attribute.toString() ?
+          });
+        });
+      });
+
+      webviewPanel.webview.html =
+      `<!DOCTYPE html>
+      <html lang="en">
+        <body>
+          <h1>${this.dn}</h1>
+          <!-- TODO the is probably is nicer way to render a table -->
+          <ul>
+            ${attrs.join("\n")}
+          </ul>
+        </body>
+      </html>`;
+    });
   }
 
 }
