@@ -82,13 +82,7 @@ export class LdapTreeItem extends vscode.TreeItem {
         });
       });
 
-      const toolkitUri = this.getUri(webviewPanel.webview, context.extensionUri, [
-        "node_modules",
-        "@vscode",
-        "webview-ui-toolkit",
-        "dist",
-        "toolkit.js",
-      ]);
+      const toolkitUri = this.getWebviewUiTollkitUri(webviewPanel.webview, context.extensionUri);
   
 
       webviewPanel.webview.html =
@@ -103,40 +97,36 @@ export class LdapTreeItem extends vscode.TreeItem {
           <ul>
             ${attrs.join("\n")}
           </ul>
+          <vscode-data-grid id="grid" aria-label="Attributes"></vscode-data-grid>
+          <script>
+          const grid = document.getElementById("grid");
 
-          <vscode-data-grid aria-label="Basic">
-  <vscode-data-grid-row row-type="header">
-    <vscode-data-grid-cell cell-type="columnheader" grid-column="1">Header 1</vscode-data-grid-cell>
-    <vscode-data-grid-cell cell-type="columnheader" grid-column="2">Header 2</vscode-data-grid-cell>
-    <vscode-data-grid-cell cell-type="columnheader" grid-column="3">Header 3</vscode-data-grid-cell>
-    <vscode-data-grid-cell cell-type="columnheader" grid-column="3">Header 4</vscode-data-grid-cell>
-  </vscode-data-grid-row>
-  <vscode-data-grid-row>
-    <vscode-data-grid-cell grid-column="1">Cell Data</vscode-data-grid-cell>
-    <vscode-data-grid-cell grid-column="2">Cell Data</vscode-data-grid-cell>
-    <vscode-data-grid-cell grid-column="3">Cell Data</vscode-data-grid-cell>
-    <vscode-data-grid-cell grid-column="4">Cell Data</vscode-data-grid-cell>
-  </vscode-data-grid-row>
-  <vscode-data-grid-row>
-    <vscode-data-grid-cell grid-column="1">Cell Data</vscode-data-grid-cell>
-    <vscode-data-grid-cell grid-column="2">Cell Data</vscode-data-grid-cell>
-    <vscode-data-grid-cell grid-column="3">Cell Data</vscode-data-grid-cell>
-    <vscode-data-grid-cell grid-column="4">Cell Data</vscode-data-grid-cell>
-  </vscode-data-grid-row>
-  <vscode-data-grid-row>
-    <vscode-data-grid-cell grid-column="1">Cell Data</vscode-data-grid-cell>
-    <vscode-data-grid-cell grid-column="2">Cell Data</vscode-data-grid-cell>
-    <vscode-data-grid-cell grid-column="3">Cell Data</vscode-data-grid-cell>
-    <vscode-data-grid-cell grid-column="4">Cell Data</vscode-data-grid-cell>
-  </vscode-data-grid-row>
-</vscode-data-grid>
-        </body>
+          // Populate grid with data
+          grid.rowsData = [
+            { ColumnKey1: "Cell Data", ColumnKey2: "Cell Data" },
+            { ColumnKey1: "Cell Data", ColumnKey2: "Cell Data" },
+            { ColumnKey1: "Cell Data", ColumnKey2: "Cell Data" },
+          ];
+
+          // Add custom column titles to grid
+          grid.columnDefinitions = [
+            { columnDataKey: "ColumnKey1", title: "A Custom Header Title" },
+            { columnDataKey: "ColumnKey2", title: "Another Custom Title" },
+          ];
+          </script>
       </html>`;
     });
   }
 
   // @todo rename / move somewhere else ?
-  getUri(webview: vscode.Webview, extensionUri: vscode.Uri, pathList: string[]) {
+  getWebviewUiTollkitUri(webview: vscode.Webview, extensionUri: vscode.Uri) {
+    const pathList: string[] = [
+      "node_modules",
+      "@vscode",
+      "webview-ui-toolkit",
+      "dist",
+      "toolkit.js",
+    ];
     return webview.asWebviewUri(vscode.Uri.joinPath(extensionUri, ...pathList));
   }
 
