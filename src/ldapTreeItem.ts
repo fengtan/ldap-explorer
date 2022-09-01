@@ -12,9 +12,10 @@ export class LdapTreeItem extends vscode.TreeItem {
   // It is not expected to be set for *connections* TreeItems (e.g. top-level TreeItems) as they already include a baseDN.
   constructor(connection: LdapConnection, dn?: string) {
     // Label of the TreeItem:
-    // - If the TreeItem is an LDAP result, then show its DN.
+    // - If the TreeItem is an LDAP result, then show the left-most part of its DN.
+    //   For instance given a DN "cn=foo,ou=bar,dc=example,dc=com", show the item as "cn=foo" in the tree view.
     // - If the TreeItem is a connection, then show its connection name.
-    const label = dn ?? connection.name;
+    const label = dn ? dn.split(",")[0] : connection.basedn;
 
     // Whether the TreeItem is expandable:
     // - If the TreeItem is an LDAP result, then it is expandable only if its DN does not start with CN
@@ -74,8 +75,6 @@ export class LdapTreeItem extends vscode.TreeItem {
       // See https://github.com/microsoft/vscode-webview-ui-toolkit
       const toolkitUri = this.getWebviewUiTollkitUri(webviewPanel.webview, context.extensionUri);
 
-      // @todo move the html and the script to separate files (see samples) e.g /webview-ui/show-attributes/*
-      // @todo make the vscode-data-grid sortable ?
       webviewPanel.webview.html =
       `<!DOCTYPE html>
       <html lang="en">
@@ -90,13 +89,13 @@ export class LdapTreeItem extends vscode.TreeItem {
           window.addEventListener('message', event => {
             switch (event.data.command) {
               case 'populate':
-                // Add custom column titles to grid.
                 const grid = document.getElementById("grid");
+                // Column titles.
                 grid.columnDefinitions = [
                   { columnDataKey: "name", title: "Attribute" },
                   { columnDataKey: "value", title: "Value" },
                 ];
-                // Populate grid with data (one row per attribute).               
+                // Data (rows).
                 grid.rowsData = event.data.rows;
                 break;
             }
