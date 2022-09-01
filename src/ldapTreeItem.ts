@@ -70,22 +70,12 @@ export class LdapTreeItem extends vscode.TreeItem {
     // @todo implement onRejected callback of the thenable
     this.connection.search({scope: "base"}, this.dn).then(entries => {
 
-      // @todo using an intermediate variable attrs is ugly - find something more elegant
-      // @todo log warning if entries has > 1 items, it is not supposed to
-      let attrs: string[] = [];
-      entries.forEach(entry => {
-        entry.attributes.forEach(attribute => {
-          const vals: string[] = Array.isArray(attribute.vals) ? attribute.vals : [attribute.vals];
-          vals.forEach(val => {
-            attrs.push("<li>" + attribute.type + ": " + val + "</li>"); // @todo attribute.toString() ?
-          });
-        });
-      });
-
+      // We need to include this JS into the webview in order to use the Webview UI toolkit.
+      // See https://github.com/microsoft/vscode-webview-ui-toolkit
       const toolkitUri = this.getWebviewUiTollkitUri(webviewPanel.webview, context.extensionUri);
-  
 
       // @todo move the html and the script to separate files (see samples) e.g /webview-ui/show-attributes/*
+      // @todo make the vscode-data-grid sortable ?
       webviewPanel.webview.html =
       `<!DOCTYPE html>
       <html lang="en">
@@ -94,37 +84,43 @@ export class LdapTreeItem extends vscode.TreeItem {
         </head>
         <body>
           <h1>${this.dn}</h1>
-          <!-- TODO the is probably is nicer way to render a table -->
-          <ul>
-            ${attrs.join("\n")}
-          </ul>
           <vscode-data-grid id="grid" aria-label="Attributes"></vscode-data-grid>
-
-          <!-- TODO
-          Turn listing above (attrs) into something beautiful like below (data-grid) by passing a message from the extension to the webview
-          https://code.visualstudio.com/api/extension-guides/webview#passing-messages-from-an-extension-to-a-webview
-          -->
           <script>
-
-
-
-          
-          const grid = document.getElementById("grid");
-
-          // Populate grid with data
-          grid.rowsData = [
-            { name: "Cell Data", value: "Cell Data" },
-            { name: "Cell Data", value: "Cell Data" },
-            { name: "Cell Data", value: "Cell Data" },
-          ];
-
-          // Add custom column titles to grid
-          grid.columnDefinitions = [
-            { columnDataKey: "name", title: "Attribute name" },
-            { columnDataKey: "value", title: "Attribute value(s)" },
-          ];
+          // Populate grid in webview when receiving data from the extension.
+          window.addEventListener('message', event => {
+            switch (event.data.command) {
+              case 'populate':
+                // Add custom column titles to grid.
+                const grid = document.getElementById("grid");
+                grid.columnDefinitions = [
+                  { columnDataKey: "name", title: "Attribute" },
+                  { columnDataKey: "value", title: "Value" },
+                ];
+                // Populate grid with data (one row per attribute).               
+                grid.rowsData = event.data.rows;
+                break;
+            }
+          });
           </script>
       </html>`;
+
+      // Build list of rows (1 row = 1 attribute).
+      // @todo log warning if entries has > 1 items, it is not supposed to
+      let rows: any[] = [];
+      entries.forEach(entry => {
+        entry.attributes.forEach(attribute => {
+          const vals: string[] = Array.isArray(attribute.vals) ? attribute.vals : [attribute.vals];
+          rows.push({ name: attribute.type, value: vals.join(", ") });  // @todo attribute.toString() ?
+        });
+      });
+
+      // Send message from extension to webview, tell it to populate the rows of the grid.
+      // See https://code.visualstudio.com/api/extension-guides/webview#passing-messages-from-an-extension-to-a-webview
+      webviewPanel.webview.postMessage({
+        command: "populate",
+        rows: rows
+      });
+
     });
   }
 

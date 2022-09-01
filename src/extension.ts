@@ -27,6 +27,7 @@ export function activate(context: vscode.ExtensionContext) {
 		panel.webview.html = getAddNewConnectionHTML();
 
 		// Handle messages from webview to the extension.
+		// See https://code.visualstudio.com/api/extension-guides/webview#passing-messages-from-a-webview-to-an-extension
 		panel.webview.onDidReceiveMessage(
 			message => {
 				switch (message.command) {
