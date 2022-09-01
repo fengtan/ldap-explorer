@@ -110,7 +110,9 @@ export class LdapTreeItem extends vscode.TreeItem {
       entries.forEach(entry => {
         entry.attributes.forEach(attribute => {
           const vals: string[] = Array.isArray(attribute.vals) ? attribute.vals : [attribute.vals];
-          rows.push({ name: attribute.type, value: vals.join(", ") });
+          vals.forEach(val => {
+            rows.push({ name: attribute.type, value: val });
+          });
         });
       });
 
