@@ -103,8 +103,13 @@ export class LdapTreeItem extends vscode.TreeItem {
           </script>
       </html>`;
 
+      // Make sure we received only one LDAP entry.
+      // That should always be the case given that the scope of the LDAP query is set to "base" above.
+      if (entries.length > 1) {
+        vscode.window.showWarningMessage("Received multiple LDAP entries, expected only one: " + this.dn);
+      }
+
       // Build list of rows (1 row = 1 attribute).
-      // @todo log warning if entries has > 1 items, it is not supposed to
       let rows: any[] = [];
       entries.forEach(entry => {
         entry.attributes.forEach(attribute => {
