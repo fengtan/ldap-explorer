@@ -99,14 +99,12 @@ export class LdapTreeItem extends vscode.TreeItem {
             ${attrs.join("\n")}
           </ul>
           <vscode-data-grid id="grid" aria-label="Attributes"></vscode-data-grid>
-          <script>
-
-
 
           <!-- TODO
           Turn listing above (attrs) into something beautiful like below (data-grid) by passing a message from the extension to the webview
           https://code.visualstudio.com/api/extension-guides/webview#passing-messages-from-an-extension-to-a-webview
           -->
+          <script>
 
 
 
@@ -115,15 +113,15 @@ export class LdapTreeItem extends vscode.TreeItem {
 
           // Populate grid with data
           grid.rowsData = [
-            { ColumnKey1: "Cell Data", ColumnKey2: "Cell Data" },
-            { ColumnKey1: "Cell Data", ColumnKey2: "Cell Data" },
-            { ColumnKey1: "Cell Data", ColumnKey2: "Cell Data" },
+            { name: "Cell Data", value: "Cell Data" },
+            { name: "Cell Data", value: "Cell Data" },
+            { name: "Cell Data", value: "Cell Data" },
           ];
 
           // Add custom column titles to grid
           grid.columnDefinitions = [
-            { columnDataKey: "ColumnKey1", title: "A Custom Header Title" },
-            { columnDataKey: "ColumnKey2", title: "Another Custom Title" },
+            { columnDataKey: "name", title: "Attribute name" },
+            { columnDataKey: "value", title: "Attribute value(s)" },
           ];
           </script>
       </html>`;
