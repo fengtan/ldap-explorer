@@ -84,7 +84,7 @@ export class LdapTreeItem extends vscode.TreeItem {
         </head>
         <body>
           <h1>${this.dn}</h1>
-          <vscode-data-grid id="grid" aria-label="Attributes"></vscode-data-grid>
+          <vscode-data-grid id="grid" aria-label="Attributes" grid-template-columns="1fr 7fr"></vscode-data-grid>
           <script>
           // Populate grid in webview when receiving data from the extension.
           window.addEventListener('message', event => {
@@ -110,7 +110,7 @@ export class LdapTreeItem extends vscode.TreeItem {
       entries.forEach(entry => {
         entry.attributes.forEach(attribute => {
           const vals: string[] = Array.isArray(attribute.vals) ? attribute.vals : [attribute.vals];
-          rows.push({ name: attribute.type, value: vals.join(", ") });  // @todo attribute.toString() ?
+          rows.push({ name: attribute.type, value: vals.join(", ") });
         });
       });
 
