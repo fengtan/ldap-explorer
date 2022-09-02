@@ -39,6 +39,12 @@
         }
       ]
     },
+    "viewsWelcome": [
+      {
+        "view": "ldap-browser-view",
+        "contents": "No connection configured.\n[Add new connection](command:ldap-browser.add-connection)"
+      }
+    ],
     "commands": [
       {
         "command": "ldap-browser.add-connection",
