@@ -30,7 +30,6 @@ TODO
   - egrep todo
   - list anything that is not required for prod in .vscodeignore (e.g. devcontainer.json)
   - list all registered commands in package.json's activationEvents
-  - contextual menu "Delete connection" (see view/item/context in package.json) shows up on all items of the hierarchy: it is supposed to show up only on connection ; see sqltools.deleteConnection, we need a condition on viewItem
   - `import * as vscode from 'vscode';` -> we prolly do not need to import everything
 - best practices
   - define strings in package.nl.json so they are translatable and common

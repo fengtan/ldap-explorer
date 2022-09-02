@@ -29,6 +29,9 @@ export class LdapTreeItem extends vscode.TreeItem {
     // Call parent cosntructor.
     super(label, collapsibleState);
 
+    // Set context value, this is refered to as "viewItem" in "when" clauses in package.json (view/item/context).
+    this.contextValue = dn ? "ldap-entry" : "connection";
+
     // Populate attributes specific to LdapTreeItem (i.e. not inherited from TreeItem).
     this.connection = connection;
     this.dn = dn;
@@ -36,12 +39,12 @@ export class LdapTreeItem extends vscode.TreeItem {
     // Description of the TreeItem:
     // - If the TreeItem is an LDAP result, then show no description.
     // - If the TreeItem is a connection, then show its connection string.
-    this.description = this.dn ? "" : this.connection.getUrl();
+    this.description = dn ? "" : this.connection.getUrl();
 
     // Command to call when the TreeItem is clicked:
     // - If the TreeItem is an LDAP result, then call the command that lists its attributes.
     // - If the TreeItem is a connection, then do nothing.
-    if (this.dn) {
+    if (dn) {
       this.command =  {
         command: "ldap-browser.show-attributes",
         title: "Show Attributes",

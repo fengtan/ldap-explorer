@@ -93,7 +93,7 @@
       "view/item/context": [
         {
           "command": "ldap-browser.delete-connection",
-          "when": "view == ldap-browser-view"
+          "when": "view == ldap-browser-view && viewItem == connection"
         }
       ]
     },
