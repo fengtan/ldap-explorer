@@ -51,12 +51,10 @@ features
   - most settings should be set globally and not be connection-specific (e.g. timeout) http://ldapjs.org/client.html
   - see what bind options are possible with ldapjs (take drupal as reference)
   - bookmarks feature (with favorite OU's) ?
-  - option to sort results ?
+  - option to sort results ? https://stackoverflow.com/questions/63678234/creating-the-client-control-object-for-ldapjs-server-side-sorting
   - somehow an option to search e.g. which groups a user belongs to
   - UX: display list of connections as drop down (same as Debug or Remote Explorer in activity bar) ? Would need to adjust view/item/context (contextual menu) in package.json too
   - Add welcome content https://code.visualstudio.com/api/extension-guides/tree-view#welcome-content
-  - add icon next to connections / top-level nodes ? Similar to todo-tree (see codicons "server", "node", "folder")
-  - UX: Add icon next to nodes so you quickly know if this is a user or a group (based on objectClass) https://ldapwiki.com/wiki/ObjectClass
   - UX: when clicking the "plus" icon, this opens multiple webviews to add connections ; ideally you would have only one window for adding connection. See what options are possible when creating the webview (constructor)
   - UX: should multiple webviews "show-details" be allowed ? Autoclose by default, similar to VSCode editor ?
   - add command "show-details" to command palette so you can check the contents of an AD group via Quick Pick that would be really awesome
