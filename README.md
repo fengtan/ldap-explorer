@@ -44,12 +44,11 @@ features
   - webview values are disposed when go to background
   - setting to limit number of results to display (1,000 in jxplorer)
   - show details of connection in tree view (same as sqltools: username@localhost:3306/foo)
-  - add support for filters (with built-in UI in vscode) ? http://ldapjs.org/filters.html
   - dump ldapsearch commands in console as ldap queries are sent ? See ldapjs's "log" option http://ldapjs.org/client.html
   - implement pager for folders that include > 1,000 items
   - support for add/update/delete operations i.e. not a readonly connection ?
   - most settings should be set globally and not be connection-specific (e.g. timeout) http://ldapjs.org/client.html
-  - see what bind options are possible with ldapjs (take drupal as reference)
+  - additional options when creating connection: log, timeout, connectTimeout (http://ldapjs.org/client.html#create-a-client)
   - bookmarks feature (with favorite OU's) ?
   - option to sort results ? https://stackoverflow.com/questions/63678234/creating-the-client-control-object-for-ldapjs-server-side-sorting
   - somehow an option to search e.g. which groups a user belongs to
@@ -59,6 +58,11 @@ features
   - when creating a connection, have the option to read the bind password from a file or from an environment variable (so you can add the settings from devcontainer.json without putting the password in git)
   - implement security recommendations https://code.visualstudio.com/api/extension-guides/webview#security
   - drop field "connection name", we don't use display it anywhere. Make sure we still have a mechanism to ensure unique connections (and ensure connections are deleted properly from settings)
+
+WC
+- add support for filters (with built-in UI in vscode) ? http://ldapjs.org/filters.html
+- UX: show connections as a drop-down similar to remote-explorer or debugging interface
+
 
 # ldap-browser README
 
