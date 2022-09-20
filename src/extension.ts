@@ -1,4 +1,5 @@
 import { commands, ExtensionContext, window } from 'vscode';
+import { LdapConnection } from './ldapConnection';
 import { LdapConnectionManager } from './ldapConnectionManager';
 import { LdapDataProvider } from './ldapDataProvider';
 import { LdapTreeItem } from './ldapTreeItem';
@@ -45,10 +46,27 @@ export function activate(context: ExtensionContext) {
 
 	// Implement "Delete connection" command.
 	context.subscriptions.push(commands.registerCommand('ldap-explorer.delete-connection', (treeItem?: LdapTreeItem) => {
+		// Utility function to ask for a confirmation and actually remove the connection from settings.
+		const askAndRemoveConnection = (connection: LdapConnection) => {
+			window.showInformationMessage(`Are you sure you want to remove the connection ${connection.getBaseDn(true)} (${connection.getUrl()}) ?`, { modal: true}, "Yes").then(confirm => {
+				if (confirm) {
+					LdapConnectionManager.removeConnection(connection).then(
+						value => {
+							// If connection was successfully removed, refresh tree view so it does not show up anymore.
+							commands.executeCommand("ldap-explorer.refresh-view");
+						}, reason => {
+							// If connection could not be removed, show error message.
+							window.showErrorMessage(`Unable to remove connection from settings: ${reason}`);
+						}
+					);
+				}
+			});
+		};
+
 		if (treeItem instanceof LdapTreeItem) {
 			// The command fired from the contextual menu of the tree view: treeItem is defined.
 			// We can extract the connection associated with the item.
-			LdapConnectionManager.removeConnection(treeItem.getLdapConnection());
+			askAndRemoveConnection(treeItem.getLdapConnection());
 		} else {
 			// The command fired from the command palette: treeItem is undefined.
 			// We explicitly ask the user to pick a connection.
@@ -71,7 +89,7 @@ export function activate(context: ExtensionContext) {
 					return;
 				}
 				// Delete the connection.
-				LdapConnectionManager.removeConnection(connection);
+				askAndRemoveConnection(connection);
 			});
 		}
 	}));

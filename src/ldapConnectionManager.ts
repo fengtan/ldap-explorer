@@ -1,9 +1,8 @@
 // Manages storage of connections in VS Code settings.
 
-import { commands, window, workspace } from 'vscode';
+import { workspace } from 'vscode';
 import { LdapConnection } from './ldapConnection';
 
-// @todo use Thenable - there should be no call to vscode.window in this class.
 export class LdapConnectionManager {
 
     // Get all connections from settings.
@@ -32,85 +31,53 @@ export class LdapConnectionManager {
     }
 
     // Add new connection to settings.
-    static addConnection(connection: LdapConnection) {
+    static addConnection(connection: LdapConnection): Thenable<void> {
         // Get list of existing connections.
         let connections = this.getConnections();
 
         // Add the new connection.
         connections.push(connection);
 
-        // Save new list of connections.
-        workspace.getConfiguration('ldap-explorer').update('connections', connections, true).then(
-            value => {
-                // If connection was successfully added, refresh tree view so it shows up.
-                commands.executeCommand("ldap-explorer.refresh-view");
-            },
-            reason => {
-                // If connection could not be added, show error message.
-                window.showErrorMessage(`Unable to save new connection to settings: ${reason}`);
-            }
-        );
+        // Save new list of connections and return Thenable.
+        return workspace.getConfiguration('ldap-explorer').update('connections', connections, true);
     }
 
     // Edit existing connection in settings.
-    static editConnection(newConnection: LdapConnection, existingConnection: LdapConnection) {
+    static editConnection(newConnection: LdapConnection, existingConnection: LdapConnection): Thenable<void> {
         // Get list of existing connections.
         let connections = this.getConnections();
 
         // Get index of connection to edit.
         const index = connections.findIndex(con => con.getId() === existingConnection.getId());
         if (index < 0 ) {
-            window.showErrorMessage(`Unable to edit connection ${existingConnection.getId()}: connection does not exist in settings`);
-            return;
+            // @todo test
+            return Promise.reject(`connection ${existingConnection.getId()} does not exist in settings`);
         }
 
         // Replace existing connection with new connection.
         connections[index] = newConnection;
 
-        // Save new list of connections.
-        workspace.getConfiguration('ldap-explorer').update('connections', connections, true).then(
-            value => {
-                // If connection was successfully updated, refresh tree view.
-                commands.executeCommand("ldap-explorer.refresh-view");
-            },
-            reason => {
-                // If connection could not be updated, show error message.
-                window.showErrorMessage(`Unable to update connection in settings: ${reason}`);
-            }
-        );
+        // Save new list of connections and return Thenable.
+        return workspace.getConfiguration('ldap-explorer').update('connections', connections, true);
     }
 
     // Remove existing connection from settings.
-    static removeConnection(connection: LdapConnection) {
-		// Ask for confirmation.
-		window.showInformationMessage(`Are you sure you want to remove the connection ${connection.getBaseDn(true)} (${connection.getUrl()}) ?`, { modal: true}, "Yes").then(confirm => {
-			if (confirm) {
+    static removeConnection(connection: LdapConnection): Thenable<void> {
+        // Get list of existing connections.
+        const connections = this.getConnections();
 
-                // Get list of existing connections.
-		        const connections = this.getConnections();
+        // Get index of connection to delete.
+        const index = connections.findIndex(con => con.getId() === connection.getId());
+        if (index < 0 ) {
+            // @todo test
+            return Promise.reject(`connection ${connection.getId()} does not exist in settings`);
+        }
 
-                // Get index of connection to delete.
-		        const index = connections.findIndex(con => con.getId() === connection.getId());
-		        if (index < 0 ) {
-			        window.showInformationMessage(`Unable to delete '${connection.getId()}': connection does not exist.`);
-                    return;
-		        }
+        // Remove connection from the list.
+        connections.splice(index, 1);
 
-                // Remove connection from the list.
-		        connections.splice(index, 1);
-
-		        // Save new list of connections.
-		        workspace.getConfiguration('ldap-explorer').update('connections', connections, true).then(
-                    value => {
-                        // If connection was successfully removed, refresh tree view so it does not show up anymore.
-                        commands.executeCommand("ldap-explorer.refresh-view");
-                    }, reason => {
-                        // If connection could not be removed, show error message.
-                        window.showErrorMessage(`Unable to remove connection from settings: ${reason}`);
-                    }
-                );
-			}
-		});
+        // Save new list of connections and return Thenable.
+        return workspace.getConfiguration('ldap-explorer').update('connections', connections, true);
     }
 
 }

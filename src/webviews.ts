@@ -111,9 +111,27 @@ export function createAddEditConnectionWebview(context: ExtensionContext, existi
 
                     // Save (either add or update) connection to settings.
                     if (existingConnection === undefined) {
-						LdapConnectionManager.addConnection(newConnection);
+						LdapConnectionManager.addConnection(newConnection).then(
+							value => {
+								// If connection was successfully added, refresh tree view so it shows up.
+								commands.executeCommand("ldap-explorer.refresh-view");
+							},
+							reason => {
+								// If connection could not be added, show error message.
+								window.showErrorMessage(`Unable to save new connection to settings: ${reason}`);
+							}
+						);
 					} else {
-						LdapConnectionManager.editConnection(newConnection, existingConnection);
+						LdapConnectionManager.editConnection(newConnection, existingConnection).then(
+							value => {
+								// If connection was successfully updated, refresh tree view.
+								commands.executeCommand("ldap-explorer.refresh-view");
+							},
+							reason => {
+								// If connection could not be updated, show error message.
+								window.showErrorMessage(`Unable to update connection in settings: ${reason}`);
+							}
+						);
 					}
 
                     // Refresh view so the new connection shows up.
@@ -148,7 +166,7 @@ export function createAttributesWebview(ldapConnection: LdapConnection, dn: stri
 	);
 
 	// Scope is set to "base" so we only get attributes about the current (base) node https://ldapwiki.com/wiki/BaseObject
-	// @todo implement onRejected callback of the thenable
+	// @todo implement onRejected callback of the thenable (everytime we call then())
 	ldapConnection.search({scope: "base"}, dn).then(entries => {
 	
 		// We need to include this JS into the webview in order to use the Webview UI toolkit.
