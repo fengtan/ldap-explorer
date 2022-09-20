@@ -54,7 +54,7 @@ export function createAddConnectionWebview(context: vscode.ExtensionContext) {
 
 			<!-- TODO add spacing between form elements -->
 			<!-- TODO complain if the connection name submitted already exists (must be unique) -->
-			<!-- TODO some form elements should be mandatory -->
+			<!-- TODO some form elements should be mandatory (do not make binddn and bindpwd mandatory, to support anonymous binds) -->
 
 			<vscode-button onClick="submitForm('save')">Save</vscode-button>
 			<vscode-button onClick="submitForm('test')" appearance="secondary">Test</vscode-button>

@@ -22,6 +22,7 @@ TODO
   - list alternatives in README.md (container-based software I listed in jira, as well as Jxplorer)
   - explain all commands accessible from the command palette
   - explain connections end up in settings
+  - anonymous bind: just leave binddn and bindpwd empty when creating a connection
 - metadata
   - license (in package.json and in README.md)
   - make sure the repo URL listed in package.json is correct
@@ -42,7 +43,6 @@ features
   - webview values are disposed when go to background
   - additional options when creating connection: log, timeout, connectTimeout (http://ldapjs.org/client.html#create-a-client)
   - when creating a connection, have the option to read the bind password from a file or from an environment variable (so you can add the settings from devcontainer.json without putting the password in git)
-  - support for anonymous binds
   - content security policy https://code.visualstudio.com/api/extension-guides/webview#content-security-policy
   - sanitize user input (such as DN's) ? https://code.visualstudio.com/api/extension-guides/webview#sanitize-all-user-input
   - drop field "connection name", we don't use display it anywhere. Make sure we still have a mechanism to ensure unique connections (and ensure connections are deleted properly from settings)
