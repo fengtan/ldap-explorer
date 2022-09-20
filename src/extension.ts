@@ -139,7 +139,6 @@ function getAddNewConnectionHTML() {
 			<label for="basedn">Base DN</label>
 			<input type="text" name="basedn" id="basedn"/>
 
-			<!-- TODO complete form -->
 			<!-- TODO complain if the connection name submitted already exists (must be unique) -->
 			<!-- TODO some form elements should be mandatory -->
 			<!-- TODO set defaults (same as those defined in package.json) -->

@@ -2,6 +2,7 @@
 
 import { LdapConnection } from "./ldapConnection";
 import * as vscode from 'vscode';
+import { getWebviewUiToolkitUri } from "./utilities";
 
 export class LdapTreeItem extends vscode.TreeItem {
 
@@ -81,7 +82,7 @@ export class LdapTreeItem extends vscode.TreeItem {
 
       // We need to include this JS into the webview in order to use the Webview UI toolkit.
       // See https://github.com/microsoft/vscode-webview-ui-toolkit
-      const toolkitUri = this.getWebviewUiTollkitUri(webviewPanel.webview, context.extensionUri);
+      const toolkitUri = getWebviewUiToolkitUri(webviewPanel.webview, context.extensionUri);
 
       webviewPanel.webview.html =
       `<!DOCTYPE html>
@@ -136,18 +137,6 @@ export class LdapTreeItem extends vscode.TreeItem {
       });
 
     });
-  }
-
-  // @todo rename / move somewhere else ?
-  getWebviewUiTollkitUri(webview: vscode.Webview, extensionUri: vscode.Uri) {
-    const pathList: string[] = [
-      "node_modules",
-      "@vscode",
-      "webview-ui-toolkit",
-      "dist",
-      "toolkit.js",
-    ];
-    return webview.asWebviewUri(vscode.Uri.joinPath(extensionUri, ...pathList));
   }
 
 }
