@@ -11,7 +11,7 @@ export function activate(context: ExtensionContext) {
 
   // Create tree view with our LDAP data provider.
   const ldapDataProvider = new LdapDataProvider();
-  context.subscriptions.push(window.createTreeView('ldap-explorer-tree', { treeDataProvider: ldapDataProvider }));
+  context.subscriptions.push(window.createTreeView('ldap-explorer-view-tree', { treeDataProvider: ldapDataProvider }));
 
   // Implement "Add connection" command (declared in package.json).
   context.subscriptions.push(commands.registerCommand('ldap-explorer.add-connection', () => {

@@ -23,7 +23,7 @@
     "onCommand:ldap-explorer.delete-connection",
     "onCommand:ldap-explorer.refresh-tree",
     "onCommand:ldap-explorer.show-attributes",
-    "onView:ldap-explorer-tree"
+    "onView:ldap-explorer-view-tree"
   ],
   "contributes": {
     "viewsContainers": {
@@ -38,14 +38,14 @@
     "views": {
       "ldap-explorer-container": [
         {
-          "id": "ldap-explorer-tree",
+          "id": "ldap-explorer-view-tree",
           "name": "Tree"
         }
       ]
     },
     "viewsWelcome": [
       {
-        "view": "ldap-explorer-tree",
+        "view": "ldap-explorer-view-tree",
         "contents": "No connection configured.\n[Add new connection](command:ldap-explorer.add-connection)"
       }
     ],
@@ -82,12 +82,12 @@
       "view/title": [
         {
           "command": "ldap-explorer.add-connection",
-          "when": "view == ldap-explorer-tree",
+          "when": "view == ldap-explorer-view-tree",
           "group": "navigation"
         },
         {
           "command": "ldap-explorer.refresh-tree",
-          "when": "view == ldap-explorer-tree",
+          "when": "view == ldap-explorer-view-tree",
           "group": "navigation"
         }
       ],
@@ -97,11 +97,11 @@
         },
         {
           "command": "ldap-explorer.delete-connection",
-          "when": "view == ldap-explorer-tree && viewItem == connection"
+          "when": "view == ldap-explorer-view-tree && viewItem == connection"
         },
         {
           "command": "ldap-explorer.edit-connection",
-          "when": "view == ldap-explorer-tree && viewItem == connection"
+          "when": "view == ldap-explorer-view-tree && viewItem == connection"
         }
       ]
     },
