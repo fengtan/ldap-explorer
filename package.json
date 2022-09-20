@@ -62,7 +62,7 @@
       },
       {
         "command": "ldap-explorer.refresh-view",
-        "title": "Refresh",
+        "title": "Refresh view",
         "category": "LDAP Explorer",
         "icon": "$(refresh)"
       },
@@ -73,12 +73,6 @@
       }
     ],
     "menus": {
-      "commandPalette": [
-        {
-          "command": "ldap-explorer.refresh-view",
-          "when": "false"
-        }
-      ],
       "view/title": [
         {
           "command": "ldap-explorer.add-connection",
