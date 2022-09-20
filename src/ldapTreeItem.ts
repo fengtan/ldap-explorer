@@ -69,8 +69,14 @@ export class LdapTreeItem extends TreeItem {
   getChildren(): Thenable<LdapTreeItem[]> {
     // Search and convert LDAP results into tree items.
     // Set LDAP search scope of "one" so we get only immediate subordinates of the base DN https://ldapwiki.com/wiki/SingleLevel
-    // @todo we only implement the onfullfilled callback of the thenable here, should probably also implement onRejected
-    return this.connection.search({scope: "one"}, this.dn).then(entries => entries.map(entry => new LdapTreeItem(this.connection, entry.dn)));
+    return this.connection.search({scope: "one"}, this.getDn()).then(
+      entries => {
+        return entries.map(entry => new LdapTreeItem(this.connection, entry.dn));
+      },
+      reason => {
+        return Promise.reject(`Unable to get children of ${this.getDn()}: ${reason}`);
+      }
+    );
   }
 
 }

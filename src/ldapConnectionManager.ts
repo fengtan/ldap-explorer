@@ -22,6 +22,7 @@ export class LdapConnectionManager {
     static getConnection(id: string): LdapConnection | undefined {
         const filteredConnections = this.getConnections().filter(connection => connection.getId() === id);
         if (filteredConnections.length < 1) {
+            // @todo turn into Thenable
             return;
         }
         if (filteredConnections.length > 1) {
@@ -50,7 +51,7 @@ export class LdapConnectionManager {
         // Get index of connection to edit.
         const index = connections.findIndex(con => con.getId() === existingConnection.getId());
         if (index < 0 ) {
-            return Promise.reject(`connection ${existingConnection.getId()} does not exist in settings`);
+            return Promise.reject(`Connection ${existingConnection.getId()} does not exist in settings`);
         }
 
         // Replace existing connection with new connection.
@@ -68,7 +69,7 @@ export class LdapConnectionManager {
         // Get index of connection to delete.
         const index = connections.findIndex(con => con.getId() === connection.getId());
         if (index < 0 ) {
-            return Promise.reject(`connection ${connection.getId()} does not exist in settings`);
+            return Promise.reject(`Connection ${connection.getId()} does not exist in settings`);
         }
 
         // Remove connection from the list.
