@@ -53,7 +53,7 @@ export class LdapTreeDataProvider implements TreeDataProvider<string> {
           // No DN passed i.e. we are at the root of the tree.
           // Just show the base DN of the active connection.
           if (!dn) {
-            dn = connection.getBaseDn(true);
+            return resolve([connection.getBaseDn(true)]);
           }
           // Search and extract DN from LDAP results.
           // @todo also extract object type (or the whole SearchEntry), so we know whether the entry is expandable or not ?
