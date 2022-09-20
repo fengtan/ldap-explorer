@@ -17,14 +17,14 @@ export class LdapConnectionManager {
         ));
     }
 
-    // Get connection by name.
-    static getConnection(name: string): LdapConnection {
-        const filteredConnections = this.getConnections().filter(connection => connection.getId() === name);
+    // Get connection by ID.
+    static getConnection(id: string): LdapConnection {
+        const filteredConnections = this.getConnections().filter(connection => connection.getId() === id);
         if (filteredConnections.length < 1) {
             // @todo throw exception: no connection found.
         }
         if (filteredConnections.length > 1) {
-            console.log(`Found ${filteredConnections.length} LDAP connections with name ${name}, expected at most 1.`);
+            console.log(`Found ${filteredConnections.length} LDAP connections with ID ${id}, expected at most 1.`);
         }
         return filteredConnections[0];
     }
@@ -54,7 +54,7 @@ export class LdapConnectionManager {
     // @todo removal operation seems to remove the wrong connection
     static removeConnection(connection: LdapConnection) {
 		// Ask for confirmation.
-		vscode.window.showInformationMessage(`Are you sure you want to remove the connection '${connection.getId()}' ?`, { modal: true}, "Yes").then(confirm => {
+		vscode.window.showInformationMessage(`Are you sure you want to remove the connection ${connection.basedn} (${connection.getUrl()}) ?`, { modal: true}, "Yes").then(confirm => {
 			if (confirm) {
 
                 // Get list of existing connections.

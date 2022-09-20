@@ -25,14 +25,20 @@ export function activate(context: vscode.ExtensionContext) {
 		} else {
 			// The command fired from the command palette: treeItem is undefined.
 			// We explicitly ask the user to pick a connection.
-			const connectionNames = LdapConnectionManager.getConnections().map(connection => connection.getId());
-			vscode.window.showQuickPick(connectionNames, { placeHolder: "Select a connection to delete." }).then(name => {
+			const connectionOptions = LdapConnectionManager.getConnections().map(connection => {
+				return {
+					label: connection.basedn,
+					description: connection.getUrl(),
+					id: connection.getId(),
+				};
+			});
+			vscode.window.showQuickPick(connectionOptions, { placeHolder: "Select a connection to delete." }).then(option => {
 				// If no connection was selected, then do nothing.
-				if (name === undefined) {
+				if (option === undefined) {
 					return;
 				}
 				// Otherwise delete the connection.
-				LdapConnectionManager.removeConnection(LdapConnectionManager.getConnection(name));
+				LdapConnectionManager.removeConnection(LdapConnectionManager.getConnection(option.id));
 			});
 		}
 	}));
@@ -51,10 +57,16 @@ export function activate(context: vscode.ExtensionContext) {
 		} else {
 			// The command fired from the command palette: treeItem is undefined.
 			// Explicitly ask the user for a connection.
-			const connectionNames = LdapConnectionManager.getConnections().map(connection => connection.getId());
-			vscode.window.showQuickPick(connectionNames, { placeHolder: "Select a connection" }).then(name => {
+			const connectionOptions = LdapConnectionManager.getConnections().map(connection => {
+				return {
+					label: connection.basedn,
+					description: connection.getUrl(),
+					id: connection.getId(),
+				};
+			});
+			vscode.window.showQuickPick(connectionOptions, { placeHolder: "Select a connection" }).then(option => {
 				// If user cancelled the connection quick pick, then do nothing.
-				if (name === undefined) {
+				if (option === undefined) {
 					return;
 				}
 				// Otherwise ask the user for a DN.
@@ -64,7 +76,7 @@ export function activate(context: vscode.ExtensionContext) {
 						return;
 					}
 					// Otherwise show webview with attributes of the DN.
-					createAttributesWebview(LdapConnectionManager.getConnection(name), dn, context);
+					createAttributesWebview(LdapConnectionManager.getConnection(option.id), dn, context);
 				});
 			});
 		}

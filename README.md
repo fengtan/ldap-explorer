@@ -46,6 +46,7 @@ features
   - content security policy https://code.visualstudio.com/api/extension-guides/webview#content-security-policy
   - sanitize user input (such as DN's) ? https://code.visualstudio.com/api/extension-guides/webview#sanitize-all-user-input
   - replace console.log() with a logger recommended by vscode api ?
+  - make ldapConnection attributes private
 
 Later
 - add support for filters (with built-in UI in vscode) ? http://ldapjs.org/filters.html
