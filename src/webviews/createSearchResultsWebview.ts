@@ -51,15 +51,21 @@ export function createSearchResultsWebview(connection: LdapConnection, filter: s
 
       // Store columns (attribute names) and rows (values) in arrays.
       let attributeNames: string[] = [];
-      let rowsData: string[] = [];
+      let rowsData: any[] = [];
       entries.forEach(searchEntry => {
+        let rowData: any = {};
         searchEntry.attributes.forEach(attribute => {
+          const attributeName = attribute.type;
           // Populate attributeNames and make sure the names are unique.
-          if (!attributeNames.includes(attribute.type)) {
-            attributeNames.push(attribute.type);
+          if (!attributeNames.includes(attributeName)) {
+            attributeNames.push(attributeName);
           }
-          // @todo populate rowsData from attribute and searchEntry
+          // Prepare row with attribute values.
+          // If this attribute is multivalued then join the values with a comma. @todo join with carriage return ?
+          rowData[attributeName] = Array.isArray(attribute.vals) ? attribute.vals.join(', ') : attribute.vals;
         });
+        // Add row.
+        rowsData.push(rowData);
       });
 
       // Send message from extension to webview, tell it to populate the grid.
@@ -71,23 +77,7 @@ export function createSearchResultsWebview(connection: LdapConnection, filter: s
             "columnDataKey": attributeName
           };
         }),
-        rowsData: [ // @todo
-          {
-            cn: "cn1",
-            objectClass: "oc1",
-            member: "member1"
-          },
-          {
-            cn: "cn2",
-            objectClass: "oc2",
-            member: "member2"
-          },
-          {
-            cn: "cn3",
-            objectClass: "oc3",
-            member: "member3"
-          },
-        ]
+        rowsData: rowsData
       });
     },
     reason => {
