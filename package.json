@@ -69,12 +69,14 @@
       {
         "command": "ldap-explorer.edit-connection",
         "title": "Edit connection",
-        "category": "LDAP Explorer"
+        "category": "LDAP Explorer",
+        "icon": "$(edit)"
       },
       {
         "command": "ldap-explorer.delete-connection",
         "title": "Delete connection",
-        "category": "LDAP Explorer"
+        "category": "LDAP Explorer",
+        "icon": "$(trash)"
       },
       {
         "command": "ldap-explorer.refresh-tree",
