@@ -17,6 +17,7 @@ export class LocalState {
     this.context.globalState.update('active-connection', connectionName);
   }
 
+  // @todo would be way easier to return LdapConnection than the connection name, encapsulate stuff and save code
   public getActiveConnection(): string | undefined {
     return this.context.globalState.get('active-connection');
   }

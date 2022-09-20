@@ -3,7 +3,6 @@ import { LdapConnection } from './LdapConnection';
 import { LdapConnectionManager } from './LdapConnectionManager';
 import { LdapConnectionsDataProvider } from './LdapConnectionsDataProvider';
 import { LdapTreeDataProvider } from './LdapTreeDataProvider';
-import { LdapTreeItem } from './LdapTreeItem';
 import { LocalState } from './LocalState';
 import { createAddEditConnectionWebview } from './webviews/addEditConnectionWebview';
 import { createShowAttributesWebview } from './webviews/showAttributesView';
@@ -18,7 +17,7 @@ export function activate(context: ExtensionContext) {
   const ldapConnectionsDataProvider = new LdapConnectionsDataProvider(localState);
   context.subscriptions.push(window.createTreeView('ldap-explorer-view-connections', { treeDataProvider: ldapConnectionsDataProvider }));
 
-  const ldapTreeDataProvider = new LdapTreeDataProvider();
+  const ldapTreeDataProvider = new LdapTreeDataProvider(localState);
   context.subscriptions.push(window.createTreeView('ldap-explorer-view-tree', { treeDataProvider: ldapTreeDataProvider }));
 
   // @todo implement search view
@@ -30,6 +29,7 @@ export function activate(context: ExtensionContext) {
 
   // Implement "Edit connection" command.
   context.subscriptions.push(commands.registerCommand('ldap-explorer.edit-connection', (connection?: LdapConnection) => {
+    // @todo the test should be !connection, not instanceof (similar comment for *all* commands)
     if (connection instanceof LdapConnection) {
       // The command fired from the contextual menu of the tree view: treeItem is defined.
       // We can extract the connection associated with the item.
@@ -115,6 +115,7 @@ export function activate(context: ExtensionContext) {
   }));
 
   // Implement "Activate connection" command.
+  // @todo async/await, or thenable ?
   context.subscriptions.push(commands.registerCommand('ldap-explorer.activate-connection', (connection: LdapConnection) => {
     // Store name of new active connection in Memento.
     localState.setActiveConnection(connection.getName());
@@ -130,11 +131,24 @@ export function activate(context: ExtensionContext) {
   }));
 
   // Implement "Show attributes" command (show attributes of the DN in a webview).
-  context.subscriptions.push(commands.registerCommand('ldap-explorer.show-attributes', (treeItem?: LdapTreeItem) => {
-    if (treeItem instanceof LdapTreeItem) {
+  context.subscriptions.push(commands.registerCommand('ldap-explorer.show-attributes', (dn?: string) => {
+    /* TODO all of this is messed up
+    if (!dn) {
       // The command fired from the contextual menu of the tree view: treeItem is defined.
       // We can extract the connection and the DN associated with the item.
-      createShowAttributesWebview(treeItem.getLdapConnection(), treeItem.getDn(), context);
+      const connectionName = localState.getActiveConnection();
+      if (connectionName === undefined) {
+        // @todo drop this test, or at least show an error.
+        return;
+      }
+      LdapConnectionManager.getConnection(connectionName).then(
+        (connection: LdapConnection) => {
+          createShowAttributesWebview(connection, dn, context);
+        },
+        reason => {
+          // @todo handle errors.
+        }
+      );
     } else {
       // The command fired from the command palette: treeItem is undefined.
       // Explicitly ask the user for a connection.
@@ -168,6 +182,7 @@ export function activate(context: ExtensionContext) {
         );
       });
     }
+    */
   }));
 
 }
