@@ -13,7 +13,8 @@ export class LdapConnectionManager {
             connection["port"],
             connection["binddn"],
             connection["bindpwd"],
-            connection["basedn"]
+            connection["basedn"],
+            connection["timeout"]
         ));
     }
 

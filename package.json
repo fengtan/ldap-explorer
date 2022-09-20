@@ -149,6 +149,11 @@
                 "type": "string",
                 "description": "Base DN",
                 "default": ""
+              },
+              "timeout": {
+                "type": "number",
+                "description": "Timeout (milliseconds)",
+                "default": ""
               }
             }
           }

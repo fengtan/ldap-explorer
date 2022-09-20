@@ -9,14 +9,16 @@ export class LdapConnection {
     private binddn: string;
     private bindpwd: string;
     private basedn: string;
+    private timeout: number;
   
-    constructor(protocol: string, host: string, port: number, binddn: string, bindpwd: string, basedn: string) {
+    constructor(protocol: string, host: string, port: number, binddn: string, bindpwd: string, basedn: string, timeout: number) {
       this.protocol = protocol;
       this.host = host;
       this.port = port;
       this.binddn = binddn;
       this.bindpwd = bindpwd;
       this.basedn = basedn;
+      this.timeout = timeout;
     }
 
     getProtocol() {
@@ -37,6 +39,9 @@ export class LdapConnection {
     getBaseDn() {
       return this.basedn;
     }
+    getTimeout() {
+      return this.timeout;
+    }
 
     getId(): string {
       return `${this.protocol}://${this.binddn}@${this.host}:${this.port}/${this.basedn}`;
@@ -51,7 +56,8 @@ export class LdapConnection {
       return new Promise((resolve, reject) => {
         // Create ldapjs client.
         const client = ldapjs.createClient({
-          url: [this.getUrl()]
+          url: [this.getUrl()],
+          timeout: this.timeout
         });
 
         // Bind.

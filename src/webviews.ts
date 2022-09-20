@@ -50,9 +50,12 @@ export function createAddEditConnectionWebview(context: vscode.ExtensionContext,
 			<section>
 				<vscode-text-field type="text" id="basedn" placeholder="e.g. dc=example,dc=org" value="${existingConnection?.getBaseDn() ?? ''}">Base DN</vscode-text-field>
 			</section>
+			<section>
+				<vscode-text-field type="text" id="timeout" value="${existingConnection?.getTimeout() ?? ''}">Timeout in milliseconds (defaults to infinity)</vscode-text-field>
+			</section>
 
 			<!-- TODO add spacing between form elements -->
-			<!-- TODO complain if connection.getName() already exists (must be unique) -->
+			<!-- TODO complain if connection ID already exists (must be unique) -->
 			<!-- TODO some form elements should be mandatory (do not make binddn and bindpwd mandatory, to support anonymous binds) -->
 
 			<vscode-button onClick="submitForm('save')">Save</vscode-button>
@@ -67,7 +70,8 @@ export function createAddEditConnectionWebview(context: vscode.ExtensionContext,
 						port: document.getElementById("port").value,
 						binddn: document.getElementById("binddn").value,
 						bindpwd: document.getElementById("bindpwd").value,
-						basedn: document.getElementById("basedn").value
+						basedn: document.getElementById("basedn").value,
+						timeout: document.getElementById("timeout").value,
 					});
 				}
 			</script>
@@ -85,7 +89,8 @@ export function createAddEditConnectionWebview(context: vscode.ExtensionContext,
                 message.port,
                 message.binddn,
                 message.bindpwd,
-                message.basedn
+                message.basedn,
+				message.timeout
             );
             switch (message.command) {
                 case 'save':

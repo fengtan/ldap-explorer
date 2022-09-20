@@ -41,11 +41,10 @@ TODO
 features
   - creating a new connection should open focus on our view
   - webview values are disposed when go to background
-  - additional options when creating connection: log, timeout, connectTimeout (http://ldapjs.org/client.html#create-a-client)
   - when creating a connection, have the option to read the bind password from a file or from an environment variable (so you can add the settings from devcontainer.json without putting the password in git)
   - content security policy https://code.visualstudio.com/api/extension-guides/webview#content-security-policy
   - sanitize user input (such as DN's) ? https://code.visualstudio.com/api/extension-guides/webview#sanitize-all-user-input
-  - replace console.log() with a logger recommended by vscode api ?
+  - replace console.log() with a logger recommended by vscode api - also ldapsj accepts a "log" attribute in constructor http://ldapjs.org/client.html#create-a-client
   - editing existing connection multiple times does not seem to work
 
 Later
