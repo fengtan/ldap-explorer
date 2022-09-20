@@ -144,8 +144,4 @@ export function activate(context: ExtensionContext) {
 }
 
 // This method is called when your extension is deactivated.
-export function deactivate() {
-
-	// @todo clear provider ? See todo-tree
-
-}
+export function deactivate() {}
