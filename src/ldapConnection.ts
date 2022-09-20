@@ -22,7 +22,7 @@ export class LdapConnection {
     }
   
     getUrl(): string {
-      return this.protocol + "://" + this.host + ":" + this.port;
+      return `${this.protocol}://${this.host}:${this.port}`;
     }
 
     // Searches LDAP.
@@ -51,21 +51,21 @@ export class LdapConnection {
 
             let results: ldapjs.SearchEntry[] = [];
             res.on('searchRequest', (searchRequest) => {
-              console.log('searchRequest: ', searchRequest.messageID);
+              console.log(`searchRequest: ${searchRequest.messageID}`);
             });
             res.on('searchEntry', (entry) => {
               results.push(entry);
-              console.log('entry: ' + JSON.stringify(entry.object));
+              console.log(`entry: ${JSON.stringify(entry.object)}`);
             });
             res.on('searchReference', (referral) => {
-              console.log('referral: ' + referral.uris.join());
+              console.log(`referral: ${referral.uris.join()}`);
             });
             res.on('error', (err) => {
-              console.error('error: ' + err.message); // @todo call reject()
+              console.error(`error: ${err.message}`); // @todo call reject()
             });
             res.on('end', (result) => {
               // @todo verify status is 0 ?
-              console.log('status: ' + result!.status);
+              console.log(`status: ${result!.status}`);
               client.unbind();
               client.destroy();
               return resolve(results);

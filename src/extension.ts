@@ -8,7 +8,7 @@ import { createAttributesWebview, createAddConnectionWebview } from './webviews'
 // This method is called when the extension is activated (see activationEvents in package.json).
 export function activate(context: vscode.ExtensionContext) {
 
-	// Populate view with our data provider.
+	// Create tree view with our LDAP data provider.
 	const ldapDataProvider = new LdapDataProvider();
 	vscode.window.createTreeView('ldap-explorer-view', {treeDataProvider: ldapDataProvider});
 
@@ -18,35 +18,29 @@ export function activate(context: vscode.ExtensionContext) {
 	}));
 
 	// Implement "Delete connection" command.
-	context.subscriptions.push(vscode.commands.registerCommand('ldap-explorer.delete-connection', (treeItem?: LdapTreeItem) => {
-		// treeItem is defined only if the command fired from the contextual menu of the tree view.
-		// If the command fired from the command palette then treeItem is undefined so we explicitly ask the user to pick a connection.
-		if (treeItem === undefined) {
-			treeItem = new LdapTreeItem(new LdapConnection(", ", ", ", ", ", 11, "", "", ""), ""); // @todo drop
-
-
-			////////////////////////////////////////////
-			// TODO open quickpick with list of available connection, request connecction
-			////////////////////////////////////////////
-
-		}
-
-		// Extract name of the connection to be deleted.
-		// This will work only if the command fired from the contextual menu in the tree view.
-		// If the command fired from the command palette then 'treeItem' is empty.
-		// This is why the command is configured to not show up in the command palette (see package.json).
-		const connection = treeItem.getLdapConnection();
-
-		// Ask for confirmation.
-		vscode.window.showInformationMessage(`Are you sure you want to remove the connection '${connection.name}' ?`, { modal: true}, "Yes").then((confirm) => {
-			if (confirm) {
-				// Remove the connection from settings.
+	context.subscriptions.push(vscode.commands.registerCommand('ldap-explorer.delete-connection', async (treeItem?: LdapTreeItem) => {
+		if (treeItem instanceof LdapTreeItem) {
+			// treeItem is defined only if the command fired from the contextual menu of the tree view.
+			const connection = treeItem.getLdapConnection();
+			LdapConnectionManager.removeConnection(connection);
+		} else {
+			// If the command fired from the command palette then treeItem is undefined so we explicitly ask the user to pick a connection.
+			const connectionNames = LdapConnectionManager.getConnections().map(connection => connection.name);
+			await vscode.window.showQuickPick(connectionNames, {
+				placeHolder: "Connection to delete.",
+				onDidSelectItem: item => vscode.window.showInformationMessage(`Selected ${item}`)
+			}).then(name => {
+				// If no connection was selected, then do nothing.
+				if (name === undefined) {
+					return;
+				}
+				// Otherwise delete the connection.
+				const connection = LdapConnectionManager.getConnection(name);
 				LdapConnectionManager.removeConnection(connection);
-				// Refresh view so the connection does not show up anymore.
-				// @todo refresh does not seem to work right: if I add a new connection then it does not automatically show up in the view
-				vscode.commands.executeCommand("ldap-explorer.refresh-view");
-			}
-		});
+			}, reason => {
+				// @todo user did not pick a connection, should not attempt to remove any connection from the settings
+			});
+		}
 	}));
 
 	// Implement "Refresh" command (refreshes the tree view).

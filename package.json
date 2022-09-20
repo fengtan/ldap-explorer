@@ -19,6 +19,9 @@
   "main": "./out/extension.js",
   "activationEvents": [
     "onCommand:ldap-explorer.add-connection",
+    "onCommand:ldap-explorer.delete-connection",
+    "onCommand:ldap-explorer.refresh-view",
+    "onCommand:ldap-explorer.show-attributes",
     "onView:ldap-explorer-view"
   ],
   "contributes": {

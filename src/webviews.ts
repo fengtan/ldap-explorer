@@ -52,7 +52,7 @@ export function createAttributesWebview(ldapConnection: LdapConnection, dn: stri
 		// Make sure we received only one LDAP entry.
 		// That should always be the case given that the scope of the LDAP query is set to "base" above.
 		if (entries.length > 1) {
-			vscode.window.showWarningMessage("Received multiple LDAP entries, expected only one: " + dn);
+			vscode.window.showWarningMessage(`Received multiple LDAP entries, expected only one: ${dn}`);
 		}
 	
 		// Build list of rows (1 row = 1 attribute).
@@ -183,7 +183,7 @@ export function createAddConnectionWebview(context: vscode.ExtensionContext) {
                             vscode.window.showInformationMessage('Connection succeeded');
                         },
                         reason => {
-                            vscode.window.showErrorMessage('Connection failed: ' + reason);
+                            vscode.window.showErrorMessage(`Connection failed: ${reason}`);
                         }
                     );
             }

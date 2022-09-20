@@ -18,6 +18,18 @@ export class LdapConnectionManager {
         ));
     }
 
+    // Get connection by name.
+    static getConnection(name: string): LdapConnection {
+        const filteredConnections = this.getConnections().filter(connection => connection.name === name);
+        if (filteredConnections.length < 1) {
+            // @todo throw exception: no connection found.
+        }
+        if (filteredConnections.length > 1) {
+            console.log(`Found ${filteredConnections.length} LDAP connections with name ${name}, expected at most 1.`);
+        }
+        return filteredConnections[0];
+    }
+
     // Add new connection to settings.
     static addConnection(connection: LdapConnection) {
         // Get list of existing connections.
@@ -34,21 +46,31 @@ export class LdapConnectionManager {
     // Remove existing connection from settings.
     // @todo removal operation seems to remove the wrong connection
     static removeConnection(connection: LdapConnection) {
-        // Get list of existing connections.
-		let connections = this.getConnections();
+		// Ask for confirmation.
+		vscode.window.showInformationMessage(`Are you sure you want to remove the connection '${connection.name}' ?`, { modal: true}, "Yes").then(confirm => {
+			if (confirm) {
 
-        // Get index of connection to delete.
-		const index = connections.findIndex(con => con.name === connection.name);
-		if (index < 0 ) {
-			vscode.window.showInformationMessage(`Unable to delete '${connection.name}': connection does not exist.`);
-		}
+                // Get list of existing connections.
+		        const connections = this.getConnections();
 
-        // Remove connection from the list.
-		connections.splice(index, 1);
+                // Get index of connection to delete.
+		        const index = connections.findIndex(con => con.name === connection.name);
+		        if (index < 0 ) {
+			        vscode.window.showInformationMessage(`Unable to delete '${connection.name}': connection does not exist.`);
+		        }
 
-		// Save new list of connections.
-		// @todo should catch errors in case we are unable to save settings
-		vscode.workspace.getConfiguration('ldap-explorer').update('connections', connections, true);
+                // Remove connection from the list.
+		        connections.splice(index, 1);
+
+		        // Save new list of connections.
+		        // @todo should catch errors in case we are unable to save settings
+		        vscode.workspace.getConfiguration('ldap-explorer').update('connections', connections, true);
+
+				// Refresh view so the connection does not show up anymore.
+				// @todo refresh does not seem to work right: if I add a new connection then it does not automatically show up in the view use async/await, or make removeConnection Thenable
+				vscode.commands.executeCommand("ldap-explorer.refresh-view");
+			}
+		});
     }
 
 }
