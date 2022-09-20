@@ -1,8 +1,6 @@
 // Used to persist application state via Mementos.
 
 import { ExtensionContext } from "vscode";
-import { LdapConnection } from './LdapConnection';
-import { LdapConnectionManager } from "./LdapConnectionManager";
 
 export class LocalState {
 

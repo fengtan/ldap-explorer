@@ -1,8 +1,8 @@
 import { commands, ExtensionContext, window } from 'vscode';
 import { LdapConnection } from './LdapConnection';
 import { LdapConnectionManager } from './LdapConnectionManager';
-import { LdapConnectionsDataProvider } from './LdapConnectionsDataProvider';
-import { LdapTreeDataProvider } from './LdapTreeDataProvider';
+import { LdapConnectionsDataProvider } from './tree-providers/LdapConnectionsDataProvider';
+import { LdapTreeDataProvider } from './tree-providers/LdapTreeDataProvider';
 import { LocalState } from './LocalState';
 import { createAddEditConnectionWebview } from './webviews/addEditConnectionWebview';
 import { createShowAttributesWebview } from './webviews/showAttributesView';

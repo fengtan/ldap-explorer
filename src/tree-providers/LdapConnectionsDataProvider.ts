@@ -1,7 +1,7 @@
 import { Event, EventEmitter, ThemeIcon, TreeDataProvider, TreeItem, TreeItemCollapsibleState } from 'vscode';
-import { LdapConnection } from './LdapConnection';
-import { LdapConnectionManager } from './LdapConnectionManager';
-import { LocalState } from './LocalState';
+import { LdapConnection } from '../LdapConnection';
+import { LdapConnectionManager } from '../LdapConnectionManager';
+import { LocalState } from '../LocalState';
 
 export class LdapConnectionsDataProvider implements TreeDataProvider<LdapConnection> {
 

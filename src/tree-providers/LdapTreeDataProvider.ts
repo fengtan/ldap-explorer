@@ -3,8 +3,8 @@
 
 import { SearchEntry } from 'ldapjs';
 import { Event, EventEmitter, TreeDataProvider, TreeItem, TreeItemCollapsibleState } from 'vscode';
-import { LdapConnectionManager } from './LdapConnectionManager';
-import { LocalState } from './LocalState';
+import { LdapConnectionManager } from '../LdapConnectionManager';
+import { LocalState } from '../LocalState';
 
 // A fake LDAP entry i.e. one that is not the result of a LDAP query.
 class FakeEntry {
