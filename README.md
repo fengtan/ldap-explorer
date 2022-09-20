@@ -23,6 +23,7 @@ TODO
   - explain how to reveal the logs (logger output channel)
   - explain pre-commit, also explain how to disable it (rm .git/precommitfoobar) ; explain how to run it on all files (not just those staged to be committed)
   - explain how to run autotests
+  - mention that support paging i.e. all items show up even if more than 1,000 children (common limit enforce by many LDAP servers)
 - metadata
   - license (in package.json and in README.md)
   - make sure the repo URL listed in package.json is correct
@@ -48,12 +49,10 @@ bugs
 
 features (later ?)
 - add support for filters, with built-in UI in vscode similar to the source control activity http://ldapjs.org/filters.html ; would allow to open groups when you only know its name (CN) and not its full DN e.g. search which groups a user belongs to
-- support for add/update/delete operations i.e. not a readonly connection ?
-- setting to limit number of results to display (1,000 in jxplorer)
-- implement pager for folders that include > 1,000 items
 - content security policy / sanitization https://code.visualstudio.com/api/extension-guides/webview#content-security-policy -> https://code.visualstudio.com/api/extension-guides/command#command-uris ; see example in webview-view-sample
 
 features (never ?)
+- support for add/update/delete operations i.e. not a readonly connection ?
 - UX: show connections as a drop-down similar to remote-explorer or debugging interface
   - https://github.com/microsoft/vscode-extension-samples/tree/main/webview-view-sample
 - support for LDIF files

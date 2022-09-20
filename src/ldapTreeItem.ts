@@ -64,7 +64,8 @@ export class LdapTreeItem extends TreeItem {
   getChildren(): Thenable<LdapTreeItem[]> {
     // Search and convert LDAP results into tree items.
     // Set LDAP search scope of "one" so we get only immediate subordinates of the base DN https://ldapwiki.com/wiki/SingleLevel
-    return this.connection.search({scope: "one"}, this.getDn()).then(
+    // Make results paged in case the item has more than 1,000 children (many LDAP servers return at most 1,000 results at a time).
+    return this.connection.search({ scope: "one", paged: true }, this.getDn()).then(
       entries => {
         return entries.map(entry => new LdapTreeItem(this.connection, entry.dn));
       },
