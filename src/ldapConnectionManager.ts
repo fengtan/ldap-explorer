@@ -19,16 +19,15 @@ export class LdapConnectionManager {
     }
 
     // Get connection by ID, or undefined if no connection was found.
-    static getConnection(id: string): LdapConnection | undefined {
+    static getConnection(id: string): Thenable<LdapConnection> {
         const filteredConnections = this.getConnections().filter(connection => connection.getId() === id);
         if (filteredConnections.length < 1) {
-            // @todo turn into Thenable
-            return;
+            return Promise.reject(`Unable to find connection ${id} in settings`);
         }
         if (filteredConnections.length > 1) {
             console.log(`Found ${filteredConnections.length} LDAP connections with ID ${id}, expected at most 1.`);
         }
-        return filteredConnections[0];
+        return Promise.resolve(filteredConnections[0]);
     }
 
     // Add new connection to settings.

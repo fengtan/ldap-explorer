@@ -39,7 +39,14 @@ export function activate(context: ExtensionContext) {
 					return;
 				}
 				// Otherwise edit the connection.
-				createAddEditConnectionWebview(context, LdapConnectionManager.getConnection(option.id));
+				LdapConnectionManager.getConnection(option.id).then(
+					connection => {
+						createAddEditConnectionWebview(context, connection);
+					},
+					reason => {
+						window.showErrorMessage(`Unable to edit connection "${option.id}": ${reason}`);
+					}
+				);
 			});
 		}
 	}));
@@ -83,14 +90,15 @@ export function activate(context: ExtensionContext) {
 				if (option === undefined) {
 					return;
 				}
-				// Make sure we got a valid connection.
-				const connection = LdapConnectionManager.getConnection(option.id);
-				if (connection === undefined) {
-					window.showErrorMessage(`Unable to find connection ${option.id} in settings`);
-					return;
-				}
 				// Delete the connection.
-				askAndRemoveConnection(connection);
+				LdapConnectionManager.getConnection(option.id).then(
+					connection => {
+						askAndRemoveConnection(connection);
+					},
+					reason => {
+						window.showErrorMessage(`Unable to delete connection "${option.id}": ${reason}`);
+					}
+				);
 			});
 		}
 	}));
@@ -121,21 +129,22 @@ export function activate(context: ExtensionContext) {
 				if (option === undefined) {
 					return;
 				}
-				// Make sure we got a valid connection.
-				const connection = LdapConnectionManager.getConnection(option.id);
-				if (connection === undefined) {
-					window.showErrorMessage(`Unable to find connection ${option.id} in settings`);
-					return;
-				}
-				// Otherwise ask the user for a DN.
-				window.showInputBox({ placeHolder: "Enter a DN (e.g. cn=readers,ou=users,dc=example,dc=org)"}).then(dn => {
-					// If no DN was provided, then do nothing.
-					if (dn === undefined) {
-						return;
+				LdapConnectionManager.getConnection(option.id).then(
+					connection => {
+						// Ask the user for a DN.
+						window.showInputBox({ placeHolder: "Enter a DN (e.g. cn=readers,ou=users,dc=example,dc=org)"}).then(dn => {
+							// If no DN was provided, then do nothing.
+							if (dn === undefined) {
+								return;
+							}
+							// Otherwise show webview with attributes of the DN.
+							createAttributesWebview(connection, dn, context);
+						});
+					},
+					reason => {
+						window.showErrorMessage(`Unable to show attributes for connection "${option.id}": ${reason}`);
 					}
-					// Otherwise show webview with attributes of the DN.
-					createAttributesWebview(connection, dn, context);
-				});
+				);
 			});
 		}
 	}));
