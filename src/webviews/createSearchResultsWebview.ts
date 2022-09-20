@@ -40,12 +40,7 @@ export function createSearchResultsWebview(connection: LdapConnection, filter: s
 					  case 'populate':
 						  const grid = document.getElementById("grid");
 						  // Column titles.
-						  //grid.columnDefinitions = event.data.columnDefinitions; // @todo
-              grid.columnDefinitions = [
-						    { columnDataKey: "cn", title: "CN" },
-						    { columnDataKey: "objectClass", title: "object class" },
-                { columnDataKey: "member", title: "member" }
-						  ];
+						  grid.columnDefinitions = event.data.columnDefinitions;
 						  // Data (rows).
 						  grid.rowsData = event.data.rowsData;
 						  break;
@@ -68,7 +63,11 @@ export function createSearchResultsWebview(connection: LdapConnection, filter: s
       // See https://code.visualstudio.com/api/extension-guides/webview#passing-messages-from-an-extension-to-a-webview
       panel.webview.postMessage({
         command: "populate",
-        //columnDefinitions: Array.from(columnDefinitions.values()), @todo
+        columnDefinitions: [
+          { columnDataKey: "cn", title: "CN" },
+          { columnDataKey: "objectClass", title: "object class" },
+          { columnDataKey: "member", title: "member" }
+        ],// @todo Array.from(columnDefinitions.values()),
         rowsData: [ // @todo
           {
             cn: "cn1",
