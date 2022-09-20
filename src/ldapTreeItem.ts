@@ -68,7 +68,6 @@ export class LdapTreeItem extends TreeItem {
   // Get children of this tree item.
   getChildren(): Thenable<LdapTreeItem[]> {
     // Search and convert LDAP results into tree items.
-    // @todo set additional options ? Second argument of the search() method. Same for search() call in getAttributesHTML()
     // Set LDAP search scope of "one" so we get only immediate subordinates of the base DN https://ldapwiki.com/wiki/SingleLevel
     // @todo we only implement the onfullfilled callback of the thenable here, should probably also implement onRejected
     return this.connection.search({scope: "one"}, this.dn).then(entries => entries.map(entry => new LdapTreeItem(this.connection, entry.dn)));

@@ -27,17 +27,17 @@ export function createAddEditConnectionWebview(context: ExtensionContext, existi
   		</head>
 		<body>
 			<section>
-				<p>Protocol</p>
+				<p>Protocol *</p>
 				<vscode-dropdown id="protocol" value="${existingConnection?.getProtocol(false) ?? 'ldap'}">
 					<vscode-option>ldap</vscode-option>
 					<vscode-option>ldaps</vscode-option>
 				</vscode-dropdown>
 			</section>
 			<section>
-				<vscode-text-field type="text" id="host" placeholder="e.g. example.net" value="${existingConnection?.getHost(false) ?? ''}">Host</vscode-text-field>
+				<vscode-text-field type="text" id="host" placeholder="e.g. example.net" value="${existingConnection?.getHost(false) ?? ''}">Host *</vscode-text-field>
 			</section>
 			<section>
-				<vscode-text-field type="text" id="port" placeholder="e.g. 389 or 636" value="${existingConnection?.getPort(false) ?? ''}">Port</vscode-text-field>
+				<vscode-text-field type="text" id="port" placeholder="e.g. 389 or 636" value="${existingConnection?.getPort(false) ?? ''}">Port *</vscode-text-field>
 			</section>
 			<section>
 				<vscode-text-field type="text" id="binddn" placeholder="e.g. cn=admin,dc=example,dc=org" value="${existingConnection?.getBindDn(false) ?? ''}">Bind DN</vscode-text-field>
@@ -46,7 +46,7 @@ export function createAddEditConnectionWebview(context: ExtensionContext, existi
 				<vscode-text-field type="text" id="bindpwd" value="${existingConnection?.getBindPwd(false) ?? ''}">Bind Password</vscode-text-field>
 			</section>
 			<section>
-				<vscode-text-field type="text" id="basedn" placeholder="e.g. dc=example,dc=org" value="${existingConnection?.getBaseDn(false) ?? ''}">Base DN</vscode-text-field>
+				<vscode-text-field type="text" id="basedn" placeholder="e.g. dc=example,dc=org" value="${existingConnection?.getBaseDn(false) ?? ''}">Base DN *</vscode-text-field>
 			</section>
 			<section>
 				<vscode-text-field type="text" id="timeout" value="${existingConnection?.getTimeout(false) ?? '5000'}">Timeout in milliseconds (leave empty to disable timeout)</vscode-text-field>
@@ -54,7 +54,6 @@ export function createAddEditConnectionWebview(context: ExtensionContext, existi
 
 			<!-- TODO add spacing between form elements -->
 			<!-- TODO complain if connection ID already exists (must be unique) -->
-			<!-- TODO some form elements should be mandatory (do not make binddn and bindpwd mandatory, to support anonymous binds) -->
 
 			<vscode-button onClick="submitForm('save')">Save</vscode-button>
 			<vscode-button onClick="submitForm('test')" appearance="secondary">Test</vscode-button>
@@ -92,6 +91,25 @@ export function createAddEditConnectionWebview(context: ExtensionContext, existi
             );
             switch (message.command) {
                 case 'save':
+					// Verify mandatory fields are not empty.
+					const mandatoryFields = [
+						"protocol",
+						"host",
+						"port",
+						"basedn"
+					];
+					let emptyMandatoryFields: string[] = [];
+					mandatoryFields.forEach(mandatoryField => {
+						if (!message[mandatoryField]) {
+							emptyMandatoryFields.push(mandatoryField);
+						}
+					});
+					if (emptyMandatoryFields.length > 0) {
+						// Show machine name of the fields (e.g. basedn) instead of labels (e.g. Base DN), that looks acceptable.
+						window.showErrorMessage(`Empty fields, please provide a value: ${emptyMandatoryFields.join(", ")}`);
+						return;
+					}
+
                     // Save (either add or update) connection to settings.
                     if (existingConnection === undefined) {
 						LdapConnectionManager.addConnection(newConnection);

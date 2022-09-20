@@ -104,7 +104,7 @@ export class LdapConnection {
               console.error(`error: ${err.message}`); // @todo call reject()
             });
             res.on('end', (result) => {
-              // @todo verify status is 0 ?
+              // @todo verify status is 0 ? "You'll want to check the LDAP status code (likely for 0) on the end event to assert success"
               console.log(`status: ${result!.status}`);
               client.unbind();
               client.destroy();
