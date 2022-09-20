@@ -3,7 +3,8 @@ import { LdapConnection } from './ldapConnection';
 import { LdapConnectionManager } from './ldapConnectionManager';
 import { LdapDataProvider } from './ldapDataProvider';
 import { LdapTreeItem } from './ldapTreeItem';
-import { createAddEditConnectionWebview, createAttributesWebview } from './webviews';
+import { createAddEditConnectionWebview } from './webviews/addEditConnectionWebview';
+import { createShowAttributesWebview } from './webviews/showAttributesView';
 
 // This method is called when the extension is activated (see activationEvents in package.json).
 export function activate(context: ExtensionContext) {
@@ -113,7 +114,7 @@ export function activate(context: ExtensionContext) {
     if (treeItem instanceof LdapTreeItem) {
       // The command fired from the contextual menu of the tree view: treeItem is defined.
       // We can extract the connection and the DN associated with the item.
-      createAttributesWebview(treeItem.getLdapConnection(), treeItem.getDn(), context);
+      createShowAttributesWebview(treeItem.getLdapConnection(), treeItem.getDn(), context);
     } else {
       // The command fired from the command palette: treeItem is undefined.
       // Explicitly ask the user for a connection.
@@ -138,7 +139,7 @@ export function activate(context: ExtensionContext) {
                 return;
               }
               // Otherwise show webview with attributes of the DN.
-              createAttributesWebview(connection, dn, context);
+              createShowAttributesWebview(connection, dn, context);
             });
           },
           reason => {
