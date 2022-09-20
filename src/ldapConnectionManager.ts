@@ -8,7 +8,6 @@ export class LdapConnectionManager {
     // Get all connections from settings.
     static getConnections(): LdapConnection[] {
         return vscode.workspace.getConfiguration('ldap-explorer').get('connections', []).map(connection => new LdapConnection(
-            connection["name"],
             connection["protocol"],
             connection["host"],
             connection["port"],
@@ -20,7 +19,7 @@ export class LdapConnectionManager {
 
     // Get connection by name.
     static getConnection(name: string): LdapConnection {
-        const filteredConnections = this.getConnections().filter(connection => connection.name === name);
+        const filteredConnections = this.getConnections().filter(connection => connection.getId() === name);
         if (filteredConnections.length < 1) {
             // @todo throw exception: no connection found.
         }
@@ -55,16 +54,16 @@ export class LdapConnectionManager {
     // @todo removal operation seems to remove the wrong connection
     static removeConnection(connection: LdapConnection) {
 		// Ask for confirmation.
-		vscode.window.showInformationMessage(`Are you sure you want to remove the connection '${connection.name}' ?`, { modal: true}, "Yes").then(confirm => {
+		vscode.window.showInformationMessage(`Are you sure you want to remove the connection '${connection.getId()}' ?`, { modal: true}, "Yes").then(confirm => {
 			if (confirm) {
 
                 // Get list of existing connections.
 		        const connections = this.getConnections();
 
                 // Get index of connection to delete.
-		        const index = connections.findIndex(con => con.name === connection.name);
+		        const index = connections.findIndex(con => con.getId() === connection.getId());
 		        if (index < 0 ) {
-			        vscode.window.showInformationMessage(`Unable to delete '${connection.name}': connection does not exist.`);
+			        vscode.window.showInformationMessage(`Unable to delete '${connection.getId()}': connection does not exist.`);
 		        }
 
                 // Remove connection from the list.

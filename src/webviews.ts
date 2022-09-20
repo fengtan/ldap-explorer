@@ -27,9 +27,6 @@ export function createAddConnectionWebview(context: vscode.ExtensionContext) {
   		</head>
 		<body>
 			<section>
-				<vscode-text-field type="text" id="name" placeholder="e.g. My connection" autofocus>Connection name</vscode-text-field>
-			</section>
-			<section>
 				<p>Protocol</p>
 				<vscode-dropdown id="protocol">
 					<vscode-option>ldap</vscode-option>
@@ -53,7 +50,7 @@ export function createAddConnectionWebview(context: vscode.ExtensionContext) {
 			</section>
 
 			<!-- TODO add spacing between form elements -->
-			<!-- TODO complain if the connection name submitted already exists (must be unique) -->
+			<!-- TODO complain if connection.getName() already exists (must be unique) -->
 			<!-- TODO some form elements should be mandatory (do not make binddn and bindpwd mandatory, to support anonymous binds) -->
 
 			<vscode-button onClick="submitForm('save')">Save</vscode-button>
@@ -63,7 +60,6 @@ export function createAddConnectionWebview(context: vscode.ExtensionContext) {
 				function submitForm(command) {
 					vscode.postMessage({
 						command: command,
-						name: document.getElementById("name").value,
 						protocol: document.getElementById("protocol").value,
 						host: document.getElementById("host").value,
 						port: document.getElementById("port").value,
@@ -82,7 +78,6 @@ export function createAddConnectionWebview(context: vscode.ExtensionContext) {
         message => {
             // Build connection object.
             const connection = new LdapConnection(
-                message.name,
                 message.protocol,
                 message.host,
                 message.port,

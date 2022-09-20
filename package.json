@@ -103,11 +103,6 @@
           "items": {
             "type": "object",
             "properties": {
-              "name": {
-                "type": "string",
-                "description": "Connection name",
-                "default": ""
-              },
               "protocol": {
                 "type": "string",
                 "description": "Protocol",

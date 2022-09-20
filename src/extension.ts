@@ -25,7 +25,7 @@ export function activate(context: vscode.ExtensionContext) {
 		} else {
 			// The command fired from the command palette: treeItem is undefined.
 			// We explicitly ask the user to pick a connection.
-			const connectionNames = LdapConnectionManager.getConnections().map(connection => connection.name);
+			const connectionNames = LdapConnectionManager.getConnections().map(connection => connection.getId());
 			vscode.window.showQuickPick(connectionNames, { placeHolder: "Select a connection to delete." }).then(name => {
 				// If no connection was selected, then do nothing.
 				if (name === undefined) {
@@ -51,7 +51,7 @@ export function activate(context: vscode.ExtensionContext) {
 		} else {
 			// The command fired from the command palette: treeItem is undefined.
 			// Explicitly ask the user for a connection.
-			const connectionNames = LdapConnectionManager.getConnections().map(connection => connection.name);
+			const connectionNames = LdapConnectionManager.getConnections().map(connection => connection.getId());
 			vscode.window.showQuickPick(connectionNames, { placeHolder: "Select a connection" }).then(name => {
 				// If user cancelled the connection quick pick, then do nothing.
 				if (name === undefined) {

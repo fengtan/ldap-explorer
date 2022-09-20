@@ -45,7 +45,6 @@ features
   - when creating a connection, have the option to read the bind password from a file or from an environment variable (so you can add the settings from devcontainer.json without putting the password in git)
   - content security policy https://code.visualstudio.com/api/extension-guides/webview#content-security-policy
   - sanitize user input (such as DN's) ? https://code.visualstudio.com/api/extension-guides/webview#sanitize-all-user-input
-  - drop field "connection name", we don't use display it anywhere. Make sure we still have a mechanism to ensure unique connections (and ensure connections are deleted properly from settings)
   - replace console.log() with a logger recommended by vscode api ?
 
 Later
