@@ -50,11 +50,14 @@ export function createSearchResultsWebview(connection: LdapConnection, filter: s
 			</html>`;
 
       // Store columns (attribute names) and rows (values) in arrays.
-      let columnDefinitions = new Set<string>();
+      let attributeNames: string[] = [];
       let rowsData: string[] = [];
       entries.forEach(searchEntry => {
         searchEntry.attributes.forEach(attribute => {
-          columnDefinitions.add(attribute.type);
+          // Populate attributeNames and make sure the names are unique.
+          if (!attributeNames.includes(attribute.type)) {
+            attributeNames.push(attribute.type);
+          }
           // @todo populate rowsData from attribute and searchEntry
         });
       });
@@ -63,11 +66,11 @@ export function createSearchResultsWebview(connection: LdapConnection, filter: s
       // See https://code.visualstudio.com/api/extension-guides/webview#passing-messages-from-an-extension-to-a-webview
       panel.webview.postMessage({
         command: "populate",
-        columnDefinitions: [
-          { columnDataKey: "cn", title: "CN" },
-          { columnDataKey: "objectClass", title: "object class" },
-          { columnDataKey: "member", title: "member" }
-        ],// @todo Array.from(columnDefinitions.values()),
+        columnDefinitions: attributeNames.map((attributeName) => {
+          return {
+            "columnDataKey": attributeName
+          };
+        }),
         rowsData: [ // @todo
           {
             cn: "cn1",
