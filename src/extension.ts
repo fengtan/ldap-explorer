@@ -64,8 +64,14 @@ export function activate(context: ExtensionContext) {
 				if (option === undefined) {
 					return;
 				}
-				// Otherwise delete the connection.
-				LdapConnectionManager.removeConnection(LdapConnectionManager.getConnection(option.id));
+				// Make sure we got a valid connection.
+				const connection = LdapConnectionManager.getConnection(option.id);
+				if (connection === undefined) {
+					window.showErrorMessage(`Unable to find connection ${option.id} in settings`);
+					return;
+				}
+				// Delete the connection.
+				LdapConnectionManager.removeConnection(connection);
 			});
 		}
 	}));
@@ -96,6 +102,12 @@ export function activate(context: ExtensionContext) {
 				if (option === undefined) {
 					return;
 				}
+				// Make sure we got a valid connection.
+				const connection = LdapConnectionManager.getConnection(option.id);
+				if (connection === undefined) {
+					window.showErrorMessage(`Unable to find connection ${option.id} in settings`);
+					return;
+				}
 				// Otherwise ask the user for a DN.
 				window.showInputBox({ placeHolder: "Enter a DN (e.g. cn=readers,ou=users,dc=example,dc=org)"}).then(dn => {
 					// If no DN was provided, then do nothing.
@@ -103,7 +115,7 @@ export function activate(context: ExtensionContext) {
 						return;
 					}
 					// Otherwise show webview with attributes of the DN.
-					createAttributesWebview(LdapConnectionManager.getConnection(option.id), dn, context);
+					createAttributesWebview(connection, dn, context);
 				});
 			});
 		}
@@ -117,6 +129,5 @@ export function activate(context: ExtensionContext) {
 export function deactivate() {
 
 	// @todo clear provider ? See todo-tree
-	// @todo unbind all connections http://ldapjs.org/client.html#unbind
 
 }

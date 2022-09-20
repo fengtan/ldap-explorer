@@ -3,7 +3,7 @@
 import { commands, window, workspace } from 'vscode';
 import { LdapConnection } from './ldapConnection';
 
-// @todo this class should not show window.showError() and refresh treeview, should be left to extension.ts
+// @todo use Thenable - there should be no call to vscode.window in this class.
 export class LdapConnectionManager {
 
     // Get all connections from settings.
@@ -19,12 +19,11 @@ export class LdapConnectionManager {
         ));
     }
 
-    // Get connection by ID.
-    static getConnection(id: string): LdapConnection {
+    // Get connection by ID, or undefined if no connection was found.
+    static getConnection(id: string): LdapConnection | undefined {
         const filteredConnections = this.getConnections().filter(connection => connection.getId() === id);
         if (filteredConnections.length < 1) {
-            window.showErrorMessage(`Unable to find connection ${id} in settings`);
-            // @todo throw exception
+            return;
         }
         if (filteredConnections.length > 1) {
             console.log(`Found ${filteredConnections.length} LDAP connections with ID ${id}, expected at most 1.`);
