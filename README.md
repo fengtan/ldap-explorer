@@ -47,7 +47,8 @@ bugs
   - editing existing connection multiple times does not seem to work
   - when creating a connection: complain if connection name already exists (must be unique)
   - update welcome views: tree and search views should show nothing and ask user to create or select a connection from the connections view
-  - turn 'delete connection' into an icon next to connection tree item
+  - there should be a 'refresh' button on all views
+  - add welcome to connections view
 
 features (later ?)
 - add support for filters, with built-in UI in vscode similar to the source control activity http://ldapjs.org/filters.html ; would allow to open groups when you only know its name (CN) and not its full DN e.g. search which groups a user belongs to

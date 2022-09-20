@@ -94,7 +94,7 @@
       "view/title": [
         {
           "command": "ldap-explorer.add-connection",
-          "when": "view == ldap-explorer-view-tree",
+          "when": "view == ldap-explorer-view-connections",
           "group": "navigation"
         },
         {
