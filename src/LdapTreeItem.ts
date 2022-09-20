@@ -6,6 +6,7 @@ import { TreeItem, TreeItemCollapsibleState } from 'vscode';
 export class LdapTreeItem extends TreeItem {
 
   // @todo remove connection attribute from this class, and load active connection from VSCode global state
+  // @todo do we really need a seprate class (LdapTreeItem) ? We don't in LdapConnectionDataProvider, because the case is simple
   private connection: LdapConnection;
   private dn?: string;
 
@@ -31,9 +32,6 @@ export class LdapTreeItem extends TreeItem {
     // Populate attributes specific to LdapTreeItem (i.e. not inherited from TreeItem).
     this.connection = connection;
     this.dn = dn;
-
-    // Set context value, this is refered to as "viewItem" in "when" clauses in package.json (view/item/context).
-    this.contextValue = dn ? "ldap-entry" : "connection";
 
     // Tooltip of the TreeItem:
     // - If the TreeItem is an LDAP result, then show its full DN.

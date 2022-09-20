@@ -33,11 +33,11 @@ export function activate(context: ExtensionContext) {
     } else {
       // The command fired from the command palette: treeItem is undefined.
       // We explicitly ask the user to pick a connection.
-      const connectionOptions = LdapConnectionManager.getConnections().map(connection => {
+      const connectionOptions = LdapConnectionManager.getConnections().map(con => {
         return {
-          label: connection.getBaseDn(true),
-          description: connection.getUrl(),
-          name: connection.getName(),
+          label: con.getBaseDn(true),
+          description: con.getUrl(),
+          name: con.getName(),
         };
       });
       window.showQuickPick(connectionOptions, { placeHolder: "Select a connection" }).then(option => {
@@ -47,8 +47,8 @@ export function activate(context: ExtensionContext) {
         }
         // Otherwise edit the connection.
         LdapConnectionManager.getConnection(option.name).then(
-          connection => {
-            createAddEditConnectionWebview(context, connection);
+          con => {
+            createAddEditConnectionWebview(context, con);
           },
           reason => {
             window.showErrorMessage(`Unable to edit connection '${option.name}': ${reason}`);
@@ -59,12 +59,12 @@ export function activate(context: ExtensionContext) {
   }));
 
   // Implement "Delete connection" command.
-  context.subscriptions.push(commands.registerCommand('ldap-explorer.delete-connection', (treeItem?: LdapTreeItem) => {
+  context.subscriptions.push(commands.registerCommand('ldap-explorer.delete-connection', (connection?: LdapConnection) => {
     // Utility function to ask for a confirmation and actually remove the connection from settings.
-    const askAndRemoveConnection = (connection: LdapConnection) => {
-      window.showInformationMessage(`Are you sure you want to remove the connection '${connection.getName()} ?`, { modal: true }, "Yes").then(confirm => {
+    const askAndRemoveConnection = (con: LdapConnection) => {
+      window.showInformationMessage(`Are you sure you want to remove the connection '${con.getName()} ?`, { modal: true }, "Yes").then(confirm => {
         if (confirm) {
-          LdapConnectionManager.removeConnection(connection).then(
+          LdapConnectionManager.removeConnection(con).then(
             value => {
               // If connection was successfully removed, refresh tree view so it does not show up anymore.
               commands.executeCommand("ldap-explorer.refresh-tree");
@@ -78,18 +78,18 @@ export function activate(context: ExtensionContext) {
       });
     };
 
-    if (treeItem instanceof LdapTreeItem) {
+    if (connection instanceof LdapConnection) {
       // The command fired from the contextual menu of the tree view: treeItem is defined.
       // We can extract the connection associated with the item.
-      askAndRemoveConnection(treeItem.getLdapConnection());
+      askAndRemoveConnection(connection);
     } else {
       // The command fired from the command palette: treeItem is undefined.
       // We explicitly ask the user to pick a connection.
-      const connectionOptions = LdapConnectionManager.getConnections().map(connection => {
+      const connectionOptions = LdapConnectionManager.getConnections().map(con => {
         return {
-          label: connection.getBaseDn(true),
-          description: connection.getUrl(),
-          name: connection.getName(),
+          label: con.getBaseDn(true),
+          description: con.getUrl(),
+          name: con.getName(),
         };
       });
       window.showQuickPick(connectionOptions, { placeHolder: "Select a connection" }).then(option => {
@@ -99,8 +99,8 @@ export function activate(context: ExtensionContext) {
         }
         // Delete the connection.
         LdapConnectionManager.getConnection(option.name).then(
-          connection => {
-            askAndRemoveConnection(connection);
+          con => {
+            askAndRemoveConnection(con);
           },
           reason => {
             window.showErrorMessage(`Unable to delete connection '${option.name}': ${reason}`);

@@ -103,8 +103,14 @@
       ],
       "view/item/context": [
         {
+          "command": "ldap-explorer.edit-connection",
+          "when": "view == ldap-explorer-view-connections",
+          "group": "inline"
+        },
+        {
           "command": "ldap-explorer.delete-connection",
-          "when": "view == ldap-explorer-view-tree && viewItem == connection"
+          "when": "view == ldap-explorer-view-connections",
+          "group": "inline"
         }
       ]
     },
