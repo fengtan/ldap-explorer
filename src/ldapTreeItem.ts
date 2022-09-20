@@ -52,7 +52,7 @@ export class LdapTreeItem extends vscode.TreeItem {
     // - If the TreeItem is a connection, then do nothing.
     if (dn) {
       this.command =  {
-        command: "ldap-browser.show-attributes",
+        command: "ldap-explorer.show-attributes",
         title: "Show Attributes",
         arguments: [this]
       };

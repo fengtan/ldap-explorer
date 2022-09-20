@@ -10,14 +10,14 @@ export function activate(context: vscode.ExtensionContext) {
 
 	// Populate view with our data provider.
 	const ldapDataProvider = new LdapDataProvider();
-	vscode.window.createTreeView('ldap-browser-view', {treeDataProvider: ldapDataProvider});
+	vscode.window.createTreeView('ldap-explorer-view', {treeDataProvider: ldapDataProvider});
 
 	// Implement "Add connection" command (declared in package.json).
-	context.subscriptions.push(vscode.commands.registerCommand('ldap-browser.add-connection', () => {
+	context.subscriptions.push(vscode.commands.registerCommand('ldap-explorer.add-connection', () => {
 		// Create webview.
 		const panel = vscode.window.createWebviewPanel(
-			'ldap-browser.add-connection',
-			'LDAP Browser: Add new connection',
+			'ldap-explorer.add-connection',
+			'LDAP Explorer: Add new connection',
 			vscode.ViewColumn.One,
 			{
 				enableScripts: true
@@ -47,7 +47,7 @@ export function activate(context: vscode.ExtensionContext) {
 
 						// Refresh view so the new connection shows up.
 						// @todo focus on tree view (in case it was not open) ?
-				  		vscode.commands.executeCommand("ldap-browser.refresh-view");
+				  		vscode.commands.executeCommand("ldap-explorer.refresh-view");
 
 						// @todo UX: message "connection was added to your settings" (along with JSON object and location of the settings file i.e. whether it was stored in global or workspace settings)
 				  		return;
@@ -59,7 +59,7 @@ export function activate(context: vscode.ExtensionContext) {
 	}));
 
 	// Implement "Delete connection" command.
-	context.subscriptions.push(vscode.commands.registerCommand('ldap-browser.delete-connection', (treeItem: LdapTreeItem) => {
+	context.subscriptions.push(vscode.commands.registerCommand('ldap-explorer.delete-connection', (treeItem: LdapTreeItem) => {
 		// Extract name of the connection to be deleted.
 		// This will work only if the command fired from the contextual menu in the tree view.
 		// If the command fired from the command palette then 'treeItem' is empty.
@@ -73,22 +73,22 @@ export function activate(context: vscode.ExtensionContext) {
 				LdapConnectionManager.removeConnection(connection);
 				// Refresh view so the connection does not show up anymore.
 				// @todo refresh does not seem to work right: if I add a new connection then it does not automatically show up in the view
-				vscode.commands.executeCommand("ldap-browser.refresh-view");
+				vscode.commands.executeCommand("ldap-explorer.refresh-view");
 			}
 		});
 	}));
 
 	// Implement "Refresh" command (refreshes the tree view).
-	context.subscriptions.push(vscode.commands.registerCommand('ldap-browser.refresh-view', () => {
+	context.subscriptions.push(vscode.commands.registerCommand('ldap-explorer.refresh-view', () => {
 		ldapDataProvider.refresh();
 	}));
 
 	// Implement "Show attributes" command (details attributes of an LDAP result).
-	context.subscriptions.push(vscode.commands.registerCommand('ldap-browser.show-attributes', (treeItem: LdapTreeItem) => {
+	context.subscriptions.push(vscode.commands.registerCommand('ldap-explorer.show-attributes', (treeItem: LdapTreeItem) => {
 		// Create webview.
 		const panel = vscode.window.createWebviewPanel(
-			'ldap-browser.show-attributes',
-			treeItem.label?.toString() ?? "LDAP Browser",
+			'ldap-explorer.show-attributes',
+			treeItem.label?.toString() ?? "LDAP Explorer",
 			vscode.ViewColumn.One,
 			{
 				enableScripts: true,

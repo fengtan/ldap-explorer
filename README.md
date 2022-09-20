@@ -23,8 +23,7 @@ TODO
 - metadata
   - license (in package.json and in README.md)
   - make sure the repo URL listed in package.json is correct
-  - branch master -> main
-  - rename ldap-browser -> ldap-explorer
+  - CHANGELOG.txt
 - autotests
 - clean up
   - egrep todo
@@ -36,7 +35,7 @@ TODO
 features
   - command "Connect to..." (quick pick server)
   - command *palette* "Delete connection..." (currently disabled in command palette)
-  - command "ldap-browser.show-attributes" should show in command palette (open a quick pick so the user can paste the DN) ; document this feature in README.md
+  - command "ldap-explorer.show-attributes" should show in command palette (open a quick pick so the user can paste the DN) ; document this feature in README.md
   - button "test connection" / verifies credentials
   - ability to *edit* a connection's settings (not just add and delete)
   - creating a new connection should open focus on our view
@@ -58,9 +57,9 @@ Later
 - setting to limit number of results to display (1,000 in jxplorer)
 - implement pager for folders that include > 1,000 items
 
-# ldap-browser README
+# ldap-explorer README
 
-This is the README for your extension "ldap-browser". After writing up a brief description, we recommend including the following sections.
+This is the README for your extension "ldap-explorer". After writing up a brief description, we recommend including the following sections.
 
 ## Features
 

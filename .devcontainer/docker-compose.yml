@@ -5,7 +5,7 @@ services:
     build: .
     command: sleep infinity
     volumes:
-      - ..:/workspaces/ldap-browser:cached
+      - ..:/workspaces/ldap-explorer:cached
   # Dummy LDAP server for testing purposes
   # https://hub.docker.com/r/bitnami/openldap/
   ldap:

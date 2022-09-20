@@ -1,12 +1,12 @@
 {
-  "name": "ldap-browser",
-  "displayName": "LDAP Browser",
-  "description": "LDAP Browser for VS Code",
+  "name": "ldap-explorer",
+  "displayName": "LDAP Explorer",
+  "description": "LDAP Explorer for VS Code",
   "version": "0.0.1",
   "engines": {
     "vscode": "^1.70.0"
   },
-  "repository": "https://github.com/fengtan/ldap-browser",
+  "repository": "https://github.com/fengtan/ldap-explorer",
   "publisher": "fengtan",
   "keywords": [
     "ldap",
@@ -18,96 +18,96 @@
   ],
   "main": "./out/extension.js",
   "activationEvents": [
-    "onCommand:ldap-browser.add-connection",
-    "onView:ldap-browser-view"
+    "onCommand:ldap-explorer.add-connection",
+    "onView:ldap-explorer-view"
   ],
   "contributes": {
     "viewsContainers": {
       "activitybar": [
         {
-          "id": "ldap-browser-container",
-          "title": "LDAP Browser",
+          "id": "ldap-explorer-container",
+          "title": "LDAP Explorer",
           "icon": "$(type-hierarchy-sub)"
         }
       ]
     },
     "views": {
-      "ldap-browser-container": [
+      "ldap-explorer-container": [
         {
-          "id": "ldap-browser-view",
-          "name": "LDAP Browser"
+          "id": "ldap-explorer-view",
+          "name": "LDAP Explorer"
         }
       ]
     },
     "viewsWelcome": [
       {
-        "view": "ldap-browser-view",
-        "contents": "No connection configured.\n[Add new connection](command:ldap-browser.add-connection)"
+        "view": "ldap-explorer-view",
+        "contents": "No connection configured.\n[Add new connection](command:ldap-explorer.add-connection)"
       }
     ],
     "commands": [
       {
-        "command": "ldap-browser.add-connection",
+        "command": "ldap-explorer.add-connection",
         "title": "Add new connection",
-        "category": "LDAP Browser",
+        "category": "LDAP Explorer",
         "icon": "$(add)"
       },
       {
-        "command": "ldap-browser.delete-connection",
+        "command": "ldap-explorer.delete-connection",
         "title": "Delete connection",
-        "category": "LDAP Browser"
+        "category": "LDAP Explorer"
       },
       {
-        "command": "ldap-browser.refresh-view",
+        "command": "ldap-explorer.refresh-view",
         "title": "Refresh",
-        "category": "LDAP Browser",
+        "category": "LDAP Explorer",
         "icon": "$(refresh)"
       },
       {
-        "command": "ldap-browser.show-attributes",
+        "command": "ldap-explorer.show-attributes",
         "title": "Show Attributes",
-        "category": "LDAP Browser"
+        "category": "LDAP Explorer"
       }
     ],
     "menus": {
       "commandPalette": [
         {
-          "command": "ldap-browser.delete-connection",
+          "command": "ldap-explorer.delete-connection",
           "when": "false"
         },
         {
-          "command": "ldap-browser.refresh-view",
+          "command": "ldap-explorer.refresh-view",
           "when": "false"
         },
         {
-          "command": "ldap-browser.show-attributes",
+          "command": "ldap-explorer.show-attributes",
           "when": "false"
         }
       ],
       "view/title": [
         {
-          "command": "ldap-browser.add-connection",
-          "when": "view == ldap-browser-view",
+          "command": "ldap-explorer.add-connection",
+          "when": "view == ldap-explorer-view",
           "group": "navigation"
         },
         {
-          "command": "ldap-browser.refresh-view",
-          "when": "view == ldap-browser-view",
+          "command": "ldap-explorer.refresh-view",
+          "when": "view == ldap-explorer-view",
           "group": "navigation"
         }
       ],
       "view/item/context": [
         {
-          "command": "ldap-browser.delete-connection",
-          "when": "view == ldap-browser-view && viewItem == connection"
+          "command": "ldap-explorer.delete-connection",
+          "when": "view == ldap-explorer-view && viewItem == connection"
         }
       ]
     },
     "configuration": {
       "type": "object",
-      "title": "LDAP Browser settings",
+      "title": "LDAP Explorer settings",
       "properties": {
-        "ldap-browser.connections": {
+        "ldap-explorer.connections": {
           "type": "array",
           "markdownDescription": "Connections list",
           "default": [],

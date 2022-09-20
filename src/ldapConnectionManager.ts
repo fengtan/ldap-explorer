@@ -7,7 +7,7 @@ export class LdapConnectionManager {
 
     // Get all connections from settings.
     static getConnections(): LdapConnection[] {
-        return vscode.workspace.getConfiguration('ldap-browser').get('connections', []).map(connection => new LdapConnection(
+        return vscode.workspace.getConfiguration('ldap-explorer').get('connections', []).map(connection => new LdapConnection(
             connection["name"],
             connection["protocol"],
             connection["host"],
@@ -28,7 +28,7 @@ export class LdapConnectionManager {
 
         // Save new list of connections.
         // @todo if workspace is available then store in workspace settings (.vscode/settings.json), otherwise leave global settings (last parameter of the function - boolean)
-        vscode.workspace.getConfiguration('ldap-browser').update('connections', connections, true);
+        vscode.workspace.getConfiguration('ldap-explorer').update('connections', connections, true);
     }
 
     // Remove existing connection from settings.
@@ -48,7 +48,7 @@ export class LdapConnectionManager {
 
 		// Save new list of connections.
 		// @todo should catch errors in case we are unable to save settings
-		vscode.workspace.getConfiguration('ldap-browser').update('connections', connections, true);
+		vscode.workspace.getConfiguration('ldap-explorer').update('connections', connections, true);
     }
 
 }
