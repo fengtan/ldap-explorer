@@ -20,7 +20,7 @@ TODO
   - make sure the code is well documented and consistent
   - explain Base DN, see that documentation drupal provides
   - list alternatives in README.md (container-based software I listed in jira, as well as Jxplorer)
-  - all commands
+  - explain all commands accessible from the command palette
   - explain connections end up in settings
 - metadata
   - license (in package.json and in README.md)
@@ -31,12 +31,12 @@ TODO
   - egrep todo
   - list anything that is not required for prod in .vscodeignore (e.g. devcontainer.json)
   - list all registered commands in package.json's activationEvents
+  - why does cn=admin,dc=example,dc=org not show up in tree view ?
 - best practices
   - define strings in package.nl.json so they are translatable and common
 - test
   - test "test connection" in various conditions (server down, wrong credentials, wrong base DN etc)
 features
-  - command "ldap-explorer.show-attributes" should show in command palette (open a quick pick so the user can paste the DN, no need to access the DN via the tree view) ; document this feature in README.md
   - ability to *edit* a connection's settings (not just add and delete)
   - creating a new connection should open focus on our view
   - webview values are disposed when go to background
@@ -44,8 +44,11 @@ features
   - UX: when clicking the "plus" icon, this opens multiple webviews to add connections ; ideally you would have only one window for adding connection. See what options are possible when creating the webview (constructor)
   - add command "show-details" to command palette so you can check the contents of an AD group via Quick Pick that would be really awesome
   - when creating a connection, have the option to read the bind password from a file or from an environment variable (so you can add the settings from devcontainer.json without putting the password in git)
+  - support for anonymous binds
+  - make command "refreh" show up in command palette
   - implement security recommendations https://code.visualstudio.com/api/extension-guides/webview#security
   - drop field "connection name", we don't use display it anywhere. Make sure we still have a mechanism to ensure unique connections (and ensure connections are deleted properly from settings)
+  - replace console.log() with a logger recommended by vscode api ?
 
 Later
 - add support for filters (with built-in UI in vscode) ? http://ldapjs.org/filters.html
