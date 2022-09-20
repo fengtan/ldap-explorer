@@ -10,7 +10,7 @@ export function getUri(webview: Webview, extensionUri: Uri, pathList: string[]) 
 
 /**
  * Utility function to get the URI of the Webview UI toolkit.
- * 
+ *
  * @see https://github.com/microsoft/vscode-webview-ui-toolkit
  * @todo drop arguments webview + extensionUri, they should not be needed.
  */
