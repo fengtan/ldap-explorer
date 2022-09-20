@@ -59,7 +59,7 @@ export class LdapTreeItem extends vscode.TreeItem {
     }
   }
 
-  // @todo drop, as well as isExpandable() and getCommand() --> merge with LdapDataProvider, similar to Dependency
+  // @todo drop
   getLdapConnection(): LdapConnection {
     return this.connection;
   }
