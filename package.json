@@ -103,9 +103,6 @@
       ],
       "view/item/context": [
         {
-          "command": "ldap-explorer.show-attributes"
-        },
-        {
           "command": "ldap-explorer.delete-connection",
           "when": "view == ldap-explorer-view-tree && viewItem == connection"
         }
