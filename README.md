@@ -36,10 +36,8 @@ clean up
 - list all registered commands in package.json's activationEvents
 - why does cn=admin,dc=example,dc=org not show up in tree view ?
 - in activate(): refactor the commands implementations, they all look similar
-
-best practices
 - define strings in package.nl.json so they are translatable and common
-- UX: document in webview that you can prepend values with env:
+- git log | grep mas
 
 CI
 - github action should run eslint + autotests
@@ -49,29 +47,33 @@ test
 - test "test connection" in various conditions (invalid host, server down, wrong credentials, wrong base DN etc)
 
 bugs
-- webview values are disposed when go to background
-- editing existing connection multiple times does not seem to work
-- when creating a connection: complain if connection name already exists (must be unique)
-- update welcome views: tree and search views should show no content and ask user to create or select a connection from the connections view
-- add welcome to connections view
-- load *workspace* settings (and *workspace* memento) if they exist, otherwise fall back to *global* settings (and *global* memento)
-- add buttons "edit connection" / "delete connection" to contextual menu ? Or is this redundant from a UX pov
-- should user be able to change the name of a connection ? As it is used as an ID everywhere
-- remove "activate connection" from command palette ?
-- persist "show attributes" webview (if go to background then no contents)
-- bunch of errors in chrome dev tools when click on tree items
+- webview persistence
+  - webview values are disposed when go to background
+  - persist "show attributes" webview (if go to background then no contents)
+  - persist webview that shows search results
+- config
+  - when creating a connection: complain if connection name already exists (must be unique)
+  - editing existing connection multiple times does not seem to work
+  - load *workspace* settings (and *workspace* memento) if they exist, otherwise fall back to *global* settings (and *global* memento)
+  - should user be able to change the name of a connection ? As it is used as an ID everywhere
+  - UX: document in webview that you can prepend values with env:
+- Welcome screens
+  - update welcome views: tree and search views should show no content and ask user to create or select a connection from the connections view
+  - add welcome to connections view
+- UX
+  - add buttons "edit connection" / "delete connection" to contextual menu ? Or is this redundant from a UX pov
+  - remove "activate connection" from command palette ?
+  - provide hyperlink to documentation that explains how to write LDAP filters (notoriously hard)
+  - make search form elements mandatory (filter + attributes should be provided)
+- console
+  - bunch of errors in chrome dev tools when click on tree items
 
-features (later ?)
-- add support for filters, with built-in UI in vscode similar to the source control activity http://ldapjs.org/filters.html ; would allow to open groups when you only know its name (CN) and not its full DN e.g. search which groups a user belongs to
-- content security policy / sanitization https://code.visualstudio.com/api/extension-guides/webview#content-security-policy -> https://code.visualstudio.com/api/extension-guides/command#command-uris ; see example in webview-view-sample
-
-features (never ?)
+features (later ? never ?)
 - support for add/update/delete operations i.e. not a readonly connection ?
-- UX: show connections as a drop-down similar to remote-explorer or debugging interface
-  - https://github.com/microsoft/vscode-extension-samples/tree/main/webview-view-sample
-- support for LDIF files
 
 WC
+- content security policy / sanitization https://code.visualstudio.com/api/extension-guides/webview#content-security-policy -> https://code.visualstudio.com/api/extension-guides/command#command-uris ; see example in webview-view-sample
+- support for LDIF files ?
 - ldapsj accepts a "log" attribute in constructor http://ldapjs.org/client.html#create-a-client ; use it to replace LdapLogger
 
 # ldap-explorer README
