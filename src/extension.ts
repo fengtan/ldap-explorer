@@ -2,7 +2,8 @@ import * as vscode from 'vscode';
 import { LdapConnectionManager } from './ldapConnectionManager';
 import { LdapDataProvider } from './ldapDataProvider';
 import { LdapTreeItem } from './ldapTreeItem';
-import { createAttributesWebview, createAddConnectionWebview } from './webviews';
+import { createAttributesWebview} from './webviews/createAttributesWebview';
+import { createAddConnectionWebview } from './webviews/createAddConnectionWebview';
 
 // This method is called when the extension is activated (see activationEvents in package.json).
 export function activate(context: vscode.ExtensionContext) {
