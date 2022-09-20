@@ -55,10 +55,14 @@ export function activate(context: vscode.ExtensionContext) {
 
 					case 'test':
 						// Test connection.
-						connection.search({scope: "one"});
-						// @todo use the above to show messages below.
-						vscode.window.showInformationMessage('Connection succeeded.');
-						vscode.window.showErrorMessage('Connection failed.');
+						connection.search({scope: "one"}).then(
+							value => {
+								vscode.window.showInformationMessage('Connection succeeded');
+							},
+							reason => {
+								vscode.window.showErrorMessage('Connection failed: ' + reason);
+							}
+						);
 			  	}
 			},
 			undefined,

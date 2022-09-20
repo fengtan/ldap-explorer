@@ -32,11 +32,12 @@ TODO
   - `import * as vscode from 'vscode';` -> we prolly do not need to import everything
 - best practices
   - define strings in package.nl.json so they are translatable and common
+- test
+  - test "test connection" in various conditions (server down, wrong credentials, wrong base DN etc)
 features
   - command "Connect to..." (quick pick server)
   - command *palette* "Delete connection..." (currently disabled in command palette)
   - command "ldap-explorer.show-attributes" should show in command palette (open a quick pick so the user can paste the DN) ; document this feature in README.md
-  - button "test connection" / verifies credentials
   - ability to *edit* a connection's settings (not just add and delete)
   - creating a new connection should open focus on our view
   - webview values are disposed when go to background
