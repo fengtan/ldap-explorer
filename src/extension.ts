@@ -10,7 +10,7 @@ export function activate(context: ExtensionContext) {
 
 	// Create tree view with our LDAP data provider.
 	const ldapDataProvider = new LdapDataProvider();
-	window.createTreeView('ldap-explorer-view', {treeDataProvider: ldapDataProvider});
+	context.subscriptions.push(window.createTreeView('ldap-explorer-view', {treeDataProvider: ldapDataProvider}));
 
 	// Implement "Add connection" command (declared in package.json).
 	context.subscriptions.push(commands.registerCommand('ldap-explorer.add-connection', () => {
@@ -138,8 +138,6 @@ export function activate(context: ExtensionContext) {
 			});
 		}
 	}));
-
-	// @todo is it necessary to pass all registered commands through context.subscriptions.push() ?
 	
 }
 

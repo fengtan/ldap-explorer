@@ -55,7 +55,7 @@ Later
 - support for LDIF files
 
 WC
-- content security policy https://code.visualstudio.com/api/extension-guides/webview#content-security-policy
+- content security policy / sanitization https://code.visualstudio.com/api/extension-guides/webview#content-security-policy -> https://code.visualstudio.com/api/extension-guides/command#command-uris
 
 # ldap-explorer README
 
