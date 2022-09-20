@@ -19,11 +19,13 @@ export function activate(context: vscode.ExtensionContext) {
 	// Implement "Delete connection" command.
 	context.subscriptions.push(vscode.commands.registerCommand('ldap-explorer.delete-connection', (treeItem?: LdapTreeItem) => {
 		if (treeItem instanceof LdapTreeItem) {
-			// treeItem is defined only if the command fired from the contextual menu of the tree view.
+			// The command fired from the contextual menu of the tree view: treeItem is defined.
+			// We can extract the connection associated with the item.
 			const connection = treeItem.getLdapConnection();
 			LdapConnectionManager.removeConnection(connection);
 		} else {
-			// If the command fired from the command palette then treeItem is undefined so we explicitly ask the user to pick a connection.
+			// The command fired from the command palette: treeItem is undefined.
+			// We explicitly ask the user to pick a connection.
 			const connectionNames = LdapConnectionManager.getConnections().map(connection => connection.name);
 			vscode.window.showQuickPick(connectionNames, { placeHolder: "Connection to delete." }).then(name => {
 				// If no connection was selected, then do nothing.
