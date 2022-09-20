@@ -43,6 +43,8 @@ TODO
 features
   - webview values are disposed when go to background
   - replace console.log() with a logger recommended by vscode api - also ldapsj accepts a "log" attribute in constructor http://ldapjs.org/client.html#create-a-client
+    - https://stackoverflow.com/questions/34085330/how-to-write-to-log-from-vscode-extension
+    - https://github.com/vscode-restructuredtext/vscode-restructuredtext/commit/460f9f37cdf048e4c30d2705ff9b89ebd03f535b
   - editing existing connection multiple times does not seem to work
 
 Later
