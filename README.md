@@ -44,6 +44,7 @@ features
   - webview values are disposed when go to background
   - replace console.log() with a logger recommended by vscode api - also ldapsj accepts a "log" attribute in constructor http://ldapjs.org/client.html#create-a-client
   - editing existing connection multiple times does not seem to work
+  - implement onRejected callback of the thenable (everytime we call then())
 
 Later
 - add support for filters, with built-in UI in vscode similar to the source control activity http://ldapjs.org/filters.html ; would allow to open groups when you only know its name (CN) and not its full DN

@@ -54,7 +54,8 @@ export function activate(context: ExtensionContext) {
 						value => {
 							// If connection was successfully removed, refresh tree view so it does not show up anymore.
 							commands.executeCommand("ldap-explorer.refresh-view");
-						}, reason => {
+						},
+						reason => {
 							// If connection could not be removed, show error message.
 							window.showErrorMessage(`Unable to remove connection: ${reason}`);
 						}
