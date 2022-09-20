@@ -20,6 +20,8 @@ TODO
   - make sure the code is well documented and consistent
   - explain Base DN, see that documentation drupal provides
   - list alternatives in README.md (container-based software I listed in jira, as well as Jxplorer)
+  - all commands
+  - explain connections end up in settings
 - metadata
   - license (in package.json and in README.md)
   - make sure the repo URL listed in package.json is correct
@@ -29,7 +31,6 @@ TODO
   - egrep todo
   - list anything that is not required for prod in .vscodeignore (e.g. devcontainer.json)
   - list all registered commands in package.json's activationEvents
-  - `import * as vscode from 'vscode';` -> we prolly do not need to import everything
 - best practices
   - define strings in package.nl.json so they are translatable and common
 - test
