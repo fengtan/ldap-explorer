@@ -46,8 +46,7 @@ bugs
   - webview values are disposed when go to background
   - editing existing connection multiple times does not seem to work
   - when creating a connection: complain if connection name already exists (must be unique)
-  - update welcome views: tree and search views should show nothing and ask user to create or select a connection from the connections view
-  - there should be a 'refresh' button on all views
+  - update welcome views: tree and search views should show no content and ask user to create or select a connection from the connections view
   - add welcome to connections view
 
 features (later ?)

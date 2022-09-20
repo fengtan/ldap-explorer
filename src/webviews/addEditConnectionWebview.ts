@@ -10,7 +10,7 @@ export function createAddEditConnectionWebview(context: ExtensionContext, existi
   // Create webview.
   const panel = window.createWebviewPanel(
     'ldap-explorer.add-edit-connection',
-    existingConnection === undefined ? 'LDAP Explorer: Add new connection' : 'LDAP Explorer: Edit connection',
+    existingConnection === undefined ? 'LDAP Explorer: Add new connection' : `LDAP Explorer: Edit connection '${existingConnection.getName()}'`,
     ViewColumn.One,
     { enableScripts: true }
   );
@@ -119,7 +119,7 @@ export function createAddEditConnectionWebview(context: ExtensionContext, existi
           LdapConnectionManager.addConnection(newConnection).then(
             value => {
               // If connection was successfully added, refresh tree view so it shows up.
-              commands.executeCommand("ldap-explorer.refresh-tree");
+              commands.executeCommand("ldap-explorer.refresh");
             },
             reason => {
               // If connection could not be added, show error message.
@@ -130,7 +130,7 @@ export function createAddEditConnectionWebview(context: ExtensionContext, existi
           LdapConnectionManager.editConnection(newConnection, existingConnection).then(
             value => {
               // If connection was successfully updated, refresh tree view.
-              commands.executeCommand("ldap-explorer.refresh-tree");
+              commands.executeCommand("ldap-explorer.refresh");
             },
             reason => {
               // If connection could not be updated, show error message.
@@ -140,7 +140,7 @@ export function createAddEditConnectionWebview(context: ExtensionContext, existi
         }
 
         // Refresh view so the new connection shows up.
-        commands.executeCommand("ldap-explorer.refresh-tree");
+        commands.executeCommand("ldap-explorer.refresh");
         return;
 
       case 'test':
