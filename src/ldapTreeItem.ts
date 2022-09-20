@@ -17,17 +17,15 @@ export class LdapTreeItem extends TreeItem {
     // - If the TreeItem is a connection, then show its base DN.
     const label = dn ? dn.split(",")[0] : connection.getBaseDn(true);
 
-    // Whether the TreeItem is expandable:
-    // - If the TreeItem is an LDAP result, then it is expandable only if its DN does not start with CN
-    //   as the latter is not supposed to have children ; other designators (OU, DC) are containers
-    //   and may have children in the LDAP hierarchy.
-    // - If the TreeItem is a connection, then it is always expandable (and expanding it means opening
-    //   the root of LDAP hierarchy).
-    const expandable = dn ? !dn.toLowerCase().startsWith("cn") : true;
-    const collapsibleState = expandable ? TreeItemCollapsibleState.Collapsed : TreeItemCollapsibleState.None;
-
-    // Call parent cosntructor.
-    super(label, collapsibleState);
+    // Call parent constructor.
+    //
+    // By default all tree items are expandable, as we cannot determine whether
+    // they have children or not just based on their DN.
+    //
+    // TreeItem does not allow to change the collapsible state after the object
+    // has been created, so tree items with no children will appear expandable
+    // even if they have no child. No a great UX but we have no choice.
+    super(label, TreeItemCollapsibleState.Collapsed);
 
     // Populate attributes specific to LdapTreeItem (i.e. not inherited from TreeItem).
     this.connection = connection;
@@ -46,15 +44,12 @@ export class LdapTreeItem extends TreeItem {
     // - If the TreeItem is a connection, then show its connection string.
     this.description = dn ? "" : this.connection.getUrl();
 
-    // If the TreeItem is not expandable (e.g. CN entry), then clicking on this item should call the command that lists its attributes.
-    // Othewise (e.g. connection or OU entry), do not set any command: clicking on the tree item will fall back to expanding the item.
-    if (!expandable) {
-      this.command =  {
-        command: "ldap-explorer.show-attributes",
-        title: "Show Attributes",
-        arguments: [this]
-      };
-    }
+    // Clicking on the item calls the command that lists its attributes.
+    this.command =  {
+      command: "ldap-explorer.show-attributes",
+      title: "Show Attributes",
+      arguments: [this]
+    };
   }
 
   getLdapConnection(): LdapConnection {
