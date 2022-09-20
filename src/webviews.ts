@@ -37,7 +37,7 @@ export function createAddEditConnectionWebview(context: ExtensionContext, existi
 				<vscode-text-field type="text" id="host" placeholder="e.g. example.net" value="${existingConnection?.getHost(false) ?? ''}">Host *</vscode-text-field>
 			</section>
 			<section>
-				<vscode-text-field type="text" id="port" placeholder="e.g. 389 or 636" value="${existingConnection?.getPort(false) ?? ''}">Port *</vscode-text-field>
+				<vscode-text-field type="text" id="port" placeholder="e.g. 389" value="${existingConnection?.getPort(false) ?? ''}">Port (standard: 389 for ldap, 636 for ldaps) *</vscode-text-field>
 			</section>
 			<section>
 				<vscode-text-field type="text" id="binddn" placeholder="e.g. cn=admin,dc=example,dc=org" value="${existingConnection?.getBindDn(false) ?? ''}">Bind DN</vscode-text-field>
@@ -49,10 +49,9 @@ export function createAddEditConnectionWebview(context: ExtensionContext, existi
 				<vscode-text-field type="text" id="basedn" placeholder="e.g. dc=example,dc=org" value="${existingConnection?.getBaseDn(false) ?? ''}">Base DN *</vscode-text-field>
 			</section>
 			<section>
-				<vscode-text-field type="text" id="timeout" value="${existingConnection?.getTimeout(false) ?? '5000'}">Timeout in milliseconds (leave empty to disable timeout)</vscode-text-field>
+				<vscode-text-field type="text" id="timeout" value="${existingConnection?.getTimeout(false) ?? '5000'}">Timeout in milliseconds (leave empty for infinity)</vscode-text-field>
 			</section>
 
-			<!-- TODO add spacing between form elements -->
 			<!-- TODO complain if connection ID already exists (must be unique) -->
 
 			<vscode-button onClick="submitForm('save')">Save</vscode-button>
@@ -119,8 +118,6 @@ export function createAddEditConnectionWebview(context: ExtensionContext, existi
 
                     // Refresh view so the new connection shows up.
                     commands.executeCommand("ldap-explorer.refresh-view");
-
-                    // @todo UX: message "connection was added to your settings" (along with JSON object and location of the settings file i.e. whether it was stored in global or workspace settings)
                     return;
 
                 case 'test':
@@ -223,7 +220,6 @@ export function createAttributesWebview(ldapConnection: LdapConnection, dn: stri
  * Utility function to get the URI of the Webview UI toolkit.
  *
  * @see https://github.com/microsoft/vscode-webview-ui-toolkit
- * @todo drop arguments webview + extensionUri, they should not be needed.
  */
 export function getWebviewUiToolkitUri(webview: Webview, extensionUri: Uri) {
     const pathList: string[] = [

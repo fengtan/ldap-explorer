@@ -80,7 +80,6 @@ export class LdapConnectionManager {
     }
 
     // Remove existing connection from settings.
-    // @todo removal operation seems to remove the wrong connection
     static removeConnection(connection: LdapConnection) {
 		// Ask for confirmation.
 		window.showInformationMessage(`Are you sure you want to remove the connection ${connection.getBaseDn(true)} (${connection.getUrl()}) ?`, { modal: true}, "Yes").then(confirm => {
