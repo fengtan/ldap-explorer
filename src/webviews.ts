@@ -51,7 +51,7 @@ export function createAddEditConnectionWebview(context: vscode.ExtensionContext,
 				<vscode-text-field type="text" id="basedn" placeholder="e.g. dc=example,dc=org" value="${existingConnection?.getBaseDn(false) ?? ''}">Base DN</vscode-text-field>
 			</section>
 			<section>
-				<vscode-text-field type="text" id="timeout" value="${existingConnection?.getTimeout(false) ?? ''}">Timeout in milliseconds (defaults to infinity)</vscode-text-field>
+				<vscode-text-field type="text" id="timeout" value="${existingConnection?.getTimeout(false) ?? '5000'}">Timeout in milliseconds (leave empty to disable timeout)</vscode-text-field>
 			</section>
 
 			<!-- TODO add spacing between form elements -->
