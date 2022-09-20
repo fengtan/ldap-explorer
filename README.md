@@ -61,6 +61,7 @@ bugs
   - update welcome views: tree and search views should show no content and ask user to create or select a connection from the connections view
   - add welcome to connections view
 - UX
+  - command palette: don't ask for connection just use current active connection
   - add buttons "edit connection" / "delete connection" to contextual menu ? Or is this redundant from a UX pov
   - remove "activate connection" from command palette ?
   - provide hyperlink to documentation that explains how to write LDAP filters (notoriously hard)
