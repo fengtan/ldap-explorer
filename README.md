@@ -12,7 +12,6 @@ TODO
     0 prolly need to run `npm install` too (add `npm install` to devcontainer.json's postCreateAction as well)
   - URL of project on github
   - drop of reference vsc-extension-quickstart.md
-  - option to ask for password on connect (same as sqltools) for security purposes
   - run this command in (devcontainer) terminal to list dummy users ; explain how to fill in the form (webview) to get similar results (e.g. set base DN to dc=example,dc=org)
   ```
   ldapsearch -x -b "dc=example,dc=org" -H ldap://ldap:1389 -D "cn=admin,dc=example,dc=org" -w foobar -LLL
@@ -23,6 +22,7 @@ TODO
   - explain all commands accessible from the command palette
   - explain connections end up in settings
   - anonymous bind: just leave binddn and bindpwd empty when creating a connection
+  - support for environment variables (hello, containers), also handy if you don't want to store unencrypted passwords in vscode settings
 - metadata
   - license (in package.json and in README.md)
   - make sure the repo URL listed in package.json is correct
@@ -46,7 +46,7 @@ features
   - content security policy https://code.visualstudio.com/api/extension-guides/webview#content-security-policy
   - sanitize user input (such as DN's) ? https://code.visualstudio.com/api/extension-guides/webview#sanitize-all-user-input
   - replace console.log() with a logger recommended by vscode api ?
-  - make ldapConnection attributes private
+  - editing existing connection multiple times does not seem to work
 
 Later
 - add support for filters (with built-in UI in vscode) ? http://ldapjs.org/filters.html

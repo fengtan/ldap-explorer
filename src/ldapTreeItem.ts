@@ -15,7 +15,7 @@ export class LdapTreeItem extends vscode.TreeItem {
     // - If the TreeItem is an LDAP result, then show the left-most part of its DN.
     //   For instance given a DN "cn=foo,ou=bar,dc=example,dc=com", show the item as "cn=foo" in the tree view.
     // - If the TreeItem is a connection, then show its base DN.
-    const label = dn ? dn.split(",")[0] : connection.basedn;
+    const label = dn ? dn.split(",")[0] : connection.getBaseDn();
 
     // Whether the TreeItem is expandable:
     // - If the TreeItem is an LDAP result, then it is expandable only if its DN does not start with CN
@@ -39,7 +39,7 @@ export class LdapTreeItem extends vscode.TreeItem {
     // Tooltip of the TreeItem:
     // - If the TreeItem is an LDAP result, then show its full DN.
     // - If the TreeItem is a connection, then show its base DN.
-    this.tooltip = dn ?? this.connection.basedn;
+    this.tooltip = dn ?? this.connection.getBaseDn();
 
     // Description of the TreeItem:
     // - If the TreeItem is an LDAP result, then show no description.
@@ -62,7 +62,7 @@ export class LdapTreeItem extends vscode.TreeItem {
   }
 
   getDn(): string {
-    return this.dn ?? this.connection.basedn;
+    return this.dn ?? this.connection.getBaseDn();
   }
 
   // Get children of this tree item.

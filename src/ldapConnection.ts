@@ -3,12 +3,12 @@ import * as vscode from 'vscode';
 
 export class LdapConnection {
 
-    public protocol: string;
-    public host: string;
-    public port: number;
-    public binddn: string;
-    public bindpwd: string;
-    public basedn: string;
+    private protocol: string;
+    private host: string;
+    private port: number;
+    private binddn: string;
+    private bindpwd: string;
+    private basedn: string;
   
     constructor(protocol: string, host: string, port: number, binddn: string, bindpwd: string, basedn: string) {
       this.protocol = protocol;
@@ -17,6 +17,25 @@ export class LdapConnection {
       this.binddn = binddn;
       this.bindpwd = bindpwd;
       this.basedn = basedn;
+    }
+
+    getProtocol() {
+      return this.protocol;
+    }
+    getHost() {
+      return this.host;
+    }
+    getPort() {
+      return this.port;
+    }
+    getBindDn() {
+      return this.binddn;
+    }
+    getBindPwd() {
+      return this.bindpwd;
+    }
+    getBaseDn() {
+      return this.basedn;
     }
 
     getId(): string {

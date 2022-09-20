@@ -82,7 +82,7 @@ export class LdapConnectionManager {
     // @todo removal operation seems to remove the wrong connection
     static removeConnection(connection: LdapConnection) {
 		// Ask for confirmation.
-		vscode.window.showInformationMessage(`Are you sure you want to remove the connection ${connection.basedn} (${connection.getUrl()}) ?`, { modal: true}, "Yes").then(confirm => {
+		vscode.window.showInformationMessage(`Are you sure you want to remove the connection ${connection.getBaseDn()} (${connection.getUrl()}) ?`, { modal: true}, "Yes").then(confirm => {
 			if (confirm) {
 
                 // Get list of existing connections.

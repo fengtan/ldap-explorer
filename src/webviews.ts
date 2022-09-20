@@ -30,25 +30,25 @@ export function createAddEditConnectionWebview(context: vscode.ExtensionContext,
 		<body>
 			<section>
 				<p>Protocol</p>
-				<vscode-dropdown id="protocol" value="${existingConnection?.protocol ?? 'ldap'}">
+				<vscode-dropdown id="protocol" value="${existingConnection?.getProtocol() ?? 'ldap'}">
 					<vscode-option>ldap</vscode-option>
 					<vscode-option>ldaps</vscode-option>
 				</vscode-dropdown>
 			</section>
 			<section>
-				<vscode-text-field type="text" id="host" placeholder="e.g. example.net" value="${existingConnection?.host ?? ''}">Host</vscode-text-field>
+				<vscode-text-field type="text" id="host" placeholder="e.g. example.net" value="${existingConnection?.getHost() ?? ''}">Host</vscode-text-field>
 			</section>
 			<section>
-				<vscode-text-field type="text" id="port" placeholder="e.g. 389 or 636" value="${existingConnection?.port ?? ''}">Port</vscode-text-field>
+				<vscode-text-field type="text" id="port" placeholder="e.g. 389 or 636" value="${existingConnection?.getPort() ?? ''}">Port</vscode-text-field>
 			</section>
 			<section>
-				<vscode-text-field type="text" id="binddn" placeholder="e.g. cn=admin,dc=example,dc=org" value="${existingConnection?.binddn ?? ''}">Bind DN</vscode-text-field>
+				<vscode-text-field type="text" id="binddn" placeholder="e.g. cn=admin,dc=example,dc=org" value="${existingConnection?.getBindDn() ?? ''}">Bind DN</vscode-text-field>
 			</section>
 			<section>
-				<vscode-text-field type="text" id="bindpwd" value="${existingConnection?.bindpwd ?? ''}">Bind Password</vscode-text-field>
+				<vscode-text-field type="text" id="bindpwd" value="${existingConnection?.getBindPwd() ?? ''}">Bind Password</vscode-text-field>
 			</section>
 			<section>
-				<vscode-text-field type="text" id="basedn" placeholder="e.g. dc=example,dc=org" value="${existingConnection?.basedn ?? ''}">Base DN</vscode-text-field>
+				<vscode-text-field type="text" id="basedn" placeholder="e.g. dc=example,dc=org" value="${existingConnection?.getBaseDn() ?? ''}">Base DN</vscode-text-field>
 			</section>
 
 			<!-- TODO add spacing between form elements -->
