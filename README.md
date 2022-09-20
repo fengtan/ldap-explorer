@@ -1,5 +1,5 @@
 TODO
-- eslint indentation rule
+- `pre-commit run --all-files` fails on certain files
 - documentation in README
   - screenshot etc
   - pointer to https://code.visualstudio.com/api

@@ -8,9 +8,22 @@
     "dbaeumer.vscode-eslint"
   ],
   "settings": {
+    "editor.tabSize": 2,
+    "editor.autoIndent": "full",
+    "editor.detectIndentation": false,
+    "editor.insertSpaces": true,
+    "editor.formatOnPaste": true,
+    "editor.formatOnSave": false,
+    "editor.renderWhitespace": "boundary",
+    "editor.wordWrapColumn": 80,
+    "editor.wordWrap": "on",
+    "editor.rulers": [
+      80
+    ],
     "files.exclude": {
       "out": false
     },
+    "files.trimTrailingWhitespace": true,
     "search.exclude": {
       "out": true
     },
