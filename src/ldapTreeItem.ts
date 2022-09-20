@@ -1,8 +1,8 @@
 // Represents an item in the tree view (either a connection or an lDAP result).
 
 import { LdapConnection } from "./ldapConnection";
-import * as vscode from 'vscode';
 import { getWebviewUiToolkitUri } from "./utilities";
+import * as vscode from 'vscode';
 
 export class LdapTreeItem extends vscode.TreeItem {
 
@@ -81,7 +81,6 @@ export class LdapTreeItem extends vscode.TreeItem {
     this.connection.search({scope: "base"}, this.dn).then(entries => {
 
       // We need to include this JS into the webview in order to use the Webview UI toolkit.
-      // See https://github.com/microsoft/vscode-webview-ui-toolkit
       const toolkitUri = getWebviewUiToolkitUri(webviewPanel.webview, context.extensionUri);
 
       webviewPanel.webview.html =

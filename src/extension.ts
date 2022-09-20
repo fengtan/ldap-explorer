@@ -3,6 +3,7 @@ import { LdapConnectionManager } from './ldapConnectionManager';
 import { LdapConnection } from './ldapConnection';
 import { LdapDataProvider } from './ldapDataProvider';
 import { LdapTreeItem } from './ldapTreeItem';
+import { getWebviewUiToolkitUri } from "./utilities";
 
 // This method is called when the extension is activated (see activationEvents in package.json).
 export function activate(context: vscode.ExtensionContext) {
@@ -24,7 +25,7 @@ export function activate(context: vscode.ExtensionContext) {
 		);
 
 		// Populate webview content.
-		panel.webview.html = getAddNewConnectionHTML();
+		panel.webview.html = getAddNewConnectionHTML(panel, context);
 
 		// Handle messages from webview to the extension.
 		// See https://code.visualstudio.com/api/extension-guides/webview#passing-messages-from-a-webview-to-an-extension
@@ -110,39 +111,35 @@ export function deactivate() {
 
 }
 
-function getAddNewConnectionHTML() {
+// @todo drop these arguments, this makes no sense
+function getAddNewConnectionHTML(webviewPanel: vscode.WebviewPanel, context: vscode.ExtensionContext) {
 	// @todo ideally generate the form by inspecting package.json configuration contribution
+
+	// We need to include this JS into the webview in order to use the Webview UI toolkit.
+	const toolkitUri = getWebviewUiToolkitUri(webviewPanel.webview, context.extensionUri);
+
 	return `<!DOCTYPE html>
 	<html lang="en">
+		<head>
+			<script type="module" src="${toolkitUri}"></script>
+  		</head>
 		<body>
-			<label for="name">Connection name</label>
-			<input type="text" name="name" id="name"/>
-
-			<label for="protocol">Protocol</label>
-			<select name="protocol" id="protocol">
-				<option value="ldap">ldap</option>
-				<option value="ldaps">ldaps</option>
-			</select>
-
-			<label for="host">Host</label>
-			<input type="text" name="host" id="host"/>
-
-			<label for="port">Port</label>
-			<input type="text" name="port" id="port"/>
-
-			<label for="binddn">Bind DN</label>
-			<input type="text" name="binddn" id="binddn"/>
-
-			<label for="bindpwd">Bind password</label>
-			<input type="text" name="bindpwd" id="bindpwd"/>
-
-			<label for="basedn">Base DN</label>
-			<input type="text" name="basedn" id="basedn"/>
+			<vscode-text-field type="text" id="name" autofocus>Connection name</vscode-text-field>
+			<p>Protocol</p>
+			<vscode-dropdown id="protocol">
+  				<vscode-option>ldap</vscode-option>
+  				<vscode-option>ldaps</vscode-option>
+			</vscode-dropdown>
+			<vscode-text-field type="text" id="host" autofocus>Host</vscode-text-field>
+			<vscode-text-field type="text" id="port" autofocus>Port</vscode-text-field>
+			<vscode-text-field type="text" id="binddn" autofocus>Bind DN</vscode-text-field>
+			<vscode-text-field type="text" id="bindpwd" autofocus>Bind Password</vscode-text-field>
+			<vscode-text-field type="text" id="basedn" autofocus>Base DN</vscode-text-field>
 
 			<!-- TODO complain if the connection name submitted already exists (must be unique) -->
 			<!-- TODO some form elements should be mandatory -->
 			<!-- TODO set defaults (same as those defined in package.json) -->
-			<button type="button" onClick="save()">Save</button>
+			<vscode-button onClick="save()">Save</vscode-button>
 			<script>
 				const vscode = acquireVsCodeApi();
 				function save() {
