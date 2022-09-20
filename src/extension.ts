@@ -40,7 +40,6 @@ export function activate(context: vscode.ExtensionContext) {
 	// Implement "Refresh" command (refreshes the tree view).
 	context.subscriptions.push(vscode.commands.registerCommand('ldap-explorer.refresh-view', () => {
 		ldapDataProvider.refresh();
-		// @todo focus on the view ? don't implement focus anywhere else
 	}));
 
 	// Implement "Show attributes" command (show attributes of the DN in a webview).

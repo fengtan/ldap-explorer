@@ -170,7 +170,6 @@ export function createAddConnectionWebview(context: vscode.ExtensionContext) {
                     LdapConnectionManager.addConnection(connection);
 
                     // Refresh view so the new connection shows up.
-                    // @todo focus on tree view (in case it was not open) ?
                     vscode.commands.executeCommand("ldap-explorer.refresh-view");
 
                     // @todo UX: message "connection was added to your settings" (along with JSON object and location of the settings file i.e. whether it was stored in global or workspace settings)
