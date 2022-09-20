@@ -110,6 +110,8 @@ export function activate(context: ExtensionContext) {
     }
   }));
 
+  // @todo implement 'activate connection' command
+
   // Implement "Refresh" command (refreshes the tree view).
   context.subscriptions.push(commands.registerCommand('ldap-explorer.refresh-tree', () => {
     ldapTreeDataProvider.refresh();

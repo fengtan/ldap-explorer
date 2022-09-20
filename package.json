@@ -21,6 +21,7 @@
     "onCommand:ldap-explorer.add-connection",
     "onCommand:ldap-explorer.edit-connection",
     "onCommand:ldap-explorer.delete-connection",
+    "onCommand:ldap-explorer.activate-connection",
     "onCommand:ldap-explorer.refresh-tree",
     "onCommand:ldap-explorer.show-attributes",
     "onView:ldap-explorer-view-connections",
@@ -77,6 +78,11 @@
         "title": "Delete connection",
         "category": "LDAP Explorer",
         "icon": "$(trash)"
+      },
+      {
+        "command": "ldap-explorer.activate-connection",
+        "title": "Activate connection",
+        "category": "LDAP Explorer"
       },
       {
         "command": "ldap-explorer.refresh-tree",

@@ -1,4 +1,4 @@
-import { Event, EventEmitter, TreeDataProvider, TreeItem, TreeItemCollapsibleState } from 'vscode';
+import { Event, EventEmitter, ThemeIcon, TreeDataProvider, TreeItem, TreeItemCollapsibleState } from 'vscode';
 import { LdapConnection } from './LdapConnection';
 import { LdapConnectionManager } from './LdapConnectionManager';
 
@@ -9,10 +9,12 @@ export class LdapConnectionsDataProvider implements TreeDataProvider<LdapConnect
     treeItem.description = connection.getUrl();
     // @todo add tooltip (base DN / bind DN ?)
     // @todo add icon so user knows which connection is active (codicon "circle-large", "circle-large-filled") ; to know which connection is active check the VSCode global state
+    treeItem.iconPath = new ThemeIcon('circle');
     // @todo no: clicking on a connection should *activate* the connection, not open webview to edit its details -> create icon for this.
+    // @todo depending on globalState, clicking on the treeitem should also deactivate the connection
     treeItem.command = {
-      command: "ldap-explorer.edit-connection",
-      title: "Edit connection",
+      command: "ldap-explorer.activate-connection",
+      title: "Activate connection",
       arguments: [connection]
     };
     return treeItem;
