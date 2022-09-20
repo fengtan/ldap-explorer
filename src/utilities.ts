@@ -1,4 +1,3 @@
-import path = require("path");
 import { Uri, Webview } from "vscode";
 
 /**
