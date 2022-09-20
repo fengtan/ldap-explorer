@@ -41,12 +41,10 @@ features
   - creating a new connection should open focus on our view
   - webview values are disposed when go to background
   - additional options when creating connection: log, timeout, connectTimeout (http://ldapjs.org/client.html#create-a-client)
-  - UX: when clicking the "plus" icon, this opens multiple webviews to add connections ; ideally you would have only one window for adding connection. See what options are possible when creating the webview (constructor)
-  - add command "show-details" to command palette so you can check the contents of an AD group via Quick Pick that would be really awesome
   - when creating a connection, have the option to read the bind password from a file or from an environment variable (so you can add the settings from devcontainer.json without putting the password in git)
   - support for anonymous binds
-  - make command "refreh" show up in command palette
-  - implement security recommendations https://code.visualstudio.com/api/extension-guides/webview#security
+  - content security policy https://code.visualstudio.com/api/extension-guides/webview#content-security-policy
+  - sanitize user input (such as DN's) ? https://code.visualstudio.com/api/extension-guides/webview#sanitize-all-user-input
   - drop field "connection name", we don't use display it anywhere. Make sure we still have a mechanism to ensure unique connections (and ensure connections are deleted properly from settings)
   - replace console.log() with a logger recommended by vscode api ?
 
