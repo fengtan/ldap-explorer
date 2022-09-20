@@ -27,7 +27,7 @@ export function activate(context: vscode.ExtensionContext) {
 			// We explicitly ask the user to pick a connection.
 			const connectionOptions = LdapConnectionManager.getConnections().map(connection => {
 				return {
-					label: connection.getBaseDn(),
+					label: connection.getBaseDn(true),
 					description: connection.getUrl(),
 					id: connection.getId(),
 				};
@@ -54,7 +54,7 @@ export function activate(context: vscode.ExtensionContext) {
 			// We explicitly ask the user to pick a connection.
 			const connectionOptions = LdapConnectionManager.getConnections().map(connection => {
 				return {
-					label: connection.getBaseDn(),
+					label: connection.getBaseDn(true),
 					description: connection.getUrl(),
 					id: connection.getId(),
 				};
@@ -86,7 +86,7 @@ export function activate(context: vscode.ExtensionContext) {
 			// Explicitly ask the user for a connection.
 			const connectionOptions = LdapConnectionManager.getConnections().map(connection => {
 				return {
-					label: connection.getBaseDn(),
+					label: connection.getBaseDn(true),
 					description: connection.getUrl(),
 					id: connection.getId(),
 				};

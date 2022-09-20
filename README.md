@@ -22,7 +22,7 @@ TODO
   - explain all commands accessible from the command palette
   - explain connections end up in settings
   - anonymous bind: just leave binddn and bindpwd empty when creating a connection
-  - support for environment variables (hello, containers), also handy if you don't want to store unencrypted passwords in vscode settings
+  - support for environment variables when value starts with "env:" (hello, containers), also handy if you don't want to store unencrypted passwords in vscode settings ; a few environment variables are readily available in test (docker) environment: LDAP_*. If you change the env vars in docker-compose.yml then you will have to rebuild the container in order to see the changes in the UI
 - metadata
   - license (in package.json and in README.md)
   - make sure the repo URL listed in package.json is correct
@@ -40,17 +40,16 @@ TODO
 - test
   - test "test connection" in various conditions (server down, wrong credentials, wrong base DN etc)
 features
+  - UX: document in webview that you can prepend values with env:
   - webview values are disposed when go to background
-  - when creating a connection, have the option to read the bind password from a file or from an environment variable (so you can add the settings from devcontainer.json without putting the password in git)
   - content security policy https://code.visualstudio.com/api/extension-guides/webview#content-security-policy
   - replace console.log() with a logger recommended by vscode api - also ldapsj accepts a "log" attribute in constructor http://ldapjs.org/client.html#create-a-client
   - editing existing connection multiple times does not seem to work
+  - if a connection breaks then everything freezes: set a default timeout to 5 seconds ? And rename "defaults to infinity" to "leave empty for infinity"
 
 Later
-- add support for filters (with built-in UI in vscode) ? http://ldapjs.org/filters.html
+- add support for filters, with built-in UI in vscode similar to the source control activity http://ldapjs.org/filters.html ; would allow to open groups when you only know its name (CN) and not its full DN
 - UX: show connections as a drop-down similar to remote-explorer or debugging interface
-- option to sort results ? https://stackoverflow.com/questions/63678234/creating-the-client-control-object-for-ldapjs-server-side-sorting
-- bookmarks feature (with favorite OU's) ?
 - somehow an option to search e.g. which groups a user belongs to
 - support for add/update/delete operations i.e. not a readonly connection ?
 - setting to limit number of results to display (1,000 in jxplorer)

@@ -131,7 +131,7 @@
                 "default": ""
               },
               "port": {
-                "type": "number",
+                "type": "string",
                 "description": "Port",
                 "default": ""
               },
@@ -151,7 +151,7 @@
                 "default": ""
               },
               "timeout": {
-                "type": "number",
+                "type": "string",
                 "description": "Timeout (milliseconds)",
                 "default": ""
               }

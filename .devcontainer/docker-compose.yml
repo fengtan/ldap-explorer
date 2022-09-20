@@ -6,6 +6,13 @@ services:
     command: sleep infinity
     volumes:
       - ..:/workspaces/ldap-explorer:cached
+    environment:
+      LDAP_PROTOCOL: ldap
+      LDAP_HOST: ldap
+      LDAP_PORT: 1389
+      LDAP_BIND_DN: cn=admin,dc=example,dc=org
+      LDAP_BIND_PWD: foobar
+      LDAP_BASE_DN: dc=example,dc=org
   # Dummy LDAP server for testing purposes
   # https://hub.docker.com/r/bitnami/openldap/
   ldap:

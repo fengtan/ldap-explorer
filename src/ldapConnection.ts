@@ -3,15 +3,16 @@ import * as vscode from 'vscode';
 
 export class LdapConnection {
 
+    // Port and timeout are stored as strings instea of numbers because they may reference environment variables instead of actual numbers.
     private protocol: string;
     private host: string;
-    private port: number;
+    private port: string;
     private binddn: string;
     private bindpwd: string;
     private basedn: string;
-    private timeout: number;
+    private timeout: string;
   
-    constructor(protocol: string, host: string, port: number, binddn: string, bindpwd: string, basedn: string, timeout: number) {
+    constructor(protocol: string, host: string, port: string, binddn: string, bindpwd: string, basedn: string, timeout: string) {
       this.protocol = protocol;
       this.host = host;
       this.port = port;
@@ -21,47 +22,59 @@ export class LdapConnection {
       this.timeout = timeout;
     }
 
-    getProtocol() {
-      return this.protocol;
+    getProtocol(expanded: boolean) {
+      return expanded ? this.expand(this.protocol) : this.protocol;
     }
-    getHost() {
-      return this.host;
+    getHost(expanded: boolean) {
+      return expanded ? this.expand(this.host) : this.host;
     }
-    getPort() {
-      return this.port;
+    getPort(expanded: boolean) {
+      return expanded ? this.expand(this.port) : this.port;
     }
-    getBindDn() {
-      return this.binddn;
+    getBindDn(expanded: boolean) {
+      return expanded ? this.expand(this.binddn) : this.binddn;
     }
-    getBindPwd() {
-      return this.bindpwd;
+    getBindPwd(expanded: boolean) {
+      return expanded ? this.expand(this.bindpwd) : this.bindpwd;
     }
-    getBaseDn() {
-      return this.basedn;
+    getBaseDn(expanded: boolean) {
+      return expanded ? this.expand(this.basedn) : this.basedn;
     }
-    getTimeout() {
-      return this.timeout;
+    getTimeout(expanded: boolean) {
+      return expanded ? this.expand(this.timeout) : this.timeout;
     }
 
+    // Connection ID ; used to identify its uniqueness.
     getId(): string {
-      return `${this.protocol}://${this.binddn}@${this.host}:${this.port}/${this.basedn}`;
+      return `${this.getProtocol(false)}://${this.getBindDn(false)}@${this.getHost(false)}:${this.getPort(false)}/${this.getBaseDn(false)}`;
     }
   
+    // Connection URL ; used to connect to the server.
     getUrl(): string {
-      return `${this.protocol}://${this.host}:${this.port}`;
+      return `${this.getProtocol(true)}://${this.getHost(true)}:${this.getPort(true)}`;
+    }
+
+    // If value starts with "env:" (e.g. "env:myvar"), then return value of environment variable (e.g. value of "myvar").
+    expand(value: string): string {
+      if (!value.startsWith("env:")) {
+        return value;
+      }
+      const varName = value.split(":")[1];
+      return process.env[varName] ?? "";
     }
 
     // Searches LDAP.
-    search(options: ldapjs.SearchOptions, base: string = this.basedn): Thenable<ldapjs.SearchEntry[]> {
+    search(options: ldapjs.SearchOptions, base: string = this.getBaseDn(true)): Thenable<ldapjs.SearchEntry[]> {
       return new Promise((resolve, reject) => {
+
         // Create ldapjs client.
         const client = ldapjs.createClient({
           url: [this.getUrl()],
-          timeout: this.timeout
+          timeout: Number(this.getTimeout(true))
         });
 
         // Bind.
-        client.bind(this.binddn, this.bindpwd, (err) => {
+        client.bind(this.getBindDn(true), this.getBindPwd(true), (err) => {
           if (err) {
             // @todo same comments as client.on below.
             console.log(err); // @todo drop ?

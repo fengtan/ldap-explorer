@@ -30,28 +30,28 @@ export function createAddEditConnectionWebview(context: vscode.ExtensionContext,
 		<body>
 			<section>
 				<p>Protocol</p>
-				<vscode-dropdown id="protocol" value="${existingConnection?.getProtocol() ?? 'ldap'}">
+				<vscode-dropdown id="protocol" value="${existingConnection?.getProtocol(false) ?? 'ldap'}">
 					<vscode-option>ldap</vscode-option>
 					<vscode-option>ldaps</vscode-option>
 				</vscode-dropdown>
 			</section>
 			<section>
-				<vscode-text-field type="text" id="host" placeholder="e.g. example.net" value="${existingConnection?.getHost() ?? ''}">Host</vscode-text-field>
+				<vscode-text-field type="text" id="host" placeholder="e.g. example.net" value="${existingConnection?.getHost(false) ?? ''}">Host</vscode-text-field>
 			</section>
 			<section>
-				<vscode-text-field type="text" id="port" placeholder="e.g. 389 or 636" value="${existingConnection?.getPort() ?? ''}">Port</vscode-text-field>
+				<vscode-text-field type="text" id="port" placeholder="e.g. 389 or 636" value="${existingConnection?.getPort(false) ?? ''}">Port</vscode-text-field>
 			</section>
 			<section>
-				<vscode-text-field type="text" id="binddn" placeholder="e.g. cn=admin,dc=example,dc=org" value="${existingConnection?.getBindDn() ?? ''}">Bind DN</vscode-text-field>
+				<vscode-text-field type="text" id="binddn" placeholder="e.g. cn=admin,dc=example,dc=org" value="${existingConnection?.getBindDn(false) ?? ''}">Bind DN</vscode-text-field>
 			</section>
 			<section>
-				<vscode-text-field type="text" id="bindpwd" value="${existingConnection?.getBindPwd() ?? ''}">Bind Password</vscode-text-field>
+				<vscode-text-field type="text" id="bindpwd" value="${existingConnection?.getBindPwd(false) ?? ''}">Bind Password</vscode-text-field>
 			</section>
 			<section>
-				<vscode-text-field type="text" id="basedn" placeholder="e.g. dc=example,dc=org" value="${existingConnection?.getBaseDn() ?? ''}">Base DN</vscode-text-field>
+				<vscode-text-field type="text" id="basedn" placeholder="e.g. dc=example,dc=org" value="${existingConnection?.getBaseDn(false) ?? ''}">Base DN</vscode-text-field>
 			</section>
 			<section>
-				<vscode-text-field type="text" id="timeout" value="${existingConnection?.getTimeout() ?? ''}">Timeout in milliseconds (defaults to infinity)</vscode-text-field>
+				<vscode-text-field type="text" id="timeout" value="${existingConnection?.getTimeout(false) ?? ''}">Timeout in milliseconds (defaults to infinity)</vscode-text-field>
 			</section>
 
 			<!-- TODO add spacing between form elements -->
@@ -129,7 +129,7 @@ export function createAttributesWebview(ldapConnection: LdapConnection, dn: stri
 	// Create webview.
 	const panel = vscode.window.createWebviewPanel(
 		'ldap-explorer.show-attributes',
-		dn ?? "LDAP Explorer", // @todo title should be cn=foobar, not the full DN
+		dn.split(",")[0], // Set webview title to "OU=foobar", not the full DN.
 		vscode.ViewColumn.One,
 		{
 			enableScripts: true,
