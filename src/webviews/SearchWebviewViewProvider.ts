@@ -30,18 +30,21 @@ export class SearchWebviewViewProvider implements WebviewViewProvider {
           </section>
           <section>
             <!-- when parsing the text area make sure we account for windows-style CRLF -->
-            <vscode-text-area id="attributes" placeholder="e.g. member">Attributes</vscode-text-area><!-- TODO explain, one attribute per line -->
+            <!-- TODO explain, one attribute per line -->
+            <!-- TODO "leave empty to show all attributes" ? -->
+            <vscode-text-area id="attributes" placeholder="e.g. member">Attributes</vscode-text-area>
           </section>
+          <!-- TODO expose scope to end user (base, sub) -->
 
           <vscode-button onClick="search()">Search</vscode-button>
 
           <script>
-				    const vscode = acquireVsCodeApi();
-				    function search() {
-					    vscode.postMessage({
-						    command: "search",
+            const vscode = acquireVsCodeApi();
+            function search() {
+              vscode.postMessage({
+                command: "search",
                 filter: document.getElementById("filter").value,
-						    attributes: document.getElementById("attributes").value
+                attributes: document.getElementById("attributes").value
               });
             }
 			    </script>

@@ -38,7 +38,7 @@ clean up
 - in activate(): refactor the commands implementations, they all look similar
 - define strings in package.nl.json so they are translatable and common
 - git log | grep mas
-- make sure there is no unnecessary import ; run some code optimization tool / quality check
+- make sure there is no unnecesary import ; run some code optimization tool / quality checks
 
 CI
 - github action should run eslint + autotests
@@ -70,6 +70,7 @@ bugs
   - in all webviews: not really necessary to include "LDAP Explorer" in title, creates noise
 - console
   - bunch of errors in chrome dev tools when click on tree items
+  - bunch of errors in console also when searching
 
 features (later ? never ?)
 - support for add/update/delete operations i.e. not a readonly connection ?

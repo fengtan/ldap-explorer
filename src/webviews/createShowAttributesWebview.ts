@@ -3,19 +3,20 @@ import { LdapConnection } from '../LdapConnection';
 import { getWebviewUiToolkitUri } from './utils';
 
 export function createShowAttributesWebview(connection: LdapConnection, dn: string, context: ExtensionContext) {
-  // Create webview.
-  const panel = window.createWebviewPanel(
-    'ldap-explorer.show-attributes',
-    dn.split(",")[0], // Set webview title to "OU=foobar", not the full DN.
-    ViewColumn.One,
-    {
-      enableScripts: true
-    }
-  );
 
   // Scope is set to "base" so we only get attributes about the current (base) node https://ldapwiki.com/wiki/BaseObject
   connection.search({ scope: "base" }, dn).then(
     entries => {
+      // Create webview.
+      const panel = window.createWebviewPanel(
+        'ldap-explorer.show-attributes',
+        dn.split(",")[0], // Set webview title to "OU=foobar", not the full DN.
+        ViewColumn.One,
+        {
+          enableScripts: true
+        }
+      );
+
       // We need to include this JS into the webview in order to use the Webview UI toolkit.
       const toolkitUri = getWebviewUiToolkitUri(panel.webview, context.extensionUri);
 
@@ -40,7 +41,7 @@ export function createShowAttributesWebview(connection: LdapConnection, dn: stri
 						    { columnDataKey: "value", title: "Value" },
 						  ];
 						  // Data (rows).
-						  grid.rowsData = event.data.rows;
+						  grid.rowsData = event.data.rowsData;
 						  break;
 					  }
 				  });
@@ -54,12 +55,12 @@ export function createShowAttributesWebview(connection: LdapConnection, dn: stri
       }
 
       // Build list of rows (1 row = 1 attribute).
-      let rows: any[] = [];
+      let rowsData: any[] = [];
       entries.forEach(entry => {
         entry.attributes.forEach(attribute => {
           const vals: string[] = Array.isArray(attribute.vals) ? attribute.vals : [attribute.vals];
           vals.forEach(val => {
-            rows.push({ name: attribute.type, value: val });
+            rowsData.push({ name: attribute.type, value: val });
           });
         });
       });
@@ -68,7 +69,7 @@ export function createShowAttributesWebview(connection: LdapConnection, dn: stri
       // See https://code.visualstudio.com/api/extension-guides/webview#passing-messages-from-an-extension-to-a-webview
       panel.webview.postMessage({
         command: "populate",
-        rows: rows
+        rowsData: rowsData
       });
 
     },

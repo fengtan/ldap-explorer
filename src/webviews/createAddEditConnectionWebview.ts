@@ -62,20 +62,20 @@ export function createAddEditConnectionWebview(context: ExtensionContext, existi
 			<vscode-button onClick="submitForm('save')">Save</vscode-button>
 			<vscode-button onClick="submitForm('test')" appearance="secondary">Test</vscode-button>
 			<script>
-				const vscode = acquireVsCodeApi();
-				function submitForm(command) {
-					vscode.postMessage({
-						command: command,
+        const vscode = acquireVsCodeApi();
+        function submitForm(command) {
+          vscode.postMessage({
+            command: command,
             name: document.getElementById("name").value,
-						protocol: document.getElementById("protocol").value,
-						host: document.getElementById("host").value,
-						port: document.getElementById("port").value,
-						binddn: document.getElementById("binddn").value,
-						bindpwd: document.getElementById("bindpwd").value,
-						basedn: document.getElementById("basedn").value,
-						timeout: document.getElementById("timeout").value,
-					});
-				}
+            protocol: document.getElementById("protocol").value,
+            host: document.getElementById("host").value,
+            port: document.getElementById("port").value,
+            binddn: document.getElementById("binddn").value,
+            bindpwd: document.getElementById("bindpwd").value,
+            basedn: document.getElementById("basedn").value,
+            timeout: document.getElementById("timeout").value,
+          });
+        }
 			</script>
 		</body>
 	</html>`;
