@@ -8,7 +8,9 @@ export function createShowAttributesWebview(ldapConnection: LdapConnection, dn: 
     'ldap-explorer.show-attributes',
     dn.split(",")[0], // Set webview title to "OU=foobar", not the full DN.
     ViewColumn.One,
-    { enableScripts: true }
+    {
+      enableScripts: true
+    }
   );
 
   // Scope is set to "base" so we only get attributes about the current (base) node https://ldapwiki.com/wiki/BaseObject
@@ -21,27 +23,27 @@ export function createShowAttributesWebview(ldapConnection: LdapConnection, dn: 
         `<!DOCTYPE html>
 			<html lang="en">
 				<head>
-				<script type="module" src="${toolkitUri}"></script>
+				  <script type="module" src="${toolkitUri}"></script>
 				</head>
 				<body>
-				<h1>${dn}</h1>
-				<vscode-data-grid id="grid" aria-label="Attributes" grid-template-columns="1fr 7fr"></vscode-data-grid>
-				<script>
-				// Populate grid in webview when receiving data from the extension.
-				window.addEventListener('message', event => {
-					switch (event.data.command) {
-					case 'populate':
-						const grid = document.getElementById("grid");
-						// Column titles.
-						grid.columnDefinitions = [
-						{ columnDataKey: "name", title: "Attribute" },
-						{ columnDataKey: "value", title: "Value" },
-						];
-						// Data (rows).
-						grid.rowsData = event.data.rows;
-						break;
-					}
-				});
+				  <h1>${dn}</h1>
+				  <vscode-data-grid id="grid" aria-label="Attributes" grid-template-columns="1fr 7fr"></vscode-data-grid>
+				  <script>
+				  // Populate grid in webview when receiving data from the extension.
+				  window.addEventListener('message', event => {
+					  switch (event.data.command) {
+					  case 'populate':
+						  const grid = document.getElementById("grid");
+						  // Column titles.
+						  grid.columnDefinitions = [
+						    { columnDataKey: "name", title: "Attribute" },
+						    { columnDataKey: "value", title: "Value" },
+						  ];
+						  // Data (rows).
+						  grid.rowsData = event.data.rows;
+						  break;
+					  }
+				  });
 				</script>
 			</html>`;
 

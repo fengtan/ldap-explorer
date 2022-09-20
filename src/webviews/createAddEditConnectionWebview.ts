@@ -12,7 +12,9 @@ export function createAddEditConnectionWebview(context: ExtensionContext, existi
     'ldap-explorer.add-edit-connection',
     existingConnection === undefined ? 'LDAP Explorer: Add new connection' : `LDAP Explorer: Edit connection '${existingConnection.getName()}'`,
     ViewColumn.One,
-    { enableScripts: true }
+    {
+      enableScripts: true
+    }
   );
 
   // We need to include this JS into the webview in order to use the Webview UI toolkit.
@@ -26,7 +28,7 @@ export function createAddEditConnectionWebview(context: ExtensionContext, existi
 	<html lang="en">
 		<head>
 			<script type="module" src="${toolkitUri}"></script>
-  		</head>
+  	</head>
 		<body>
 			<section>
 				<vscode-text-field type="text" id="name" placeholder="My connection" value="${existingConnection?.getName() ?? ''}">Connection name *</vscode-text-field>

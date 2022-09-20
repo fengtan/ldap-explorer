@@ -1,4 +1,5 @@
 import { CancellationToken, ExtensionContext, WebviewView, WebviewViewProvider, WebviewViewResolveContext, window } from "vscode";
+import { createSearchResultsWebview } from "./createSearchResultsWebview";
 import { getWebviewUiToolkitUri } from './utils';
 
 export class SearchWebviewViewProvider implements WebviewViewProvider {
@@ -52,7 +53,7 @@ export class SearchWebviewViewProvider implements WebviewViewProvider {
       message => {
         switch (message.command) {
         case 'search':
-          window.showInformationMessage('foo'); // @tood
+          createSearchResultsWebview(this.extensionContext, message.filter, message.attributes);
           break;
         }
       },

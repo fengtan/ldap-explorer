@@ -38,6 +38,7 @@ clean up
 - in activate(): refactor the commands implementations, they all look similar
 - define strings in package.nl.json so they are translatable and common
 - git log | grep mas
+- make sure there is no unnecessary import ; run some code optimization tool / quality check
 
 CI
 - github action should run eslint + autotests
@@ -66,6 +67,7 @@ bugs
   - remove "activate connection" from command palette ?
   - provide hyperlink to documentation that explains how to write LDAP filters (notoriously hard)
   - make search form elements mandatory (filter + attributes should be provided)
+  - in all webviews: not really necessary to include "LDAP Explorer" in title, creates noise
 - console
   - bunch of errors in chrome dev tools when click on tree items
 
