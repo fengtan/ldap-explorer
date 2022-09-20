@@ -63,12 +63,14 @@ export class LdapConnectionManager {
 		        connections.splice(index, 1);
 
 		        // Save new list of connections.
-		        // @todo should catch errors in case we are unable to save settings
-		        vscode.workspace.getConfiguration('ldap-explorer').update('connections', connections, true);
-
-				// Refresh view so the connection does not show up anymore.
-				// @todo refresh does not seem to work right: if I add a new connection then it does not automatically show up in the view use async/await, or make removeConnection Thenable
-				vscode.commands.executeCommand("ldap-explorer.refresh-view");
+		        vscode.workspace.getConfiguration('ldap-explorer').update('connections', connections, true).then(
+                    value => {
+                        // If connection was successfully added, refresh tree view so it does not show up anymore.
+                        vscode.commands.executeCommand("ldap-explorer.refresh-view");
+                    }, reason => {
+		                // @todo should catch errors and show Error message if we are unable to save settings
+                    }
+                );
 			}
 		});
     }
