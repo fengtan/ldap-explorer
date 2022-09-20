@@ -24,6 +24,7 @@ TODO
   - anonymous bind: just leave binddn and bindpwd empty when creating a connection
   - support for environment variables when value starts with "env:" (hello, containers), also handy if you don't want to store unencrypted passwords in vscode settings ; a few environment variables are readily available in test (docker) environment: LDAP_*. If you change the env vars in docker-compose.yml then you will have to rebuild the container in order to see the changes in the UI
   - explain that connection details are added to the settings" (along with JSON object and location of the settings file i.e. whether it was stored in global or workspace settings) - provide an example
+  - explain how to reveal the logs (logger output channel)
 - metadata
   - license (in package.json and in README.md)
   - make sure the repo URL listed in package.json is correct
@@ -42,9 +43,7 @@ TODO
   - test "test connection" in various conditions (invalid host, server down, wrong credentials, wrong base DN etc)
 features
   - webview values are disposed when go to background
-  - replace console.log() with a logger recommended by vscode api - also ldapsj accepts a "log" attribute in constructor http://ldapjs.org/client.html#create-a-client
-    - https://stackoverflow.com/questions/34085330/how-to-write-to-log-from-vscode-extension
-    - https://github.com/vscode-restructuredtext/vscode-restructuredtext/commit/460f9f37cdf048e4c30d2705ff9b89ebd03f535b
+  - ldapsj accepts a "log" attribute in constructor http://ldapjs.org/client.html#create-a-client ; use it to replace LdapLogger
   - editing existing connection multiple times does not seem to work
 
 Later

@@ -2,6 +2,7 @@
 
 import { workspace } from 'vscode';
 import { LdapConnection } from './ldapConnection';
+import { LdapLogger } from './ldapLogger';
 
 export class LdapConnectionManager {
 
@@ -25,7 +26,7 @@ export class LdapConnectionManager {
             return Promise.reject(`Unable to find connection ${id} in settings`);
         }
         if (filteredConnections.length > 1) {
-            console.log(`Found ${filteredConnections.length} LDAP connections with ID ${id}, expected at most 1.`);
+            LdapLogger.getOutputChannel().appendLine(`Found ${filteredConnections.length} LDAP connections with ID ${id}, expected at most 1.`);
         }
         return Promise.resolve(filteredConnections[0]);
     }

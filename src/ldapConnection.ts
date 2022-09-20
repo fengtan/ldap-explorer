@@ -1,4 +1,5 @@
 import { createClient, SearchEntry, SearchOptions } from 'ldapjs';
+import { LdapLogger } from './ldapLogger';
 
 export class LdapConnection {
 
@@ -98,13 +99,14 @@ export class LdapConnection {
 
             let results: SearchEntry[] = [];
             res.on('searchRequest', (searchRequest) => {
-              console.log(`searchRequest: ${searchRequest.messageID}`); // @todo logger
+              LdapLogger.getOutputChannel().appendLine(`Search request: ${JSON.stringify(searchRequest)}`);
             });
             res.on('searchEntry', (entry) => {
-              results.push(entry); // @todo logger
+              results.push(entry);
+              LdapLogger.getOutputChannel().appendLine(`Search entry: ${entry.dn}`);
             });
             res.on('searchReference', (referral) => {
-              console.log(`referral: ${referral.uris.join()}`); // @todo logger
+              LdapLogger.getOutputChannel().appendLine(`Search referral: ${referral.uris.join()}`);
             });
             res.on('error', (err) => {
               return reject(`Unable to search: ${err.message}`);
