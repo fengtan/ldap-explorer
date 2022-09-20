@@ -6,8 +6,6 @@ import { LdapConnectionManager } from './ldapConnectionManager';
 // If a connection is passed as argument, then the form will edit this connection.
 export function createAddEditConnectionWebview(context: ExtensionContext, existingConnection?: LdapConnection) {
 
-	// @todo ideally generate the form by inspecting package.json configuration contribution
-
     // Create webview.
     const panel = window.createWebviewPanel(
         'ldap-explorer.add-edit-connection',
@@ -20,6 +18,9 @@ export function createAddEditConnectionWebview(context: ExtensionContext, existi
 	const toolkitUri = getWebviewUiToolkitUri(panel.webview, context.extensionUri);
 
     // Populate webview content.
+    // The VS Code API seems to provide no way to inspect the configuration schema, so make sure all
+	// HTML fields listed in the form below match the contributed configuration described in package.json
+	// (field labels, types, default values).
     panel.webview.html = `<!DOCTYPE html>
 	<html lang="en">
 		<head>
