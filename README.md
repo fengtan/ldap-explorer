@@ -57,7 +57,6 @@ features
   - when creating a connection, have the option to read the bind password from a file or from an environment variable (so you can add the settings from devcontainer.json without putting the password in git)
   - implement security recommendations https://code.visualstudio.com/api/extension-guides/webview#security
   - drop field "connection name", we don't use display it anywhere. Make sure we still have a mechanism to ensure unique connections (and ensure connections are deleted properly from settings)
-  - "add connection" webview should use webview UI (e.g. button should be styled as blue vscode button: try <vscode-button>Save</vscode-button>)
 
 WC
 - add support for filters (with built-in UI in vscode) ? http://ldapjs.org/filters.html

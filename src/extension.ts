@@ -124,17 +124,31 @@ function getAddNewConnectionHTML(webviewPanel: vscode.WebviewPanel, context: vsc
 			<script type="module" src="${toolkitUri}"></script>
   		</head>
 		<body>
-			<vscode-text-field type="text" id="name" autofocus>Connection name</vscode-text-field>
-			<p>Protocol</p>
-			<vscode-dropdown id="protocol">
-  				<vscode-option>ldap</vscode-option>
-  				<vscode-option>ldaps</vscode-option>
-			</vscode-dropdown>
-			<vscode-text-field type="text" id="host" autofocus>Host</vscode-text-field>
-			<vscode-text-field type="text" id="port" autofocus>Port</vscode-text-field>
-			<vscode-text-field type="text" id="binddn" autofocus>Bind DN</vscode-text-field>
-			<vscode-text-field type="text" id="bindpwd" autofocus>Bind Password</vscode-text-field>
-			<vscode-text-field type="text" id="basedn" autofocus>Base DN</vscode-text-field>
+			<section>
+				<vscode-text-field type="text" id="name" autofocus>Connection name</vscode-text-field>
+			</section>
+			<section>
+				<p>Protocol</p>
+				<vscode-dropdown id="protocol">
+					<vscode-option>ldap</vscode-option>
+					<vscode-option>ldaps</vscode-option>
+				</vscode-dropdown>
+			</section>
+			<section>
+				<vscode-text-field type="text" id="host" autofocus>Host</vscode-text-field>
+			</section>
+			<section>
+				<vscode-text-field type="text" id="port" autofocus>Port</vscode-text-field>
+			</section>
+			<section>
+				<vscode-text-field type="text" id="binddn" autofocus>Bind DN</vscode-text-field>
+			</section>
+			<section>
+				<vscode-text-field type="text" id="bindpwd" autofocus>Bind Password</vscode-text-field>
+			</section>
+			<section>
+				<vscode-text-field type="text" id="basedn" autofocus>Base DN</vscode-text-field>
+			</section>
 
 			<!-- TODO complain if the connection name submitted already exists (must be unique) -->
 			<!-- TODO some form elements should be mandatory -->
