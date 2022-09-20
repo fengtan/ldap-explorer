@@ -49,6 +49,7 @@ features
 Later
 - add support for filters, with built-in UI in vscode similar to the source control activity http://ldapjs.org/filters.html ; would allow to open groups when you only know its name (CN) and not its full DN
 - UX: show connections as a drop-down similar to remote-explorer or debugging interface
+  - https://github.com/microsoft/vscode-extension-samples/tree/main/webview-view-sample
 - somehow an option to search e.g. which groups a user belongs to
 - support for add/update/delete operations i.e. not a readonly connection ?
 - setting to limit number of results to display (1,000 in jxplorer)
