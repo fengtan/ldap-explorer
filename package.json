@@ -38,8 +38,16 @@
     "views": {
       "ldap-explorer-container": [
         {
+          "id": "ldap-explorer-view-connections",
+          "name": "Connections"
+        },
+        {
           "id": "ldap-explorer-view-tree",
           "name": "Tree"
+        },
+        {
+          "id": "ldap-explorer-view-search",
+          "name": "Search"
         }
       ]
     },

@@ -1,10 +1,10 @@
 // Provides data to the tree view.
 
 import { Event, EventEmitter, TreeDataProvider, TreeItem } from 'vscode';
-import { LdapConnectionManager } from './ldapConnectionManager';
-import { LdapTreeItem } from './ldapTreeItem';
+import { LdapConnectionManager } from './LdapConnectionManager';
+import { LdapTreeItem } from './LdapTreeItem';
 
-export class LdapDataProvider implements TreeDataProvider<LdapTreeItem> {
+export class LdapTreeDataProvider implements TreeDataProvider<LdapTreeItem> {
 
   getTreeItem(treeItem: LdapTreeItem): TreeItem {
     // LdapTreeItem extends TreeItem so we can just return treeItem.

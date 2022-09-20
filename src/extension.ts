@@ -1,8 +1,8 @@
 import { commands, ExtensionContext, window } from 'vscode';
-import { LdapConnection } from './ldapConnection';
-import { LdapConnectionManager } from './ldapConnectionManager';
-import { LdapDataProvider } from './ldapDataProvider';
-import { LdapTreeItem } from './ldapTreeItem';
+import { LdapConnection } from './LdapConnection';
+import { LdapConnectionManager } from './LdapConnectionManager';
+import { LdapTreeDataProvider } from './LdapTreeDataProvider';
+import { LdapTreeItem } from './LdapTreeItem';
 import { createAddEditConnectionWebview } from './webviews/addEditConnectionWebview';
 import { createShowAttributesWebview } from './webviews/showAttributesView';
 
@@ -10,8 +10,10 @@ import { createShowAttributesWebview } from './webviews/showAttributesView';
 export function activate(context: ExtensionContext) {
 
   // Create tree view with our LDAP data provider.
-  const ldapDataProvider = new LdapDataProvider();
-  context.subscriptions.push(window.createTreeView('ldap-explorer-view-tree', { treeDataProvider: ldapDataProvider }));
+  const ldapTreeDataProvider = new LdapTreeDataProvider();
+  context.subscriptions.push(window.createTreeView('ldap-explorer-view-tree', { treeDataProvider: ldapTreeDataProvider }));
+
+  // @todo implement connections view, search view
 
   // Implement "Add connection" command (declared in package.json).
   context.subscriptions.push(commands.registerCommand('ldap-explorer.add-connection', () => {
@@ -106,7 +108,7 @@ export function activate(context: ExtensionContext) {
 
   // Implement "Refresh" command (refreshes the tree view).
   context.subscriptions.push(commands.registerCommand('ldap-explorer.refresh-tree', () => {
-    ldapDataProvider.refresh();
+    ldapTreeDataProvider.refresh();
   }));
 
   // Implement "Show attributes" command (show attributes of the DN in a webview).

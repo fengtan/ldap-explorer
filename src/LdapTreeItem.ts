@@ -1,6 +1,6 @@
 // Represents an item in the tree view (either a connection or an lDAP result).
 
-import { LdapConnection } from "./ldapConnection";
+import { LdapConnection } from "./LdapConnection";
 import { TreeItem, TreeItemCollapsibleState } from 'vscode';
 
 export class LdapTreeItem extends TreeItem {

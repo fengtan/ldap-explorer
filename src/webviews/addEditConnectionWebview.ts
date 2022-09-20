@@ -1,6 +1,6 @@
 import { commands, ExtensionContext, ViewColumn, window } from 'vscode';
-import { LdapConnection } from '../ldapConnection';
-import { LdapConnectionManager } from '../ldapConnectionManager';
+import { LdapConnection } from '../LdapConnection';
+import { LdapConnectionManager } from '../LdapConnectionManager';
 import { getWebviewUiToolkitUri } from './utils';
 
 // If no connection is passed as argument, then the form will create a new connection.

@@ -1,5 +1,5 @@
 import { createClient, SearchEntry, SearchOptions } from 'ldapjs';
-import { LdapLogger } from './ldapLogger';
+import { LdapLogger } from './LdapLogger';
 
 export class LdapConnection {
 

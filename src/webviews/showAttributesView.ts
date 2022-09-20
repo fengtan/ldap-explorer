@@ -1,5 +1,5 @@
 import { ExtensionContext, ViewColumn, window } from 'vscode';
-import { LdapConnection } from '../ldapConnection';
+import { LdapConnection } from '../LdapConnection';
 import { getWebviewUiToolkitUri } from './utils';
 
 export function createShowAttributesWebview(ldapConnection: LdapConnection, dn: string, context: ExtensionContext) {

@@ -1,8 +1,8 @@
 // Manages storage of connections in VS Code settings.
 
 import { workspace } from 'vscode';
-import { LdapConnection } from './ldapConnection';
-import { LdapLogger } from './ldapLogger';
+import { LdapConnection } from './LdapConnection';
+import { LdapLogger } from './LdapLogger';
 
 export class LdapConnectionManager {
 
