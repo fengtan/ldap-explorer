@@ -1,5 +1,4 @@
 import * as vscode from 'vscode';
-import { LdapConnection } from './ldapConnection';
 import { LdapConnectionManager } from './ldapConnectionManager';
 import { LdapDataProvider } from './ldapDataProvider';
 import { LdapTreeItem } from './ldapTreeItem';
@@ -18,7 +17,7 @@ export function activate(context: vscode.ExtensionContext) {
 	}));
 
 	// Implement "Delete connection" command.
-	context.subscriptions.push(vscode.commands.registerCommand('ldap-explorer.delete-connection', async (treeItem?: LdapTreeItem) => {
+	context.subscriptions.push(vscode.commands.registerCommand('ldap-explorer.delete-connection', (treeItem?: LdapTreeItem) => {
 		if (treeItem instanceof LdapTreeItem) {
 			// treeItem is defined only if the command fired from the contextual menu of the tree view.
 			const connection = treeItem.getLdapConnection();
@@ -26,10 +25,7 @@ export function activate(context: vscode.ExtensionContext) {
 		} else {
 			// If the command fired from the command palette then treeItem is undefined so we explicitly ask the user to pick a connection.
 			const connectionNames = LdapConnectionManager.getConnections().map(connection => connection.name);
-			await vscode.window.showQuickPick(connectionNames, {
-				placeHolder: "Connection to delete.",
-				onDidSelectItem: item => vscode.window.showInformationMessage(`Selected ${item}`)
-			}).then(name => {
+			vscode.window.showQuickPick(connectionNames, { placeHolder: "Connection to delete." }).then(name => {
 				// If no connection was selected, then do nothing.
 				if (name === undefined) {
 					return;
@@ -37,8 +33,6 @@ export function activate(context: vscode.ExtensionContext) {
 				// Otherwise delete the connection.
 				const connection = LdapConnectionManager.getConnection(name);
 				LdapConnectionManager.removeConnection(connection);
-			}, reason => {
-				// @todo user did not pick a connection, should not attempt to remove any connection from the settings
 			});
 		}
 	}));
