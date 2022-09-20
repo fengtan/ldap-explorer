@@ -33,12 +33,12 @@ TODO
   - list anything that is not required for prod in .vscodeignore (e.g. devcontainer.json)
   - list all registered commands in package.json's activationEvents
   - why does cn=admin,dc=example,dc=org not show up in tree view ?
+  - in activate(): refactor the commands implementations, they all look similar
 - best practices
   - define strings in package.nl.json so they are translatable and common
 - test
   - test "test connection" in various conditions (server down, wrong credentials, wrong base DN etc)
 features
-  - ability to edit a connection from command palette
   - creating a new connection should open focus on our view
   - webview values are disposed when go to background
   - additional options when creating connection: log, timeout, connectTimeout (http://ldapjs.org/client.html#create-a-client)

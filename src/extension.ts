@@ -18,8 +18,29 @@ export function activate(context: vscode.ExtensionContext) {
 
 	// Implement "Edit connection" command.
 	context.subscriptions.push(vscode.commands.registerCommand('ldap-explorer.edit-connection', (treeItem?: LdapTreeItem) => {
-		// @todo if command fired from command palette, then ask for a connection to be picked up (similar to delete command).
-		webviews.createAddEditConnectionWebview(context, treeItem?.getLdapConnection());
+		if (treeItem instanceof LdapTreeItem) {
+			// The command fired from the contextual menu of the tree view: treeItem is defined.
+			// We can extract the connection associated with the item.
+			webviews.createAddEditConnectionWebview(context, treeItem?.getLdapConnection());
+		} else {
+			// The command fired from the command palette: treeItem is undefined.
+			// We explicitly ask the user to pick a connection.
+			const connectionOptions = LdapConnectionManager.getConnections().map(connection => {
+				return {
+					label: connection.basedn,
+					description: connection.getUrl(),
+					id: connection.getId(),
+				};
+			});
+			vscode.window.showQuickPick(connectionOptions, { placeHolder: "Select a connection" }).then(option => {
+				// If no connection was selected, then do nothing.
+				if (option === undefined) {
+					return;
+				}
+				// Otherwise edit the connection.
+				webviews.createAddEditConnectionWebview(context, LdapConnectionManager.getConnection(option.id));
+			});
+		}
 	}));
 
 	// Implement "Delete connection" command.
@@ -38,7 +59,7 @@ export function activate(context: vscode.ExtensionContext) {
 					id: connection.getId(),
 				};
 			});
-			vscode.window.showQuickPick(connectionOptions, { placeHolder: "Select a connection to delete." }).then(option => {
+			vscode.window.showQuickPick(connectionOptions, { placeHolder: "Select a connection" }).then(option => {
 				// If no connection was selected, then do nothing.
 				if (option === undefined) {
 					return;
