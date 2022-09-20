@@ -1,7 +1,7 @@
 import * as vscode from 'vscode';
-import { getWebviewUiToolkitUri } from "./utilities";
-import { LdapConnection } from '../ldapConnection';
-import { LdapConnectionManager } from '../ldapConnectionManager';
+import { getWebviewUiToolkitUri } from "../utilities";
+import { LdapConnection } from '../../ldapConnection';
+import { LdapConnectionManager } from '../../ldapConnectionManager';
 
 export function createAddConnectionWebview(context: vscode.ExtensionContext) {
 

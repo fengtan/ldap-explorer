@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
-import { LdapConnection } from '../ldapConnection';
-import { getWebviewUiToolkitUri } from "./utilities";
+import { LdapConnection } from '../../ldapConnection';
+import { getWebviewUiToolkitUri } from "../utilities";
 
 export function createAttributesWebview(ldapConnection: LdapConnection, dn: string, context: vscode.ExtensionContext) {
 	// Create webview.
