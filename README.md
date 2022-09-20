@@ -41,23 +41,22 @@ features
   - ability to *edit* a connection's settings (not just add and delete)
   - creating a new connection should open focus on our view
   - webview values are disposed when go to background
-  - setting to limit number of results to display (1,000 in jxplorer)
-  - implement pager for folders that include > 1,000 items
-  - support for add/update/delete operations i.e. not a readonly connection ?
   - additional options when creating connection: log, timeout, connectTimeout (http://ldapjs.org/client.html#create-a-client)
   - UX: when clicking the "plus" icon, this opens multiple webviews to add connections ; ideally you would have only one window for adding connection. See what options are possible when creating the webview (constructor)
-  - UX: should multiple webviews "show-details" be allowed ? Autoclose by default, similar to VSCode editor ?
   - add command "show-details" to command palette so you can check the contents of an AD group via Quick Pick that would be really awesome
   - when creating a connection, have the option to read the bind password from a file or from an environment variable (so you can add the settings from devcontainer.json without putting the password in git)
   - implement security recommendations https://code.visualstudio.com/api/extension-guides/webview#security
   - drop field "connection name", we don't use display it anywhere. Make sure we still have a mechanism to ensure unique connections (and ensure connections are deleted properly from settings)
 
-WC
+Later
 - add support for filters (with built-in UI in vscode) ? http://ldapjs.org/filters.html
 - UX: show connections as a drop-down similar to remote-explorer or debugging interface
 - option to sort results ? https://stackoverflow.com/questions/63678234/creating-the-client-control-object-for-ldapjs-server-side-sorting
 - bookmarks feature (with favorite OU's) ?
 - somehow an option to search e.g. which groups a user belongs to
+- support for add/update/delete operations i.e. not a readonly connection ?
+- setting to limit number of results to display (1,000 in jxplorer)
+- implement pager for folders that include > 1,000 items
 
 # ldap-browser README
 
