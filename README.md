@@ -57,6 +57,7 @@ Later
 - support for add/update/delete operations i.e. not a readonly connection ?
 - setting to limit number of results to display (1,000 in jxplorer)
 - implement pager for folders that include > 1,000 items
+- support for LDIF files
 
 # ldap-explorer README
 
