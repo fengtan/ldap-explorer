@@ -5,7 +5,7 @@ import { LdapConnectionManager } from './LdapConnectionManager';
 import { LdapConnectionsDataProvider } from './tree-providers/ConnectionTreeDataProvider';
 import { LdapTreeDataProvider } from './tree-providers/EntryTreeDataProvider';
 import { createAddEditConnectionWebview } from './webviews/addEditConnectionWebview';
-import { createShowAttributesWebview } from './webviews/showAttributesView';
+import { createShowAttributesWebview } from './webviews/showAttributesWebview';
 import { FakeEntry } from './FakeEntry';
 
 // This method is called when the extension is activated (see activationEvents in package.json).

@@ -52,6 +52,7 @@ bugs
   - add buttons "edit connection" / "delete connection" to contextual menu ? Or is this redundant from a UX pov
   - should user be able to change the name of a connection ? As it is used as an ID everywhere
   - remove "activate connection" from command palette ?
+  - persist "show attributes" webview (if go to background then no contents)
 
 features (later ?)
 - add support for filters, with built-in UI in vscode similar to the source control activity http://ldapjs.org/filters.html ; would allow to open groups when you only know its name (CN) and not its full DN e.g. search which groups a user belongs to
