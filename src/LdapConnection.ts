@@ -4,6 +4,7 @@ import { LdapLogger } from './LdapLogger';
 export class LdapConnection {
 
   // Port and timeout are stored as strings instea of numbers because they may reference environment variables instead of actual numbers.
+  private name: string;
   private protocol: string;
   private host: string;
   private port: string;
@@ -12,7 +13,8 @@ export class LdapConnection {
   private basedn: string;
   private timeout: string;
 
-  constructor(protocol: string, host: string, port: string, binddn: string, bindpwd: string, basedn: string, timeout: string) {
+  constructor(name: string, protocol: string, host: string, port: string, binddn: string, bindpwd: string, basedn: string, timeout: string) {
+    this.name = name;
     this.protocol = protocol;
     this.host = host;
     this.port = port;
@@ -22,6 +24,9 @@ export class LdapConnection {
     this.timeout = timeout;
   }
 
+  getName() {
+    return this.name;
+  }
   getProtocol(evaluate: boolean) {
     return this.get(this.protocol, evaluate);
   }
@@ -46,11 +51,6 @@ export class LdapConnection {
 
   get(value: string, evaluate: boolean) {
     return evaluate ? this.evaluate(value) : value;
-  }
-
-  // Connection ID ; used to identify its uniqueness.
-  getId(): string {
-    return `${this.getProtocol(false)}://${this.getBindDn(false)}@${this.getHost(false)}:${this.getPort(false)}/${this.getBaseDn(false)}`;
   }
 
   // Connection URL ; used to connect to the server.

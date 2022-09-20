@@ -23,7 +23,9 @@
     "onCommand:ldap-explorer.delete-connection",
     "onCommand:ldap-explorer.refresh-tree",
     "onCommand:ldap-explorer.show-attributes",
-    "onView:ldap-explorer-view-tree"
+    "onView:ldap-explorer-view-connections",
+    "onView:ldap-explorer-view-tree",
+    "onView:ldap-explorer-view-search"
   ],
   "contributes": {
     "viewsContainers": {
@@ -123,7 +125,18 @@
           "default": [],
           "items": {
             "type": "object",
+            "required": [
+              "name",
+              "protocol",
+              "host",
+              "port",
+              "basedn"
+            ],
             "properties": {
+              "name": {
+                "type": "string",
+                "description": "Name"
+              },
               "protocol": {
                 "type": "string",
                 "description": "Protocol",

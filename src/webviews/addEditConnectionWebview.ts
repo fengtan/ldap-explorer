@@ -29,6 +29,9 @@ export function createAddEditConnectionWebview(context: ExtensionContext, existi
   		</head>
 		<body>
 			<section>
+				<vscode-text-field type="text" id="name" placeholder="My connection" value="${existingConnection?.getName() ?? ''}">Connection name *</vscode-text-field>
+			</section>
+			<section>
 				<p>Protocol *</p>
 				<vscode-dropdown id="protocol" value="${existingConnection?.getProtocol(false) ?? 'ldap'}">
 					<vscode-option>ldap</vscode-option>
@@ -61,6 +64,7 @@ export function createAddEditConnectionWebview(context: ExtensionContext, existi
 				function submitForm(command) {
 					vscode.postMessage({
 						command: command,
+            name: document.getElementById("name").value,
 						protocol: document.getElementById("protocol").value,
 						host: document.getElementById("host").value,
 						port: document.getElementById("port").value,
@@ -80,6 +84,7 @@ export function createAddEditConnectionWebview(context: ExtensionContext, existi
     message => {
       // Build connection object.
       const newConnection = new LdapConnection(
+        message.name,
         message.protocol,
         message.host,
         message.port,

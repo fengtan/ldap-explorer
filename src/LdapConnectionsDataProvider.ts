@@ -5,9 +5,8 @@ import { LdapConnectionManager } from './LdapConnectionManager';
 export class LdapConnectionsDataProvider implements TreeDataProvider<LdapConnection> {
 
   getTreeItem(connection: LdapConnection): TreeItem {
-    // @todo would be more user friendly for tree item label to be the connection's name, and the desription to be the connection's URL.
-    const treeItem = new TreeItem(connection.getUrl(), TreeItemCollapsibleState.None);
-    treeItem.description = connection.getBindDn(true);
+    const treeItem = new TreeItem(connection.getName(), TreeItemCollapsibleState.None);
+    treeItem.description = connection.getUrl();
     return treeItem;
   }
 

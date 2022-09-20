@@ -9,6 +9,7 @@ export class LdapConnectionManager {
   // Get all connections from settings.
   static getConnections(): LdapConnection[] {
     return workspace.getConfiguration('ldap-explorer').get('connections', []).map(connection => new LdapConnection(
+      connection["name"],
       connection["protocol"],
       connection["host"],
       connection["port"],
@@ -19,14 +20,14 @@ export class LdapConnectionManager {
     ));
   }
 
-  // Get connection by ID, or undefined if no connection was found.
-  static getConnection(id: string): Thenable<LdapConnection> {
-    const filteredConnections = this.getConnections().filter(connection => connection.getId() === id);
+  // Get connection by name, or undefined if no connection was found.
+  static getConnection(name: string): Thenable<LdapConnection> {
+    const filteredConnections = this.getConnections().filter(connection => connection.getName() === name);
     if (filteredConnections.length < 1) {
-      return Promise.reject(`Unable to find connection ${id} in settings`);
+      return Promise.reject(`Unable to find connection '${name}' in settings`);
     }
     if (filteredConnections.length > 1) {
-      LdapLogger.getOutputChannel().appendLine(`Found ${filteredConnections.length} LDAP connections with ID ${id}, expected at most 1.`);
+      LdapLogger.getOutputChannel().appendLine(`Found ${filteredConnections.length} LDAP connections with name '${name}', expected at most 1.`);
     }
     return Promise.resolve(filteredConnections[0]);
   }
@@ -49,9 +50,9 @@ export class LdapConnectionManager {
     let connections = this.getConnections();
 
     // Get index of connection to edit.
-    const index = connections.findIndex(con => con.getId() === existingConnection.getId());
+    const index = connections.findIndex(con => con.getName() === existingConnection.getName());
     if (index < 0) {
-      return Promise.reject(`Connection ${existingConnection.getId()} does not exist in settings`);
+      return Promise.reject(`Connection '${existingConnection.getName()}' does not exist in settings`);
     }
 
     // Replace existing connection with new connection.
@@ -67,9 +68,9 @@ export class LdapConnectionManager {
     const connections = this.getConnections();
 
     // Get index of connection to delete.
-    const index = connections.findIndex(con => con.getId() === connection.getId());
+    const index = connections.findIndex(con => con.getName() === connection.getName());
     if (index < 0) {
-      return Promise.reject(`Connection ${connection.getId()} does not exist in settings`);
+      return Promise.reject(`Connection '${connection.getName()}' does not exist in settings`);
     }
 
     // Remove connection from the list.

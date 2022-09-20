@@ -37,7 +37,7 @@ export function activate(context: ExtensionContext) {
         return {
           label: connection.getBaseDn(true),
           description: connection.getUrl(),
-          id: connection.getId(),
+          name: connection.getName(),
         };
       });
       window.showQuickPick(connectionOptions, { placeHolder: "Select a connection" }).then(option => {
@@ -46,12 +46,12 @@ export function activate(context: ExtensionContext) {
           return;
         }
         // Otherwise edit the connection.
-        LdapConnectionManager.getConnection(option.id).then(
+        LdapConnectionManager.getConnection(option.name).then(
           connection => {
             createAddEditConnectionWebview(context, connection);
           },
           reason => {
-            window.showErrorMessage(`Unable to edit connection "${option.id}": ${reason}`);
+            window.showErrorMessage(`Unable to edit connection '${option.name}': ${reason}`);
           }
         );
       });
@@ -62,7 +62,7 @@ export function activate(context: ExtensionContext) {
   context.subscriptions.push(commands.registerCommand('ldap-explorer.delete-connection', (treeItem?: LdapTreeItem) => {
     // Utility function to ask for a confirmation and actually remove the connection from settings.
     const askAndRemoveConnection = (connection: LdapConnection) => {
-      window.showInformationMessage(`Are you sure you want to remove the connection ${connection.getBaseDn(true)} (${connection.getUrl()}) ?`, { modal: true }, "Yes").then(confirm => {
+      window.showInformationMessage(`Are you sure you want to remove the connection '${connection.getName()} ?`, { modal: true }, "Yes").then(confirm => {
         if (confirm) {
           LdapConnectionManager.removeConnection(connection).then(
             value => {
@@ -89,7 +89,7 @@ export function activate(context: ExtensionContext) {
         return {
           label: connection.getBaseDn(true),
           description: connection.getUrl(),
-          id: connection.getId(),
+          name: connection.getName(),
         };
       });
       window.showQuickPick(connectionOptions, { placeHolder: "Select a connection" }).then(option => {
@@ -98,12 +98,12 @@ export function activate(context: ExtensionContext) {
           return;
         }
         // Delete the connection.
-        LdapConnectionManager.getConnection(option.id).then(
+        LdapConnectionManager.getConnection(option.name).then(
           connection => {
             askAndRemoveConnection(connection);
           },
           reason => {
-            window.showErrorMessage(`Unable to delete connection "${option.id}": ${reason}`);
+            window.showErrorMessage(`Unable to delete connection '${option.name}': ${reason}`);
           }
         );
       });
@@ -128,7 +128,7 @@ export function activate(context: ExtensionContext) {
         return {
           label: connection.getBaseDn(true),
           description: connection.getUrl(),
-          id: connection.getId(),
+          name: connection.getName(),
         };
       });
       window.showQuickPick(connectionOptions, { placeHolder: "Select a connection" }).then(option => {
@@ -136,7 +136,7 @@ export function activate(context: ExtensionContext) {
         if (option === undefined) {
           return;
         }
-        LdapConnectionManager.getConnection(option.id).then(
+        LdapConnectionManager.getConnection(option.name).then(
           connection => {
             // Ask the user for a DN.
             window.showInputBox({ placeHolder: "Enter a DN (e.g. cn=readers,ou=users,dc=example,dc=org)" }).then(dn => {
@@ -149,7 +149,7 @@ export function activate(context: ExtensionContext) {
             });
           },
           reason => {
-            window.showErrorMessage(`Unable to show attributes for connection "${option.id}": ${reason}`);
+            window.showErrorMessage(`Unable to show attributes for connection '${option.name}': ${reason}`);
           }
         );
       });
