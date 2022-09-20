@@ -1,5 +1,4 @@
 import { createClient, SearchEntry, SearchOptions } from 'ldapjs';
-import { window } from 'vscode';
 
 export class LdapConnection {
 
@@ -58,7 +57,8 @@ export class LdapConnection {
       return `${this.getProtocol(true)}://${this.getHost(true)}:${this.getPort(true)}`;
     }
 
-    // If value starts with "env:" (e.g. "env:myvar"), then return value of environment variable (e.g. value of "myvar").
+    // If value starts with "env:" (e.g. "env:myvar"), then return value of environment variable (e.g. value of "myvar"). If no such environment variable exists then return an empty string.
+    // Otherwise return the value itself.
     evaluate(value: string): string {
       if (!value.startsWith("env:")) {
         return value;
@@ -67,7 +67,9 @@ export class LdapConnection {
       return process.env[varName] ?? "";
     }
 
-    // Searches LDAP.
+    /**
+     * Searches LDAP.
+     */
     search(options: SearchOptions, base: string = this.getBaseDn(true)): Thenable<SearchEntry[]> {
       return new Promise((resolve, reject) => {
 
@@ -76,62 +78,50 @@ export class LdapConnection {
           url: [this.getUrl()],
           timeout: Number(this.getTimeout(true))
         });
+        
+        // Pass errors to client class.
+        client.on('error', (err) => {
+          return reject(`Connection error: ${err.message}`);
+        });
 
         // Bind.
-        client.bind(this.getBindDn(true), this.getBindPwd(true), (err) => {
+        client.bind(this.getBindDn(true), this.getBindPwd(true), (err, res) => {
           if (err) {
-            // @todo same comments as client.on below.
-            console.log(err); // @todo drop ?
-            window.showErrorMessage(`Error when binding: ${err}`); // @todo no, should throw exception and handle error in LdapDataProvider.ts, this class should only be about ldapjs, not about VS Code UI (and remove window from imports)
-            client.unbind();
-            client.destroy(); // @todo should destroy client at any other place where we handle an error
-            // @todo return reject("unable to bind");
+            return reject(`Unable to bind: ${err.message}`);
           }
 
           // Search.
-          // @todo clean this messy search() call - should call reject() or resolve() etc instead of console.log
           client.search(base, options, (err, res) => {
-            console.log(err); // @todo handle and return if there is an error
+            if (err) {
+              return reject(`Unable to search: ${err.message}`);
+            }
 
             let results: SearchEntry[] = [];
             res.on('searchRequest', (searchRequest) => {
-              console.log(`searchRequest: ${searchRequest.messageID}`);
+              console.log(`searchRequest: ${searchRequest.messageID}`); // @todo logger
             });
             res.on('searchEntry', (entry) => {
-              results.push(entry);
-              console.log(`entry: ${JSON.stringify(entry.object)}`);
+              results.push(entry); // @todo logger
             });
             res.on('searchReference', (referral) => {
-              console.log(`referral: ${referral.uris.join()}`);
+              console.log(`referral: ${referral.uris.join()}`); // @todo logger
             });
             res.on('error', (err) => {
-              console.error(`error: ${err.message}`); // @todo call reject()
+              return reject(`Unable to search: ${err.message}`);
             });
             res.on('end', (result) => {
-              // @todo verify status is 0 ? "You'll want to check the LDAP status code (likely for 0) on the end event to assert success"
-              console.log(`status: ${result!.status}`);
-              client.unbind();
-              client.destroy();
+              client.unbind((err) => {
+                return reject(`Unable to unbind: ${err.message}`);
+              });
+              if (result?.status !== 0) {
+                return reject(`Server returned status code ${result?.status}: ${result?.errorMessage}`);
+              }
               return resolve(results);
             });
 
           });
         });
 
-
-        
-
-        /*
-        @todo uncomment ?
-        client.on('error', (err) => {
-          // @todo wording (find something better than just "Error: XX")
-          // @todo handle different types of error ? http://ldapjs.org/errors.html
-          // @todo test (when host is invalid, when bind dn does not work, when password does not work, etc)
-          console.log(err);
-          vscode.window.showErrorMessage(`Error (regular): ${err}`);
-          return Promise.resolve([]);
-        });
-        */
       });
     }
  

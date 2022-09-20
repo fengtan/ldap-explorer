@@ -39,12 +39,12 @@ TODO
   - define strings in package.nl.json so they are translatable and common
   - UX: document in webview that you can prepend values with env:
 - test
-  - test "test connection" in various conditions (server down, wrong credentials, wrong base DN etc)
+  - test "test connection" in various conditions (invalid host, server down, wrong credentials, wrong base DN etc)
 features
   - webview values are disposed when go to background
   - replace console.log() with a logger recommended by vscode api - also ldapsj accepts a "log" attribute in constructor http://ldapjs.org/client.html#create-a-client
   - editing existing connection multiple times does not seem to work
-  - if a connection breaks then everything freezes: set a default timeout to 5 seconds ? And rename "defaults to infinity" to "leave empty for infinity"
+  - if a connection breaks then everything freezes: handle exceptions ?
 
 Later
 - add support for filters, with built-in UI in vscode similar to the source control activity http://ldapjs.org/filters.html ; would allow to open groups when you only know its name (CN) and not its full DN
