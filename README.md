@@ -43,8 +43,8 @@ TODO
   - test "test connection" in various conditions (invalid host, server down, wrong credentials, wrong base DN etc)
 features
   - webview values are disposed when go to background
-  - ldapsj accepts a "log" attribute in constructor http://ldapjs.org/client.html#create-a-client ; use it to replace LdapLogger
   - editing existing connection multiple times does not seem to work
+  - when creating a connection: complain if connection ID already exists (must be unique)
 
 Later
 - add support for filters, with built-in UI in vscode similar to the source control activity http://ldapjs.org/filters.html ; would allow to open groups when you only know its name (CN) and not its full DN
@@ -57,6 +57,7 @@ Later
 
 WC
 - content security policy / sanitization https://code.visualstudio.com/api/extension-guides/webview#content-security-policy -> https://code.visualstudio.com/api/extension-guides/command#command-uris
+- ldapsj accepts a "log" attribute in constructor http://ldapjs.org/client.html#create-a-client ; use it to replace LdapLogger
 
 # ldap-explorer README
 
