@@ -50,14 +50,12 @@ export function activate(context: ExtensionContext) {
           return;
         }
         // Otherwise edit the connection.
-        LdapConnectionManager.getConnection(option.name).then(
-          con => {
-            createAddEditConnectionWebview(context, con);
-          },
-          reason => {
-            window.showErrorMessage(`Unable to edit connection '${option.name}': ${reason}`);
-          }
-        );
+        const connection = LdapConnectionManager.getConnection(option.name);
+        if (connection === undefined) {
+          window.showErrorMessage(`Unable to edit connection '${option.name}': connection is unknown`);
+          return;
+        }
+        createAddEditConnectionWebview(context, connection);
       });
     }
   }));
@@ -102,14 +100,12 @@ export function activate(context: ExtensionContext) {
           return;
         }
         // Delete the connection.
-        LdapConnectionManager.getConnection(option.name).then(
-          con => {
-            askAndRemoveConnection(con);
-          },
-          reason => {
-            window.showErrorMessage(`Unable to delete connection '${option.name}': ${reason}`);
-          }
-        );
+        const connection = LdapConnectionManager.getConnection(option.name);
+        if (connection === undefined) {
+          window.showErrorMessage(`Unable to delete connection '${option.name}': connection is unknown`);
+          return;
+        }
+        askAndRemoveConnection(connection);
       });
     }
   }));

@@ -21,15 +21,15 @@ export class LdapConnectionManager {
   }
 
   // Get connection by name, or undefined if no connection was found.
-  static getConnection(name: string): Thenable<LdapConnection> {
+  static getConnection(name: string): LdapConnection | undefined {
     const filteredConnections = this.getConnections().filter(connection => connection.getName() === name);
     if (filteredConnections.length < 1) {
-      return Promise.reject(`Unable to find connection '${name}' in settings`);
+      return undefined;
     }
     if (filteredConnections.length > 1) {
       LdapLogger.getOutputChannel().appendLine(`Found ${filteredConnections.length} LDAP connections with name '${name}', expected at most 1.`);
     }
-    return Promise.resolve(filteredConnections[0]);
+    return filteredConnections[0];
   }
 
   // Add new connection to settings.
