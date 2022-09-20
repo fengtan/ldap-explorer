@@ -42,15 +42,9 @@ features
   - creating a new connection should open focus on our view
   - webview values are disposed when go to background
   - setting to limit number of results to display (1,000 in jxplorer)
-  - show details of connection in tree view (same as sqltools: username@localhost:3306/foo)
-  - dump ldapsearch commands in console as ldap queries are sent ? See ldapjs's "log" option http://ldapjs.org/client.html
   - implement pager for folders that include > 1,000 items
   - support for add/update/delete operations i.e. not a readonly connection ?
-  - most settings should be set globally and not be connection-specific (e.g. timeout) http://ldapjs.org/client.html
   - additional options when creating connection: log, timeout, connectTimeout (http://ldapjs.org/client.html#create-a-client)
-  - bookmarks feature (with favorite OU's) ?
-  - option to sort results ? https://stackoverflow.com/questions/63678234/creating-the-client-control-object-for-ldapjs-server-side-sorting
-  - somehow an option to search e.g. which groups a user belongs to
   - UX: when clicking the "plus" icon, this opens multiple webviews to add connections ; ideally you would have only one window for adding connection. See what options are possible when creating the webview (constructor)
   - UX: should multiple webviews "show-details" be allowed ? Autoclose by default, similar to VSCode editor ?
   - add command "show-details" to command palette so you can check the contents of an AD group via Quick Pick that would be really awesome
@@ -61,7 +55,9 @@ features
 WC
 - add support for filters (with built-in UI in vscode) ? http://ldapjs.org/filters.html
 - UX: show connections as a drop-down similar to remote-explorer or debugging interface
-
+- option to sort results ? https://stackoverflow.com/questions/63678234/creating-the-client-control-object-for-ldapjs-server-side-sorting
+- bookmarks feature (with favorite OU's) ?
+- somehow an option to search e.g. which groups a user belongs to
 
 # ldap-browser README
 
