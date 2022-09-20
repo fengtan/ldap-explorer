@@ -34,16 +34,15 @@ TODO
   - list all registered commands in package.json's activationEvents
   - why does cn=admin,dc=example,dc=org not show up in tree view ?
   - in activate(): refactor the commands implementations, they all look similar
+  - import * as vscode from 'vscode'; -> do not import everything ?
 - best practices
   - define strings in package.nl.json so they are translatable and common
 - test
   - test "test connection" in various conditions (server down, wrong credentials, wrong base DN etc)
 features
-  - creating a new connection should open focus on our view
   - webview values are disposed when go to background
   - when creating a connection, have the option to read the bind password from a file or from an environment variable (so you can add the settings from devcontainer.json without putting the password in git)
   - content security policy https://code.visualstudio.com/api/extension-guides/webview#content-security-policy
-  - sanitize user input (such as DN's) ? https://code.visualstudio.com/api/extension-guides/webview#sanitize-all-user-input
   - replace console.log() with a logger recommended by vscode api - also ldapsj accepts a "log" attribute in constructor http://ldapjs.org/client.html#create-a-client
   - editing existing connection multiple times does not seem to work
 
