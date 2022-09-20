@@ -50,6 +50,10 @@ export class LdapConnectionManager {
         );
     }
 
+    static editConnection(newConnection: LdapConnection, existingConnection: LdapConnection) {
+        // @todo implement
+    }
+
     // Remove existing connection from settings.
     // @todo removal operation seems to remove the wrong connection
     static removeConnection(connection: LdapConnection) {

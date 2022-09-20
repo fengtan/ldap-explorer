@@ -19,6 +19,7 @@
   "main": "./out/extension.js",
   "activationEvents": [
     "onCommand:ldap-explorer.add-connection",
+    "onCommand:ldap-explorer.edit-connection",
     "onCommand:ldap-explorer.delete-connection",
     "onCommand:ldap-explorer.refresh-view",
     "onCommand:ldap-explorer.show-attributes",
@@ -56,6 +57,11 @@
         "icon": "$(add)"
       },
       {
+        "command": "ldap-explorer.edit-connection",
+        "title": "Edit connection",
+        "category": "LDAP Explorer"
+      },
+      {
         "command": "ldap-explorer.delete-connection",
         "title": "Delete connection",
         "category": "LDAP Explorer"
@@ -88,6 +94,10 @@
       "view/item/context": [
         {
           "command": "ldap-explorer.delete-connection",
+          "when": "view == ldap-explorer-view && viewItem == connection"
+        },
+        {
+          "command": "ldap-explorer.edit-connection",
           "when": "view == ldap-explorer-view && viewItem == connection"
         }
       ]

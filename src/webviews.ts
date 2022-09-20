@@ -2,14 +2,16 @@ import * as vscode from 'vscode';
 import { LdapConnection } from './ldapConnection';
 import { LdapConnectionManager } from './ldapConnectionManager';
 
-export function createAddConnectionWebview(context: vscode.ExtensionContext) {
+// If no connection is passed as argument, then the form will create a new connection.
+// If a connection is passed as argument, then the form will edit this connection.
+export function createAddEditConnectionWebview(context: vscode.ExtensionContext, existingConnection?: LdapConnection) {
 
 	// @todo ideally generate the form by inspecting package.json configuration contribution
 
     // Create webview.
     const panel = vscode.window.createWebviewPanel(
-        'ldap-explorer.add-connection',
-        'LDAP Explorer: Add new connection',
+        'ldap-explorer.add-edit-connection',
+        existingConnection === undefined ? 'LDAP Explorer: Add new connection' : 'LDAP Explorer: Edit connection' ,
         vscode.ViewColumn.One,
         {
             enableScripts: true
@@ -28,25 +30,25 @@ export function createAddConnectionWebview(context: vscode.ExtensionContext) {
 		<body>
 			<section>
 				<p>Protocol</p>
-				<vscode-dropdown id="protocol">
+				<vscode-dropdown id="protocol" value="${existingConnection?.protocol ?? 'ldap'}">
 					<vscode-option>ldap</vscode-option>
 					<vscode-option>ldaps</vscode-option>
 				</vscode-dropdown>
 			</section>
 			<section>
-				<vscode-text-field type="text" id="host" placeholder="e.g. example.net">Host</vscode-text-field>
+				<vscode-text-field type="text" id="host" placeholder="e.g. example.net" value="${existingConnection?.host ?? ''}">Host</vscode-text-field>
 			</section>
 			<section>
-				<vscode-text-field type="text" id="port" placeholder="e.g. 389 or 636">Port</vscode-text-field>
+				<vscode-text-field type="text" id="port" placeholder="e.g. 389 or 636" value="${existingConnection?.port ?? ''}">Port</vscode-text-field>
 			</section>
 			<section>
-				<vscode-text-field type="text" id="binddn" placeholder="e.g. cn=admin,dc=example,dc=org">Bind DN</vscode-text-field>
+				<vscode-text-field type="text" id="binddn" placeholder="e.g. cn=admin,dc=example,dc=org" value="${existingConnection?.binddn ?? ''}">Bind DN</vscode-text-field>
 			</section>
 			<section>
-				<vscode-text-field type="text" id="bindpwd">Bind Password</vscode-text-field>
+				<vscode-text-field type="text" id="bindpwd" value="${existingConnection?.bindpwd ?? ''}">Bind Password</vscode-text-field>
 			</section>
 			<section>
-				<vscode-text-field type="text" id="basedn" placeholder="e.g. dc=example,dc=org">Base DN</vscode-text-field>
+				<vscode-text-field type="text" id="basedn" placeholder="e.g. dc=example,dc=org" value="${existingConnection?.basedn ?? ''}">Base DN</vscode-text-field>
 			</section>
 
 			<!-- TODO add spacing between form elements -->
@@ -77,7 +79,7 @@ export function createAddConnectionWebview(context: vscode.ExtensionContext) {
     panel.webview.onDidReceiveMessage(
         message => {
             // Build connection object.
-            const connection = new LdapConnection(
+            const newConnection = new LdapConnection(
                 message.protocol,
                 message.host,
                 message.port,
@@ -87,8 +89,12 @@ export function createAddConnectionWebview(context: vscode.ExtensionContext) {
             );
             switch (message.command) {
                 case 'save':
-                    // Save connection to settings.
-                    LdapConnectionManager.addConnection(connection);
+                    // Save (either add or update) connection to settings.
+                    if (existingConnection === undefined) {
+						LdapConnectionManager.addConnection(newConnection);
+					} else {
+						LdapConnectionManager.editConnection(newConnection, existingConnection);
+					}
 
                     // Refresh view so the new connection shows up.
                     vscode.commands.executeCommand("ldap-explorer.refresh-view");
@@ -98,7 +104,7 @@ export function createAddConnectionWebview(context: vscode.ExtensionContext) {
 
                 case 'test':
                     // Test connection.
-                    connection.search({}).then(
+                    newConnection.search({}).then(
                         value => {
                             vscode.window.showInformationMessage('Connection succeeded');
                         },

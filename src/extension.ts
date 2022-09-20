@@ -2,7 +2,7 @@ import * as vscode from 'vscode';
 import { LdapConnectionManager } from './ldapConnectionManager';
 import { LdapDataProvider } from './ldapDataProvider';
 import { LdapTreeItem } from './ldapTreeItem';
-import { createAddConnectionWebview, createAttributesWebview} from './webviews';
+import * as webviews from './webviews';
 
 // This method is called when the extension is activated (see activationEvents in package.json).
 export function activate(context: vscode.ExtensionContext) {
@@ -13,7 +13,13 @@ export function activate(context: vscode.ExtensionContext) {
 
 	// Implement "Add connection" command (declared in package.json).
 	context.subscriptions.push(vscode.commands.registerCommand('ldap-explorer.add-connection', () => {
-		createAddConnectionWebview(context);
+		webviews.createAddEditConnectionWebview(context);
+	}));
+
+	// Implement "Edit connection" command.
+	context.subscriptions.push(vscode.commands.registerCommand('ldap-explorer.edit-connection', (treeItem?: LdapTreeItem) => {
+		// @todo if command fired from command palette, then ask for a connection to be picked up (similar to delete command).
+		webviews.createAddEditConnectionWebview(context, treeItem?.getLdapConnection());
 	}));
 
 	// Implement "Delete connection" command.
@@ -53,7 +59,7 @@ export function activate(context: vscode.ExtensionContext) {
 		if (treeItem instanceof LdapTreeItem) {
 			// The command fired from the contextual menu of the tree view: treeItem is defined.
 			// We can extract the connection and the DN associated with the item.
-			createAttributesWebview(treeItem.getLdapConnection(), treeItem.getDn(), context);
+			webviews.createAttributesWebview(treeItem.getLdapConnection(), treeItem.getDn(), context);
 		} else {
 			// The command fired from the command palette: treeItem is undefined.
 			// Explicitly ask the user for a connection.
@@ -76,7 +82,7 @@ export function activate(context: vscode.ExtensionContext) {
 						return;
 					}
 					// Otherwise show webview with attributes of the DN.
-					createAttributesWebview(LdapConnectionManager.getConnection(option.id), dn, context);
+					webviews.createAttributesWebview(LdapConnectionManager.getConnection(option.id), dn, context);
 				});
 			});
 		}
