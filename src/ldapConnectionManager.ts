@@ -50,7 +50,6 @@ export class LdapConnectionManager {
         // Get index of connection to edit.
         const index = connections.findIndex(con => con.getId() === existingConnection.getId());
         if (index < 0 ) {
-            // @todo test
             return Promise.reject(`connection ${existingConnection.getId()} does not exist in settings`);
         }
 
@@ -69,7 +68,6 @@ export class LdapConnectionManager {
         // Get index of connection to delete.
         const index = connections.findIndex(con => con.getId() === connection.getId());
         if (index < 0 ) {
-            // @todo test
             return Promise.reject(`connection ${connection.getId()} does not exist in settings`);
         }
 

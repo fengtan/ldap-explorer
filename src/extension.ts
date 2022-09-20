@@ -56,7 +56,7 @@ export function activate(context: ExtensionContext) {
 							commands.executeCommand("ldap-explorer.refresh-view");
 						}, reason => {
 							// If connection could not be removed, show error message.
-							window.showErrorMessage(`Unable to remove connection from settings: ${reason}`);
+							window.showErrorMessage(`Unable to remove connection: ${reason}`);
 						}
 					);
 				}

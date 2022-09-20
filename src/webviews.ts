@@ -118,7 +118,7 @@ export function createAddEditConnectionWebview(context: ExtensionContext, existi
 							},
 							reason => {
 								// If connection could not be added, show error message.
-								window.showErrorMessage(`Unable to save new connection to settings: ${reason}`);
+								window.showErrorMessage(`Unable to save new connection: ${reason}`);
 							}
 						);
 					} else {
@@ -129,7 +129,7 @@ export function createAddEditConnectionWebview(context: ExtensionContext, existi
 							},
 							reason => {
 								// If connection could not be updated, show error message.
-								window.showErrorMessage(`Unable to update connection in settings: ${reason}`);
+								window.showErrorMessage(`Unable to update connection: ${reason}`);
 							}
 						);
 					}
