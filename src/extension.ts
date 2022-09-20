@@ -1,12 +1,10 @@
-import { SearchEntry } from 'ldapjs';
 import { commands, ExtensionContext, window } from 'vscode';
 import { LdapConnection } from './LdapConnection';
 import { LdapConnectionManager } from './LdapConnectionManager';
-import { LdapConnectionsDataProvider } from './tree-providers/ConnectionTreeDataProvider';
-import { LdapTreeDataProvider } from './tree-providers/EntryTreeDataProvider';
-import { createAddEditConnectionWebview } from './webviews/addEditConnectionWebview';
-import { createShowAttributesWebview } from './webviews/showAttributesWebview';
-import { FakeEntry } from './FakeEntry';
+import { LdapConnectionsDataProvider } from './view-providers/ConnectionTreeDataProvider';
+import { LdapTreeDataProvider } from './view-providers/EntryTreeDataProvider';
+import { createAddEditConnectionWebview } from './webviews/createAddEditConnectionWebview';
+import { createShowAttributesWebview } from './webviews/createShowAttributesWebview';
 
 // This method is called when the extension is activated (see activationEvents in package.json).
 export function activate(context: ExtensionContext) {
