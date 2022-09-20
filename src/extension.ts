@@ -1,6 +1,7 @@
 import { commands, ExtensionContext, window } from 'vscode';
 import { LdapConnection } from './LdapConnection';
 import { LdapConnectionManager } from './LdapConnectionManager';
+import { LdapConnectionsDataProvider } from './LdapConnectionsDataProvider';
 import { LdapTreeDataProvider } from './LdapTreeDataProvider';
 import { LdapTreeItem } from './LdapTreeItem';
 import { createAddEditConnectionWebview } from './webviews/addEditConnectionWebview';
@@ -9,11 +10,14 @@ import { createShowAttributesWebview } from './webviews/showAttributesView';
 // This method is called when the extension is activated (see activationEvents in package.json).
 export function activate(context: ExtensionContext) {
 
-  // Create tree view with our LDAP data provider.
+  // Create views (connections, tree, search).
+  const ldapConnectionsDataProvider = new LdapConnectionsDataProvider();
+  context.subscriptions.push(window.createTreeView('ldap-explorer-view-connections', { treeDataProvider: ldapConnectionsDataProvider }));
+
   const ldapTreeDataProvider = new LdapTreeDataProvider();
   context.subscriptions.push(window.createTreeView('ldap-explorer-view-tree', { treeDataProvider: ldapTreeDataProvider }));
 
-  // @todo implement connections view, search view
+  // @todo implement search view
 
   // Implement "Add connection" command (declared in package.json).
   context.subscriptions.push(commands.registerCommand('ldap-explorer.add-connection', () => {

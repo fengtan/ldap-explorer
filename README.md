@@ -46,6 +46,7 @@ bugs
   - webview values are disposed when go to background
   - editing existing connection multiple times does not seem to work
   - when creating a connection: complain if connection ID already exists (must be unique)
+  - allow user to give a name to connections, way more user friendly
 
 features (later ?)
 - add support for filters, with built-in UI in vscode similar to the source control activity http://ldapjs.org/filters.html ; would allow to open groups when you only know its name (CN) and not its full DN e.g. search which groups a user belongs to
