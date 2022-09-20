@@ -4,13 +4,18 @@ import { LdapConnectionManager } from './ldapConnectionManager';
 import { LdapDataProvider } from './ldapDataProvider';
 import { LdapTreeItem } from './ldapTreeItem';
 import { createAddEditConnectionWebview, createAttributesWebview } from './webviews';
+import { SearchViewProvider } from './searchViewProvider';
 
 // This method is called when the extension is activated (see activationEvents in package.json).
 export function activate(context: ExtensionContext) {
 
 	// Create tree view with our LDAP data provider.
 	const ldapDataProvider = new LdapDataProvider();
-	context.subscriptions.push(window.createTreeView('ldap-explorer-view', {treeDataProvider: ldapDataProvider}));
+	context.subscriptions.push(window.createTreeView('ldap-explorer-tree', {treeDataProvider: ldapDataProvider}));
+
+	// Create webview view with our search form.
+	const searchViewProvider = new SearchViewProvider();
+	context.subscriptions.push(window.registerWebviewViewProvider('ldap-explorer-search', searchViewProvider));
 
 	// Implement "Add connection" command (declared in package.json).
 	context.subscriptions.push(commands.registerCommand('ldap-explorer.add-connection', () => {
