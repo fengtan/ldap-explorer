@@ -1,5 +1,6 @@
 import { CancellationToken, ExtensionContext, WebviewView, WebviewViewProvider, WebviewViewResolveContext, window } from "vscode";
 import { createSearchResultsWebview } from "./createSearchResultsWebview";
+import { LdapConnectionManager } from "../LdapConnectionManager";
 import { getWebviewUiToolkitUri } from './utils';
 
 export class SearchWebviewViewProvider implements WebviewViewProvider {
@@ -53,7 +54,14 @@ export class SearchWebviewViewProvider implements WebviewViewProvider {
       message => {
         switch (message.command) {
         case 'search':
-          createSearchResultsWebview(this.extensionContext, message.filter, message.attributes);
+          // Get active connection.
+          const connection = LdapConnectionManager.getActiveConnection(this.extensionContext);
+          if (connection === undefined) {
+            window.showErrorMessage(`No active connection`); // @todo should ask user to pick a connection ?
+            return;
+          }
+          // Show search results in a webview.
+          createSearchResultsWebview(connection, message.filter, message.attributes, this.extensionContext);
           break;
         }
       },

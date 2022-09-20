@@ -1,8 +1,9 @@
 import { ExtensionContext, ViewColumn, window } from 'vscode';
+import { LdapConnection } from '../LdapConnection';
 import { getWebviewUiToolkitUri } from './utils';
 
 // Makes a search query to the LDAP server and shows results in a webview.
-export function createSearchResultsWebview(context: ExtensionContext, filter: string) {
+export function createSearchResultsWebview(connection: LdapConnection, filter: string, attributes: string[], context: ExtensionContext) {
 
   // Create webview.
   const panel = window.createWebviewPanel(

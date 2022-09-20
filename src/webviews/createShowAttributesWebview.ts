@@ -2,7 +2,7 @@ import { ExtensionContext, ViewColumn, window } from 'vscode';
 import { LdapConnection } from '../LdapConnection';
 import { getWebviewUiToolkitUri } from './utils';
 
-export function createShowAttributesWebview(ldapConnection: LdapConnection, dn: string, context: ExtensionContext) {
+export function createShowAttributesWebview(connection: LdapConnection, dn: string, context: ExtensionContext) {
   // Create webview.
   const panel = window.createWebviewPanel(
     'ldap-explorer.show-attributes',
@@ -14,7 +14,7 @@ export function createShowAttributesWebview(ldapConnection: LdapConnection, dn: 
   );
 
   // Scope is set to "base" so we only get attributes about the current (base) node https://ldapwiki.com/wiki/BaseObject
-  ldapConnection.search({ scope: "base" }, dn).then(
+  connection.search({ scope: "base" }, dn).then(
     entries => {
       // We need to include this JS into the webview in order to use the Webview UI toolkit.
       const toolkitUri = getWebviewUiToolkitUri(panel.webview, context.extensionUri);
