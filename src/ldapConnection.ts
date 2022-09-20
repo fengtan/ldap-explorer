@@ -11,7 +11,7 @@ export class LdapConnection {
     private bindpwd: string;
     private basedn: string;
     private timeout: string;
-  
+
     constructor(protocol: string, host: string, port: string, binddn: string, bindpwd: string, basedn: string, timeout: string) {
       this.protocol = protocol;
       this.host = host;
@@ -52,7 +52,7 @@ export class LdapConnection {
     getId(): string {
       return `${this.getProtocol(false)}://${this.getBindDn(false)}@${this.getHost(false)}:${this.getPort(false)}/${this.getBaseDn(false)}`;
     }
-  
+
     // Connection URL ; used to connect to the server.
     getUrl(): string {
       return `${this.getProtocol(true)}://${this.getHost(true)}:${this.getPort(true)}`;
@@ -79,7 +79,7 @@ export class LdapConnection {
           url: [this.getUrl()],
           timeout: Number(this.getTimeout(true))
         });
-        
+
         // Pass errors to client class.
         client.on('error', (err) => {
           return reject(`Connection error: ${err.message}`);
@@ -126,5 +126,5 @@ export class LdapConnection {
 
       });
     }
- 
+
 }

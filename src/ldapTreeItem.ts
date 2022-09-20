@@ -25,7 +25,7 @@ export class LdapTreeItem extends TreeItem {
     //   the root of LDAP hierarchy).
     const expandable = dn ? !dn.toLowerCase().startsWith("cn") : true;
     const collapsibleState = expandable ? TreeItemCollapsibleState.Collapsed : TreeItemCollapsibleState.None;
-  
+
     // Call parent cosntructor.
     super(label, collapsibleState);
 

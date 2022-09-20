@@ -148,7 +148,7 @@ export function activate(context: ExtensionContext) {
 			});
 		}
 	}));
-	
+
 }
 
 // This method is called when your extension is deactivated.

@@ -161,7 +161,7 @@ export function createAttributesWebview(ldapConnection: LdapConnection, dn: stri
 		'ldap-explorer.show-attributes',
 		dn.split(",")[0], // Set webview title to "OU=foobar", not the full DN.
 		ViewColumn.One,
-		{ enableScripts: true }	  
+		{ enableScripts: true }
 	);
 
 	// Scope is set to "base" so we only get attributes about the current (base) node https://ldapwiki.com/wiki/BaseObject
@@ -169,7 +169,7 @@ export function createAttributesWebview(ldapConnection: LdapConnection, dn: stri
 		entries => {
 			// We need to include this JS into the webview in order to use the Webview UI toolkit.
 			const toolkitUri = getWebviewUiToolkitUri(panel.webview, context.extensionUri);
-		
+
 			panel.webview.html =
 			`<!DOCTYPE html>
 			<html lang="en">
@@ -197,13 +197,13 @@ export function createAttributesWebview(ldapConnection: LdapConnection, dn: stri
 				});
 				</script>
 			</html>`;
-		
+
 			// Make sure we received only one LDAP entry.
 			// That should always be the case given that the scope of the LDAP query is set to "base" above.
 			if (entries.length > 1) {
 				window.showWarningMessage(`Received multiple LDAP entries, expected only one: ${dn}`);
 			}
-		
+
 			// Build list of rows (1 row = 1 attribute).
 			let rows: any[] = [];
 			entries.forEach(entry => {
@@ -214,14 +214,14 @@ export function createAttributesWebview(ldapConnection: LdapConnection, dn: stri
 					});
 				});
 			});
-		
+
 			// Send message from extension to webview, tell it to populate the rows of the grid.
 			// See https://code.visualstudio.com/api/extension-guides/webview#passing-messages-from-an-extension-to-a-webview
 			panel.webview.postMessage({
 				command: "populate",
 				rows: rows
 			});
-		
+
 		},
 		reason => {
 			window.showErrorMessage(`Unable to display attributes for dn "${dn}": ${reason}`);
