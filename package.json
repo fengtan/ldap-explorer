@@ -105,7 +105,8 @@
             "properties": {
               "name": {
                 "type": "string",
-                "description": "Connection name"
+                "description": "Connection name",
+                "default": ""
               },
               "protocol": {
                 "type": "string",
@@ -118,23 +119,28 @@
               },
               "host": {
                 "type": "string",
-                "description": "Host"
+                "description": "Host",
+                "default": ""
               },
               "port": {
                 "type": "number",
-                "description": "Port"
+                "description": "Port",
+                "default": ""
               },
               "binddn": {
                 "type": "string",
-                "description": "Bind DN"
+                "description": "Bind DN",
+                "default": ""
               },
               "bindpwd": {
                 "type": "string",
-                "description": "Bind password"
+                "description": "Bind password",
+                "default": ""
               },
               "basedn": {
                 "type": "string",
-                "description": "Base DN"
+                "description": "Base DN",
+                "default": ""
               }
             }
           }
