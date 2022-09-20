@@ -1,21 +1,19 @@
-import * as vscode from 'vscode';
+import { commands, ExtensionContext, Uri, ViewColumn, Webview, window } from 'vscode';
 import { LdapConnection } from './ldapConnection';
 import { LdapConnectionManager } from './ldapConnectionManager';
 
 // If no connection is passed as argument, then the form will create a new connection.
 // If a connection is passed as argument, then the form will edit this connection.
-export function createAddEditConnectionWebview(context: vscode.ExtensionContext, existingConnection?: LdapConnection) {
+export function createAddEditConnectionWebview(context: ExtensionContext, existingConnection?: LdapConnection) {
 
 	// @todo ideally generate the form by inspecting package.json configuration contribution
 
     // Create webview.
-    const panel = vscode.window.createWebviewPanel(
+    const panel = window.createWebviewPanel(
         'ldap-explorer.add-edit-connection',
         existingConnection === undefined ? 'LDAP Explorer: Add new connection' : 'LDAP Explorer: Edit connection' ,
-        vscode.ViewColumn.One,
-        {
-            enableScripts: true
-        }
+        ViewColumn.One,
+        { enableScripts: true }
     );
 
     // We need to include this JS into the webview in order to use the Webview UI toolkit.
@@ -102,7 +100,7 @@ export function createAddEditConnectionWebview(context: vscode.ExtensionContext,
 					}
 
                     // Refresh view so the new connection shows up.
-                    vscode.commands.executeCommand("ldap-explorer.refresh-view");
+                    commands.executeCommand("ldap-explorer.refresh-view");
 
                     // @todo UX: message "connection was added to your settings" (along with JSON object and location of the settings file i.e. whether it was stored in global or workspace settings)
                     return;
@@ -111,10 +109,10 @@ export function createAddEditConnectionWebview(context: vscode.ExtensionContext,
                     // Test connection.
                     newConnection.search({}).then(
                         value => {
-                            vscode.window.showInformationMessage('Connection succeeded');
+                            window.showInformationMessage('Connection succeeded');
                         },
                         reason => {
-                            vscode.window.showErrorMessage(`Connection failed: ${reason}`);
+                            window.showErrorMessage(`Connection failed: ${reason}`);
                         }
                     );
             }
@@ -125,15 +123,13 @@ export function createAddEditConnectionWebview(context: vscode.ExtensionContext,
 
 }
 
-export function createAttributesWebview(ldapConnection: LdapConnection, dn: string, context: vscode.ExtensionContext) {
+export function createAttributesWebview(ldapConnection: LdapConnection, dn: string, context: ExtensionContext) {
 	// Create webview.
-	const panel = vscode.window.createWebviewPanel(
+	const panel = window.createWebviewPanel(
 		'ldap-explorer.show-attributes',
 		dn.split(",")[0], // Set webview title to "OU=foobar", not the full DN.
-		vscode.ViewColumn.One,
-		{
-			enableScripts: true,
-		}	  
+		ViewColumn.One,
+		{ enableScripts: true }	  
 	);
 
 	// Scope is set to "base" so we only get attributes about the current (base) node https://ldapwiki.com/wiki/BaseObject
@@ -174,7 +170,7 @@ export function createAttributesWebview(ldapConnection: LdapConnection, dn: stri
 		// Make sure we received only one LDAP entry.
 		// That should always be the case given that the scope of the LDAP query is set to "base" above.
 		if (entries.length > 1) {
-			vscode.window.showWarningMessage(`Received multiple LDAP entries, expected only one: ${dn}`);
+			window.showWarningMessage(`Received multiple LDAP entries, expected only one: ${dn}`);
 		}
 	
 		// Build list of rows (1 row = 1 attribute).
@@ -201,8 +197,8 @@ export function createAttributesWebview(ldapConnection: LdapConnection, dn: stri
 /**
  * Utility function to get the webview URI of a given file.
  */
- export function getUri(webview: vscode.Webview, extensionUri: vscode.Uri, pathList: string[]) {
-    return webview.asWebviewUri(vscode.Uri.joinPath(extensionUri, ...pathList));
+ export function getUri(webview: Webview, extensionUri: Uri, pathList: string[]) {
+    return webview.asWebviewUri(Uri.joinPath(extensionUri, ...pathList));
 }
 
 /**
@@ -211,7 +207,7 @@ export function createAttributesWebview(ldapConnection: LdapConnection, dn: stri
  * @see https://github.com/microsoft/vscode-webview-ui-toolkit
  * @todo drop arguments webview + extensionUri, they should not be needed.
  */
-export function getWebviewUiToolkitUri(webview: vscode.Webview, extensionUri: vscode.Uri) {
+export function getWebviewUiToolkitUri(webview: Webview, extensionUri: Uri) {
     const pathList: string[] = [
         "node_modules",
         "@vscode",

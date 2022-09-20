@@ -1,12 +1,12 @@
 // Provides data to the tree view.
 
-import * as vscode from 'vscode';
+import { Event, EventEmitter, TreeDataProvider, TreeItem } from 'vscode';
 import { LdapConnectionManager } from './ldapConnectionManager';
 import { LdapTreeItem } from './ldapTreeItem';
 
-export class LdapDataProvider implements vscode.TreeDataProvider<LdapTreeItem> {
+export class LdapDataProvider implements TreeDataProvider<LdapTreeItem> {
 
-  getTreeItem(treeItem: LdapTreeItem): vscode.TreeItem {
+  getTreeItem(treeItem: LdapTreeItem): TreeItem {
     // LdapTreeItem extends TreeItem so we can just return treeItem.
     return treeItem;
   }
@@ -25,9 +25,9 @@ export class LdapDataProvider implements vscode.TreeDataProvider<LdapTreeItem> {
 
   // Logic to refresh the view.
   // @see https://code.visualstudio.com/api/extension-guides/tree-view#updating-tree-view-content
-  private _onDidChangeTreeData: vscode.EventEmitter<LdapTreeItem | undefined | null | void> = new vscode.EventEmitter<LdapTreeItem | undefined | null | void>();
+  private _onDidChangeTreeData: EventEmitter<LdapTreeItem | undefined | null | void> = new EventEmitter<LdapTreeItem | undefined | null | void>();
 
-  readonly onDidChangeTreeData: vscode.Event<LdapTreeItem | undefined | null | void> = this._onDidChangeTreeData.event;
+  readonly onDidChangeTreeData: Event<LdapTreeItem | undefined | null | void> = this._onDidChangeTreeData.event;
 
   refresh(): void {
     this._onDidChangeTreeData.fire();

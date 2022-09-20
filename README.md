@@ -34,7 +34,6 @@ TODO
   - list all registered commands in package.json's activationEvents
   - why does cn=admin,dc=example,dc=org not show up in tree view ?
   - in activate(): refactor the commands implementations, they all look similar
-  - import * as vscode from 'vscode'; -> do not import everything ?
 - best practices
   - define strings in package.nl.json so they are translatable and common
   - UX: document in webview that you can prepend values with env:
@@ -42,7 +41,6 @@ TODO
   - test "test connection" in various conditions (server down, wrong credentials, wrong base DN etc)
 features
   - webview values are disposed when go to background
-  - content security policy https://code.visualstudio.com/api/extension-guides/webview#content-security-policy
   - replace console.log() with a logger recommended by vscode api - also ldapsj accepts a "log" attribute in constructor http://ldapjs.org/client.html#create-a-client
   - editing existing connection multiple times does not seem to work
   - if a connection breaks then everything freezes: set a default timeout to 5 seconds ? And rename "defaults to infinity" to "leave empty for infinity"
@@ -55,6 +53,9 @@ Later
 - setting to limit number of results to display (1,000 in jxplorer)
 - implement pager for folders that include > 1,000 items
 - support for LDIF files
+
+WC
+- content security policy https://code.visualstudio.com/api/extension-guides/webview#content-security-policy
 
 # ldap-explorer README
 

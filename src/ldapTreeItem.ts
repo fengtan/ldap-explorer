@@ -1,9 +1,9 @@
 // Represents an item in the tree view (either a connection or an lDAP result).
 
 import { LdapConnection } from "./ldapConnection";
-import * as vscode from 'vscode';
+import { TreeItem, TreeItemCollapsibleState } from 'vscode';
 
-export class LdapTreeItem extends vscode.TreeItem {
+export class LdapTreeItem extends TreeItem {
 
   private connection: LdapConnection;
   private dn?: string;
@@ -24,7 +24,7 @@ export class LdapTreeItem extends vscode.TreeItem {
     // - If the TreeItem is a connection, then it is always expandable (and expanding it means opening
     //   the root of LDAP hierarchy).
     const expandable = dn ? !dn.toLowerCase().startsWith("cn") : true;
-    const collapsibleState = expandable ? vscode.TreeItemCollapsibleState.Collapsed : vscode.TreeItemCollapsibleState.None;
+    const collapsibleState = expandable ? TreeItemCollapsibleState.Collapsed : TreeItemCollapsibleState.None;
   
     // Call parent cosntructor.
     super(label, collapsibleState);

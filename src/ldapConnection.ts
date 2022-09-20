@@ -1,5 +1,5 @@
-import * as ldapjs from 'ldapjs'; // @todo may not need to import *
-import * as vscode from 'vscode';
+import { createClient, SearchEntry, SearchOptions } from 'ldapjs';
+import { window } from 'vscode';
 
 export class LdapConnection {
 
@@ -64,11 +64,11 @@ export class LdapConnection {
     }
 
     // Searches LDAP.
-    search(options: ldapjs.SearchOptions, base: string = this.getBaseDn(true)): Thenable<ldapjs.SearchEntry[]> {
+    search(options: SearchOptions, base: string = this.getBaseDn(true)): Thenable<SearchEntry[]> {
       return new Promise((resolve, reject) => {
 
         // Create ldapjs client.
-        const client = ldapjs.createClient({
+        const client = createClient({
           url: [this.getUrl()],
           timeout: Number(this.getTimeout(true))
         });
@@ -78,7 +78,7 @@ export class LdapConnection {
           if (err) {
             // @todo same comments as client.on below.
             console.log(err); // @todo drop ?
-            vscode.window.showErrorMessage(`Error when binding: ${err}`); // @todo no, should throw exception and handle error in LdapDataProvider.ts, this class should only be about ldapjs, not about VS Code UI
+            window.showErrorMessage(`Error when binding: ${err}`); // @todo no, should throw exception and handle error in LdapDataProvider.ts, this class should only be about ldapjs, not about VS Code UI (and remove window from imports)
             client.unbind();
             client.destroy(); // @todo should destroy client at any other place where we handle an error
             // @todo return reject("unable to bind");
@@ -89,7 +89,7 @@ export class LdapConnection {
           client.search(base, options, (err, res) => {
             console.log(err); // @todo handle and return if there is an error
 
-            let results: ldapjs.SearchEntry[] = [];
+            let results: SearchEntry[] = [];
             res.on('searchRequest', (searchRequest) => {
               console.log(`searchRequest: ${searchRequest.messageID}`);
             });
