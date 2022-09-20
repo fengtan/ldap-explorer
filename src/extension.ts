@@ -31,18 +31,19 @@ export function activate(context: vscode.ExtensionContext) {
 		// See https://code.visualstudio.com/api/extension-guides/webview#passing-messages-from-a-webview-to-an-extension
 		panel.webview.onDidReceiveMessage(
 			message => {
+				// Build connection object.
+				const connection = new LdapConnection(
+					message.name,
+					message.protocol,
+					message.host,
+					message.port,
+					message.binddn,
+					message.bindpwd,
+					message.basedn
+				);
 				switch (message.command) {
 					case 'save':
-						// Add new connection.
-						const connection = new LdapConnection(
-							message.name,
-							message.protocol,
-							message.host,
-							message.port,
-							message.binddn,
-							message.bindpwd,
-							message.basedn
-						);
+						// Save connection to settings.
 						LdapConnectionManager.addConnection(connection);
 
 						// Refresh view so the new connection shows up.
@@ -51,6 +52,13 @@ export function activate(context: vscode.ExtensionContext) {
 
 						// @todo UX: message "connection was added to your settings" (along with JSON object and location of the settings file i.e. whether it was stored in global or workspace settings)
 				  		return;
+
+					case 'test':
+						// Test connection.
+						connection.search({scope: "one"});
+						// @todo use the above to show messages below.
+						vscode.window.showInformationMessage('Connection succeeded.');
+						vscode.window.showErrorMessage('Connection failed.');
 			  	}
 			},
 			undefined,
@@ -150,15 +158,17 @@ function getAddNewConnectionHTML(webviewPanel: vscode.WebviewPanel, context: vsc
 				<vscode-text-field type="text" id="basedn" autofocus>Base DN</vscode-text-field>
 			</section>
 
+			<!-- TODO add spacing between form elements -->
 			<!-- TODO complain if the connection name submitted already exists (must be unique) -->
 			<!-- TODO some form elements should be mandatory -->
 			<!-- TODO set defaults (same as those defined in package.json) -->
-			<vscode-button onClick="save()">Save</vscode-button>
+			<vscode-button onClick="submitForm('save')">Save</vscode-button>
+			<vscode-button onClick="submitForm('test')" appearance="secondary">Test</vscode-button>
 			<script>
 				const vscode = acquireVsCodeApi();
-				function save() {
+				function submitForm(command) {
 					vscode.postMessage({
-						command: 'save',
+						command: command,
 						name: document.getElementById("name").value,
 						protocol: document.getElementById("protocol").value,
 						host: document.getElementById("host").value,
