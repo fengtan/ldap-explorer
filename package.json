@@ -93,7 +93,8 @@
       {
         "command": "ldap-explorer.show-attributes",
         "title": "Show attributes",
-        "category": "LDAP Explorer"
+        "category": "LDAP Explorer",
+        "icon": "$(preview)"
       }
     ],
     "menus": {
@@ -118,6 +119,11 @@
         {
           "command": "ldap-explorer.delete-connection",
           "when": "view == ldap-explorer-view-connections",
+          "group": "inline"
+        },
+        {
+          "command": "ldap-explorer.show-attributes",
+          "when": "view == ldap-explorer-view-tree",
           "group": "inline"
         }
       ]

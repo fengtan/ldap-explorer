@@ -10,8 +10,8 @@ export class LdapConnectionsDataProvider implements TreeDataProvider<LdapConnect
     // @todo add tooltip (base DN / bind DN ?)
     // @todo add icon so user knows which connection is active (codicon "circle-large", "circle-large-filled") ; to know which connection is active check the VSCode global state
     treeItem.iconPath = new ThemeIcon('circle');
-    // @todo no: clicking on a connection should *activate* the connection, not open webview to edit its details -> create icon for this.
     // @todo depending on globalState, clicking on the treeitem should also deactivate the connection
+    // Clicking on the connection activate it (and populates the "Tree" view)
     treeItem.command = {
       command: "ldap-explorer.activate-connection",
       title: "Activate connection",

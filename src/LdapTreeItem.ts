@@ -42,14 +42,6 @@ export class LdapTreeItem extends TreeItem {
     // - If the TreeItem is an LDAP result, then show no description.
     // - If the TreeItem is a connection, then show its connection string.
     this.description = dn ? "" : this.connection.getUrl();
-
-    // Clicking on the item calls the command that lists its attributes.
-    // @todo the default action should be to open the children ; add button / icon to show attributes (and another one to edit attributes ?)
-    this.command =  {
-      command: "ldap-explorer.show-attributes",
-      title: "Show Attributes",
-      arguments: [this]
-    };
   }
 
   getLdapConnection(): LdapConnection {

@@ -51,7 +51,6 @@ bugs
 
 features (later ?)
 - add support for filters, with built-in UI in vscode similar to the source control activity http://ldapjs.org/filters.html ; would allow to open groups when you only know its name (CN) and not its full DN e.g. search which groups a user belongs to
-  - add contextual menus and buttons to the "connections" and "search" views
 - content security policy / sanitization https://code.visualstudio.com/api/extension-guides/webview#content-security-policy -> https://code.visualstudio.com/api/extension-guides/command#command-uris ; see example in webview-view-sample
 
 features (never ?)
