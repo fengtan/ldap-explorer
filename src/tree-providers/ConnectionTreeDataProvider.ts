@@ -2,7 +2,7 @@ import { Event, EventEmitter, ExtensionContext, ThemeIcon, TreeDataProvider, Tre
 import { LdapConnection } from '../LdapConnection';
 import { LdapConnectionManager } from '../LdapConnectionManager';
 
-export class LdapConnectionsDataProvider implements TreeDataProvider<LdapConnection> {
+export class ConnectionTreeDataProvider implements TreeDataProvider<LdapConnection> {
 
   private context: ExtensionContext;
 

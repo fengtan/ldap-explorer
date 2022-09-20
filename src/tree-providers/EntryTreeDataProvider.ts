@@ -6,7 +6,7 @@ import { Event, EventEmitter, ExtensionContext, TreeDataProvider, TreeItem, Tree
 import { LdapConnectionManager } from '../LdapConnectionManager';
 import { FakeEntry } from '../FakeEntry';
 
-export class LdapTreeDataProvider implements TreeDataProvider<SearchEntry | FakeEntry> {
+export class EntryTreeDataProvider implements TreeDataProvider<SearchEntry | FakeEntry> {
 
   private context: ExtensionContext;
 

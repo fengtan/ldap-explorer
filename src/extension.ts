@@ -1,22 +1,27 @@
 import { commands, ExtensionContext, window } from 'vscode';
 import { LdapConnection } from './LdapConnection';
 import { LdapConnectionManager } from './LdapConnectionManager';
-import { LdapConnectionsDataProvider } from './view-providers/ConnectionTreeDataProvider';
-import { LdapTreeDataProvider } from './view-providers/EntryTreeDataProvider';
+import { ConnectionTreeDataProvider } from './tree-providers/ConnectionTreeDataProvider';
+import { EntryTreeDataProvider } from './tree-providers/EntryTreeDataProvider';
 import { createAddEditConnectionWebview } from './webviews/createAddEditConnectionWebview';
 import { createShowAttributesWebview } from './webviews/createShowAttributesWebview';
+import { SearchWebviewViewProvider } from './webviews/SearchWebviewViewProvider';
 
 // This method is called when the extension is activated (see activationEvents in package.json).
 export function activate(context: ExtensionContext) {
 
   // Create views (connections, tree, search).
-  const ldapConnectionsDataProvider = new LdapConnectionsDataProvider(context);
-  context.subscriptions.push(window.createTreeView('ldap-explorer-view-connections', { treeDataProvider: ldapConnectionsDataProvider }));
+  const connectionTreeDataProvider = new ConnectionTreeDataProvider(context);
+  context.subscriptions.push(window.createTreeView('ldap-explorer-view-connections', { treeDataProvider: connectionTreeDataProvider }));
 
-  const ldapTreeDataProvider = new LdapTreeDataProvider(context);
-  context.subscriptions.push(window.createTreeView('ldap-explorer-view-tree', { treeDataProvider: ldapTreeDataProvider }));
+  const entryTreeDataProvider = new EntryTreeDataProvider(context);
+  context.subscriptions.push(window.createTreeView('ldap-explorer-view-tree', { treeDataProvider: entryTreeDataProvider }));
 
   // @todo implement search view
+  const searchWebviewViewProvider = new SearchWebviewViewProvider(context);
+  context.subscriptions.push(
+    window.registerWebviewViewProvider('ldap-explorer-view-search', searchWebviewViewProvider)
+  );
 
   // Implement "Add connection" command (declared in package.json).
   context.subscriptions.push(commands.registerCommand('ldap-explorer.add-connection', () => {
@@ -117,8 +122,8 @@ export function activate(context: ExtensionContext) {
 
   // Implement "Refresh" command (refreshes both the connections view and the tree view).
   context.subscriptions.push(commands.registerCommand('ldap-explorer.refresh', () => {
-    ldapConnectionsDataProvider.refresh();
-    ldapTreeDataProvider.refresh();
+    connectionTreeDataProvider.refresh();
+    entryTreeDataProvider.refresh();
   }));
 
   // Implement "Show attributes" command (show attributes of the DN in a webview).

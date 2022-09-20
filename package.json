@@ -50,7 +50,8 @@
         },
         {
           "id": "ldap-explorer-view-search",
-          "name": "Search"
+          "name": "Search",
+          "type": "webview"
         }
       ]
     },
