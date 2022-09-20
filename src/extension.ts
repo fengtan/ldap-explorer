@@ -27,8 +27,7 @@ export function activate(context: ExtensionContext) {
 
   // Implement "Edit connection" command.
   context.subscriptions.push(commands.registerCommand('ldap-explorer.edit-connection', (connection?: LdapConnection) => {
-    // @todo the test should be !connection, not instanceof (similar comment for *all* commands)
-    if (connection instanceof LdapConnection) {
+    if (connection) {
       // The command fired from the contextual menu of the tree view: treeItem is defined.
       // We can extract the connection associated with the item.
       createAddEditConnectionWebview(context, connection);
@@ -78,7 +77,7 @@ export function activate(context: ExtensionContext) {
       });
     };
 
-    if (connection instanceof LdapConnection) {
+    if (connection) {
       // The command fired from the contextual menu of the tree view: treeItem is defined.
       // We can extract the connection associated with the item.
       askAndRemoveConnection(connection);

@@ -36,7 +36,6 @@ export class LdapTreeDataProvider implements TreeDataProvider<SearchEntry | Fake
     // Set tooltip of the TreeItem to its full DN.
     treeItem.tooltip = entry.dn;
 
-    // @todo clicking on treeItem should show attributes (drop button from package.json)
     // Clicking on the entry shows its attribute.
     treeItem.command = {
       command: "ldap-explorer.show-attributes",
