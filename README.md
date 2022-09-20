@@ -38,6 +38,7 @@ TODO
 - test
   - test "test connection" in various conditions (server down, wrong credentials, wrong base DN etc)
 features
+  - add "show attributes" to context menu of all tree items
   - ability to edit a connection from command palette
   - creating a new connection should open focus on our view
   - webview values are disposed when go to background

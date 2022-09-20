@@ -46,10 +46,9 @@ export class LdapTreeItem extends vscode.TreeItem {
     // - If the TreeItem is a connection, then show its connection string.
     this.description = dn ? "" : this.connection.getUrl();
 
-    // Command to call when the TreeItem is clicked:
-    // - If the TreeItem is an LDAP result, then call the command that lists its attributes.
-    // - If the TreeItem is a connection, then do nothing.
-    if (dn) {
+    // If the TreeItem is not expandable (e.g. CN entry), then clicking on this item should call the command that lists its attributes.
+    // Othewise (e.g. connection or OU entry), do not set any command: clicking on the tree item will fall back to expanding the item.
+    if (!expandable) {
       this.command =  {
         command: "ldap-explorer.show-attributes",
         title: "Show Attributes",
