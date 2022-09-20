@@ -1,6 +1,5 @@
 // Manages storage of connections in VS Code settings.
 
-import { UndefinedAttributeTypeError } from 'ldapjs';
 import { ExtensionContext, workspace } from 'vscode';
 import { LdapConnection } from './LdapConnection';
 import { LdapLogger } from './LdapLogger';

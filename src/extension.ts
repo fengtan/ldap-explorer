@@ -1,3 +1,4 @@
+import { SearchEntry, UndefinedAttributeTypeError } from 'ldapjs';
 import { commands, ExtensionContext, window } from 'vscode';
 import { LdapConnection } from './LdapConnection';
 import { LdapConnectionManager } from './LdapConnectionManager';
@@ -5,6 +6,7 @@ import { LdapConnectionsDataProvider } from './tree-providers/ConnectionTreeData
 import { LdapTreeDataProvider } from './tree-providers/EntryTreeDataProvider';
 import { createAddEditConnectionWebview } from './webviews/addEditConnectionWebview';
 import { createShowAttributesWebview } from './webviews/showAttributesView';
+import { FakeEntry } from './FakeEntry';
 
 // This method is called when the extension is activated (see activationEvents in package.json).
 export function activate(context: ExtensionContext) {
@@ -123,27 +125,23 @@ export function activate(context: ExtensionContext) {
   }));
 
   // Implement "Show attributes" command (show attributes of the DN in a webview).
-  context.subscriptions.push(commands.registerCommand('ldap-explorer.show-attributes', (dn?: string) => {
-    /* TODO all of this is messed up
-    if (!dn) {
-      // The command fired from the contextual menu of the tree view: treeItem is defined.
-      // We can extract the connection and the DN associated with the item.
-      const connectionName = localState.getActiveConnection();
-      if (connectionName === undefined) {
-        // @todo drop this test, or at least show an error.
+  context.subscriptions.push(commands.registerCommand('ldap-explorer.show-attributes', (entry?: SearchEntry | FakeEntry) => {
+    if (entry) {
+      // The command fired from the tree view: entry is defined.
+      // We can extract the DN associated with the item.
+
+      // Get active connection.
+      const connection = LdapConnectionManager.getActiveConnection(context);
+      if (connection === undefined) {
+        window.showErrorMessage(`No active connection`); // @todo should ask user to pick a connection (just like below).
         return;
       }
-      LdapConnectionManager.getConnection(connectionName).then(
-        (connection: LdapConnection) => {
-          createShowAttributesWebview(connection, dn, context);
-        },
-        reason => {
-          // @todo handle errors.
-        }
-      );
+
+      // Create webview.
+      createShowAttributesWebview(connection, entry.dn, context);
     } else {
-      // The command fired from the command palette: treeItem is undefined.
-      // Explicitly ask the user for a connection.
+      // The command fired from the command palette: entry is undefined.
+      // Explicitly ask the user for a DN.
       const connectionOptions = LdapConnectionManager.getConnections().map(connection => {
         return {
           label: connection.getBaseDn(true),
@@ -156,25 +154,25 @@ export function activate(context: ExtensionContext) {
         if (option === undefined) {
           return;
         }
-        LdapConnectionManager.getConnection(option.name).then(
-          connection => {
-            // Ask the user for a DN.
-            window.showInputBox({ placeHolder: "Enter a DN (e.g. cn=readers,ou=users,dc=example,dc=org)" }).then(dn => {
-              // If no DN was provided, then do nothing.
-              if (dn === undefined) {
-                return;
-              }
-              // Otherwise show webview with attributes of the DN.
-              createShowAttributesWebview(connection, dn, context);
-            });
-          },
-          reason => {
-            window.showErrorMessage(`Unable to show attributes for connection '${option.name}': ${reason}`);
+
+        // Get connection.
+        const connection = LdapConnectionManager.getConnection(option.name);
+        if (connection === undefined) {
+          window.showErrorMessage(`Unknown connection '${option.name}'`);
+          return;
+        }
+
+        // Ask the user for a DN.
+        window.showInputBox({ placeHolder: "Enter a DN (e.g. cn=readers,ou=users,dc=example,dc=org)" }).then(dn => {
+          // If no DN was provided, then do nothing.
+          if (dn === undefined) {
+            return;
           }
-        );
+          // Otherwise show webview with attributes of the DN.
+          createShowAttributesWebview(connection, dn, context);
+        });
       });
     }
-    */
   }));
 
 }

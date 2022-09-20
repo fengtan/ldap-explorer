@@ -4,18 +4,7 @@
 import { SearchEntry } from 'ldapjs';
 import { Event, EventEmitter, ExtensionContext, TreeDataProvider, TreeItem, TreeItemCollapsibleState } from 'vscode';
 import { LdapConnectionManager } from '../LdapConnectionManager';
-
-// A fake LDAP entry i.e. one that is not the result of a LDAP query.
-// @todo ideally only use new SearchEntry() and don't resort to this band-aid class.
-class FakeEntry {
-
-  public dn: string;
-
-  constructor(dn: string) {
-    this.dn = dn;
-  }
-
-}
+import { FakeEntry } from '../FakeEntry';
 
 export class LdapTreeDataProvider implements TreeDataProvider<SearchEntry | FakeEntry> {
 
