@@ -19,12 +19,13 @@ export class LdapConnectionsDataProvider implements TreeDataProvider<LdapConnect
     treeItem.iconPath = new ThemeIcon(isActive ? 'circle-filled' : 'circle');
     treeItem.tooltip = isActive ? "Active connection" : "Inactive connection";
 
-    // Clicking on the connection activate it (and populates the "Tree" view)
+    // Clicking on the connection activate it (and populates the "Tree" view).
     treeItem.command = {
       command: "ldap-explorer.activate-connection",
       title: "Activate connection",
       arguments: [connection]
     };
+
     return treeItem;
   }
 

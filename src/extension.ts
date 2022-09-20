@@ -1,4 +1,4 @@
-import { SearchEntry, UndefinedAttributeTypeError } from 'ldapjs';
+import { SearchEntry } from 'ldapjs';
 import { commands, ExtensionContext, window } from 'vscode';
 import { LdapConnection } from './LdapConnection';
 import { LdapConnectionManager } from './LdapConnectionManager';
@@ -125,10 +125,9 @@ export function activate(context: ExtensionContext) {
   }));
 
   // Implement "Show attributes" command (show attributes of the DN in a webview).
-  context.subscriptions.push(commands.registerCommand('ldap-explorer.show-attributes', (entry?: SearchEntry | FakeEntry) => {
-    if (entry) {
-      // The command fired from the tree view: entry is defined.
-      // We can extract the DN associated with the item.
+  context.subscriptions.push(commands.registerCommand('ldap-explorer.show-attributes', (dn?: string) => {
+    if (dn) {
+      // The command fired from the tree view: a DN was provided.
 
       // Get active connection.
       const connection = LdapConnectionManager.getActiveConnection(context);
@@ -138,7 +137,7 @@ export function activate(context: ExtensionContext) {
       }
 
       // Create webview.
-      createShowAttributesWebview(connection, entry.dn, context);
+      createShowAttributesWebview(connection, dn, context);
     } else {
       // The command fired from the command palette: entry is undefined.
       // Explicitly ask the user for a DN.
