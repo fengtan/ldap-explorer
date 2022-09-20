@@ -1,16 +1,25 @@
 import { Event, EventEmitter, ThemeIcon, TreeDataProvider, TreeItem, TreeItemCollapsibleState } from 'vscode';
 import { LdapConnection } from './LdapConnection';
 import { LdapConnectionManager } from './LdapConnectionManager';
+import { LocalState } from './LocalState';
 
 export class LdapConnectionsDataProvider implements TreeDataProvider<LdapConnection> {
+
+  private localState: LocalState;
+
+  constructor(localState: LocalState) {
+    this.localState = localState;
+  }
 
   getTreeItem(connection: LdapConnection): TreeItem {
     const treeItem = new TreeItem(connection.getName(), TreeItemCollapsibleState.None);
     treeItem.description = connection.getUrl();
-    // @todo add tooltip (base DN / bind DN ?)
-    // @todo add icon so user knows which connection is active (codicon "circle-large", "circle-large-filled") ; to know which connection is active check the VSCode global state
-    treeItem.iconPath = new ThemeIcon('circle');
-    // @todo depending on globalState, clicking on the treeitem should also deactivate the connection
+
+    // Add icon and tooltip so user knows which connection is active.
+    const isActive = (connection.getName() === this.localState.getActiveConnection());
+    treeItem.iconPath = new ThemeIcon(isActive ? 'circle-filled' : 'circle');
+    treeItem.tooltip = isActive ? "Active connection" : "Inactive connection";
+
     // Clicking on the connection activate it (and populates the "Tree" view)
     treeItem.command = {
       command: "ldap-explorer.activate-connection",
@@ -37,7 +46,6 @@ export class LdapConnectionsDataProvider implements TreeDataProvider<LdapConnect
 
   readonly onDidChangeTreeData: Event<LdapConnection | undefined | null | void> = this._onDidChangeTreeData.event;
 
-  // @todo creating/editing/deleting connections should call refresh on *this* view (not on the tree view)
   refresh(): void {
     this._onDidChangeTreeData.fire();
   }

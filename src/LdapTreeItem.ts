@@ -40,8 +40,8 @@ export class LdapTreeItem extends TreeItem {
 
     // Description of the TreeItem:
     // - If the TreeItem is an LDAP result, then show no description.
-    // - If the TreeItem is a connection, then show its connection string.
-    this.description = dn ? "" : this.connection.getUrl();
+    // - If the TreeItem is a connection, then show its connection name.
+    this.description = dn ? "" : this.connection.getName();
   }
 
   getLdapConnection(): LdapConnection {

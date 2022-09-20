@@ -48,6 +48,8 @@ bugs
   - when creating a connection: complain if connection name already exists (must be unique)
   - update welcome views: tree and search views should show no content and ask user to create or select a connection from the connections view
   - add welcome to connections view
+  - load *workspace* settings (and *workspace* memento) if they exist, otherwise fall back to *global* settings (and *global* memento)
+  - add buttons "edit connection" / "delete connection" to contextual menu ? Or is this redundant from a UX pov
 
 features (later ?)
 - add support for filters, with built-in UI in vscode similar to the source control activity http://ldapjs.org/filters.html ; would allow to open groups when you only know its name (CN) and not its full DN e.g. search which groups a user belongs to

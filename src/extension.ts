@@ -4,14 +4,18 @@ import { LdapConnectionManager } from './LdapConnectionManager';
 import { LdapConnectionsDataProvider } from './LdapConnectionsDataProvider';
 import { LdapTreeDataProvider } from './LdapTreeDataProvider';
 import { LdapTreeItem } from './LdapTreeItem';
+import { LocalState } from './LocalState';
 import { createAddEditConnectionWebview } from './webviews/addEditConnectionWebview';
 import { createShowAttributesWebview } from './webviews/showAttributesView';
 
 // This method is called when the extension is activated (see activationEvents in package.json).
 export function activate(context: ExtensionContext) {
 
+  // Create local storage object so the active connection can be persisted in the state.
+  const localState = new LocalState(context);
+
   // Create views (connections, tree, search).
-  const ldapConnectionsDataProvider = new LdapConnectionsDataProvider();
+  const ldapConnectionsDataProvider = new LdapConnectionsDataProvider(localState);
   context.subscriptions.push(window.createTreeView('ldap-explorer-view-connections', { treeDataProvider: ldapConnectionsDataProvider }));
 
   const ldapTreeDataProvider = new LdapTreeDataProvider();
@@ -110,7 +114,14 @@ export function activate(context: ExtensionContext) {
     }
   }));
 
-  // @todo implement 'activate connection' command
+  // Implement "Activate connection" command.
+  context.subscriptions.push(commands.registerCommand('ldap-explorer.activate-connection', (connection: LdapConnection) => {
+    // Store name of new active connection in Memento.
+    localState.setActiveConnection(connection.getName());
+
+    // Refresh views so the new active connection shows up.
+    commands.executeCommand("ldap-explorer.refresh");
+  }));
 
   // Implement "Refresh" command (refreshes both the connections view and the tree view).
   context.subscriptions.push(commands.registerCommand('ldap-explorer.refresh', () => {
