@@ -75,15 +75,15 @@ export class LdapTreeItem extends vscode.TreeItem {
 
   // HTML that lists all attributes of this TreeItem.
   // @todo passing the webviewPanel and context as an argument is really, really not a good idea: the two classes should be loosely coupled
-  getAttributesHTML(webviewPanel: vscode.WebviewPanel, context: vscode.ExtensionContext) {
+  showAttributes(webview: vscode.Webview, extensionUri: vscode.Uri) {
     // Scope is set to "base" so we only get attributes about the current (base) node https://ldapwiki.com/wiki/BaseObject
     // @todo implement onRejected callback of the thenable
     this.connection.search({scope: "base"}, this.dn).then(entries => {
 
       // We need to include this JS into the webview in order to use the Webview UI toolkit.
-      const toolkitUri = getWebviewUiToolkitUri(webviewPanel.webview, context.extensionUri);
+      const toolkitUri = getWebviewUiToolkitUri(webview, extensionUri);
 
-      webviewPanel.webview.html =
+      webview.html =
       `<!DOCTYPE html>
       <html lang="en">
         <head>
@@ -130,7 +130,7 @@ export class LdapTreeItem extends vscode.TreeItem {
 
       // Send message from extension to webview, tell it to populate the rows of the grid.
       // See https://code.visualstudio.com/api/extension-guides/webview#passing-messages-from-an-extension-to-a-webview
-      webviewPanel.webview.postMessage({
+      webview.postMessage({
         command: "populate",
         rows: rows
       });

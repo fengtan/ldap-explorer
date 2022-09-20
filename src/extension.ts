@@ -25,7 +25,7 @@ export function activate(context: vscode.ExtensionContext) {
 		);
 
 		// Populate webview content.
-		panel.webview.html = getAddNewConnectionHTML(panel, context);
+		panel.webview.html = getAddNewConnectionHTML(panel.webview, context.extensionUri);
 
 		// Handle messages from webview to the extension.
 		// See https://code.visualstudio.com/api/extension-guides/webview#passing-messages-from-a-webview-to-an-extension
@@ -106,9 +106,9 @@ export function activate(context: vscode.ExtensionContext) {
 				enableScripts: true,
 			}	  
 		);
-		
+
 		// Populate webview content.
-		treeItem.getAttributesHTML(panel, context);
+		treeItem.showAttributes(panel.webview, context.extensionUri);
 	}));
 
 	// @todo is it necessary to pass all registered commands through context.subscriptions.push() ?
@@ -124,11 +124,11 @@ export function deactivate() {
 }
 
 // @todo drop these arguments, this makes no sense
-function getAddNewConnectionHTML(webviewPanel: vscode.WebviewPanel, context: vscode.ExtensionContext) {
+function getAddNewConnectionHTML(webview: vscode.Webview, extensionUri: vscode.Uri) {
 	// @todo ideally generate the form by inspecting package.json configuration contribution
 
 	// We need to include this JS into the webview in order to use the Webview UI toolkit.
-	const toolkitUri = getWebviewUiToolkitUri(webviewPanel.webview, context.extensionUri);
+	const toolkitUri = getWebviewUiToolkitUri(webview, extensionUri);
 
 	return `<!DOCTYPE html>
 	<html lang="en">
