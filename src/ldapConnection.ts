@@ -22,26 +22,30 @@ export class LdapConnection {
       this.timeout = timeout;
     }
 
-    getProtocol(expanded: boolean) {
-      return expanded ? this.expand(this.protocol) : this.protocol;
+    getProtocol(evaluate: boolean) {
+      return this.get(this.protocol, evaluate);
     }
-    getHost(expanded: boolean) {
-      return expanded ? this.expand(this.host) : this.host;
+    getHost(evaluate: boolean) {
+      return this.get(this.host, evaluate);
     }
-    getPort(expanded: boolean) {
-      return expanded ? this.expand(this.port) : this.port;
+    getPort(evaluate: boolean) {
+      return this.get(this.port, evaluate);
     }
-    getBindDn(expanded: boolean) {
-      return expanded ? this.expand(this.binddn) : this.binddn;
+    getBindDn(evaluate: boolean) {
+      return this.get(this.binddn, evaluate);
     }
-    getBindPwd(expanded: boolean) {
-      return expanded ? this.expand(this.bindpwd) : this.bindpwd;
+    getBindPwd(evaluate: boolean) {
+      return this.get(this.bindpwd, evaluate);
     }
-    getBaseDn(expanded: boolean) {
-      return expanded ? this.expand(this.basedn) : this.basedn;
+    getBaseDn(evaluate: boolean) {
+      return this.get(this.basedn, evaluate);
     }
-    getTimeout(expanded: boolean) {
-      return expanded ? this.expand(this.timeout) : this.timeout;
+    getTimeout(evaluate: boolean) {
+      return this.get(this.timeout, evaluate);
+    }
+
+    get(value: string, evaluate: boolean) {
+      return evaluate ? this.evaluate(value) : value;
     }
 
     // Connection ID ; used to identify its uniqueness.
@@ -55,7 +59,7 @@ export class LdapConnection {
     }
 
     // If value starts with "env:" (e.g. "env:myvar"), then return value of environment variable (e.g. value of "myvar").
-    expand(value: string): string {
+    evaluate(value: string): string {
       if (!value.startsWith("env:")) {
         return value;
       }
