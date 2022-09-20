@@ -45,6 +45,7 @@ features
   - webview values are disposed when go to background
   - editing existing connection multiple times does not seem to work
   - when creating a connection: complain if connection ID already exists (must be unique)
+  - some CN entries do have children: whether an entry has children or not should be based on the objectClass ?
 
 Later
 - add support for filters, with built-in UI in vscode similar to the source control activity http://ldapjs.org/filters.html ; would allow to open groups when you only know its name (CN) and not its full DN

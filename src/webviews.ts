@@ -113,7 +113,7 @@ export function createAddEditConnectionWebview(context: ExtensionContext, existi
 						LdapConnectionManager.addConnection(newConnection).then(
 							value => {
 								// If connection was successfully added, refresh tree view so it shows up.
-								commands.executeCommand("ldap-explorer.refresh-view");
+								commands.executeCommand("ldap-explorer.refresh-tree");
 							},
 							reason => {
 								// If connection could not be added, show error message.
@@ -124,7 +124,7 @@ export function createAddEditConnectionWebview(context: ExtensionContext, existi
 						LdapConnectionManager.editConnection(newConnection, existingConnection).then(
 							value => {
 								// If connection was successfully updated, refresh tree view.
-								commands.executeCommand("ldap-explorer.refresh-view");
+								commands.executeCommand("ldap-explorer.refresh-tree");
 							},
 							reason => {
 								// If connection could not be updated, show error message.
@@ -134,7 +134,7 @@ export function createAddEditConnectionWebview(context: ExtensionContext, existi
 					}
 
                     // Refresh view so the new connection shows up.
-                    commands.executeCommand("ldap-explorer.refresh-view");
+                    commands.executeCommand("ldap-explorer.refresh-tree");
                     return;
 
                 case 'test':

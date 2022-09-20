@@ -21,9 +21,9 @@
     "onCommand:ldap-explorer.add-connection",
     "onCommand:ldap-explorer.edit-connection",
     "onCommand:ldap-explorer.delete-connection",
-    "onCommand:ldap-explorer.refresh-view",
+    "onCommand:ldap-explorer.refresh-tree",
     "onCommand:ldap-explorer.show-attributes",
-    "onView:ldap-explorer-view"
+    "onView:ldap-explorer-tree"
   ],
   "contributes": {
     "viewsContainers": {
@@ -39,7 +39,7 @@
       "ldap-explorer-container": [
         {
           "id": "ldap-explorer-view",
-          "name": "LDAP Explorer"
+          "name": "Tree"
         }
       ]
     },
@@ -67,8 +67,8 @@
         "category": "LDAP Explorer"
       },
       {
-        "command": "ldap-explorer.refresh-view",
-        "title": "Refresh view",
+        "command": "ldap-explorer.refresh-tree",
+        "title": "Refresh tree",
         "category": "LDAP Explorer",
         "icon": "$(refresh)"
       },
@@ -82,12 +82,12 @@
       "view/title": [
         {
           "command": "ldap-explorer.add-connection",
-          "when": "view == ldap-explorer-view",
+          "when": "view == ldap-explorer-tree",
           "group": "navigation"
         },
         {
-          "command": "ldap-explorer.refresh-view",
-          "when": "view == ldap-explorer-view",
+          "command": "ldap-explorer.refresh-tree",
+          "when": "view == ldap-explorer-tree",
           "group": "navigation"
         }
       ],

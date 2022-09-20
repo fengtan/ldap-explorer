@@ -60,7 +60,7 @@ export function activate(context: ExtensionContext) {
 					LdapConnectionManager.removeConnection(connection).then(
 						value => {
 							// If connection was successfully removed, refresh tree view so it does not show up anymore.
-							commands.executeCommand("ldap-explorer.refresh-view");
+							commands.executeCommand("ldap-explorer.refresh-tree");
 						},
 						reason => {
 							// If connection could not be removed, show error message.
@@ -104,7 +104,7 @@ export function activate(context: ExtensionContext) {
 	}));
 
 	// Implement "Refresh" command (refreshes the tree view).
-	context.subscriptions.push(commands.registerCommand('ldap-explorer.refresh-view', () => {
+	context.subscriptions.push(commands.registerCommand('ldap-explorer.refresh-tree', () => {
 		ldapDataProvider.refresh();
 	}));
 
