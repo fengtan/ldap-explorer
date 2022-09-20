@@ -55,16 +55,11 @@ export class LdapTreeDataProvider implements TreeDataProvider<SearchEntry | Fake
   getChildren(entry?: SearchEntry | FakeEntry): Thenable<SearchEntry[] | FakeEntry[]> {
     return new Promise((resolve, reject) => {
       // Get active connection.
-      const connectionName = LdapConnectionManager.getActiveConnection(this.context);
-      if (connectionName === undefined) {
-        // No connection name stored in state: show nothing.
+      const connection = LdapConnectionManager.getActiveConnection(this.context);
+      if (connection === undefined) {
+        // No active connection: return empty array.
         // @todo make sure the welcome screen shows up.
         return resolve([]);
-      }
-      const connection = LdapConnectionManager.getConnection(connectionName);
-
-      if (connection === undefined) {
-        return reject(`Unable to get children: unknown connection '${connectionName}'`);
       }
 
       // No parent entry passed i.e. we are at the root of the tree.

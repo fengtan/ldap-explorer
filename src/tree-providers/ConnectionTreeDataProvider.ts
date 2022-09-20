@@ -15,7 +15,7 @@ export class LdapConnectionsDataProvider implements TreeDataProvider<LdapConnect
     treeItem.description = connection.getUrl();
 
     // Add icon and tooltip so user knows which connection is active.
-    const isActive = (connection.getName() === LdapConnectionManager.getActiveConnection(this.context));
+    const isActive = (connection.getName() === LdapConnectionManager.getActiveConnection(this.context)?.getName());
     treeItem.iconPath = new ThemeIcon(isActive ? 'circle-filled' : 'circle');
     treeItem.tooltip = isActive ? "Active connection" : "Inactive connection";
 

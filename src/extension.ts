@@ -110,7 +110,7 @@ export function activate(context: ExtensionContext) {
   // @todo async/await, or thenable ?
   context.subscriptions.push(commands.registerCommand('ldap-explorer.activate-connection', (connection: LdapConnection) => {
     // Store name of new active connection in Memento.
-    LdapConnectionManager.setActiveConnection(connection.getName(), context);
+    LdapConnectionManager.setActiveConnection(connection, context);
 
     // Refresh views so the new active connection shows up.
     commands.executeCommand("ldap-explorer.refresh");

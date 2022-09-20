@@ -1,5 +1,6 @@
 // Manages storage of connections in VS Code settings.
 
+import { UndefinedAttributeTypeError } from 'ldapjs';
 import { ExtensionContext, workspace } from 'vscode';
 import { LdapConnection } from './LdapConnection';
 import { LdapLogger } from './LdapLogger';
@@ -32,14 +33,16 @@ export class LdapConnectionManager {
     return filteredConnections[0];
   }
 
-  // @todo should take a connection as parameter, not a connectionName
-  static setActiveConnection(connectionName: string, context: ExtensionContext) {
-    context.globalState.update('active-connection', connectionName);
+  static setActiveConnection(connection: LdapConnection, context: ExtensionContext): Thenable<void> {
+    return context.globalState.update('active-connection', connection.getName());
   }
 
-  // @todo would be way easier to return LdapConnection than the connection name, encapsulate stuff and save code
-  static getActiveConnection(context: ExtensionContext): string | undefined {
-    return context.globalState.get('active-connection');
+  static getActiveConnection(context: ExtensionContext): LdapConnection | undefined {
+    const connectionName: string | undefined = context.globalState.get('active-connection');
+    if (connectionName === undefined) {
+      return undefined;
+    }
+    return this.getConnection(connectionName);
   }
 
   // Add new connection to settings.
