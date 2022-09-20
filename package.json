@@ -72,10 +72,6 @@
     "menus": {
       "commandPalette": [
         {
-          "command": "ldap-explorer.delete-connection",
-          "when": "false"
-        },
-        {
           "command": "ldap-explorer.refresh-view",
           "when": "false"
         },
