@@ -20,7 +20,7 @@ TODO
   - explain Base DN, see that documentation drupal provides
   - list alternatives in README.md (container-based software I listed in jira, as well as Jxplorer)
   - explain all commands accessible from the command palette
-  - explain connections end up in settings
+  - explain connections end up in user settings by default, you can add those to workspace settings or devcontainer.json if you like
   - anonymous bind: just leave binddn and bindpwd empty when creating a connection
   - support for environment variables when value starts with "env:" (hello, containers), also handy if you don't want to store unencrypted passwords in vscode settings ; a few environment variables are readily available in test (docker) environment: LDAP_*. If you change the env vars in docker-compose.yml then you will have to rebuild the container in order to see the changes in the UI
   - explain that connection details are added to the settings" (along with JSON object and location of the settings file i.e. whether it was stored in global or workspace settings) - provide an example

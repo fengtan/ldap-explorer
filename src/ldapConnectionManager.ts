@@ -3,6 +3,7 @@
 import { commands, window, workspace } from 'vscode';
 import { LdapConnection } from './ldapConnection';
 
+// @todo this class should not show window.showError() and refresh treeview, should be left to extension.ts
 export class LdapConnectionManager {
 
     // Get all connections from settings.
@@ -22,7 +23,8 @@ export class LdapConnectionManager {
     static getConnection(id: string): LdapConnection {
         const filteredConnections = this.getConnections().filter(connection => connection.getId() === id);
         if (filteredConnections.length < 1) {
-            // @todo throw exception: no connection found.
+            window.showErrorMessage(`Unable to find connection ${id} in settings`);
+            // @todo throw exception
         }
         if (filteredConnections.length > 1) {
             console.log(`Found ${filteredConnections.length} LDAP connections with ID ${id}, expected at most 1.`);
@@ -39,14 +41,14 @@ export class LdapConnectionManager {
         connections.push(connection);
 
         // Save new list of connections.
-        // @todo if workspace is available then store in workspace settings (.vscode/settings.json), otherwise leave global settings (last parameter of the function - boolean)
         workspace.getConfiguration('ldap-explorer').update('connections', connections, true).then(
             value => {
                 // If connection was successfully added, refresh tree view so it shows up.
                 commands.executeCommand("ldap-explorer.refresh-view");
             },
             reason => {
-		        // @todo should catch errors and show Error message if we are unable to save settings
+                // If connection could not be added, show error message.
+                window.showErrorMessage(`Unable to save new connection to settings: ${reason}`);
             }
         );
     }
@@ -59,7 +61,7 @@ export class LdapConnectionManager {
         // Get index of connection to edit.
         const index = connections.findIndex(con => con.getId() === existingConnection.getId());
         if (index < 0 ) {
-            window.showErrorMessage(`Unable to edit '${existingConnection.getId()}': connection does not exist.`);
+            window.showErrorMessage(`Unable to edit connection ${existingConnection.getId()}: connection does not exist in settings`);
             return;
         }
 
@@ -67,14 +69,14 @@ export class LdapConnectionManager {
         connections[index] = newConnection;
 
         // Save new list of connections.
-        // @todo if workspace is available then store in workspace settings (.vscode/settings.json), otherwise leave global settings (last parameter of the function - boolean)
         workspace.getConfiguration('ldap-explorer').update('connections', connections, true).then(
             value => {
                 // If connection was successfully updated, refresh tree view.
                 commands.executeCommand("ldap-explorer.refresh-view");
             },
             reason => {
-		        // @todo should catch errors and show Error message if we are unable to save settings
+                // If connection could not be updated, show error message.
+                window.showErrorMessage(`Unable to update connection in settings: ${reason}`);
             }
         );
     }
@@ -104,7 +106,8 @@ export class LdapConnectionManager {
                         // If connection was successfully removed, refresh tree view so it does not show up anymore.
                         commands.executeCommand("ldap-explorer.refresh-view");
                     }, reason => {
-		                // @todo should catch errors and show Error message if we are unable to save settings
+                        // If connection could not be removed, show error message.
+                        window.showErrorMessage(`Unable to remove connection from settings: ${reason}`);
                     }
                 );
 			}
