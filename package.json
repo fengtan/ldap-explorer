@@ -23,8 +23,7 @@
     "onCommand:ldap-explorer.delete-connection",
     "onCommand:ldap-explorer.refresh-tree",
     "onCommand:ldap-explorer.show-attributes",
-    "onView:ldap-explorer-tree",
-    "onView:ldap-explorer-search"
+    "onView:ldap-explorer-tree"
   ],
   "contributes": {
     "viewsContainers": {
@@ -41,10 +40,6 @@
         {
           "id": "ldap-explorer-tree",
           "name": "Tree"
-        },
-        {
-          "id": "ldap-explorer-search",
-          "name": "Search"
         }
       ]
     },
