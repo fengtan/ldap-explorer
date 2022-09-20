@@ -1,59 +1,65 @@
-TODO
-- documentation in README
-  - screenshot etc
-  - pointer to https://code.visualstudio.com/api
-  - how to test:
-    1. Open project in vscode (using remote-containers extension)
-    2. Hit F5 - should open a new instance of VS Code with the extension running
-    0 prolly need to run `npm install` too (add `npm install` to devcontainer.json's postCreateAction as well)
-  - URL of project on github
-  - drop of reference vsc-extension-quickstart.md
-  - run this command in (devcontainer) terminal to list dummy users ; explain how to fill in the form (webview) to get similar results (e.g. set base DN to dc=example,dc=org)
-  ```
-  ldapsearch -x -b "dc=example,dc=org" -H ldap://ldap:1389 -D "cn=admin,dc=example,dc=org" -w foobar -LLL
-  ```
-  - make sure the code is well documented and consistent
-  - explain Base DN, see that documentation drupal provides
-  - list alternatives in README.md (container-based software I listed in jira, as well as Jxplorer)
-  - explain all commands accessible from the command palette
-  - explain connections end up in user settings by default, you can add those to workspace settings or devcontainer.json if you like
-  - anonymous bind: just leave binddn and bindpwd empty when creating a connection
-  - support for environment variables when value starts with "env:" (hello, containers), also handy if you don't want to store unencrypted passwords in vscode settings ; a few environment variables are readily available in test (docker) environment: LDAP_*. If you change the env vars in docker-compose.yml then you will have to rebuild the container in order to see the changes in the UI
-  - explain that connection details are added to the settings" (along with JSON object and location of the settings file i.e. whether it was stored in global or workspace settings) - provide an example
-  - explain how to reveal the logs (logger output channel)
-  - explain pre-commit, also explain how to disable it (rm .git/precommitfoobar) ; explain how to run it on all files (not just those staged to be committed)
-  - explain how to run autotests
-  - mention that support paging i.e. all items show up even if more than 1,000 children (common limit enforce by many LDAP servers)
-- metadata
-  - license (in package.json and in README.md)
-  - make sure the repo URL listed in package.json is correct
-  - CHANGELOG.txt
-- autotests
+documentation in README
+- screenshot etc
+- pointer to https://code.visualstudio.com/api
+- how to test:
+  1. Open project in vscode (using remote-containers extension)
+  2. Hit F5 - should open a new instance of VS Code with the extension running
+  0 prolly need to run `npm install` too (add `npm install` to devcontainer.json's postCreateAction as well)
+- URL of project on github
+- drop of reference vsc-extension-quickstart.md
+- run this command in (devcontainer) terminal to list dummy users ; explain how to fill in the form (webview) to get similar results (e.g. set base DN to dc=example,dc=org)
+```
+ldapsearch -x -b "dc=example,dc=org" -H ldap://ldap:1389 -D "cn=admin,dc=example,dc=org" -w foobar -LLL
+```
+- make sure the code is well documented and consistent
+- explain Base DN, see that documentation drupal provides
+- list alternatives in README.md (container-based software I listed in jira, as well as Jxplorer)
+- explain all commands accessible from the command palette
+- explain connections end up in user settings by default, you can add those to workspace settings or devcontainer.json if you like
+- anonymous bind: just leave binddn and bindpwd empty when creating a connection
+- support for environment variables when value starts with "env:" (hello, containers), also handy if you don't want to store unencrypted passwords in vscode settings ; a few environment variables are readily available in test (docker) environment: LDAP_*. If you change the env vars in docker-compose.yml then you will have to rebuild the container in order to see the changes in the UI
+- explain that connection details are added to the settings" (along with JSON object and location of the settings file i.e. whether it was stored in global or workspace settings) - provide an example
+- explain how to reveal the logs (logger output channel)
+- explain pre-commit, also explain how to disable it (rm .git/precommitfoobar) ; explain how to run it on all files (not just those staged to be committed)
+- explain how to run autotests
+- mention that support paging i.e. all items show up even if more than 1,000 children (common limit enforce by many LDAP servers)
+- explain, example of LDAP filter
+
+metadata / deployment
+- license (in package.json and in README.md)
+- make sure the repo URL listed in package.json is correct
+- CHANGELOG.txt
+
+clean up
+- egrep todo
+- list anything that is not required for prod in .vscodeignore (e.g. devcontainer.json)
+- list all registered commands in package.json's activationEvents
+- why does cn=admin,dc=example,dc=org not show up in tree view ?
+- in activate(): refactor the commands implementations, they all look similar
+
+best practices
+- define strings in package.nl.json so they are translatable and common
+- UX: document in webview that you can prepend values with env:
+
+CI
 - github action should run eslint + autotests
-- clean up
-  - egrep todo
-  - list anything that is not required for prod in .vscodeignore (e.g. devcontainer.json)
-  - list all registered commands in package.json's activationEvents
-  - why does cn=admin,dc=example,dc=org not show up in tree view ?
-  - in activate(): refactor the commands implementations, they all look similar
-- best practices
-  - define strings in package.nl.json so they are translatable and common
-  - UX: document in webview that you can prepend values with env:
-- test
-  - test "test connection" in various conditions (invalid host, server down, wrong credentials, wrong base DN etc)
+- autotests
+
+test
+- test "test connection" in various conditions (invalid host, server down, wrong credentials, wrong base DN etc)
 
 bugs
-  - webview values are disposed when go to background
-  - editing existing connection multiple times does not seem to work
-  - when creating a connection: complain if connection name already exists (must be unique)
-  - update welcome views: tree and search views should show no content and ask user to create or select a connection from the connections view
-  - add welcome to connections view
-  - load *workspace* settings (and *workspace* memento) if they exist, otherwise fall back to *global* settings (and *global* memento)
-  - add buttons "edit connection" / "delete connection" to contextual menu ? Or is this redundant from a UX pov
-  - should user be able to change the name of a connection ? As it is used as an ID everywhere
-  - remove "activate connection" from command palette ?
-  - persist "show attributes" webview (if go to background then no contents)
-  - bunch of errors in chrome dev tools when click on tree items
+- webview values are disposed when go to background
+- editing existing connection multiple times does not seem to work
+- when creating a connection: complain if connection name already exists (must be unique)
+- update welcome views: tree and search views should show no content and ask user to create or select a connection from the connections view
+- add welcome to connections view
+- load *workspace* settings (and *workspace* memento) if they exist, otherwise fall back to *global* settings (and *global* memento)
+- add buttons "edit connection" / "delete connection" to contextual menu ? Or is this redundant from a UX pov
+- should user be able to change the name of a connection ? As it is used as an ID everywhere
+- remove "activate connection" from command palette ?
+- persist "show attributes" webview (if go to background then no contents)
+- bunch of errors in chrome dev tools when click on tree items
 
 features (later ?)
 - add support for filters, with built-in UI in vscode similar to the source control activity http://ldapjs.org/filters.html ; would allow to open groups when you only know its name (CN) and not its full DN e.g. search which groups a user belongs to
