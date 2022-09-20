@@ -16,6 +16,12 @@ RUN apt-get -y install \
   sudo \
   vim
 
+# Python packages.
+RUN apt-get -y install python3-pip
+RUN pip3 install --upgrade pre-commit \
+ && mkdir -p /home/node/.cache/pre-commit \
+ && chown node /home/node/.cache/pre-commit
+
 # NPM packages
 # See https://code.visualstudio.com/api/get-started/your-first-extension
 RUN npm install -g \

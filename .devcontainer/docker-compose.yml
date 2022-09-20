@@ -4,8 +4,6 @@ services:
   node:
     build: .
     command: sleep infinity
-    volumes:
-      - ..:/workspaces/ldap-explorer:cached
     environment:
       LDAP_PROTOCOL: ldap
       LDAP_HOST: ldap
@@ -13,6 +11,9 @@ services:
       LDAP_BIND_DN: cn=admin,dc=example,dc=org
       LDAP_BIND_PWD: foobar
       LDAP_BASE_DN: dc=example,dc=org
+    volumes:
+      - ..:/workspaces/ldap-explorer:cached
+      - pre-commit:/home/node/.cache/pre-commit
   # Dummy LDAP server for testing purposes
   # https://hub.docker.com/r/bitnami/openldap/
   ldap:
@@ -28,5 +29,6 @@ services:
     volumes:
       - openldap_data:/bitnami/openldap
 volumes:
+  pre-commit:
   openldap_data:
     driver: local

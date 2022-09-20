@@ -1,8 +1,5 @@
 TODO
-- pre-commit
-  - (install automatically in devcontainer's postCreateAction) - run eslint automatically
-  - linter (for typescript + for package.json)
-  - npm validate (is this a thing ?) similar to composer validate
+- eslint indentation rule
 - documentation in README
   - screenshot etc
   - pointer to https://code.visualstudio.com/api
@@ -25,11 +22,14 @@ TODO
   - support for environment variables when value starts with "env:" (hello, containers), also handy if you don't want to store unencrypted passwords in vscode settings ; a few environment variables are readily available in test (docker) environment: LDAP_*. If you change the env vars in docker-compose.yml then you will have to rebuild the container in order to see the changes in the UI
   - explain that connection details are added to the settings" (along with JSON object and location of the settings file i.e. whether it was stored in global or workspace settings) - provide an example
   - explain how to reveal the logs (logger output channel)
+  - explain pre-commit, also explain how to disable it (rm .git/precommitfoobar) ; explain how to run it on all files (not just those staged to be committed)
+  - explain how to run autotests
 - metadata
   - license (in package.json and in README.md)
   - make sure the repo URL listed in package.json is correct
   - CHANGELOG.txt
 - autotests
+- github action should run eslint + autotests
 - clean up
   - egrep todo
   - list anything that is not required for prod in .vscodeignore (e.g. devcontainer.json)
