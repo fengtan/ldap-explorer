@@ -129,28 +129,23 @@
               },
               "host": {
                 "type": "string",
-                "description": "Host",
-                "default": "localhost"
+                "description": "Host"
               },
               "port": {
                 "type": "number",
-                "description": "Port",
-                "default": "389"
+                "description": "Port"
               },
               "binddn": {
                 "type": "string",
-                "description": "Bind DN",
-                "default": ""
+                "description": "Bind DN"
               },
               "bindpwd": {
                 "type": "string",
-                "description": "Bind password",
-                "default": ""
+                "description": "Bind password"
               },
               "basedn": {
                 "type": "string",
-                "description": "Base DN",
-                "default": ""
+                "description": "Base DN"
               }
             }
           }

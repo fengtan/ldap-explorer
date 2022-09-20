@@ -137,7 +137,7 @@ function getAddNewConnectionHTML(webviewPanel: vscode.WebviewPanel, context: vsc
   		</head>
 		<body>
 			<section>
-				<vscode-text-field type="text" id="name" autofocus>Connection name</vscode-text-field>
+				<vscode-text-field type="text" id="name" placeholder="e.g. My connection" autofocus>Connection name</vscode-text-field>
 			</section>
 			<section>
 				<p>Protocol</p>
@@ -147,25 +147,25 @@ function getAddNewConnectionHTML(webviewPanel: vscode.WebviewPanel, context: vsc
 				</vscode-dropdown>
 			</section>
 			<section>
-				<vscode-text-field type="text" id="host" autofocus>Host</vscode-text-field>
+				<vscode-text-field type="text" id="host" placeholder="e.g. example.net">Host</vscode-text-field>
 			</section>
 			<section>
-				<vscode-text-field type="text" id="port" autofocus>Port</vscode-text-field>
+				<vscode-text-field type="text" id="port" placeholder="e.g. 389 or 636">Port</vscode-text-field>
 			</section>
 			<section>
-				<vscode-text-field type="text" id="binddn" autofocus>Bind DN</vscode-text-field>
+				<vscode-text-field type="text" id="binddn" placeholder="e.g. cn=admin,dc=example,dc=org">Bind DN</vscode-text-field>
 			</section>
 			<section>
-				<vscode-text-field type="text" id="bindpwd" autofocus>Bind Password</vscode-text-field>
+				<vscode-text-field type="text" id="bindpwd">Bind Password</vscode-text-field>
 			</section>
 			<section>
-				<vscode-text-field type="text" id="basedn" autofocus>Base DN</vscode-text-field>
+				<vscode-text-field type="text" id="basedn" placeholder="e.g. dc=example,dc=org">Base DN</vscode-text-field>
 			</section>
 
 			<!-- TODO add spacing between form elements -->
 			<!-- TODO complain if the connection name submitted already exists (must be unique) -->
 			<!-- TODO some form elements should be mandatory -->
-			<!-- TODO set defaults (same as those defined in package.json) -->
+
 			<vscode-button onClick="submitForm('save')">Save</vscode-button>
 			<vscode-button onClick="submitForm('test')" appearance="secondary">Test</vscode-button>
 			<script>
