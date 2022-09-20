@@ -88,65 +88,65 @@ export function createAddEditConnectionWebview(context: ExtensionContext, existi
         message.timeout
       );
       switch (message.command) {
-        case 'save':
-          // Verify mandatory fields are not empty.
-          const mandatoryFields = [
-            "protocol",
-            "host",
-            "port",
-            "basedn"
-          ];
-          let emptyMandatoryFields: string[] = [];
-          mandatoryFields.forEach(mandatoryField => {
-            if (!message[mandatoryField]) {
-              emptyMandatoryFields.push(mandatoryField);
-            }
-          });
-          if (emptyMandatoryFields.length > 0) {
-            // Show machine name of the fields (e.g. basedn) instead of labels (e.g. Base DN), that looks acceptable.
-            window.showErrorMessage(`Empty fields, please provide a value: ${emptyMandatoryFields.join(", ")}`);
-            return;
+      case 'save':
+        // Verify mandatory fields are not empty.
+        const mandatoryFields = [
+          "protocol",
+          "host",
+          "port",
+          "basedn"
+        ];
+        let emptyMandatoryFields: string[] = [];
+        mandatoryFields.forEach(mandatoryField => {
+          if (!message[mandatoryField]) {
+            emptyMandatoryFields.push(mandatoryField);
           }
-
-          // Save (either add or update) connection to settings.
-          if (existingConnection === undefined) {
-            LdapConnectionManager.addConnection(newConnection).then(
-              value => {
-                // If connection was successfully added, refresh tree view so it shows up.
-                commands.executeCommand("ldap-explorer.refresh-tree");
-              },
-              reason => {
-                // If connection could not be added, show error message.
-                window.showErrorMessage(`Unable to save new connection: ${reason}`);
-              }
-            );
-          } else {
-            LdapConnectionManager.editConnection(newConnection, existingConnection).then(
-              value => {
-                // If connection was successfully updated, refresh tree view.
-                commands.executeCommand("ldap-explorer.refresh-tree");
-              },
-              reason => {
-                // If connection could not be updated, show error message.
-                window.showErrorMessage(`Unable to update connection: ${reason}`);
-              }
-            );
-          }
-
-          // Refresh view so the new connection shows up.
-          commands.executeCommand("ldap-explorer.refresh-tree");
+        });
+        if (emptyMandatoryFields.length > 0) {
+          // Show machine name of the fields (e.g. basedn) instead of labels (e.g. Base DN), that looks acceptable.
+          window.showErrorMessage(`Empty fields, please provide a value: ${emptyMandatoryFields.join(", ")}`);
           return;
+        }
 
-        case 'test':
-          // Test connection.
-          newConnection.search({}).then(
+        // Save (either add or update) connection to settings.
+        if (existingConnection === undefined) {
+          LdapConnectionManager.addConnection(newConnection).then(
             value => {
-              window.showInformationMessage('Connection succeeded');
+              // If connection was successfully added, refresh tree view so it shows up.
+              commands.executeCommand("ldap-explorer.refresh-tree");
             },
             reason => {
-              window.showErrorMessage(`Connection failed: ${reason}`);
+              // If connection could not be added, show error message.
+              window.showErrorMessage(`Unable to save new connection: ${reason}`);
             }
           );
+        } else {
+          LdapConnectionManager.editConnection(newConnection, existingConnection).then(
+            value => {
+              // If connection was successfully updated, refresh tree view.
+              commands.executeCommand("ldap-explorer.refresh-tree");
+            },
+            reason => {
+              // If connection could not be updated, show error message.
+              window.showErrorMessage(`Unable to update connection: ${reason}`);
+            }
+          );
+        }
+
+        // Refresh view so the new connection shows up.
+        commands.executeCommand("ldap-explorer.refresh-tree");
+        return;
+
+      case 'test':
+        // Test connection.
+        newConnection.search({}).then(
+          value => {
+            window.showInformationMessage('Connection succeeded');
+          },
+          reason => {
+            window.showErrorMessage(`Connection failed: ${reason}`);
+          }
+        );
       }
     },
     undefined,
