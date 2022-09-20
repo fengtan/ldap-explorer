@@ -141,7 +141,7 @@ export function createAddEditConnectionWebview(context: ExtensionContext, existi
 
         // Refresh view so the new connection shows up.
         commands.executeCommand("ldap-explorer.refresh");
-        return;
+        break;
 
       case 'test':
         // Test connection.
@@ -153,6 +153,7 @@ export function createAddEditConnectionWebview(context: ExtensionContext, existi
             window.showErrorMessage(`Connection failed: ${reason}`);
           }
         );
+        break;
       }
     },
     undefined,

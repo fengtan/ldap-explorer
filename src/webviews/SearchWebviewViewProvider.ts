@@ -1,4 +1,4 @@
-import { CancellationToken, ExtensionContext, WebviewView, WebviewViewProvider, WebviewViewResolveContext } from "vscode";
+import { CancellationToken, ExtensionContext, WebviewView, WebviewViewProvider, WebviewViewResolveContext, window } from "vscode";
 import { getWebviewUiToolkitUri } from './utils';
 
 export class SearchWebviewViewProvider implements WebviewViewProvider {
@@ -31,9 +31,35 @@ export class SearchWebviewViewProvider implements WebviewViewProvider {
             <vscode-text-area id="attributes" placeholder="e.g. member">Attributes</vscode-text-area><!-- TODO explain, one attribute per line -->
           </section>
 
-          <vscode-button onClick="">Search</vscode-button><!-- TODO onClick -->
+          <vscode-button onClick="search()">Search</vscode-button>
+
+          <script>
+				    const vscode = acquireVsCodeApi();
+				    function search() {
+					    vscode.postMessage({
+						    command: "search",
+                filter: document.getElementById("filter").value,
+						    attributes: document.getElementById("attributes").value
+              });
+            }
+			    </script>
         </body>
 			</html>`;
+
+    // Submit handler when user clicks the "search" button.
+    // See https://code.visualstudio.com/api/extension-guides/webview#passing-messages-from-a-webview-to-an-extension
+    webviewView.webview.onDidReceiveMessage(
+      message => {
+        switch (message.command) {
+        case 'search':
+          window.showInformationMessage('foo'); // @tood
+          break;
+        }
+      },
+      undefined,
+      this.extensionContext.subscriptions
+    );
+
   }
 
 }

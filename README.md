@@ -71,6 +71,7 @@ bugs
 
 features (later ? never ?)
 - support for add/update/delete operations i.e. not a readonly connection ?
+- option to deactivate a connection ?
 
 WC
 - content security policy / sanitization https://code.visualstudio.com/api/extension-guides/webview#content-security-policy -> https://code.visualstudio.com/api/extension-guides/command#command-uris ; see example in webview-view-sample

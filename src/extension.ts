@@ -17,7 +17,6 @@ export function activate(context: ExtensionContext) {
   const entryTreeDataProvider = new EntryTreeDataProvider(context);
   context.subscriptions.push(window.createTreeView('ldap-explorer-view-tree', { treeDataProvider: entryTreeDataProvider }));
 
-  // @todo implement search view
   const searchWebviewViewProvider = new SearchWebviewViewProvider(context);
   context.subscriptions.push(
     window.registerWebviewViewProvider('ldap-explorer-view-search', searchWebviewViewProvider)
@@ -174,6 +173,11 @@ export function activate(context: ExtensionContext) {
         });
       });
     }
+  }));
+
+  // Implement "Search" command (search LDAP server and show results in a webview).
+  // @todo handle case where command is called from palette i.e. function args are empty
+  context.subscriptions.push(commands.registerCommand('ldap-explorer.search', (filter?: string, attributes ?: string[]) => {
   }));
 
 }
