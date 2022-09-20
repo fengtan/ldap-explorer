@@ -40,7 +40,15 @@ export class LdapConnectionManager {
 
         // Save new list of connections.
         // @todo if workspace is available then store in workspace settings (.vscode/settings.json), otherwise leave global settings (last parameter of the function - boolean)
-        vscode.workspace.getConfiguration('ldap-explorer').update('connections', connections, true);
+        vscode.workspace.getConfiguration('ldap-explorer').update('connections', connections, true).then(
+            value => {
+                // If connection was successfully added, refresh tree view so it shows up.
+                vscode.commands.executeCommand("ldap-explorer.refresh-view");
+            },
+            reason => {
+		        // @todo should catch errors and show Error message if we are unable to save settings
+            }
+        );
     }
 
     // Remove existing connection from settings.
@@ -65,7 +73,7 @@ export class LdapConnectionManager {
 		        // Save new list of connections.
 		        vscode.workspace.getConfiguration('ldap-explorer').update('connections', connections, true).then(
                     value => {
-                        // If connection was successfully added, refresh tree view so it does not show up anymore.
+                        // If connection was successfully removed, refresh tree view so it does not show up anymore.
                         vscode.commands.executeCommand("ldap-explorer.refresh-view");
                     }, reason => {
 		                // @todo should catch errors and show Error message if we are unable to save settings
