@@ -37,7 +37,7 @@ TODO
 features
   - command "Connect to..." (quick pick server)
   - command *palette* "Delete connection..." (currently disabled in command palette)
-  - command "ldap-explorer.show-attributes" should show in command palette (open a quick pick so the user can paste the DN) ; document this feature in README.md
+  - command "ldap-explorer.show-attributes" should show in command palette (open a quick pick so the user can paste the DN, no need to access the DN via the tree view) ; document this feature in README.md
   - ability to *edit* a connection's settings (not just add and delete)
   - creating a new connection should open focus on our view
   - webview values are disposed when go to background
