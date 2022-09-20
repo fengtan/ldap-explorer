@@ -25,11 +25,11 @@ export function activate(context: ExtensionContext) {
   }));
 
   // Implement "Edit connection" command.
-  context.subscriptions.push(commands.registerCommand('ldap-explorer.edit-connection', (treeItem?: LdapTreeItem) => {
-    if (treeItem instanceof LdapTreeItem) {
+  context.subscriptions.push(commands.registerCommand('ldap-explorer.edit-connection', (connection?: LdapConnection) => {
+    if (connection instanceof LdapConnection) {
       // The command fired from the contextual menu of the tree view: treeItem is defined.
       // We can extract the connection associated with the item.
-      createAddEditConnectionWebview(context, treeItem?.getLdapConnection());
+      createAddEditConnectionWebview(context, connection);
     } else {
       // The command fired from the command palette: treeItem is undefined.
       // We explicitly ask the user to pick a connection.

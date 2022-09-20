@@ -5,6 +5,7 @@ import { TreeItem, TreeItemCollapsibleState } from 'vscode';
 
 export class LdapTreeItem extends TreeItem {
 
+  // @todo remove connection attribute from this class, and load active connection from VSCode global state
   private connection: LdapConnection;
   private dn?: string;
 

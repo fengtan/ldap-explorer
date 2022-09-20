@@ -108,10 +108,6 @@
         {
           "command": "ldap-explorer.delete-connection",
           "when": "view == ldap-explorer-view-tree && viewItem == connection"
-        },
-        {
-          "command": "ldap-explorer.edit-connection",
-          "when": "view == ldap-explorer-view-tree && viewItem == connection"
         }
       ]
     },

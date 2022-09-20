@@ -7,6 +7,14 @@ export class LdapConnectionsDataProvider implements TreeDataProvider<LdapConnect
   getTreeItem(connection: LdapConnection): TreeItem {
     const treeItem = new TreeItem(connection.getName(), TreeItemCollapsibleState.None);
     treeItem.description = connection.getUrl();
+    // @todo add tooltip (base DN / bind DN ?)
+    // @todo add icon so user knows which connection is active (codicon "circle-large", "circle-large-filled") ; to know which connection is active check the VSCode global state
+    // @todo no: clicking on a connection should *activate* the connection, not open webview to edit its details -> create icon for this.
+    treeItem.command = {
+      command: "ldap-explorer.edit-connection",
+      title: "Edit connection",
+      arguments: [connection]
+    };
     return treeItem;
   }
 
