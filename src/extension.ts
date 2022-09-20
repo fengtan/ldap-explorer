@@ -1,23 +1,19 @@
 import { commands, ExtensionContext, window } from 'vscode';
 import { LdapConnection } from './LdapConnection';
 import { LdapConnectionManager } from './LdapConnectionManager';
-import { LdapConnectionsDataProvider } from './tree-providers/LdapConnectionsDataProvider';
-import { LdapTreeDataProvider } from './tree-providers/LdapTreeDataProvider';
-import { LocalState } from './LocalState';
+import { LdapConnectionsDataProvider } from './tree-providers/ConnectionTreeDataProvider';
+import { LdapTreeDataProvider } from './tree-providers/EntryTreeDataProvider';
 import { createAddEditConnectionWebview } from './webviews/addEditConnectionWebview';
 import { createShowAttributesWebview } from './webviews/showAttributesView';
 
 // This method is called when the extension is activated (see activationEvents in package.json).
 export function activate(context: ExtensionContext) {
 
-  // Create local storage object so the active connection can be persisted in the state.
-  const localState = new LocalState(context);
-
   // Create views (connections, tree, search).
-  const ldapConnectionsDataProvider = new LdapConnectionsDataProvider(localState);
+  const ldapConnectionsDataProvider = new LdapConnectionsDataProvider(context);
   context.subscriptions.push(window.createTreeView('ldap-explorer-view-connections', { treeDataProvider: ldapConnectionsDataProvider }));
 
-  const ldapTreeDataProvider = new LdapTreeDataProvider(localState);
+  const ldapTreeDataProvider = new LdapTreeDataProvider(context);
   context.subscriptions.push(window.createTreeView('ldap-explorer-view-tree', { treeDataProvider: ldapTreeDataProvider }));
 
   // @todo implement search view
@@ -114,7 +110,7 @@ export function activate(context: ExtensionContext) {
   // @todo async/await, or thenable ?
   context.subscriptions.push(commands.registerCommand('ldap-explorer.activate-connection', (connection: LdapConnection) => {
     // Store name of new active connection in Memento.
-    localState.setActiveConnection(connection.getName());
+    LdapConnectionManager.setActiveConnection(connection.getName(), context);
 
     // Refresh views so the new active connection shows up.
     commands.executeCommand("ldap-explorer.refresh");

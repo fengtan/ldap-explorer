@@ -2,11 +2,11 @@
 // Each SearchEntry is a tree item
 
 import { SearchEntry } from 'ldapjs';
-import { Event, EventEmitter, TreeDataProvider, TreeItem, TreeItemCollapsibleState } from 'vscode';
+import { Event, EventEmitter, ExtensionContext, TreeDataProvider, TreeItem, TreeItemCollapsibleState } from 'vscode';
 import { LdapConnectionManager } from '../LdapConnectionManager';
-import { LocalState } from '../LocalState';
 
 // A fake LDAP entry i.e. one that is not the result of a LDAP query.
+// @todo ideally only use new SearchEntry() and don't resort to this band-aid class.
 class FakeEntry {
 
   public dn: string;
@@ -19,10 +19,10 @@ class FakeEntry {
 
 export class LdapTreeDataProvider implements TreeDataProvider<SearchEntry | FakeEntry> {
 
-  private localState: LocalState;
+  private context: ExtensionContext;
 
-  constructor(localState: LocalState) {
-    this.localState = localState;
+  constructor(context: ExtensionContext) {
+    this.context = context;
   }
 
   getTreeItem(entry: SearchEntry | FakeEntry): TreeItem {
@@ -55,7 +55,7 @@ export class LdapTreeDataProvider implements TreeDataProvider<SearchEntry | Fake
   getChildren(entry?: SearchEntry | FakeEntry): Thenable<SearchEntry[] | FakeEntry[]> {
     return new Promise((resolve, reject) => {
       // Get active connection.
-      const connectionName = this.localState.getActiveConnection();
+      const connectionName = LdapConnectionManager.getActiveConnection(this.context);
       if (connectionName === undefined) {
         // No connection name stored in state: show nothing.
         // @todo make sure the welcome screen shows up.

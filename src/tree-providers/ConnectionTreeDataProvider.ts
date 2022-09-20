@@ -1,14 +1,13 @@
-import { Event, EventEmitter, ThemeIcon, TreeDataProvider, TreeItem, TreeItemCollapsibleState } from 'vscode';
+import { Event, EventEmitter, ExtensionContext, ThemeIcon, TreeDataProvider, TreeItem, TreeItemCollapsibleState } from 'vscode';
 import { LdapConnection } from '../LdapConnection';
 import { LdapConnectionManager } from '../LdapConnectionManager';
-import { LocalState } from '../LocalState';
 
 export class LdapConnectionsDataProvider implements TreeDataProvider<LdapConnection> {
 
-  private localState: LocalState;
+  private context: ExtensionContext;
 
-  constructor(localState: LocalState) {
-    this.localState = localState;
+  constructor(context: ExtensionContext) {
+    this.context = context;
   }
 
   getTreeItem(connection: LdapConnection): TreeItem {
@@ -16,7 +15,7 @@ export class LdapConnectionsDataProvider implements TreeDataProvider<LdapConnect
     treeItem.description = connection.getUrl();
 
     // Add icon and tooltip so user knows which connection is active.
-    const isActive = (connection.getName() === this.localState.getActiveConnection());
+    const isActive = (connection.getName() === LdapConnectionManager.getActiveConnection(this.context));
     treeItem.iconPath = new ThemeIcon(isActive ? 'circle-filled' : 'circle');
     treeItem.tooltip = isActive ? "Active connection" : "Inactive connection";
 
