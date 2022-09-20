@@ -50,8 +50,32 @@ export class LdapConnectionManager {
         );
     }
 
+    // Edit existing connection in settings.
     static editConnection(newConnection: LdapConnection, existingConnection: LdapConnection) {
-        // @todo implement
+        // Get list of existing connections.
+        let connections = this.getConnections();
+
+        // Get index of connection to edit.
+        const index = connections.findIndex(con => con.getId() === existingConnection.getId());
+        if (index < 0 ) {
+            vscode.window.showErrorMessage(`Unable to edit '${existingConnection.getId()}': connection does not exist.`);
+            return;
+        }
+
+        // Replace existing connection with new connection.
+        connections[index] = newConnection;
+
+        // Save new list of connections.
+        // @todo if workspace is available then store in workspace settings (.vscode/settings.json), otherwise leave global settings (last parameter of the function - boolean)
+        vscode.workspace.getConfiguration('ldap-explorer').update('connections', connections, true).then(
+            value => {
+                // If connection was successfully updated, refresh tree view.
+                vscode.commands.executeCommand("ldap-explorer.refresh-view");
+            },
+            reason => {
+		        // @todo should catch errors and show Error message if we are unable to save settings
+            }
+        );
     }
 
     // Remove existing connection from settings.
@@ -68,6 +92,7 @@ export class LdapConnectionManager {
 		        const index = connections.findIndex(con => con.getId() === connection.getId());
 		        if (index < 0 ) {
 			        vscode.window.showInformationMessage(`Unable to delete '${connection.getId()}': connection does not exist.`);
+                    return;
 		        }
 
                 // Remove connection from the list.

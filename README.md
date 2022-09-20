@@ -38,7 +38,7 @@ TODO
 - test
   - test "test connection" in various conditions (server down, wrong credentials, wrong base DN etc)
 features
-  - ability to *edit* a connection's settings (not just add and delete) ; including contextual menu and command palette
+  - ability to edit a connection from command palette
   - creating a new connection should open focus on our view
   - webview values are disposed when go to background
   - additional options when creating connection: log, timeout, connectTimeout (http://ldapjs.org/client.html#create-a-client)
