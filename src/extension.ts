@@ -30,15 +30,15 @@ export function activate(context: ExtensionContext) {
   // Implement "Edit connection" command.
   context.subscriptions.push(commands.registerCommand('ldap-explorer.edit-connection', (connection?: LdapConnection) => {
     if (connection) {
-      // The command fired from the contextual menu of the tree view: treeItem is defined.
-      // We can extract the connection associated with the item.
+      // The command fired from the contextual menu of the tree view: connection is defined.
+      // We can create the webview.
       createAddEditConnectionWebview(context, connection);
     } else {
-      // The command fired from the command palette: treeItem is undefined.
+      // The command fired from the command palette: connection is undefined.
       // We explicitly ask the user to pick a connection.
       const connectionOptions = LdapConnectionManager.getConnections().map(con => {
         return {
-          label: con.getBaseDn(true),
+          label: con.getName(),
           description: con.getUrl(),
           name: con.getName(),
         };
@@ -88,7 +88,7 @@ export function activate(context: ExtensionContext) {
       // We explicitly ask the user to pick a connection.
       const connectionOptions = LdapConnectionManager.getConnections().map(con => {
         return {
-          label: con.getBaseDn(true),
+          label: con.getName(),
           description: con.getUrl(),
           name: con.getName(),
         };
@@ -144,7 +144,7 @@ export function activate(context: ExtensionContext) {
       // Explicitly ask the user for a DN.
       const connectionOptions = LdapConnectionManager.getConnections().map(connection => {
         return {
-          label: connection.getBaseDn(true),
+          label: connection.getName(),
           description: connection.getUrl(),
           name: connection.getName(),
         };

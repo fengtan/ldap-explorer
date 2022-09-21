@@ -51,12 +51,14 @@ bugs
   - webview values are disposed when go to background
   - persist "show attributes" webview (if go to background then no contents)
   - persist webview that shows search results
+  - persist add/edit connection
 - config
   - when creating a connection: complain if connection name already exists (must be unique)
   - editing existing connection multiple times does not seem to work
   - load *workspace* settings (and *workspace* memento) if they exist, otherwise fall back to *global* settings (and *global* memento)
   - should user be able to change the name of a connection ? As it is used as an ID everywhere
   - UX: document in webview that you can prepend values with env:
+  - option to create a connection as readonly (checked by default ?)
 - Welcome screens
   - update welcome views: tree and search views should show no content and ask user to create or select a connection from the connections view
   - add welcome to connections view
@@ -66,13 +68,16 @@ bugs
   - remove "activate connection" from command palette ?
   - make search form elements mandatory (filter + attributes should be provided)
   - add a setting to let end user decide whether search results and attributes should open in a new window or if the same window should always be reused
+  - command palette: command to deactivate the current connection (also if you click on the active connection in the connection tree)
 - console
   - bunch of errors in chrome dev tools when click on tree items
   - bunch of errors in console also when searching
 
 features (later ? never ?)
-- support for add/update/delete operations i.e. not a readonly connection ?
-- option to deactivate a connection ?
+- support to add new entry
+- support to delete entry (already added button, need to implement command)
+- support to edit an entry
+- support to rename/move an entry
 
 WC
 - content security policy / sanitization https://code.visualstudio.com/api/extension-guides/webview#content-security-policy -> https://code.visualstudio.com/api/extension-guides/command#command-uris ; see example in webview-view-sample
