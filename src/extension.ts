@@ -1,4 +1,6 @@
+import { SearchEntry } from 'ldapjs';
 import { commands, ExtensionContext, window } from 'vscode';
+import { FakeEntry } from './FakeEntry';
 import { LdapConnection } from './LdapConnection';
 import { LdapConnectionManager } from './LdapConnectionManager';
 import { ConnectionTreeDataProvider } from './tree-providers/ConnectionTreeDataProvider';
@@ -78,19 +80,18 @@ export function activate(context: ExtensionContext) {
   // Implement "Show attributes" command (show attributes of the DN in a webview).
   context.subscriptions.push(commands.registerCommand('ldap-explorer.show-attributes', async (dn?: string) => {
     // If there is no active connection, then explicitly ask user to pick one.
-    let connection = LdapConnectionManager.getActiveConnection(context);
+    const connection = LdapConnectionManager.getActiveConnection(context) ?? await pickConnection();
+
+    // User did not provide a connection: cancel command.
     if (!connection) {
-      connection = await pickConnection();
-      // User did not provide a connection: cancel command.
-      if (!connection) {
-        return;
-      }
+      return;
     }
 
     // 'dn' may not be defined (e.g. if the command fired from the command palette instead of the tree view).
     // If that is the case we explictly ask the user to enter a DN.
+    // @todo this piece of code is duplicated everywhere in this file (same for pickConnection()), can we refactor this
     if (!dn) {
-      dn = await window.showInputBox({ placeHolder: "Enter a DN (e.g. cn=readers,ou=users,dc=example,dc=org)" });
+      dn = await pickDN();
       // User did not provide a DN: cancel command.
       if (!dn) {
         return;
@@ -101,6 +102,11 @@ export function activate(context: ExtensionContext) {
     createShowAttributesWebview(connection, dn, context);
   }));
 
+}
+
+// Opens input box asking the user to enter a DN.
+async function pickDN(): Promise<string | undefined> {
+  return await window.showInputBox({ placeHolder: "Enter a DN (e.g. cn=readers,ou=users,dc=example,dc=org)" });
 }
 
 // Opens quick pick box asking the user to select a connection.
@@ -123,7 +129,7 @@ async function pickConnection(): Promise<LdapConnection | undefined> {
   return LdapConnectionManager.getConnection(option.name);
 }
 
-// Utility function to ask for a confirmation and actually remove the connection from settings.
+// Ask for a confirmation and actually remove a connection from settings.
 function askAndRemoveConnection(connection: LdapConnection) {
   window.showInformationMessage(`Are you sure you want to remove the connection '${connection.getName()} ?`, { modal: true }, "Yes").then(confirm => {
     if (confirm) {

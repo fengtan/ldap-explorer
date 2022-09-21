@@ -1,4 +1,4 @@
-import { createClient, SearchEntry, SearchOptions } from 'ldapjs';
+import { Client, createClient, SearchEntry, SearchOptions } from 'ldapjs';
 import { LdapLogger } from './LdapLogger';
 
 export class LdapConnection {
@@ -74,8 +74,8 @@ export class LdapConnection {
   search(options: SearchOptions, base: string = this.getBaseDn(true)): Thenable<SearchEntry[]> {
     return new Promise((resolve, reject) => {
 
-      // Create ldapjs client.
-      const client = createClient({
+      // Get ldapjs client.
+      const client: Client = createClient({
         url: [this.getUrl()],
         timeout: Number(this.getTimeout(true))
       });

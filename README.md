@@ -74,16 +74,11 @@ bugs
   - bunch of errors in chrome dev tools when click on tree items
   - bunch of errors in console also when searching
 
-features (later ? never ?)
-- support to add new entry
-- support to delete entry (already added button, need to implement command)
-- support to edit an entry
-- support to rename/move an entry
-
 WC
 - content security policy / sanitization https://code.visualstudio.com/api/extension-guides/webview#content-security-policy -> https://code.visualstudio.com/api/extension-guides/command#command-uris ; see example in webview-view-sample
 - support for LDIF files ?
 - ldapsj accepts a "log" attribute in constructor http://ldapjs.org/client.html#create-a-client ; use it to replace LdapLogger
+- support to add/delete/edit/rename/remove new entry
 
 # ldap-explorer README
 
