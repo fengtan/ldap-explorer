@@ -33,68 +33,40 @@ export function activate(context: ExtensionContext) {
     // If that is the case we explictly ask the user to pick a connection.
     if (!connection) {
       connection = await pickConnection();
+      // User did not provide a connection: cancel command.
+      if (!connection) {
+        return;
+      }
     }
-    // Create webview.
+
+    // Create webview to edit connection.
     createAddEditConnectionWebview(context, connection);
   }));
 
   // Implement "Delete connection" command.
-  context.subscriptions.push(commands.registerCommand('ldap-explorer.delete-connection', (connection?: LdapConnection) => {
-    // Utility function to ask for a confirmation and actually remove the connection from settings.
-    const askAndRemoveConnection = (con: LdapConnection) => {
-      window.showInformationMessage(`Are you sure you want to remove the connection '${con.getName()} ?`, { modal: true }, "Yes").then(confirm => {
-        if (confirm) {
-          LdapConnectionManager.removeConnection(con).then(
-            value => {
-              // If connection was successfully removed, refresh tree view so it does not show up anymore.
-              commands.executeCommand("ldap-explorer.refresh");
-            },
-            reason => {
-              // If connection could not be removed, show error message.
-              window.showErrorMessage(`Unable to remove connection: ${reason}`);
-            }
-          );
-        }
-      });
-    };
-
-    if (connection) {
-      // The command fired from the contextual menu of the tree view: connection is defined.
-      askAndRemoveConnection(connection);
-    } else {
-      // The command fired from the command palette: connection is undefined.
-      // We explicitly ask the user to pick a connection.
-      const connectionOptions = LdapConnectionManager.getConnections().map(con => {
-        return {
-          label: con.getName(),
-          description: con.getUrl(),
-          name: con.getName(),
-        };
-      });
-      window.showQuickPick(connectionOptions, { placeHolder: "Select a connection" }).then(option => {
-        // If no connection was selected, then do nothing.
-        if (option === undefined) {
-          return;
-        }
-        // Delete the connection.
-        const connection = LdapConnectionManager.getConnection(option.name);
-        if (connection === undefined) {
-          window.showErrorMessage(`Unknown connection '${option.name}'`);
-          return;
-        }
-        askAndRemoveConnection(connection);
-      });
+  context.subscriptions.push(commands.registerCommand('ldap-explorer.delete-connection', async (connection?: LdapConnection) => {
+    // connection may not be defined (e.g. if the command fired from the command palette instead of the tree view).
+    // If that is the case we explictly ask the user to pick a connection.
+    if (!connection) {
+      connection = await pickConnection();
+      // User did not provide a connection: cancel command.
+      if (!connection) {
+        return;
+      }
     }
+
+    // Remove connection.
+    askAndRemoveConnection(connection);
   }));
 
   // Implement "Activate connection" command.
   // @todo async/await, or thenable ?
   context.subscriptions.push(commands.registerCommand('ldap-explorer.activate-connection', (connection: LdapConnection) => {
     // Store name of new active connection in Memento.
-    LdapConnectionManager.setActiveConnection(connection, context);
-
-    // Refresh views so the new active connection shows up.
-    commands.executeCommand("ldap-explorer.refresh");
+    LdapConnectionManager.setActiveConnection(connection, context).then(() => {
+      // Refresh views so the new active connection shows up.
+      commands.executeCommand("ldap-explorer.refresh");
+    });
   }));
 
   // Implement "Refresh" command (refreshes both the connections view and the tree view).
@@ -174,6 +146,24 @@ async function pickConnection(): Promise<LdapConnection | undefined> {
   // Otherwise return connection object.
   return LdapConnectionManager.getConnection(option.name);
 }
+
+// Utility function to ask for a confirmation and actually remove the connection from settings.
+function askAndRemoveConnection(connection: LdapConnection) {
+  window.showInformationMessage(`Are you sure you want to remove the connection '${connection.getName()} ?`, { modal: true }, "Yes").then(confirm => {
+    if (confirm) {
+      LdapConnectionManager.removeConnection(connection).then(
+        value => {
+          // If connection was successfully removed, refresh tree view so it does not show up anymore.
+          commands.executeCommand("ldap-explorer.refresh");
+        },
+        reason => {
+          // If connection could not be removed, show error message.
+          window.showErrorMessage(`Unable to remove connection: ${reason}`);
+        }
+      );
+    }
+  });
+};
 
 // This method is called when your extension is deactivated.
 export function deactivate() { }
