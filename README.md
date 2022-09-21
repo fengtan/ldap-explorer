@@ -58,13 +58,11 @@ bugs
   - load *workspace* settings (and *workspace* memento) if they exist, otherwise fall back to *global* settings (and *global* memento)
   - should user be able to change the name of a connection ? As it is used as an ID everywhere
   - UX: document in webview that you can prepend values with env:
-  - option to create a connection as readonly (checked by default ?)
 - Welcome screens
   - update welcome views: tree and search views should show no content and ask user to create or select a connection from the connections view
   - add welcome to connections view
 - UX
-  - command palette: don't ask for connection just use current active connection
-  - add buttons "edit connection" / "delete connection" / "show attributes" / "delete DN" / "rename DN" / etc to contextual menu
+  - add buttons "edit connection" / "delete connection" to contextual menu
   - remove "activate connection" from command palette ?
   - make search form elements mandatory (filter + attributes should be provided)
   - add a setting to let end user decide whether search results and attributes should open in a new window or if the same window should always be reused
@@ -78,7 +76,7 @@ WC
 - content security policy / sanitization https://code.visualstudio.com/api/extension-guides/webview#content-security-policy -> https://code.visualstudio.com/api/extension-guides/command#command-uris ; see example in webview-view-sample
 - support for LDIF files ?
 - ldapsj accepts a "log" attribute in constructor http://ldapjs.org/client.html#create-a-client ; use it to replace LdapLogger
-- support to add/delete/edit/rename/remove new entry
+- support to add/delete/edit/rename/remove new entry (and add checkbox "readonly connection" when creating/editing a connection)
 
 # ldap-explorer README
 
