@@ -62,11 +62,9 @@ bugs
   - add welcome to connections view
 - UX
   - command palette: don't ask for connection just use current active connection
-  - add buttons "edit connection" / "delete connection" to contextual menu ? Or is this redundant from a UX pov
+  - add buttons "edit connection" / "delete connection" / "show attributes" / "delete DN" / "rename DN" / etc to contextual menu
   - remove "activate connection" from command palette ?
-  - provide hyperlink to documentation that explains how to write LDAP filters (notoriously hard)
   - make search form elements mandatory (filter + attributes should be provided)
-  - in all webviews: not really necessary to include "LDAP Explorer" in title, creates noise
   - add a setting to let end user decide whether search results and attributes should open in a new window or if the same window should always be reused
 - console
   - bunch of errors in chrome dev tools when click on tree items

@@ -10,10 +10,11 @@ export function createSearchResultsWebview(context: ExtensionContext, connection
   // @todo allow paging and max number of entries returned ? infinite scroll ?
   connection.search({ scope: "sub", filter: filter, attributes: attributes }, connection.getBaseDn(true)).then(
     entries => {
+      const title: string = `Search results: ${filter}`;
       // Create webview.
       const panel = window.createWebviewPanel(
         'ldap-explorer.search',
-        `Results: ${filter}`, // @todo include connection name in title ?
+        title,
         ViewColumn.One,
         {
           enableScripts: true
@@ -31,7 +32,7 @@ export function createSearchResultsWebview(context: ExtensionContext, connection
 				  <script type="module" src="${toolkitUri}"></script>
 				</head>
 				<body>
-				  <h1>${filter}</h1><!-- TODO include connection name in h1 ? -->
+				  <h1>${title}</h1>
 				  <vscode-data-grid id="grid" aria-label="Search results"></vscode-data-grid>
 				  <script>
 				  // Populate grid in webview when receiving data from the extension.
