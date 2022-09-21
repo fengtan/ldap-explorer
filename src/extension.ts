@@ -28,35 +28,14 @@ export function activate(context: ExtensionContext) {
   }));
 
   // Implement "Edit connection" command.
-  context.subscriptions.push(commands.registerCommand('ldap-explorer.edit-connection', (connection?: LdapConnection) => {
-    if (connection) {
-      // The command fired from the contextual menu of the tree view: connection is defined.
-      // We can create the webview.
-      createAddEditConnectionWebview(context, connection);
-    } else {
-      // The command fired from the command palette: connection is undefined.
-      // We explicitly ask the user to pick a connection.
-      const connectionOptions = LdapConnectionManager.getConnections().map(con => {
-        return {
-          label: con.getName(),
-          description: con.getUrl(),
-          name: con.getName(),
-        };
-      });
-      window.showQuickPick(connectionOptions, { placeHolder: "Select a connection" }).then(option => {
-        // If no connection was selected, then do nothing.
-        if (option === undefined) {
-          return;
-        }
-        // Otherwise edit the connection.
-        const connection = LdapConnectionManager.getConnection(option.name);
-        if (connection === undefined) {
-          window.showErrorMessage(`Unable to edit connection '${option.name}': connection is unknown`);
-          return;
-        }
-        createAddEditConnectionWebview(context, connection);
-      });
+  context.subscriptions.push(commands.registerCommand('ldap-explorer.edit-connection', async (connection?: LdapConnection) => {
+    // connection may not be defined (e.g. if the command fired from the command palette instead of the tree view).
+    // If that is the case we explictly ask the user to pick a connection.
+    if (!connection) {
+      connection = await pickConnection();
     }
+    // Create webview.
+    createAddEditConnectionWebview(context, connection);
   }));
 
   // Implement "Delete connection" command.
@@ -80,11 +59,10 @@ export function activate(context: ExtensionContext) {
     };
 
     if (connection) {
-      // The command fired from the contextual menu of the tree view: treeItem is defined.
-      // We can extract the connection associated with the item.
+      // The command fired from the contextual menu of the tree view: connection is defined.
       askAndRemoveConnection(connection);
     } else {
-      // The command fired from the command palette: treeItem is undefined.
+      // The command fired from the command palette: connection is undefined.
       // We explicitly ask the user to pick a connection.
       const connectionOptions = LdapConnectionManager.getConnections().map(con => {
         return {
@@ -101,7 +79,7 @@ export function activate(context: ExtensionContext) {
         // Delete the connection.
         const connection = LdapConnectionManager.getConnection(option.name);
         if (connection === undefined) {
-          window.showErrorMessage(`Unable to delete connection '${option.name}': connection is unknown`);
+          window.showErrorMessage(`Unknown connection '${option.name}'`);
           return;
         }
         askAndRemoveConnection(connection);
@@ -175,11 +153,26 @@ export function activate(context: ExtensionContext) {
     }
   }));
 
-  // Implement "Search" command (search LDAP server and show results in a webview).
-  // @todo handle case where command is called from palette i.e. function args are empty
-  context.subscriptions.push(commands.registerCommand('ldap-explorer.search', (filter?: string, attributes ?: string[]) => {
-  }));
+}
 
+// Opens quick pick box asking the user to select a connection.
+async function pickConnection(): Promise<LdapConnection | undefined> {
+  const options = LdapConnectionManager.getConnections().map(connection => {
+    return {
+      label: connection.getName(),
+      description: connection.getUrl(),
+      name: connection.getName(),
+    };
+  });
+  const option = await window.showQuickPick(options, { placeHolder: "Select a connection" });
+
+  // If user cancelled the connection quick pick, then do nothing.
+  if (option === undefined) {
+    return undefined;
+  }
+
+  // Otherwise return connection object.
+  return LdapConnectionManager.getConnection(option.name);
 }
 
 // This method is called when your extension is deactivated.
