@@ -26,17 +26,17 @@ export class SearchWebviewViewProvider implements WebviewViewProvider {
 				<body>
           <section>
             <!-- TODO prepopulate "value" with memento ? Otherwise it gets reset when goes to the background-->
-            <vscode-text-field type="text" id="filter" placeholder="e.g. cn=readers">Filter</vscode-text-field><!-- TODO verify the example in the placeholder is a valid LDAP filter -->
+            <!-- TODO turn "help" into a "?" badge ? -->
+            <vscode-text-field type="text" id="filter" placeholder="e.g. cn=readers">Filter (<a href="https://ldap.com/ldap-filters/">help</a>)</vscode-text-field>
           </section>
           <section>
-            <!-- when parsing the text area make sure we account for windows-style CRLF -->
-            <!-- TODO explain, one attribute per line -->
-            <!-- TODO "leave empty to show all attributes" ? -->
-            <vscode-text-area id="attributes" placeholder="e.g. member">Attributes</vscode-text-area>
+            <!-- TODO turn "one attribute per line, leave empty to show all" into a tooltip ? -->
+            <vscode-text-area id="attributes" placeholder="e.g. member" resize="both" rows="10">Attributes (one attribute per line, leave empty to show all)</vscode-text-area>
           </section>
           <!-- TODO expose scope to end user (base, sub) -->
+          <!-- TODO hitting "Enter" should submit the form -->
 
-          <vscode-button onClick="search()">Search</vscode-button>
+          <vscode-button id="search" onClick="search()">Search</vscode-button>
 
           <script>
             const vscode = acquireVsCodeApi();
@@ -46,7 +46,19 @@ export class SearchWebviewViewProvider implements WebviewViewProvider {
                 filter: document.getElementById("filter").value,
                 attributes: document.getElementById("attributes").value
               });
+              // @todo give back focus to filter or attributes element
             }
+            // Submit form when user focuses on filter text field and hits "Enter".
+            (function() {
+              document.getElementById("filter").addEventListener("keypress", function(event) {
+                if (event.key === "Enter") {
+                  // Cancel the default action.
+                  event.preventDefault();
+                  // Trigger the search button element with a click.
+                  document.getElementById("search").click();
+                }
+              });
+            })();
 			    </script>
         </body>
 			</html>`;
@@ -63,8 +75,15 @@ export class SearchWebviewViewProvider implements WebviewViewProvider {
             window.showErrorMessage(`No active connection`); // @todo should ask user to pick a connection ?
             return;
           }
+
+          // Extract array of attributes to show.
+          // The attributes provided by the user in the textarea are split by newline.
+          // If the user left the textarea empty then show all attributes i.e. make 'attributes' undefined.
+          const attributes = (message.attributes === '') ? undefined : message.attributes.split(/\r?\n/);
+
           // Show search results in a webview.
-          createSearchResultsWebview(connection, message.filter, message.attributes, this.extensionContext);
+          // @todo open in same window, don't create a new one
+          createSearchResultsWebview(this.extensionContext, connection, message.filter, attributes);
           break;
         }
       },

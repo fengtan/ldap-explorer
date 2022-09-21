@@ -3,12 +3,12 @@ import { LdapConnection } from '../LdapConnection';
 import { getWebviewUiToolkitUri } from './utils';
 
 // Makes a search query to the LDAP server and shows results in a webview.
-export function createSearchResultsWebview(connection: LdapConnection, filter: string, attributes: string[], context: ExtensionContext) {
+export function createSearchResultsWebview(context: ExtensionContext, connection: LdapConnection, filter: string, attributes?: string[]) {
 
   // Defaults to scope "sub" i.e. returns the full substree of the base DN.
   // @todo expose scope to end user ?
   // @todo allow paging and max number of entries returned ? infinite scroll ?
-  connection.search({ scope: "sub", filter: filter }, connection.getBaseDn(true)).then(
+  connection.search({ scope: "sub", filter: filter, attributes: attributes }, connection.getBaseDn(true)).then(
     entries => {
       // Create webview.
       const panel = window.createWebviewPanel(
@@ -49,6 +49,7 @@ export function createSearchResultsWebview(connection: LdapConnection, filter: s
 				</script>
 			</html>`;
 
+      // @todo make headers sticky (also applies to showAttributeWebview)
       // Store columns (attribute names) and rows (values) in arrays.
       let attributeNames: string[] = [];
       let rowsData: any[] = [];
@@ -82,7 +83,7 @@ export function createSearchResultsWebview(connection: LdapConnection, filter: s
     },
     reason => {
       // @todo fails to show when adding a invalid filter (the error shows in console)
-      window.showErrorMessage(`Unable to search with filter "${filter}", attributes "${attributes.join(', ')}": ${reason}`);
+      window.showErrorMessage(`Unable to search with filter "${filter}", attributes "${attributes?.join(', ')}": ${reason}`);
     }
   );
 
