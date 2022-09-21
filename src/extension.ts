@@ -76,53 +76,29 @@ export function activate(context: ExtensionContext) {
   }));
 
   // Implement "Show attributes" command (show attributes of the DN in a webview).
-  context.subscriptions.push(commands.registerCommand('ldap-explorer.show-attributes', (dn?: string) => {
-    if (dn) {
-      // The command fired from the tree view: a DN was provided.
-
-      // Get active connection.
-      const connection = LdapConnectionManager.getActiveConnection(context);
-      if (connection === undefined) {
-        window.showErrorMessage(`No active connection`); // @todo should ask user to pick a connection (just like below).
+  context.subscriptions.push(commands.registerCommand('ldap-explorer.show-attributes', async (dn?: string) => {
+    // If there is no active connection, then explicitly ask user to pick one.
+    let connection = LdapConnectionManager.getActiveConnection(context);
+    if (!connection) {
+      connection = await pickConnection();
+      // User did not provide a connection: cancel command.
+      if (!connection) {
         return;
       }
-
-      // Create webview.
-      createShowAttributesWebview(connection, dn, context);
-    } else {
-      // The command fired from the command palette: entry is undefined.
-      // Explicitly ask the user for a DN.
-      const connectionOptions = LdapConnectionManager.getConnections().map(connection => {
-        return {
-          label: connection.getName(),
-          description: connection.getUrl(),
-          name: connection.getName(),
-        };
-      });
-      window.showQuickPick(connectionOptions, { placeHolder: "Select a connection" }).then(option => {
-        // If user cancelled the connection quick pick, then do nothing.
-        if (option === undefined) {
-          return;
-        }
-
-        // Get connection.
-        const connection = LdapConnectionManager.getConnection(option.name);
-        if (connection === undefined) {
-          window.showErrorMessage(`Unknown connection '${option.name}'`);
-          return;
-        }
-
-        // Ask the user for a DN.
-        window.showInputBox({ placeHolder: "Enter a DN (e.g. cn=readers,ou=users,dc=example,dc=org)" }).then(dn => {
-          // If no DN was provided, then do nothing.
-          if (dn === undefined) {
-            return;
-          }
-          // Otherwise show webview with attributes of the DN.
-          createShowAttributesWebview(connection, dn, context);
-        });
-      });
     }
+
+    // 'dn' may not be defined (e.g. if the command fired from the command palette instead of the tree view).
+    // If that is the case we explictly ask the user to enter a DN.
+    if (!dn) {
+      dn = await window.showInputBox({ placeHolder: "Enter a DN (e.g. cn=readers,ou=users,dc=example,dc=org)" });
+      // User did not provide a DN: cancel command.
+      if (!dn) {
+        return;
+      }
+    }
+
+    // Create webview with attributes of the DN.
+    createShowAttributesWebview(connection, dn, context);
   }));
 
 }
