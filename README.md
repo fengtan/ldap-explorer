@@ -24,6 +24,7 @@ ldapsearch -x -b "dc=example,dc=org" -H ldap://ldap:1389 -D "cn=admin,dc=example
 - explain how to run autotests
 - mention that support paging i.e. all items show up even if more than 1,000 children (common limit enforce by many LDAP servers)
 - explain, example of LDAP filter
+- support for environment variables in all fields except connection name
 
 metadata / deployment
 - license (in package.json and in README.md)
@@ -52,14 +53,11 @@ bugs
   - persist "show attributes" webview (if go to background then no contents)
   - persist webview that shows search results
   - persist add/edit connection
-- config
-  - load *workspace* settings (and *workspace* memento) if they exist, otherwise fall back to *global* settings (and *global* memento)
-  - should user be able to change the name of a connection ? As it is used as an ID everywhere
-  - UX: document in webview that you can prepend values with env:
 - Welcome screens
   - update welcome views: tree and search views should show no content and ask user to create or select a connection from the connections view
   - add welcome to connections view
 - UX
+  - switch syntax for environment variables from env: to ${}
   - remove "activate connection" from command palette ?
   - add a setting to let end user decide whether search results and attributes should open in a new window or if the same window should always be reused
   - command palette: command to deactivate the current connection (also if you click on the active connection in the connection tree)

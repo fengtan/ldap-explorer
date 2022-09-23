@@ -59,6 +59,10 @@ export function createAddEditConnectionWebview(context: ExtensionContext, existi
 				<vscode-text-field type="text" id="timeout" value="${existingConnection?.getTimeout(false) ?? '5000'}">Timeout in milliseconds (leave empty for infinity)</vscode-text-field>
 			</section>
 
+      <section>
+        <p>Syntax for environment variables: <code>$\{my-env-var\}</p>
+      </section>
+
 			<vscode-button onClick="submitForm('save')">Save</vscode-button>
 			<vscode-button onClick="submitForm('test')" appearance="secondary">Test</vscode-button>
 			<script>
