@@ -114,12 +114,12 @@
         {
           "command": "ldap-explorer.edit-connection",
           "when": "view == ldap-explorer-view-connections",
-          "group": "inline"
+          "group": "inline@1"
         },
         {
           "command": "ldap-explorer.delete-connection",
           "when": "view == ldap-explorer-view-connections",
-          "group": "inline"
+          "group": "inline@2"
         }
       ]
     },

@@ -62,7 +62,6 @@ bugs
   - update welcome views: tree and search views should show no content and ask user to create or select a connection from the connections view
   - add welcome to connections view
 - UX
-  - add buttons "edit connection" / "delete connection" to contextual menu
   - remove "activate connection" from command palette ?
   - make search form elements mandatory (filter + attributes should be provided)
   - add a setting to let end user decide whether search results and attributes should open in a new window or if the same window should always be reused
