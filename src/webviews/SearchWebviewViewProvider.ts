@@ -27,7 +27,7 @@ export class SearchWebviewViewProvider implements WebviewViewProvider {
           <section>
             <!-- TODO prepopulate "value" with memento ? Otherwise it gets reset when goes to the background-->
             <!-- TODO turn "help" into a "?" badge ? -->
-            <vscode-text-field type="text" id="filter" placeholder="e.g. cn=readers">Filter (<a href="https://ldap.com/ldap-filters/">help</a>)</vscode-text-field>
+            <vscode-text-field type="text" id="filter" placeholder="e.g. cn=readers">Filter (<a href="https://ldap.com/ldap-filters/">help</a>) *</vscode-text-field>
           </section>
           <section>
             <!-- TODO turn "one attribute per line, leave empty to show all" into a tooltip ? -->
@@ -73,6 +73,12 @@ export class SearchWebviewViewProvider implements WebviewViewProvider {
           const connection = LdapConnectionManager.getActiveConnection(this.extensionContext);
           if (connection === undefined) {
             window.showErrorMessage(`No active connection`); // @todo should ask user to pick a connection ?
+            return;
+          }
+
+          // Filter field is mandatory: verify it is not empty.
+          if (!message.filter) {
+            window.showErrorMessage(`Empty field "Filter", please provide a value`);
             return;
           }
 

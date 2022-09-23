@@ -61,13 +61,13 @@ bugs
   - add welcome to connections view
 - UX
   - remove "activate connection" from command palette ?
-  - make search form elements mandatory (filter + attributes should be provided)
   - add a setting to let end user decide whether search results and attributes should open in a new window or if the same window should always be reused
   - command palette: command to deactivate the current connection (also if you click on the active connection in the connection tree)
   - command palette: add command "search" (also called by webview)
 - console
   - bunch of errors in chrome dev tools when click on tree items
   - bunch of errors in console also when searching
+  - if filter is set to "test" and hit "Search" then no error shows up
 
 WC
 - content security policy / sanitization https://code.visualstudio.com/api/extension-guides/webview#content-security-policy -> https://code.visualstudio.com/api/extension-guides/command#command-uris ; see example in webview-view-sample
