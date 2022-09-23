@@ -58,6 +58,10 @@ export class LdapConnection {
     return `${this.getProtocol(true)}://${this.getHost(true)}:${this.getPort(true)}`;
   }
 
+  setName(name: string) {
+    this.name = name;
+  }
+
   // If value starts with "env:" (e.g. "env:myvar"), then return value of environment variable (e.g. value of "myvar"). If no such environment variable exists then return an empty string.
   // Otherwise return the value itself.
   evaluate(value: string): string {

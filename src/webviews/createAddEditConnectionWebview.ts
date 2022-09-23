@@ -139,6 +139,10 @@ export function createAddEditConnectionWebview(context: ExtensionContext, existi
             value => {
               // If connection was successfully updated, refresh tree view.
               commands.executeCommand("ldap-explorer.refresh");
+
+              // Also update the name of the existing connection as this field is used to identify connections.
+              // This allows the user to change the name of the connection multiple times while keeping the webview open.
+              existingConnection.setName(newConnection.getName());
             },
             reason => {
               // If connection could not be updated, show error message.

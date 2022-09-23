@@ -53,7 +53,6 @@ bugs
   - persist webview that shows search results
   - persist add/edit connection
 - config
-  - editing existing connection multiple times does not seem to work
   - load *workspace* settings (and *workspace* memento) if they exist, otherwise fall back to *global* settings (and *global* memento)
   - should user be able to change the name of a connection ? As it is used as an ID everywhere
   - UX: document in webview that you can prepend values with env:
