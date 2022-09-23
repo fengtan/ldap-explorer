@@ -35,7 +35,6 @@ clean up
 - egrep todo
 - list anything that is not required for prod in .vscodeignore (e.g. devcontainer.json)
 - list all registered commands in package.json's activationEvents
-- in activate(): refactor the commands implementations, they all look similar
 - define strings in package.nl.json so they are translatable and common
 - git log | grep mas
 - make sure there is no unnecesary import ; run some code optimization tool / quality checks
