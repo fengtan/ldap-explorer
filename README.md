@@ -44,7 +44,7 @@ CI
 - autotests
 
 test
-- test "test connection" in various conditions (invalid host, server down, wrong credentials, wrong base DN etc)
+- test "test connection" in various conditions (invalid host, server down, wrong credentials, wrong base DN etc) -> does not seem to complain if base DN is "test"
 
 bugs
 - webview persistence
@@ -53,7 +53,6 @@ bugs
   - persist webview that shows search results
   - persist add/edit connection
 - config
-  - when creating a connection: complain if connection name already exists (must be unique)
   - editing existing connection multiple times does not seem to work
   - load *workspace* settings (and *workspace* memento) if they exist, otherwise fall back to *global* settings (and *global* memento)
   - should user be able to change the name of a connection ? As it is used as an ID everywhere

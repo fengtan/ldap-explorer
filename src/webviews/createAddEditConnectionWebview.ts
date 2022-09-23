@@ -116,6 +116,12 @@ export function createAddEditConnectionWebview(context: ExtensionContext, existi
           return;
         }
 
+        // Verify connection name does not already exist.
+        if (LdapConnectionManager.getConnection(newConnection.getName())) {
+          window.showErrorMessage(`A connected named "${newConnection.getName()} already exists, please pick a different name`);
+          return;
+        }
+
         // Save (either add or update) connection to settings.
         if (existingConnection === undefined) {
           LdapConnectionManager.addConnection(newConnection).then(
@@ -140,9 +146,6 @@ export function createAddEditConnectionWebview(context: ExtensionContext, existi
             }
           );
         }
-
-        // Refresh view so the new connection shows up.
-        commands.executeCommand("ldap-explorer.refresh");
         break;
 
       case 'test':
