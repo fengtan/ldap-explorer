@@ -62,13 +62,16 @@ export class LdapConnection {
     this.name = name;
   }
 
-  // If value starts with "env:" (e.g. "env:myvar"), then return value of environment variable (e.g. value of "myvar"). If no such environment variable exists then return an empty string.
+  // If value is "${something}", then return value of environment variable (e.g. value of environment variable "something") ; if no such environment variable exists then return an empty string.
   // Otherwise return the value itself.
   evaluate(value: string): string {
-    if (!value.startsWith("env:")) {
+    // https://regex101.com/r/TmWPxy/1
+    const regex = /^\${(.+)}$/;
+    const matches = regex.exec(value);
+    if (!matches) {
       return value;
     }
-    const varName = value.split(":")[1];
+    const varName = matches[1];
     return process.env[varName] ?? "";
   }
 

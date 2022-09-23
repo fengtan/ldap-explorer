@@ -17,7 +17,7 @@ ldapsearch -x -b "dc=example,dc=org" -H ldap://ldap:1389 -D "cn=admin,dc=example
 - explain all commands accessible from the command palette
 - explain connections end up in user settings by default, you can add those to workspace settings or devcontainer.json if you like
 - anonymous bind: just leave binddn and bindpwd empty when creating a connection
-- support for environment variables when value starts with "env:" (hello, containers), also handy if you don't want to store unencrypted passwords in vscode settings ; a few environment variables are readily available in test (docker) environment: LDAP_*. If you change the env vars in docker-compose.yml then you will have to rebuild the container in order to see the changes in the UI
+- support for environment variables when value matches "${}" (hello, containers), also handy if you don't want to store unencrypted passwords in vscode settings ; a few environment variables are readily available in test (docker) environment: LDAP_*. If you change the env vars in docker-compose.yml then you will have to rebuild the container in order to see the changes in the UI
 - explain that connection details are added to the settings" (along with JSON object and location of the settings file i.e. whether it was stored in global or workspace settings) - provide an example
 - explain how to reveal the logs (logger output channel)
 - explain pre-commit, also explain how to disable it (rm .git/precommitfoobar) ; explain how to run it on all files (not just those staged to be committed)
@@ -57,7 +57,6 @@ bugs
   - update welcome views: tree and search views should show no content and ask user to create or select a connection from the connections view
   - add welcome to connections view
 - UX
-  - switch syntax for environment variables from env: to ${}
   - remove "activate connection" from command palette ?
   - add a setting to let end user decide whether search results and attributes should open in a new window or if the same window should always be reused
   - command palette: command to deactivate the current connection (also if you click on the active connection in the connection tree)

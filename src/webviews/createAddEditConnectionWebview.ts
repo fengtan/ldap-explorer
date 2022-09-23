@@ -60,7 +60,7 @@ export function createAddEditConnectionWebview(context: ExtensionContext, existi
 			</section>
 
       <section>
-        <p>Syntax for environment variables: <code>$\{my-env-var\}</p>
+        <p>All fields except "Connection name" support environment variables. Syntax: <code>$\{my-env-var\}.</p>
       </section>
 
 			<vscode-button onClick="submitForm('save')">Save</vscode-button>
@@ -120,14 +120,15 @@ export function createAddEditConnectionWebview(context: ExtensionContext, existi
           return;
         }
 
-        // Verify connection name does not already exist.
-        if (LdapConnectionManager.getConnection(newConnection.getName())) {
-          window.showErrorMessage(`A connected named "${newConnection.getName()} already exists, please pick a different name`);
-          return;
-        }
-
         // Save (either add or update) connection to settings.
         if (existingConnection === undefined) {
+
+          // Verify connection name does not already exist.
+          if (LdapConnectionManager.getConnection(newConnection.getName())) {
+            window.showErrorMessage(`A connection named "${newConnection.getName()} already exists, please pick a different name`);
+            return;
+          }
+
           LdapConnectionManager.addConnection(newConnection).then(
             value => {
               // If connection was successfully added, refresh tree view so it shows up.
