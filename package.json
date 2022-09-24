@@ -23,6 +23,7 @@
     "onCommand:ldap-explorer.edit-connection",
     "onCommand:ldap-explorer.delete-connection",
     "onCommand:ldap-explorer.activate-connection",
+    "onCommand:ldap-explorer.deactivate-connection",
     "onCommand:ldap-explorer.refresh",
     "onCommand:ldap-explorer.show-attributes",
     "onView:ldap-explorer-view-connections",
@@ -83,7 +84,12 @@
       },
       {
         "command": "ldap-explorer.activate-connection",
-        "title": "Activate connection",
+        "title": "Set active connection",
+        "category": "LDAP Explorer"
+      },
+      {
+        "command": "ldap-explorer.deactivate-connection",
+        "title": "Set no active connection",
         "category": "LDAP Explorer"
       },
       {

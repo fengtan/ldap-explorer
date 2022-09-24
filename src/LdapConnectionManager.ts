@@ -32,8 +32,12 @@ export class LdapConnectionManager {
     return filteredConnections[0];
   }
 
-  static setActiveConnection(connection: LdapConnection, context: ExtensionContext): Thenable<void> {
+  static setActiveConnection(context: ExtensionContext, connection: LdapConnection): Thenable<void> {
     return context.globalState.update('active-connection', connection.getName());
+  }
+
+  static setNoActiveConnection(context: ExtensionContext): Thenable<void> {
+    return context.globalState.update('active-connection', undefined);
   }
 
   static getActiveConnection(context: ExtensionContext): LdapConnection | undefined {

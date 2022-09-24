@@ -74,7 +74,17 @@ export function activate(context: ExtensionContext) {
     }
 
     // Store name of new active connection in Memento.
-    LdapConnectionManager.setActiveConnection(connection, context).then(() => {
+    LdapConnectionManager.setActiveConnection(context, connection).then(() => {
+      // Refresh views so the new active connection shows up.
+      commands.executeCommand("ldap-explorer.refresh");
+    });
+  }));
+
+  // Implement "Deactivate connection" command.
+  // @todo refactor and roll into activate-connection
+  context.subscriptions.push(commands.registerCommand('ldap-explorer.deactivate-connection', () => {
+    // Set no active connection.
+    LdapConnectionManager.setNoActiveConnection(context).then(() => {
       // Refresh views so the new active connection shows up.
       commands.executeCommand("ldap-explorer.refresh");
     });
