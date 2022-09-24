@@ -53,9 +53,6 @@ bugs
   - persist "show attributes" webview (if go to background then no contents)
   - persist webview that shows search results
   - persist add/edit connection
-- Welcome screens
-  - update welcome views: tree and search views should show no content and ask user to create or select a connection from the connections view
-  - add welcome to connections view
 - UX
   - add a setting to let end user decide whether search results and attributes should open in a new window or if the same window should always be reused
 - console

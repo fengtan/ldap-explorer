@@ -81,7 +81,6 @@ export function activate(context: ExtensionContext) {
   }));
 
   // Implement "Deactivate connection" command.
-  // @todo refactor and roll into activate-connection
   context.subscriptions.push(commands.registerCommand('ldap-explorer.deactivate-connection', () => {
     // Set no active connection.
     LdapConnectionManager.setNoActiveConnection(context).then(() => {

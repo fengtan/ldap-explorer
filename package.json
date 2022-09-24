@@ -61,6 +61,10 @@
       {
         "view": "ldap-explorer-view-connections",
         "contents": "No connection.\n[Add new connection](command:ldap-explorer.add-connection)"
+      },
+      {
+        "view": "ldap-explorer-view-tree",
+        "contents": "No active connection."
       }
     ],
     "commands": [
