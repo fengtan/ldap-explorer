@@ -62,7 +62,6 @@ bugs
 
 WC
 - content security policy / sanitization https://code.visualstudio.com/api/extension-guides/webview#content-security-policy -> https://code.visualstudio.com/api/extension-guides/command#command-uris ; see example in webview-view-sample
-- support for LDIF files ?
 - ldapsj accepts a "log" attribute in constructor http://ldapjs.org/client.html#create-a-client ; use it to replace LdapLogger
 - support to add/delete/edit/rename/remove new entry (and add checkbox "readonly connection" when creating/editing a connection)
 
