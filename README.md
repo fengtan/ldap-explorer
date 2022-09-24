@@ -59,7 +59,6 @@ bugs
 - UX
   - add a setting to let end user decide whether search results and attributes should open in a new window or if the same window should always be reused
   - command palette: command to deactivate the current connection (also if you click on the active connection in the connection tree)
-  - command palette: add command "search" (also called by webview)
 - console
   - bunch of errors in chrome dev tools when click on tree items
   - bunch of errors in console also when searching
