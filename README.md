@@ -49,11 +49,10 @@ test
 
 bugs
 - webview persistence
-  - webview values are disposed when go to background
   - persist "show attributes" webview (if go to background then no contents)
   - persist webview that shows search results
   - persist add/edit connection
-- UX
+- settings
   - add a setting to let end user decide whether search results and attributes should open in a new window or if the same window should always be reused
 - console
   - bunch of errors in chrome dev tools when click on tree items
