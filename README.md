@@ -42,6 +42,7 @@ clean up
 CI
 - github action should run eslint + autotests
 - autotests
+  - test calling all commands from palette
 
 test
 - test "test connection" in various conditions (invalid host, server down, wrong credentials, wrong base DN etc) -> does not seem to complain if base DN is "test"
@@ -56,7 +57,6 @@ bugs
   - update welcome views: tree and search views should show no content and ask user to create or select a connection from the connections view
   - add welcome to connections view
 - UX
-  - remove "activate connection" from command palette ?
   - add a setting to let end user decide whether search results and attributes should open in a new window or if the same window should always be reused
   - command palette: command to deactivate the current connection (also if you click on the active connection in the connection tree)
   - command palette: add command "search" (also called by webview)

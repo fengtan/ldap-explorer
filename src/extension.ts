@@ -62,8 +62,17 @@ export function activate(context: ExtensionContext) {
   }));
 
   // Implement "Activate connection" command.
-  // @todo async/await, or thenable ?
-  context.subscriptions.push(commands.registerCommand('ldap-explorer.activate-connection', (connection: LdapConnection) => {
+  context.subscriptions.push(commands.registerCommand('ldap-explorer.activate-connection', async (connection?: LdapConnection) => {
+    // connection may not be defined (e.g. if the command fired from the command palette instead of the tree view).
+    // If that is the case we explictly ask the user to pick a connection.
+    if (!connection) {
+      connection = await pickConnection();
+      // User did not provide a connection: cancel command.
+      if (!connection) {
+        return;
+      }
+    }
+
     // Store name of new active connection in Memento.
     LdapConnectionManager.setActiveConnection(connection, context).then(() => {
       // Refresh views so the new active connection shows up.
