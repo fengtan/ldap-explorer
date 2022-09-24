@@ -99,37 +99,43 @@ export class LdapConnection {
         }
 
         // Search.
-        client.search(base, options, (err, res) => {
-          if (err) {
-            return reject(`Unable to search: ${err.message}`);
-          }
-
-          let results: SearchEntry[] = [];
-          res.on('searchRequest', (searchRequest) => {
-            LdapLogger.getOutputChannel().appendLine(`Search request: ${JSON.stringify(searchRequest)}`);
-          });
-          res.on('searchEntry', (entry) => {
-            results.push(entry);
-            LdapLogger.getOutputChannel().appendLine(`Search entry: ${entry.dn}`);
-          });
-          res.on('searchReference', (referral) => {
-            // @todo support referrals ?
-            LdapLogger.getOutputChannel().appendLine(`Search referral: ${referral.uris.join()}`);
-          });
-          res.on('error', (err) => {
-            return reject(`Unable to search: ${err.message}`);
-          });
-          res.on('end', (result) => {
-            client.unbind((err) => {
-              return reject(`Unable to unbind: ${err.message}`);
-            });
-            if (result?.status !== 0) {
-              return reject(`Server returned status code ${result?.status}: ${result?.errorMessage}`);
+        try {
+          client.search(base, options, (err, res) => {
+            if (err) {
+              return reject(err.message);
             }
-            return resolve(results);
-          });
 
-        });
+            let results: SearchEntry[] = [];
+            res.on('searchRequest', (searchRequest) => {
+              LdapLogger.getOutputChannel().appendLine(`Search request: ${JSON.stringify(searchRequest)}`);
+            });
+            res.on('searchEntry', (entry) => {
+              results.push(entry);
+              LdapLogger.getOutputChannel().appendLine(`Search entry: ${entry.dn}`);
+            });
+            res.on('searchReference', (referral) => {
+              // @todo support referrals ?
+              LdapLogger.getOutputChannel().appendLine(`Search referral: ${referral.uris.join()}`);
+            });
+            res.on('error', (err) => {
+              return reject(err.message);
+            });
+            res.on('end', (result) => {
+              client.unbind((err) => {
+                return reject(`Unable to unbind: ${err.message}`);
+              });
+              if (result?.status !== 0) {
+                return reject(`Server returned status code ${result?.status}: ${result?.errorMessage}`);
+              }
+              return resolve(results);
+            });
+
+          });
+        } catch (cause) {
+          // This would happen if the user entered an invalid LDAP filter for instance.
+          // See https://github.com/ldapjs/node-ldapjs/issues/618
+          return reject(cause);
+        }
       });
 
     });

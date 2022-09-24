@@ -83,7 +83,6 @@ export function createSearchResultsWebview(context: ExtensionContext, connection
       });
     },
     reason => {
-      // @todo fails to show when adding a invalid filter (the error shows in console)
       window.showErrorMessage(`Unable to search with filter "${filter}", attributes "${attributes?.join(', ')}": ${reason}`);
     }
   );

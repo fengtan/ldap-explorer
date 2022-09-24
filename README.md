@@ -58,7 +58,6 @@ bugs
 - console
   - bunch of errors in chrome dev tools when click on tree items
   - bunch of errors in console also when searching
-  - if filter is set to "test" and hit "Search" then no error shows up
 
 WC
 - content security policy / sanitization https://code.visualstudio.com/api/extension-guides/webview#content-security-policy -> https://code.visualstudio.com/api/extension-guides/command#command-uris ; see example in webview-view-sample
