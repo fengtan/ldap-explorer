@@ -25,6 +25,7 @@
     "onCommand:ldap-explorer.activate-connection",
     "onCommand:ldap-explorer.deactivate-connection",
     "onCommand:ldap-explorer.refresh",
+    "onCommand:ldap-explorer.copy-dn",
     "onCommand:ldap-explorer.show-attributes",
     "onView:ldap-explorer-view-connections",
     "onView:ldap-explorer-view-tree",
@@ -106,9 +107,20 @@
         "command": "ldap-explorer.show-attributes",
         "title": "Show attributes",
         "category": "LDAP Explorer"
+      },
+      {
+        "command": "ldap-explorer.copy-dn",
+        "title": "Copy DN",
+        "category": "LDAP Explorer"
       }
     ],
     "menus": {
+      "commandPalette": [
+        {
+          "command": "ldap-explorer.copy-dn",
+          "when": "false"
+        }
+      ],
       "view/title": [
         {
           "command": "ldap-explorer.add-connection",
@@ -129,6 +141,10 @@
         {
           "command": "ldap-explorer.delete-connection",
           "when": "view == ldap-explorer-view-connections"
+        },
+        {
+          "command": "ldap-explorer.copy-dn",
+          "when": "view == ldap-explorer-view-tree"
         }
       ]
     },

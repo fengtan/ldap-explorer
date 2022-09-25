@@ -27,6 +27,7 @@ ldapsearch -x -b "dc=example,dc=org" -H ldap://ldap:1389 -D "cn=admin,dc=example
 - support for environment variables in all fields except connection name
 - what's included: "Show DIT / Directory Information Tree"
 - no support for SASL / GSS-API as the underlying library does not support it see https://github.com/ldapjs/node-ldapjs/issues/85
+- list of acronyms (DIT / OU / DN / etc)
 
 metadata / deployment
 - license (in package.json and in README.md)
@@ -49,7 +50,7 @@ CI
 test
 - test "test connection" in various conditions (invalid host, server down, wrong credentials, wrong base DN etc) -> does not seem to complain if base DN is "test"
 
-bugs
+TODO
 - webview persistence
   - persist "show attributes" webview (if go to background then no contents)
   - persist webview that shows search results
@@ -57,12 +58,11 @@ bugs
 - settings
   - add a setting to let end user decide whether search results and attributes should open in a new window or if the same window should always be reused
   - setting to limit the number of results returned per query
-- console
+- bugs
   - bunch of errors in chrome dev tools when click on tree items
   - bunch of errors in console also when searching
 - features
   - support aliases and referrals (aka ldap synonyms)
-  - right click on tree view -> command "Copy DN"
   - set icons in tree view depending on whether the item is an alias / referral / regular entry and its objecClass or entity type (dc/c/o/ou/cn/other)
   - support startTLS http://ldapjs.org/client.html#starttls
 

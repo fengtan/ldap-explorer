@@ -1,5 +1,5 @@
 import { SearchEntry } from 'ldapjs';
-import { commands, ExtensionContext, window } from 'vscode';
+import { commands, env, ExtensionContext, window } from 'vscode';
 import { FakeEntry } from './FakeEntry';
 import { LdapConnection } from './LdapConnection';
 import { LdapConnectionManager } from './LdapConnectionManager';
@@ -93,6 +93,13 @@ export function activate(context: ExtensionContext) {
   context.subscriptions.push(commands.registerCommand('ldap-explorer.refresh', () => {
     connectionTreeDataProvider.refresh();
     entryTreeDataProvider.refresh();
+  }));
+
+  // Implement "Copy DN" command (copy DN of an entry to the system clipboard).
+  // This command does not show in the command palette (it fires from the tree view)
+  // so we are guaranteed to be provided with a non-null entry as an argument.
+  context.subscriptions.push(commands.registerCommand('ldap-explorer.copy-dn', (entry: SearchEntry | FakeEntry) => {
+    env.clipboard.writeText(entry.dn);
   }));
 
   // Implement "Show attributes" command (show attributes of the DN in a webview).
