@@ -13,7 +13,7 @@ ldapsearch -x -b "dc=example,dc=org" -H ldap://ldap:1389 -D "cn=admin,dc=example
 ```
 - make sure the code is well documented and consistent
 - explain Base DN, see that documentation drupal provides
-- list alternatives in README.md (container-based software I listed in jira, as well as Jxplorer)
+- list alternatives in README.md (container-based software I listed in jira, as well as Jxplorer) ; also http://www.ldapexplorer.com/ which requires a license
 - explain all commands accessible from the command palette
 - explain connections end up in user settings by default, you can add those to workspace settings or devcontainer.json if you like
 - anonymous bind: just leave binddn and bindpwd empty when creating a connection
@@ -56,17 +56,18 @@ bugs
   - persist add/edit connection
 - settings
   - add a setting to let end user decide whether search results and attributes should open in a new window or if the same window should always be reused
+  - setting to limit the number of results returned per query
 - console
   - bunch of errors in chrome dev tools when click on tree items
   - bunch of errors in console also when searching
+- features
+  - support aliases and referrals (aka ldap synonyms)
+  - right click on tree view -> command "Copy DN"
+  - set icons in tree view depending on whether the item is an alias / referral / regular entry and its objecClass or entity type (dc/c/o/ou/cn/other)
+  - support startTLS http://ldapjs.org/client.html#starttls
 
 WC
-- support aliases and referrals (aka ldap synonyms)
 - show operational (mandatory) attributes bolded
-- vscode setting to limit the number of results returned per query
-- right click on tree view -> command "Copy DN"
-- set icons in tree view depending on whether the item is an alias / referral / regular entry and its objecClass or entity type (dc/c/o/ou/cn/other)
-- support startTLS http://ldapjs.org/client.html#starttls
 - content security policy / sanitization https://code.visualstudio.com/api/extension-guides/webview#content-security-policy -> https://code.visualstudio.com/api/extension-guides/command#command-uris ; see example in webview-view-sample
 - ldapsj accepts a "log" attribute in constructor http://ldapjs.org/client.html#create-a-client ; use it to replace LdapLogger
 - support to add/delete/edit/rename/remove new entry (and add checkbox "readonly connection" when creating/editing a connection)
