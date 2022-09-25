@@ -26,6 +26,7 @@ ldapsearch -x -b "dc=example,dc=org" -H ldap://ldap:1389 -D "cn=admin,dc=example
 - explain, example of LDAP filter
 - support for environment variables in all fields except connection name
 - what's included: "Show DIT / Directory Information Tree"
+- no support for SASL / GSS-API as the underlying library does not support it see https://github.com/ldapjs/node-ldapjs/issues/85
 
 metadata / deployment
 - license (in package.json and in README.md)
@@ -65,8 +66,7 @@ WC
 - vscode setting to limit the number of results returned per query
 - right click on tree view -> command "Copy DN"
 - set icons in tree view depending on whether the item is an alias / referral / regular entry and its objecClass or entity type (dc/c/o/ou/cn/other)
-- support startTLS
-- support sasl and gssapi when binding
+- support startTLS http://ldapjs.org/client.html#starttls
 - content security policy / sanitization https://code.visualstudio.com/api/extension-guides/webview#content-security-policy -> https://code.visualstudio.com/api/extension-guides/command#command-uris ; see example in webview-view-sample
 - ldapsj accepts a "log" attribute in constructor http://ldapjs.org/client.html#create-a-client ; use it to replace LdapLogger
 - support to add/delete/edit/rename/remove new entry (and add checkbox "readonly connection" when creating/editing a connection)
