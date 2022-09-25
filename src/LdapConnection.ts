@@ -93,7 +93,7 @@ export class LdapConnection {
       });
 
       // Bind.
-      client.bind(this.getBindDn(true), this.getBindPwd(true), (err, res) => {
+      client.bind(this.getBindDn(true), this.getBindPwd(true), (err) => {
         if (err) {
           return reject(`Unable to bind: ${err.message}`);
         }
@@ -121,9 +121,7 @@ export class LdapConnection {
               return reject(err.message);
             });
             res.on('end', (result) => {
-              client.unbind((err) => {
-                return reject(`Unable to unbind: ${err.message}`);
-              });
+              client.unbind();
               if (result?.status !== 0) {
                 return reject(`Server returned status code ${result?.status}: ${result?.errorMessage}`);
               }

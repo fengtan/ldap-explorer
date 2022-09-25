@@ -58,9 +58,6 @@ TODO
 - settings
   - add a setting to let end user decide whether search results and attributes should open in a new window or if the same window should always be reused
   - setting to limit the number of results returned per query
-- bugs
-  - bunch of errors in chrome dev tools when click on tree items
-  - bunch of errors in console also when searching
 - features
   - support aliases and referrals (aka ldap synonyms)
   - support startTLS http://ldapjs.org/client.html#starttls
