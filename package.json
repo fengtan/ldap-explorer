@@ -210,6 +210,11 @@
                 "description": "Base DN",
                 "default": ""
               },
+              "limit": {
+                "type": "string",
+                "description": "Size Limit",
+                "default": "0"
+              },
               "timeout": {
                 "type": "string",
                 "description": "Timeout (milliseconds)",

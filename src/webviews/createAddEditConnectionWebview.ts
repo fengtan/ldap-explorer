@@ -56,6 +56,9 @@ export function createAddEditConnectionWebview(context: ExtensionContext, existi
 				<vscode-text-field type="text" id="basedn" placeholder="e.g. dc=example,dc=org" value="${existingConnection?.getBaseDn(false) ?? ''}">Base DN *</vscode-text-field>
 			</section>
 			<section>
+				<vscode-text-field type="text" id="limit" value="${existingConnection?.getLimit(false) ?? '0'}">Size Limit (maximum number of entries to return - set to 0 for unlimited)</vscode-text-field>
+			</section>
+      <section>
 				<vscode-text-field type="text" id="timeout" value="${existingConnection?.getTimeout(false) ?? '5000'}">Timeout in milliseconds (leave empty for infinity)</vscode-text-field>
 			</section>
 
@@ -77,7 +80,8 @@ export function createAddEditConnectionWebview(context: ExtensionContext, existi
             binddn: document.getElementById("binddn").value,
             bindpwd: document.getElementById("bindpwd").value,
             basedn: document.getElementById("basedn").value,
-            timeout: document.getElementById("timeout").value,
+            limit: document.getElementById("limit").value,
+            timeout: document.getElementById("timeout").value
           });
         }
 			</script>
@@ -97,6 +101,7 @@ export function createAddEditConnectionWebview(context: ExtensionContext, existi
         message.binddn,
         message.bindpwd,
         message.basedn,
+        message.limit,
         message.timeout
       );
       switch (message.command) {
@@ -133,6 +138,8 @@ export function createAddEditConnectionWebview(context: ExtensionContext, existi
             value => {
               // If connection was successfully added, refresh tree view so it shows up.
               commands.executeCommand("ldap-explorer.refresh");
+              // Confirm user the connection was created.
+              window.showInformationMessage(`Saved connection ${newConnection.getName()}`);
             },
             reason => {
               // If connection could not be added, show error message.
@@ -144,6 +151,8 @@ export function createAddEditConnectionWebview(context: ExtensionContext, existi
             value => {
               // If connection was successfully updated, refresh tree view.
               commands.executeCommand("ldap-explorer.refresh");
+              // Confirm user the connection was edited.
+              window.showInformationMessage(`Saved connection ${newConnection.getName()}`);
 
               // Also update the name of the existing connection as this field is used to identify connections.
               // This allows the user to change the name of the connection multiple times while keeping the webview open.

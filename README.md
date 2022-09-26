@@ -28,6 +28,7 @@ ldapsearch -x -b "dc=example,dc=org" -H ldap://ldap:1389 -D "cn=admin,dc=example
 - what's included: "Show DIT / Directory Information Tree"
 - no support for SASL / GSS-API as the underlying library does not support it see https://github.com/ldapjs/node-ldapjs/issues/85
 - list of acronyms (DIT / OU / DN / etc)
+- size limit: if a search / tree level returns more than this limit then you will be shown with an error (in which case you may want to increase this limit)
 
 metadata / deployment
 - license (in package.json and in README.md)
@@ -55,9 +56,7 @@ TODO
   - persist "show attributes" webview (if go to background then no contents)
   - persist webview that shows search results
   - persist add/edit connection
-- settings
-  - add a setting to let end user decide whether search results and attributes should open in a new window or if the same window should always be reused
-  - setting to limit the number of results returned per query
+- add a setting to let end user decide whether search results and attributes should open in a new window or if the same window should always be reused
 
 WC
 - support startTLS http://ldapjs.org/client.html#starttls

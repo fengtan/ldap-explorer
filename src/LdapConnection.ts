@@ -11,9 +11,10 @@ export class LdapConnection {
   private binddn: string;
   private bindpwd: string;
   private basedn: string;
+  private limit: string;
   private timeout: string;
 
-  constructor(name: string, protocol: string, host: string, port: string, binddn: string, bindpwd: string, basedn: string, timeout: string) {
+  constructor(name: string, protocol: string, host: string, port: string, binddn: string, bindpwd: string, basedn: string, limit: string, timeout: string) {
     this.name = name;
     this.protocol = protocol;
     this.host = host;
@@ -21,6 +22,7 @@ export class LdapConnection {
     this.binddn = binddn;
     this.bindpwd = bindpwd;
     this.basedn = basedn;
+    this.limit = limit;
     this.timeout = timeout;
   }
 
@@ -44,6 +46,9 @@ export class LdapConnection {
   }
   getBaseDn(evaluate: boolean) {
     return this.get(this.basedn, evaluate);
+  }
+  getLimit(evaluate: boolean) {
+    return this.get(this.limit, evaluate);
   }
   getTimeout(evaluate: boolean) {
     return this.get(this.timeout, evaluate);
@@ -99,6 +104,7 @@ export class LdapConnection {
         }
 
         // Search.
+        options.sizeLimit = parseInt(this.limit);
         try {
           client.search(base, options, (err, res) => {
             if (err) {

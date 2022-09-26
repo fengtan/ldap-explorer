@@ -16,6 +16,7 @@ export class LdapConnectionManager {
       connection["binddn"],
       connection["bindpwd"],
       connection["basedn"],
+      connection["limit"],
       connection["timeout"]
     ));
   }
