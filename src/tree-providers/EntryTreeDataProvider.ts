@@ -2,7 +2,7 @@
 // Each SearchEntry is a tree item
 
 import { SearchEntry } from 'ldapjs';
-import { Event, EventEmitter, ExtensionContext, ThemeIcon, TreeDataProvider, TreeItem, TreeItemCollapsibleState } from 'vscode';
+import { Event, EventEmitter, ExtensionContext, ThemeIcon, TreeDataProvider, TreeItem, TreeItemCollapsibleState, workspace } from 'vscode';
 import { LdapConnectionManager } from '../LdapConnectionManager';
 import { FakeEntry } from '../FakeEntry';
 
@@ -36,19 +36,24 @@ export class EntryTreeDataProvider implements TreeDataProvider<SearchEntry | Fak
     treeItem.tooltip = entry.dn;
 
     // Set icon depending on the LDAP naming attribute in the lowest RDN of the entry.
-    let icon = "primitive-square"; // Default icon.
-    switch (entry.dn.split(",")[0].split("=")[0]) {
-    case "dc":
-    case "c":
-    case "o":
-    case "ou":
-      icon = "organization";
-      break;
-    case "cn":
-      icon = "person";
-      break;
+    const showIcons = workspace.getConfiguration('ldap-explorer').get('show-tree-item-icons', false);
+    if (showIcons) {
+      let icon: string;
+      switch (entry.dn.split(",")[0].split("=")[0]) {
+      case "dc":
+      case "c":
+      case "o":
+      case "ou":
+        icon = "organization";
+        break;
+      case "cn":
+        icon = "person";
+        break;
+      default:
+        icon = "primitive-square";
+      }
+      treeItem.iconPath = new ThemeIcon(icon);
     }
-    treeItem.iconPath = new ThemeIcon(icon);
 
     // Clicking on the entry shows its attribute.
     treeItem.command = {
