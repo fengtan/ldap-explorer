@@ -49,9 +49,6 @@ CI
 - autotests
   - test calling all commands from palette
 
-test
-- test "test connection" in various conditions (invalid host, server down, wrong credentials, wrong base DN etc) -> does not seem to complain if base DN is "test"
-
 TODO
 - webview persistence
   - persist "show attributes" webview (if go to background then no contents)
@@ -65,7 +62,7 @@ WC
 - if tree item has no child then drop expandable status
 - support startTLS http://ldapjs.org/client.html#starttls
 - set icons in tree view depending on whether the item is an alias / referral / regular entry and its objecClass or entity type (dc/c/o/ou/cn/other)
-- show operational (mandatory) attributes bolded
+- show mandatory attributes bolded
 - content security policy / sanitization https://code.visualstudio.com/api/extension-guides/webview#content-security-policy -> https://code.visualstudio.com/api/extension-guides/command#command-uris ; see example in webview-view-sample
 - ldapsj accepts a "log" attribute in constructor http://ldapjs.org/client.html#create-a-client ; use it to replace LdapLogger
 - support to add/delete/edit/rename/remove new entry (and add checkbox "readonly connection" when creating/editing a connection)
