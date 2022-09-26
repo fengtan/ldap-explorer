@@ -13,7 +13,7 @@ ldapsearch -x -b "dc=example,dc=org" -H ldap://ldap:1389 -D "cn=admin,dc=example
 ```
 - make sure the code is well documented and consistent
 - explain Base DN, see that documentation drupal provides
-- list alternatives in README.md (container-based software I listed in jira, as well as Jxplorer) ; also http://www.ldapexplorer.com/ which requires a license
+- list alternatives in README.md (container-based software I listed in jira, as well as Jxplorer) ; also http://www.ldapexplorer.com/ which requires a license ; also https://en.wikipedia.org/wiki/List_of_LDAP_software
 - explain all commands accessible from the command palette
 - explain connections end up in user settings by default, you can add those to workspace settings or devcontainer.json if you like
 - anonymous bind: just leave binddn and bindpwd empty when creating a connection

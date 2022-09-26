@@ -9,10 +9,16 @@
   "repository": "https://github.com/fengtan/ldap-explorer",
   "publisher": "fengtan",
   "keywords": [
-    "ldap",
     "ad",
     "active directory",
-    "explorer"
+    "apache directory",
+    "directory",
+    "explorer",
+    "ldap",
+    "opendj",
+    "openldap",
+    "oracle directory",
+    "slapd"
   ],
   "categories": [
     "Other"
