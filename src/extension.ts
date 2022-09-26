@@ -114,7 +114,6 @@ export function activate(context: ExtensionContext) {
 
     // 'dn' may not be defined (e.g. if the command fired from the command palette instead of the tree view).
     // If that is the case we explictly ask the user to enter a DN.
-    // @todo this piece of code is duplicated everywhere in this file (same for pickConnection()), can we refactor this
     if (!dn) {
       dn = await pickDN();
       // User did not provide a DN: cancel command.
