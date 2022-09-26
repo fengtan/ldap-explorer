@@ -6,8 +6,7 @@ import { getWebviewUiToolkitUri } from './utils';
 export function createSearchResultsWebview(context: ExtensionContext, connection: LdapConnection, filter: string, attributes?: string[]) {
 
   // Defaults to scope "sub" i.e. returns the full substree of the base DN.
-  // @todo paged: true ?
-  connection.search({ scope: "sub", filter: filter, attributes: attributes }, connection.getBaseDn(true)).then(
+  connection.search({ scope: "sub", paged: true, filter: filter, attributes: attributes }, connection.getBaseDn(true)).then(
     entries => {
       const title: string = `Search results: ${filter}`;
       // Create webview.

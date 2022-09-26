@@ -37,6 +37,7 @@ metadata / deployment
 
 clean up
 - egrep todo
+- document all methods and classes
 - list anything that is not required for prod in .vscodeignore (e.g. devcontainer.json)
 - list all registered commands in package.json's activationEvents
 - define strings in package.nl.json so they are translatable and common
