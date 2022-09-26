@@ -50,10 +50,8 @@ CI
 - autotests
   - test calling all commands from palette
 
-TODO
+TODO/WC
 - support referrals and aliases ?
-
-WC
 - add a setting to let end user decide whether search results and attributes should open in a new window or if the same window should always be reused
 - if tree item has no child then drop expandable status
 - support startTLS http://ldapjs.org/client.html#starttls
