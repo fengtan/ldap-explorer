@@ -31,7 +31,7 @@ export function createSearchResultsWebview(context: ExtensionContext, connection
 				</head>
 				<body>
 				  <h1>${title}</h1>
-				  <vscode-data-grid id="grid" aria-label="Search results"></vscode-data-grid>
+				  <vscode-data-grid id="grid" generate-header="sticky" aria-label="Search results"></vscode-data-grid>
 				  <script>
 				  // Populate grid in webview when receiving data from the extension.
 				  window.addEventListener('message', event => {
@@ -48,7 +48,6 @@ export function createSearchResultsWebview(context: ExtensionContext, connection
 				</script>
 			</html>`;
 
-      // @todo make headers sticky (also applies to showAttributeWebview)
       // Store columns (attribute names) and rows (values) in arrays.
       let attributeNames: string[] = [];
       let rowsData: any[] = [];

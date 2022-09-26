@@ -28,7 +28,7 @@ export function createShowAttributesWebview(connection: LdapConnection, dn: stri
 				</head>
 				<body>
 				  <h1>${dn}</h1>
-				  <vscode-data-grid id="grid" aria-label="Attributes" grid-template-columns="1fr 7fr"></vscode-data-grid>
+				  <vscode-data-grid id="grid" generate-header="sticky" aria-label="Attributes" grid-template-columns="1fr 7fr"></vscode-data-grid>
 				  <script>
 				  // Populate grid in webview when receiving data from the extension.
 				  window.addEventListener('message', event => {
