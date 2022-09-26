@@ -54,11 +54,10 @@ TODO
   - persist "show attributes" webview (if go to background then no contents)
   - persist webview that shows search results
   - persist add/edit connection
-- add a setting to let end user decide whether search results and attributes should open in a new window or if the same window should always be reused
 - support referrals and aliases ?
 
 WC
-- hitting "Enter" in search form should not lose focus on filter or attributes element
+- add a setting to let end user decide whether search results and attributes should open in a new window or if the same window should always be reused
 - if tree item has no child then drop expandable status
 - support startTLS http://ldapjs.org/client.html#starttls
 - set icons in tree view depending on whether the item is an alias / referral / regular entry and its objecClass or entity type (dc/c/o/ou/cn/other)

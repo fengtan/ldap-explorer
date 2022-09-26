@@ -13,7 +13,10 @@ export function createSearchResultsWebview(context: ExtensionContext, connection
       const panel = window.createWebviewPanel(
         'ldap-explorer.search',
         title,
-        ViewColumn.One,
+        {
+          viewColumn: ViewColumn.One,
+          preserveFocus: true
+        },
         {
           enableScripts: true
         }

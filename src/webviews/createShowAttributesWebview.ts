@@ -11,7 +11,10 @@ export function createShowAttributesWebview(connection: LdapConnection, dn: stri
       const panel = window.createWebviewPanel(
         'ldap-explorer.show-attributes',
         dn.split(",")[0], // Set webview title to "OU=foobar", not the full DN.
-        ViewColumn.One,
+        {
+          viewColumn: ViewColumn.One,
+          preserveFocus: true
+        },
         {
           enableScripts: true
         }
