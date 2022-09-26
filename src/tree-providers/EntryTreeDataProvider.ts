@@ -27,7 +27,6 @@ export class EntryTreeDataProvider implements TreeDataProvider<SearchEntry | Fak
     // TreeItem does not allow to change the collapsible state after the object
     // has been created, so tree items with no children will appear expandable
     // even if they have no child. No a great UX but we have no choice.
-    // @todo determine whether tree items are expandable base on the SearchEntry objectclass
     const collapsibleState = TreeItemCollapsibleState.Collapsed;
 
     // Instantiate tree item.
@@ -52,7 +51,6 @@ export class EntryTreeDataProvider implements TreeDataProvider<SearchEntry | Fak
       const connection = LdapConnectionManager.getActiveConnection(this.context);
       if (connection === undefined) {
         // No active connection: return empty array.
-        // @todo make sure the welcome screen shows up.
         return resolve([]);
       }
 

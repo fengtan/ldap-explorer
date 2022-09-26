@@ -57,6 +57,7 @@ TODO
   - persist webview that shows search results
   - persist add/edit connection
 - add a setting to let end user decide whether search results and attributes should open in a new window or if the same window should always be reused
+- if tree item has no child then drop expandable status
 
 WC
 - support startTLS http://ldapjs.org/client.html#starttls

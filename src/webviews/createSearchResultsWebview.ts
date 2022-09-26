@@ -6,8 +6,7 @@ import { getWebviewUiToolkitUri } from './utils';
 export function createSearchResultsWebview(context: ExtensionContext, connection: LdapConnection, filter: string, attributes?: string[]) {
 
   // Defaults to scope "sub" i.e. returns the full substree of the base DN.
-  // @todo expose scope to end user ?
-  // @todo allow paging and max number of entries returned ? infinite scroll ?
+  // @todo allow paging ? infinite scroll ?
   connection.search({ scope: "sub", filter: filter, attributes: attributes }, connection.getBaseDn(true)).then(
     entries => {
       const title: string = `Search results: ${filter}`;
@@ -63,7 +62,7 @@ export function createSearchResultsWebview(context: ExtensionContext, connection
             attributeNames.push(attributeName);
           }
           // Prepare row with attribute values.
-          // If this attribute is multivalued then join the values with a comma. @todo join with carriage return ?
+          // If this attribute is multivalued then join the values with a comma.
           rowData[attributeName] = Array.isArray(attribute.vals) ? attribute.vals.join(', ') : attribute.vals;
         });
         // Add row.
