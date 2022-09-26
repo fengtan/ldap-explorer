@@ -120,7 +120,6 @@ export class LdapConnection {
               LdapLogger.getOutputChannel().appendLine(`Search entry: ${entry.dn}`);
             });
             res.on('searchReference', (referral) => {
-              // @todo support referrals and aliases ?
               LdapLogger.getOutputChannel().appendLine(`Search referral: ${referral.uris.join()}`);
             });
             res.on('error', (err) => {

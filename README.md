@@ -58,6 +58,7 @@ TODO
   - persist webview that shows search results
   - persist add/edit connection
 - add a setting to let end user decide whether search results and attributes should open in a new window or if the same window should always be reused
+- support referrals and aliases ?
 
 WC
 - hitting "Enter" in search form should not lose focus on filter or attributes element
