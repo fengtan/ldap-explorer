@@ -13,7 +13,8 @@ export function createAddEditConnectionWebview(context: ExtensionContext, existi
     existingConnection === undefined ? 'LDAP Explorer: Add new connection' : `LDAP Explorer: Edit connection '${existingConnection.getName()}'`,
     ViewColumn.One,
     {
-      enableScripts: true
+      enableScripts: true,
+      retainContextWhenHidden: true // @todo remove and switch to state restore
     }
   );
 

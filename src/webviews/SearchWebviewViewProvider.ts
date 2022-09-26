@@ -14,6 +14,7 @@ export class SearchWebviewViewProvider implements WebviewViewProvider {
   resolveWebviewView(webviewView: WebviewView, context: WebviewViewResolveContext<unknown>, token: CancellationToken): void | Thenable<void> {
     const toolkitUri = getWebviewUiToolkitUri(webviewView.webview, this.extensionContext.extensionUri);
 
+    // @todo retainContextWhenHidden (+ remove and switch to state restore later)
     webviewView.webview.options = {
       enableScripts: true
     };

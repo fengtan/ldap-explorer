@@ -50,10 +50,6 @@ CI
   - test calling all commands from palette
 
 TODO
-- webview persistence
-  - persist "show attributes" webview (if go to background then no contents)
-  - persist webview that shows search results
-  - persist add/edit connection
 - support referrals and aliases ?
 
 WC

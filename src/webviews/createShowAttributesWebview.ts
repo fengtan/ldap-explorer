@@ -16,7 +16,8 @@ export function createShowAttributesWebview(connection: LdapConnection, dn: stri
           preserveFocus: true
         },
         {
-          enableScripts: true
+          enableScripts: true,
+          retainContextWhenHidden: true // @todo remove and switch to state restore
         }
       );
 

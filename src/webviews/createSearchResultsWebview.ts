@@ -18,7 +18,8 @@ export function createSearchResultsWebview(context: ExtensionContext, connection
           preserveFocus: true
         },
         {
-          enableScripts: true
+          enableScripts: true,
+          retainContextWhenHidden: true // @todo remove and switch to state restore
         }
       );
 
