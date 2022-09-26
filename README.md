@@ -58,11 +58,9 @@ TODO
 - settings
   - add a setting to let end user decide whether search results and attributes should open in a new window or if the same window should always be reused
   - setting to limit the number of results returned per query
-- features
-  - support aliases and referrals (aka ldap synonyms)
-  - support startTLS http://ldapjs.org/client.html#starttls
 
 WC
+- support startTLS http://ldapjs.org/client.html#starttls
 - set icons in tree view depending on whether the item is an alias / referral / regular entry and its objecClass or entity type (dc/c/o/ou/cn/other)
 - show operational (mandatory) attributes bolded
 - content security policy / sanitization https://code.visualstudio.com/api/extension-guides/webview#content-security-policy -> https://code.visualstudio.com/api/extension-guides/command#command-uris ; see example in webview-view-sample
