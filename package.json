@@ -111,7 +111,7 @@
       },
       {
         "command": "ldap-explorer.show-attributes",
-        "title": "Show attributes",
+        "title": "Show Attributes",
         "category": "LDAP Explorer"
       },
       {
@@ -150,6 +150,10 @@
         },
         {
           "command": "ldap-explorer.copy-dn",
+          "when": "view == ldap-explorer-view-tree"
+        },
+        {
+          "command": "ldap-explorer.show-attributes",
           "when": "view == ldap-explorer-view-tree"
         }
       ]

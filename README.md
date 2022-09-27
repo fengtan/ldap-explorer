@@ -51,11 +51,11 @@ CI
   - test calling all commands from palette
 
 TODO/WC
-- support referrals and aliases ?
 - add a setting to let end user decide whether search results and attributes should open in a new window or if the same window should always be reused
+- content security policy / sanitization https://code.visualstudio.com/api/extension-guides/webview#content-security-policy -> https://code.visualstudio.com/api/extension-guides/command#command-uris ; see example in webview-view-sample
+- support referrals and aliases ?
 - if tree item has no child then drop expandable status
 - support startTLS http://ldapjs.org/client.html#starttls
-- content security policy / sanitization https://code.visualstudio.com/api/extension-guides/webview#content-security-policy -> https://code.visualstudio.com/api/extension-guides/command#command-uris ; see example in webview-view-sample
 - ldapsj accepts a "log" attribute in constructor http://ldapjs.org/client.html#create-a-client ; use it to replace LdapLogger
 - support to add/delete/edit/rename/remove new entry (and add checkbox "readonly connection" when creating/editing a connection)
 

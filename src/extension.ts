@@ -103,7 +103,7 @@ export function activate(context: ExtensionContext) {
   }));
 
   // Implement "Show attributes" command (show attributes of the DN in a webview).
-  context.subscriptions.push(commands.registerCommand('ldap-explorer.show-attributes', async (dn?: string) => {
+  context.subscriptions.push(commands.registerCommand('ldap-explorer.show-attributes', async (entry?: SearchEntry | FakeEntry) => {
     // If there is no active connection, then explicitly ask user to pick one.
     const connection = LdapConnectionManager.getActiveConnection(context) ?? await pickConnection();
 
@@ -112,14 +112,18 @@ export function activate(context: ExtensionContext) {
       return;
     }
 
-    // 'dn' may not be defined (e.g. if the command fired from the command palette instead of the tree view).
+    // 'entry' may not be defined (e.g. if the command fired from the command palette instead of the tree view).
     // If that is the case we explictly ask the user to enter a DN.
-    if (!dn) {
+    let dn: string | undefined;
+    if (!entry) {
       dn = await pickDN();
       // User did not provide a DN: cancel command.
       if (!dn) {
         return;
       }
+    }
+    else {
+      dn = entry.dn;
     }
 
     // Create webview with attributes of the DN.

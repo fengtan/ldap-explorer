@@ -64,13 +64,6 @@ export class EntryTreeDataProvider implements TreeDataProvider<SearchEntry | Fak
       treeItem.iconPath = new ThemeIcon(icon);
     }
 
-    // Clicking on the entry shows its attribute.
-    treeItem.command = {
-      command: "ldap-explorer.show-attributes",
-      title: "Show attributes",
-      arguments: [entry.dn]
-    };
-
     return treeItem;
   }
 
