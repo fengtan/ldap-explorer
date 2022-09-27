@@ -30,7 +30,7 @@ ldapsearch -x -b "dc=example,dc=org" -H ldap://ldap:1389 -D "cn=admin,dc=example
 - list of acronyms (DIT / OU / DN / etc)
 - size limit: if a search / tree level returns more than this limit then you will be shown with an error (in which case you may want to increase this limit)
 - explain setting to show icons for tree items
-- `xvfb-run -a npm run test`
+- `xvfb-run -a npm run test` (you may see errors about dbus which can be ignored, see https://github.com/iperdomo/cypress-docker-test#fixing-the-errors)
 
 metadata / deployment
 - license (in package.json and in README.md)
