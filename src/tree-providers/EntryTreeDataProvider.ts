@@ -15,11 +15,21 @@ export class EntryTreeDataProvider implements TreeDataProvider<SearchEntry | Fak
   }
 
   getTreeItem(entry: SearchEntry | FakeEntry): TreeItem {
-    // Set the label of the TreeItem:
-    // - For fake entries (base DN) show the full DN
-    // - For regular entries (search results), only show the left-most part of its DN
-    //   e.g. given a DN "cn=foo,ou=bar,dc=example,dc=com", show the item as "cn=foo"
-    const label = (entry instanceof FakeEntry) ? entry.dn : entry.dn.split(",")[0];
+    // Whether the user wants to show icons or not.
+    const showIcons = workspace.getConfiguration('ldap-explorer').get('show-tree-item-icons', false);
+
+    // Get display DN
+    // - For fake entries (base DN) display the full DN (e.g. ou=foobar,dc=example,dc=org)
+    // - For regular entries (search results), display the relative RDN (e.g. ou=foobar)
+    const displayDn = (entry instanceof FakeEntry) ? entry.dn : entry.dn.split(",")[0];
+
+    // Get entity type (e.g. "ou") and entity name (e.g. "foobar").
+    // If displayDn is "ou=foobar" then the entity type is "ou" and the entity name is "foobar".
+    const [entityType, entityName] = displayDn.split(/[=,]/);
+
+    // Set the label of the TreeItem.
+    // If the user wants to show icons, then only show the entity name ; otherwise show the entire DN.
+    const label = showIcons ? entityName : displayDn;
 
     // By default all tree items are expandable, as we cannot determine whether
     // they have children or not just based on their DN.
@@ -36,10 +46,9 @@ export class EntryTreeDataProvider implements TreeDataProvider<SearchEntry | Fak
     treeItem.tooltip = entry.dn;
 
     // Set icon depending on the LDAP naming attribute in the lowest RDN of the entry.
-    const showIcons = workspace.getConfiguration('ldap-explorer').get('show-tree-item-icons', false);
     if (showIcons) {
       let icon: string;
-      switch (entry.dn.split(",")[0].split("=")[0]) {
+      switch (entityType) {
       case "dc":
       case "c":
       case "o":
