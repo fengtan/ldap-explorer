@@ -30,6 +30,7 @@ ldapsearch -x -b "dc=example,dc=org" -H ldap://ldap:1389 -D "cn=admin,dc=example
 - list of acronyms (DIT / OU / DN / etc)
 - size limit: if a search / tree level returns more than this limit then you will be shown with an error (in which case you may want to increase this limit)
 - explain setting to show icons for tree items
+- `xvfb-run -a npm run test`
 
 metadata / deployment
 - license (in package.json and in README.md)
@@ -46,7 +47,7 @@ clean up
 - make sure there is no unnecesary import ; run some code optimization tool / quality checks
 
 CI
-- github action should run eslint + autotests
+- github action should run eslint + autotests https://code.visualstudio.com/api/working-with-extensions/continuous-integration#github-actions
 - autotests
   - test calling all commands from palette
 
