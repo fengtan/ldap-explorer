@@ -113,14 +113,13 @@ export class LdapConnection {
 
             let results: SearchEntry[] = [];
             res.on('searchRequest', (searchRequest) => {
-              LdapLogger.getOutputChannel().appendLine(`Search request: ${JSON.stringify(searchRequest)}`);
+              LdapLogger.appendLine(`Search request: ${JSON.stringify(searchRequest)}`);
             });
             res.on('searchEntry', (entry) => {
               results.push(entry);
-              LdapLogger.getOutputChannel().appendLine(`Search entry: ${entry.dn}`);
             });
             res.on('searchReference', (referral) => {
-              LdapLogger.getOutputChannel().appendLine(`Search referral: ${referral.uris.join()}`);
+              LdapLogger.appendLine(`Search referral: ${referral.uris.join()}`);
             });
             res.on('error', (err) => {
               return reject(err.message);

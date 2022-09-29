@@ -28,7 +28,7 @@ export class LdapConnectionManager {
       return undefined;
     }
     if (filteredConnections.length > 1) {
-      LdapLogger.getOutputChannel().appendLine(`Found ${filteredConnections.length} LDAP connections with name '${name}', expected at most 1.`);
+      LdapLogger.appendLine(`Found ${filteredConnections.length} LDAP connections with name '${name}', expected at most 1.`);
     }
     return filteredConnections[0];
   }

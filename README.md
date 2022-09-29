@@ -57,7 +57,6 @@ TODO/WC
 - support referrals and aliases ?
 - if tree item has no child then drop expandable status
 - support startTLS http://ldapjs.org/client.html#starttls
-- ldapsj accepts a "log" attribute in constructor http://ldapjs.org/client.html#create-a-client ; use it to replace LdapLogger
 - support to add/delete/edit/rename/remove new entry (and add checkbox "readonly connection" when creating/editing a connection)
 
 # ldap-explorer README
