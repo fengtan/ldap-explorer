@@ -24,7 +24,7 @@ export function activate(context: ExtensionContext) {
     window.registerWebviewViewProvider('ldap-explorer-view-search', searchWebviewViewProvider)
   );
 
-  // Implement "Add connection" command (declared in package.json).
+  // Implement "Add connection" command (all commands are also listed in package.json).
   context.subscriptions.push(commands.registerCommand('ldap-explorer.add-connection', () => {
     createAddEditConnectionWebview(context);
   }));

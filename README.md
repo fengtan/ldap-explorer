@@ -36,25 +36,21 @@ metadata / deployment
 - license (in package.json and in README.md)
 - make sure the repo URL listed in package.json is correct
 - CHANGELOG.txt
+- list anything that is not required for prod in .vscodeignore (e.g. devcontainer.json)
 
 clean up
-- egrep todo
 - document all methods and classes
-- list anything that is not required for prod in .vscodeignore (e.g. devcontainer.json)
-- list all registered commands in package.json's activationEvents
 - define strings in package.nl.json so they are translatable and common
-- git log | grep mas
-- make sure there is no unnecesary import ; run some code optimization tool / quality checks
 
 CI
 - github action should run eslint + autotests https://code.visualstudio.com/api/working-with-extensions/continuous-integration#github-actions
 - autotests
   - test calling all commands from palette
 
-TODO/WC
-- add a setting to let end user decide whether search results and attributes should open in a new window or if the same window should always be reused
+WC
+- egrep todo
 - content security policy / sanitization https://code.visualstudio.com/api/extension-guides/webview#content-security-policy -> https://code.visualstudio.com/api/extension-guides/command#command-uris ; see example in webview-view-sample
-- support referrals and aliases ?
+- referrals and aliases
 - if tree item has no child then drop expandable status
 - support startTLS http://ldapjs.org/client.html#starttls
 - support to add/delete/edit/rename/remove new entry (and add checkbox "readonly connection" when creating/editing a connection)
