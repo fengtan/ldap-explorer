@@ -3,8 +3,12 @@ import { LdapConnection } from '../LdapConnection';
 import { LdapConnectionManager } from '../LdapConnectionManager';
 import { getWebviewUiToolkitUri } from './utils';
 
-// If no connection is passed as argument, then the form will create a new connection.
-// If a connection is passed as argument, then the form will edit this connection.
+/**
+ * Create a webview to edit or create a connection.
+ *
+ * If no connection is provided in the arguments then the form will create a new connection.
+ * Otherwise it will edit the connection.
+ */
 export function createAddEditConnectionWebview(context: ExtensionContext, existingConnection?: LdapConnection) {
 
   // Create webview.
@@ -18,13 +22,13 @@ export function createAddEditConnectionWebview(context: ExtensionContext, existi
     }
   );
 
-  // We need to include this JS into the webview in order to use the Webview UI toolkit.
+  // JS required for the Webview UI toolkit https://github.com/microsoft/vscode-webview-ui-toolkit
   const toolkitUri = getWebviewUiToolkitUri(panel.webview, context.extensionUri);
 
-  // Populate webview content.
-  // The VS Code API seems to provide no way to inspect the configuration schema, so make sure all
-  // HTML fields listed in the form below match the contributed configuration described in package.json
-  // (field labels, types, default values).
+  // Populate webview HTML.
+  // The VS Code API seems to provide no way to inspect the configuration schema (in package.json).
+  // So make sure all HTML fields listed in the form below match the contributed
+  // configuration described in package.json (field labels, types, default values).
   panel.webview.html = `<!DOCTYPE html>
 	<html lang="en">
 		<head>
@@ -69,6 +73,7 @@ export function createAddEditConnectionWebview(context: ExtensionContext, existi
 
 			<vscode-button onClick="submitForm('save')">Save</vscode-button>
 			<vscode-button onClick="submitForm('test')" appearance="secondary">Test</vscode-button>
+
 			<script>
         const vscode = acquireVsCodeApi();
         function submitForm(command) {
@@ -121,12 +126,12 @@ export function createAddEditConnectionWebview(context: ExtensionContext, existi
           }
         });
         if (emptyMandatoryFields.length > 0) {
-          // Show machine name of the fields (e.g. basedn) instead of labels (e.g. Base DN), that looks acceptable.
+          // This will show the machine name of the fields (e.g. "basedn") instead of labels (e.g. "Base DN"), that looks acceptable.
           window.showErrorMessage(`Empty fields, please provide a value: ${emptyMandatoryFields.join(", ")}`);
           return;
         }
 
-        // Save (either add or update) connection to settings.
+        // Save (either add or update) connection to VS Code settings.
         if (existingConnection === undefined) {
 
           // Verify connection name does not already exist.
@@ -137,30 +142,30 @@ export function createAddEditConnectionWebview(context: ExtensionContext, existi
 
           LdapConnectionManager.addConnection(newConnection).then(
             value => {
-              // If connection was successfully added, refresh tree view so it shows up.
+              // If the connection was successfully added, then refresh the tree view so it shows up.
               commands.executeCommand("ldap-explorer.refresh");
-              // Confirm user the connection was created.
+              // Tell the user that the connection was created.
               window.showInformationMessage(`Saved connection ${newConnection.getName()}`);
             },
             reason => {
-              // If connection could not be added, show error message.
+              // If the connection could not be added, then show error message.
               window.showErrorMessage(`Unable to save new connection: ${reason}`);
             }
           );
         } else {
           LdapConnectionManager.editConnection(newConnection, existingConnection).then(
             value => {
-              // If connection was successfully updated, refresh tree view.
+              // If the connection was successfully updated, then refresh the tree view.
               commands.executeCommand("ldap-explorer.refresh");
-              // Confirm user the connection was edited.
+              // Tell the user the connection was updated.
               window.showInformationMessage(`Saved connection ${newConnection.getName()}`);
 
               // Also update the name of the existing connection as this field is used to identify connections.
-              // This allows the user to change the name of the connection multiple times while keeping the webview open.
+              // This allows the user to change the name of the connection multiple times in the same webview.
               existingConnection.setName(newConnection.getName());
             },
             reason => {
-              // If connection could not be updated, show error message.
+              // If connection could not be updated, then show error message.
               window.showErrorMessage(`Unable to update connection: ${reason}`);
             }
           );

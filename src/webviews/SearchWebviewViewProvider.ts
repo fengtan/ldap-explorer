@@ -3,6 +3,9 @@ import { createSearchResultsWebview } from "./createSearchResultsWebview";
 import { LdapConnectionManager } from "../LdapConnectionManager";
 import { getWebviewUiToolkitUri } from './utils';
 
+/**
+ * Webview that shows the search form ("Search" view).
+ */
 export class SearchWebviewViewProvider implements WebviewViewProvider {
 
   private extensionContext: ExtensionContext;
@@ -11,14 +14,19 @@ export class SearchWebviewViewProvider implements WebviewViewProvider {
     this.extensionContext = extensionContext;
   }
 
-  resolveWebviewView(webviewView: WebviewView, context: WebviewViewResolveContext<unknown>, token: CancellationToken): void | Thenable<void> {
+  /**
+   * {@inheritDoc}
+   */
+  public resolveWebviewView(webviewView: WebviewView, context: WebviewViewResolveContext<unknown>, token: CancellationToken): void | Thenable<void> {
+    // JS required for the Webview UI toolkit https://github.com/microsoft/vscode-webview-ui-toolkit
     const toolkitUri = getWebviewUiToolkitUri(webviewView.webview, this.extensionContext.extensionUri);
 
-    // @todo retainContextWhenHidden (+ remove and switch to state restore later)
+    // @todo retainContextWhenHidden (and remove enableScripts and switch to state restore later).
     webviewView.webview.options = {
       enableScripts: true
     };
 
+    // Populate webview HTML with search form.
     webviewView.webview.html = `<!DOCTYPE html>
 			<html lang="en">
 				<head>

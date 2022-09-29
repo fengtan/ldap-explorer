@@ -31,11 +31,12 @@ ldapsearch -x -b "dc=example,dc=org" -H ldap://ldap:1389 -D "cn=admin,dc=example
 - size limit: if a search / tree level returns more than this limit then you will be shown with an error (in which case you may want to increase this limit)
 - explain setting to show icons for tree items
 - `xvfb-run -a npm run test` (you may see errors about dbus which can be ignored, see https://github.com/iperdomo/cypress-docker-test#fixing-the-errors)
-- Known limitations
+- Known limitations / never
   - no support for referrals and aliases
   - if tree item has no child then drop expandable status
   - support startTLS http://ldapjs.org/client.html#starttls
   - support to add/delete/edit/rename/remove new entry (and add checkbox "readonly connection" when creating/editing a connection)
+  - define strings in package.nls.json so they are translatable and common
 - how to package / deploy extension with vsce
 
 metadata / deployment
@@ -43,10 +44,8 @@ metadata / deployment
 - make sure the repo URL listed in package.json is correct
 - CHANGELOG.txt
 - list anything that is not required for prod in .vscodeignore (e.g. devcontainer.json)
-- document all methods and classes
 
 TODO
-- define strings in package.nl.json so they are translatable and common
 - github action should run eslint + autotests https://code.visualstudio.com/api/working-with-extensions/continuous-integration#github-actions
 - autotests (test calling all commands from palette)
 

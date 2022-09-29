@@ -1,13 +1,16 @@
-// Manages storage of connections in VS Code settings.
-
 import { ExtensionContext, workspace } from 'vscode';
 import { LdapConnection } from './LdapConnection';
 import { LdapLogger } from './LdapLogger';
 
+/**
+ * Manages storage of connections in VS Code settings.
+ */
 export class LdapConnectionManager {
 
-  // Get all connections from settings.
-  static getConnections(): LdapConnection[] {
+  /**
+   * Get all connections stored in VS Code settings.
+   */
+  public static getConnections(): LdapConnection[] {
     return workspace.getConfiguration('ldap-explorer').get('connections', []).map(connection => new LdapConnection(
       connection["name"],
       connection["protocol"],
@@ -21,8 +24,12 @@ export class LdapConnectionManager {
     ));
   }
 
-  // Get connection by name, or undefined if no connection was found.
-  static getConnection(name: string): LdapConnection | undefined {
+  /**
+   * Get connection by name.
+   *
+   * Returns 'undefined' if no connection with such a name was found.
+   */
+  public static getConnection(name: string): LdapConnection | undefined {
     const filteredConnections = this.getConnections().filter(connection => connection.getName() === name);
     if (filteredConnections.length < 1) {
       return undefined;
@@ -33,15 +40,24 @@ export class LdapConnectionManager {
     return filteredConnections[0];
   }
 
-  static setActiveConnection(context: ExtensionContext, connection: LdapConnection): Thenable<void> {
+  /**
+   * Set the active connection.
+   */
+  public static setActiveConnection(context: ExtensionContext, connection: LdapConnection): Thenable<void> {
     return context.globalState.update('active-connection', connection.getName());
   }
 
-  static setNoActiveConnection(context: ExtensionContext): Thenable<void> {
+  /**
+   * Sets no active connection.
+   */
+  public static setNoActiveConnection(context: ExtensionContext): Thenable<void> {
     return context.globalState.update('active-connection', undefined);
   }
 
-  static getActiveConnection(context: ExtensionContext): LdapConnection | undefined {
+  /**
+   * Get the currently active connection.
+   */
+  public static getActiveConnection(context: ExtensionContext): LdapConnection | undefined {
     const connectionName: string | undefined = context.globalState.get('active-connection');
     if (connectionName === undefined) {
       return undefined;
@@ -49,8 +65,10 @@ export class LdapConnectionManager {
     return this.getConnection(connectionName);
   }
 
-  // Add new connection to settings.
-  static addConnection(connection: LdapConnection): Thenable<void> {
+  /**
+   * Add a new connection to settings.
+   */
+  public static addConnection(connection: LdapConnection): Thenable<void> {
     // Get list of existing connections.
     let connections = this.getConnections();
 
@@ -61,8 +79,10 @@ export class LdapConnectionManager {
     return workspace.getConfiguration('ldap-explorer').update('connections', connections, true);
   }
 
-  // Edit existing connection in settings.
-  static editConnection(newConnection: LdapConnection, existingConnection: LdapConnection): Thenable<void> {
+  /**
+   * Update an existing connection in settings.
+   */
+  public static editConnection(newConnection: LdapConnection, existingConnection: LdapConnection): Thenable<void> {
     // Get list of existing connections.
     let connections = this.getConnections();
 
@@ -79,8 +99,10 @@ export class LdapConnectionManager {
     return workspace.getConfiguration('ldap-explorer').update('connections', connections, true);
   }
 
-  // Remove existing connection from settings.
-  static removeConnection(connection: LdapConnection): Thenable<void> {
+  /**
+   * Remove an existing connection from settings.
+   */
+  public static removeConnection(connection: LdapConnection): Thenable<void> {
     // Get list of existing connections.
     const connections = this.getConnections();
 

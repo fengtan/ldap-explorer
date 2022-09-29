@@ -9,10 +9,13 @@ import { createAddEditConnectionWebview } from './webviews/createAddEditConnecti
 import { createShowAttributesWebview } from './webviews/createShowAttributesWebview';
 import { SearchWebviewViewProvider } from './webviews/SearchWebviewViewProvider';
 
-// This method is called when the extension is activated (see activationEvents in package.json).
+/**
+ * This method is called when the extension is activated (see activationEvents in package.json).
+ */
 export function activate(context: ExtensionContext) {
 
-  // Create views (connections, tree, search).
+  // Create our views (connections, tree, search).
+
   const connectionTreeDataProvider = new ConnectionTreeDataProvider(context);
   context.subscriptions.push(window.createTreeView('ldap-explorer-view-connections', { treeDataProvider: connectionTreeDataProvider }));
 
@@ -24,12 +27,15 @@ export function activate(context: ExtensionContext) {
     window.registerWebviewViewProvider('ldap-explorer-view-search', searchWebviewViewProvider)
   );
 
-  // Implement "Add connection" command (all commands are also listed in package.json).
+  // Implement VS Code commands.
+  // Where they show up is defined in package.json ("commands" and "menus").
+  // They should all be listed under "activationEvents" in package.json,otherwise
+  // calling them frrom the command palette would break if the extension is not loaded.
+
   context.subscriptions.push(commands.registerCommand('ldap-explorer.add-connection', () => {
     createAddEditConnectionWebview(context);
   }));
 
-  // Implement "Edit connection" command.
   context.subscriptions.push(commands.registerCommand('ldap-explorer.edit-connection', async (connection?: LdapConnection) => {
     // connection may not be defined (e.g. if the command fired from the command palette instead of the tree view).
     // If that is the case we explictly ask the user to pick a connection.
@@ -45,7 +51,6 @@ export function activate(context: ExtensionContext) {
     createAddEditConnectionWebview(context, connection);
   }));
 
-  // Implement "Delete connection" command.
   context.subscriptions.push(commands.registerCommand('ldap-explorer.delete-connection', async (connection?: LdapConnection) => {
     // connection may not be defined (e.g. if the command fired from the command palette instead of the tree view).
     // If that is the case we explictly ask the user to pick a connection.
@@ -61,7 +66,6 @@ export function activate(context: ExtensionContext) {
     askAndRemoveConnection(connection);
   }));
 
-  // Implement "Activate connection" command.
   context.subscriptions.push(commands.registerCommand('ldap-explorer.activate-connection', async (connection?: LdapConnection) => {
     // connection may not be defined (e.g. if the command fired from the command palette instead of the tree view).
     // If that is the case we explictly ask the user to pick a connection.
@@ -80,7 +84,6 @@ export function activate(context: ExtensionContext) {
     });
   }));
 
-  // Implement "Deactivate connection" command.
   context.subscriptions.push(commands.registerCommand('ldap-explorer.deactivate-connection', () => {
     // Set no active connection.
     LdapConnectionManager.setNoActiveConnection(context).then(() => {
@@ -89,20 +92,19 @@ export function activate(context: ExtensionContext) {
     });
   }));
 
-  // Implement "Refresh" command (refreshes both the connections view and the tree view).
   context.subscriptions.push(commands.registerCommand('ldap-explorer.refresh', () => {
+    // Refresh both the connections view and the tree view.
     connectionTreeDataProvider.refresh();
     entryTreeDataProvider.refresh();
   }));
 
-  // Implement "Copy DN" command (copy DN of an entry to the system clipboard).
+  // Copy DN of an entry to the system clipboard.
   // This command does not show in the command palette (it fires from the tree view)
   // so we are guaranteed to be provided with a non-null entry as an argument.
   context.subscriptions.push(commands.registerCommand('ldap-explorer.copy-dn', (entry: SearchEntry | FakeEntry) => {
     env.clipboard.writeText(entry.dn);
   }));
 
-  // Implement "Show attributes" command (show attributes of the DN in a webview).
   context.subscriptions.push(commands.registerCommand('ldap-explorer.show-attributes', async (entry?: SearchEntry | FakeEntry) => {
     // If there is no active connection, then explicitly ask user to pick one.
     const connection = LdapConnectionManager.getActiveConnection(context) ?? await pickConnection();
@@ -132,12 +134,16 @@ export function activate(context: ExtensionContext) {
 
 }
 
-// Opens input box asking the user to enter a DN.
+/**
+ * Opens input box asking the user to enter a DN.
+ */
 async function pickDN(): Promise<string | undefined> {
   return await window.showInputBox({ placeHolder: "Enter a DN (e.g. cn=readers,ou=users,dc=example,dc=org)" });
 }
 
-// Opens quick pick box asking the user to select a connection.
+/**
+ * Opens quick pick box asking the user to select a connection.
+ */
 async function pickConnection(): Promise<LdapConnection | undefined> {
   const options = LdapConnectionManager.getConnections().map(connection => {
     return {
@@ -157,7 +163,9 @@ async function pickConnection(): Promise<LdapConnection | undefined> {
   return LdapConnectionManager.getConnection(option.name);
 }
 
-// Ask for a confirmation and actually remove a connection from settings.
+/**
+ * Ask for a confirmation and actually remove a connection from settings.
+ */
 function askAndRemoveConnection(connection: LdapConnection) {
   window.showInformationMessage(`Are you sure you want to remove the connection '${connection.getName()} ?`, { modal: true }, "Yes").then(confirm => {
     if (confirm) {
@@ -175,5 +183,7 @@ function askAndRemoveConnection(connection: LdapConnection) {
   });
 };
 
-// This method is called when your extension is deactivated.
+/**
+ * This method is called when the extension is deactivated.
+ */
 export function deactivate() { }

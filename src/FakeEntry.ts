@@ -1,4 +1,6 @@
-// A fake LDAP entry i.e. one that is not the result of a LDAP query.
+/*
+ * A fake LDAP entry i.e. one that is not the result of a LDAP query.
+ */
 export class FakeEntry {
 
   public dn: string;

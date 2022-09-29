@@ -2,10 +2,12 @@ import { ExtensionContext, ViewColumn, window } from 'vscode';
 import { LdapConnection } from '../LdapConnection';
 import { getWebviewUiToolkitUri } from './utils';
 
-// Makes a search query to the LDAP server and shows results in a webview.
+/**
+ * Create a webview that shows results of an LDAP search query.
+ */
 export function createSearchResultsWebview(context: ExtensionContext, connection: LdapConnection, filter: string, attributes?: string[]) {
 
-  // Defaults to scope "sub" i.e. returns the full substree of the base DN.
+  // Defaults to scope "sub" i.e. returns the full substree of the base DN https://ldapwiki.com/wiki/WholeSubtree
   connection.search({ scope: "sub", paged: true, filter: filter, attributes: attributes }, connection.getBaseDn(true)).then(
     entries => {
       const title: string = `Search results: ${filter}`;
@@ -23,10 +25,10 @@ export function createSearchResultsWebview(context: ExtensionContext, connection
         }
       );
 
-      // Webview UI toolkit.
+      // JS required for the Webview UI toolkit https://github.com/microsoft/vscode-webview-ui-toolkit
       const toolkitUri = getWebviewUiToolkitUri(panel.webview, context.extensionUri);
 
-      // Populate webview content with search results.
+      // Populate webview HTML with search results.
       panel.webview.html =
         `<!DOCTYPE html>
 			<html lang="en">

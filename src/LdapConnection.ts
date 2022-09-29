@@ -1,9 +1,13 @@
 import { Client, createClient, SearchEntry, SearchOptions } from 'ldapjs';
 import { LdapLogger } from './LdapLogger';
 
+/**
+ * Represents an LDAP connection.
+ */
 export class LdapConnection {
 
-  // Port and timeout are stored as strings instea of numbers because they may reference environment variables instead of actual numbers.
+  // Port, limit and timeout are stored as strings instead of numbers because
+  // they may reference environment variables instead of actual numbers.
   private name: string;
   private protocol: string;
   private host: string;
@@ -26,50 +30,66 @@ export class LdapConnection {
     this.timeout = timeout;
   }
 
-  getName() {
+  // Getters.
+  public getName() {
     return this.name;
   }
-  getProtocol(evaluate: boolean) {
+  public getProtocol(evaluate: boolean) {
     return this.get(this.protocol, evaluate);
   }
-  getHost(evaluate: boolean) {
+  public getHost(evaluate: boolean) {
     return this.get(this.host, evaluate);
   }
-  getPort(evaluate: boolean) {
+  public getPort(evaluate: boolean) {
     return this.get(this.port, evaluate);
   }
-  getBindDn(evaluate: boolean) {
+  public getBindDn(evaluate: boolean) {
     return this.get(this.binddn, evaluate);
   }
-  getBindPwd(evaluate: boolean) {
+  public getBindPwd(evaluate: boolean) {
     return this.get(this.bindpwd, evaluate);
   }
-  getBaseDn(evaluate: boolean) {
+  public getBaseDn(evaluate: boolean) {
     return this.get(this.basedn, evaluate);
   }
-  getLimit(evaluate: boolean) {
+  public getLimit(evaluate: boolean) {
     return this.get(this.limit, evaluate);
   }
-  getTimeout(evaluate: boolean) {
+  public getTimeout(evaluate: boolean) {
     return this.get(this.timeout, evaluate);
   }
 
-  get(value: string, evaluate: boolean) {
+  /**
+   * Get a value and evaluates it as an environment variable if necessary.
+   */
+  public get(value: string, evaluate: boolean) {
     return evaluate ? this.evaluate(value) : value;
   }
 
-  // Connection URL ; used to connect to the server.
-  getUrl(): string {
+  /**
+   * Connection string.
+   */
+  public getUrl(): string {
     return `${this.getProtocol(true)}://${this.getHost(true)}:${this.getPort(true)}`;
   }
 
-  setName(name: string) {
+  /**
+   * Sets the name of the connection.
+   */
+  public setName(name: string) {
     this.name = name;
   }
 
-  // If value is "${something}", then return value of environment variable (e.g. value of environment variable "something") ; if no such environment variable exists then return an empty string.
-  // Otherwise return the value itself.
-  evaluate(value: string): string {
+  /**
+   * Evaluates a value.
+   *
+   * If value starts with a dollar sign and is wrapped to curly braces (e.g. "${something}")
+   * then return the value of the environment variable (e.g. value of environment variable "something").
+   * If no such environment variable exists then return an empty string.
+   *
+   * Otherwise return the value itself.
+   */
+  public evaluate(value: string): string {
     // https://regex101.com/r/TmWPxy/1
     const regex = /^\${(.+)}$/;
     const matches = regex.exec(value);
@@ -81,9 +101,9 @@ export class LdapConnection {
   }
 
   /**
-   * Searches LDAP.
+   * Searches the LDAP connection and return the results.
    */
-  search(options: SearchOptions, base: string = this.getBaseDn(true)): Thenable<SearchEntry[]> {
+  public search(options: SearchOptions, base: string = this.getBaseDn(true)): Thenable<SearchEntry[]> {
     return new Promise((resolve, reject) => {
 
       // Get ldapjs client.
@@ -116,6 +136,7 @@ export class LdapConnection {
               LdapLogger.appendLine(`Search request: ${JSON.stringify(searchRequest)}`);
             });
             res.on('searchEntry', (entry) => {
+              // Add each result to our array.
               results.push(entry);
             });
             res.on('searchReference', (referral) => {
@@ -125,10 +146,13 @@ export class LdapConnection {
               return reject(err.message);
             });
             res.on('end', (result) => {
+              // Unbind.
               client.unbind();
+              // Verify status code returned by the server.
               if (result?.status !== 0) {
                 return reject(`Server returned status code ${result?.status}: ${result?.errorMessage}`);
               }
+              // Return results.
               return resolve(results);
             });
 

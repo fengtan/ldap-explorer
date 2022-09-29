@@ -2,15 +2,18 @@ import { ExtensionContext, ViewColumn, window } from 'vscode';
 import { LdapConnection } from '../LdapConnection';
 import { getWebviewUiToolkitUri } from './utils';
 
+/**
+ * Create a webview that shows attributes of a single LDAP entry.
+ */
 export function createShowAttributesWebview(connection: LdapConnection, dn: string, context: ExtensionContext) {
 
-  // Scope is set to "base" so we only get attributes about the current (base) node https://ldapwiki.com/wiki/BaseObject
+  // Scope is set to "base" so we only get attributes about the entry provided https://ldapwiki.com/wiki/BaseObject
   connection.search({ scope: "base" }, dn).then(
     entries => {
       // Create webview.
       const panel = window.createWebviewPanel(
         'ldap-explorer.show-attributes',
-        dn.split(",")[0], // Set webview title to "OU=foobar", not the full DN.
+        dn.split(",")[0], // Set webview title to RDN ("ou=foobar"), not the full DN.
         {
           viewColumn: ViewColumn.One,
           preserveFocus: true
@@ -21,9 +24,10 @@ export function createShowAttributesWebview(connection: LdapConnection, dn: stri
         }
       );
 
-      // We need to include this JS into the webview in order to use the Webview UI toolkit.
+      // JS required for the Webview UI toolkit https://github.com/microsoft/vscode-webview-ui-toolkit
       const toolkitUri = getWebviewUiToolkitUri(panel.webview, context.extensionUri);
 
+      // Populate webview HTML with the list of attributes.
       panel.webview.html =
         `<!DOCTYPE html>
 			<html lang="en">
@@ -52,7 +56,7 @@ export function createShowAttributesWebview(connection: LdapConnection, dn: stri
 				</script>
 			</html>`;
 
-      // Make sure we received only one LDAP entry.
+      // Ensure we received only one LDAP entry.
       // That should always be the case given that the scope of the LDAP query is set to "base" above.
       if (entries.length > 1) {
         window.showWarningMessage(`Received multiple LDAP entries, expected only one: ${dn}`);

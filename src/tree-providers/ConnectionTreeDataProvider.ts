@@ -2,19 +2,26 @@ import { Event, EventEmitter, ExtensionContext, ThemeIcon, TreeDataProvider, Tre
 import { LdapConnection } from '../LdapConnection';
 import { LdapConnectionManager } from '../LdapConnectionManager';
 
+/**
+ * Tree provider that lists LDAP connections.
+ */
 export class ConnectionTreeDataProvider implements TreeDataProvider<LdapConnection> {
 
   private context: ExtensionContext;
 
-  constructor(context: ExtensionContext) {
+  public constructor(context: ExtensionContext) {
     this.context = context;
   }
 
-  getTreeItem(connection: LdapConnection): TreeItem {
+  /**
+   * {@inheritDoc}
+   */
+  public getTreeItem(connection: LdapConnection): TreeItem {
+    // Create tree item for this connection.
     const treeItem = new TreeItem(connection.getName(), TreeItemCollapsibleState.None);
     treeItem.description = connection.getUrl();
 
-    // Add icon and tooltip so user knows which connection is active.
+    // Add icon and tooltip so user knows whether the connection is active.
     const isActive = (connection.getName() === LdapConnectionManager.getActiveConnection(this.context)?.getName());
     treeItem.iconPath = new ThemeIcon(isActive ? 'circle-filled' : 'circle');
     treeItem.tooltip = isActive ? "Active connection" : "Inactive connection";
@@ -29,7 +36,10 @@ export class ConnectionTreeDataProvider implements TreeDataProvider<LdapConnecti
     return treeItem;
   }
 
-  getChildren(treeItem?: LdapConnection): Thenable<LdapConnection[]> {
+  /**
+   * {@inheritDoc}
+   */
+  public getChildren(treeItem?: LdapConnection): Thenable<LdapConnection[]> {
     // Top-level tree items: list of connections.
     if (!treeItem) {
       const connections = LdapConnectionManager.getConnections();
@@ -40,13 +50,14 @@ export class ConnectionTreeDataProvider implements TreeDataProvider<LdapConnecti
     return Promise.resolve([]);
   }
 
-  // Logic to refresh the view.
-  // @see https://code.visualstudio.com/api/extension-guides/tree-view#updating-tree-view-content
+  /*
+   * Logic to refresh the view.
+   *
+   * @see https://code.visualstudio.com/api/extension-guides/tree-view#updating-tree-view-content
+   */
   private _onDidChangeTreeData: EventEmitter<LdapConnection | undefined | null | void> = new EventEmitter<LdapConnection | undefined | null | void>();
-
   readonly onDidChangeTreeData: Event<LdapConnection | undefined | null | void> = this._onDidChangeTreeData.event;
-
-  refresh(): void {
+  public refresh(): void {
     this._onDidChangeTreeData.fire();
   }
 
