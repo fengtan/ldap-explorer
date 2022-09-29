@@ -36,23 +36,21 @@ ldapsearch -x -b "dc=example,dc=org" -H ldap://ldap:1389 -D "cn=admin,dc=example
   - if tree item has no child then drop expandable status
   - support startTLS http://ldapjs.org/client.html#starttls
   - support to add/delete/edit/rename/remove new entry (and add checkbox "readonly connection" when creating/editing a connection)
+- how to package / deploy extension with vsce
 
 metadata / deployment
 - license (in package.json and in README.md)
 - make sure the repo URL listed in package.json is correct
 - CHANGELOG.txt
 - list anything that is not required for prod in .vscodeignore (e.g. devcontainer.json)
-
-clean up
 - document all methods and classes
-- define strings in package.nl.json so they are translatable and common
-
-CI
-- github action should run eslint + autotests https://code.visualstudio.com/api/working-with-extensions/continuous-integration#github-actions
-- autotests
-  - test calling all commands from palette
 
 TODO
+- define strings in package.nl.json so they are translatable and common
+- github action should run eslint + autotests https://code.visualstudio.com/api/working-with-extensions/continuous-integration#github-actions
+- autotests (test calling all commands from palette)
+
+LATER
 - egrep todo
 - content security policy / sanitization https://code.visualstudio.com/api/extension-guides/webview#content-security-policy -> https://code.visualstudio.com/api/extension-guides/command#command-uris ; see example in webview-view-sample
 

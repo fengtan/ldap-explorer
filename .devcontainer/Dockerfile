@@ -35,8 +35,9 @@ RUN pip3 install --upgrade pre-commit \
 # NPM packages
 # See https://code.visualstudio.com/api/get-started/your-first-extension
 RUN npm install -g \
-  yo \
-  generator-code
+  generator-code \
+  vsce \
+  yo
 
 # Runtime
 ENV DEBIAN_FRONTEND=dialog
