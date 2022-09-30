@@ -61,7 +61,7 @@ export function createAddEditConnectionWebview(context: ExtensionContext, existi
 				<vscode-text-field type="text" id="basedn" placeholder="e.g. dc=example,dc=org" value="${existingConnection?.getBaseDn(false) ?? ''}">Base DN *</vscode-text-field>
 			</section>
 			<section>
-				<vscode-text-field type="text" id="limit" value="${existingConnection?.getLimit(false) ?? '0'}">Size Limit (maximum number of entries to return - set to 0 for unlimited)</vscode-text-field>
+				<vscode-text-field type="text" id="limit" value="${existingConnection?.getLimit(false) ?? '0'}">Maximum number of entries to return (set to 0 for unlimited)</vscode-text-field>
 			</section>
       <section>
 				<vscode-text-field type="text" id="timeout" value="${existingConnection?.getTimeout(false) ?? '5000'}">Timeout in milliseconds (leave empty for infinity)</vscode-text-field>

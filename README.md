@@ -30,7 +30,7 @@ ldapsearch -x -b "dc=example,dc=org" -H ldap://ldap:1389 -D "cn=admin,dc=example
 - list of acronyms (DIT / OU / DN / etc)
 - size limit: if a search / tree level returns more than this limit then you will be shown with an error (in which case you may want to increase this limit)
 - explain setting to show icons for tree items
-- `xvfb-run -a npm run test` (you may see errors about dbus which can be ignored, see https://github.com/iperdomo/cypress-docker-test#fixing-the-errors)
+- `xvfb-run -a npm run test` (you may see errors about dbus which can be ignored, see https://github.com/iperdomo/cypress-docker-test#fixing-the-errors) ; if you want to see the test vscode instance in a graphical interface you need a X display, best to run `npm run test` from the host (you'll have to install npm on the host)
 - Known limitations / never
   - no support for referrals and aliases
   - if tree item has no child then drop expandable status
@@ -44,10 +44,7 @@ metadata / deployment
 - make sure the repo URL listed in package.json is correct
 - CHANGELOG.txt
 - list anything that is not required for prod in .vscodeignore (e.g. devcontainer.json)
-
-TODO
 - github action should run eslint + autotests https://code.visualstudio.com/api/working-with-extensions/continuous-integration#github-actions
-- autotests (test calling all commands from palette)
 
 LATER
 - egrep todo

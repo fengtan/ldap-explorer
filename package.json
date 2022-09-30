@@ -1,7 +1,7 @@
 {
   "name": "ldap-explorer",
   "displayName": "LDAP Explorer",
-  "description": "LDAP Explorer for VS Code",
+  "description": "LDAP client for VS Code",
   "version": "0.0.1",
   "engines": {
     "vscode": "^1.70.0"
