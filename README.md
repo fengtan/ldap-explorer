@@ -38,6 +38,7 @@ ldapsearch -x -b "dc=example,dc=org" -H ldap://ldap:1389 -D "cn=admin,dc=example
   - support to add/delete/edit/rename/remove new entry (and add checkbox "readonly connection" when creating/editing a connection)
   - define strings in package.nls.json so they are translatable and common
   - option to reorder bookmarks
+  - unsafe-inline CSP in all webviews
 - how to package / deploy extension with vsce
 - explain bookmarks, provide screenshot
 
@@ -50,7 +51,6 @@ metadata / deployment
 
 LATER
 - egrep todo
-- content security policy / sanitization https://code.visualstudio.com/api/extension-guides/webview#content-security-policy -> https://code.visualstudio.com/api/extension-guides/command#command-uris ; see example in webview-view-sample ; move JS / CSS to external files ; allows another extension to call commands and pass junk in DN, which gets rendered in webview
 
 
 # ldap-explorer README

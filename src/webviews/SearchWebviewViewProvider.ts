@@ -33,7 +33,9 @@ export class SearchWebviewViewProvider implements WebviewViewProvider {
     webviewView.webview.html = `<!DOCTYPE html>
 			<html lang="en">
 				<head>
-				<script type="module" src="${toolkitUri}"></script>
+          <!-- Webview UI toolkit requires a CSP with unsafe-inline script-src and style-src (not ideal but we have no choice) -->
+          <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src ${webviewView.webview.cspSource} 'unsafe-inline'; style-src ${webviewView.webview.cspSource} 'unsafe-inline';" />
+				  <script type="module" src="${toolkitUri}"></script>
 				</head>
 				<body>
           <section>

@@ -35,12 +35,14 @@ export function createShowAttributesWebview(connection: LdapConnection, dn: stri
         `<!DOCTYPE html>
 			<html lang="en">
 				<head>
+          <!-- Webview UI toolkit requires a CSP with unsafe-inline style-src (not ideal but we have no choice) -->
+          <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src ${panel.webview.cspSource}; style-src ${panel.webview.cspSource} 'unsafe-inline';" />
 				  <script type="module" src="${toolkitUri}"></script>
 				</head>
 				<body>
 				  <h1>${dn}</h1>
 				  <vscode-data-grid id="grid" generate-header="sticky" aria-label="Attributes" grid-template-columns="1fr 7fr"></vscode-data-grid>
-				  <script src="${scriptUri}"></script>
+				  <script src="${scriptUri}"></script><!-- TODO is the nonce necessary here ? also no need for -->
         </body>
 			</html>`;
 

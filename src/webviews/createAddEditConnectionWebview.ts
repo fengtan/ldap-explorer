@@ -35,6 +35,8 @@ export function createAddEditConnectionWebview(context: ExtensionContext, existi
   panel.webview.html = `<!DOCTYPE html>
 	<html lang="en">
 		<head>
+      <!-- Webview UI toolkit requires a CSP with unsafe-inline style-src (not ideal but we have no choice) -->
+      <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src ${panel.webview.cspSource}; style-src ${panel.webview.cspSource} 'unsafe-inline';" />
 			<script type="module" src="${toolkitUri}"></script>
   	</head>
 		<body>
