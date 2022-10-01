@@ -1,6 +1,6 @@
 import { ExtensionContext, ViewColumn, window } from 'vscode';
 import { LdapConnection } from '../LdapConnection';
-import { getWebviewUiToolkitUri } from './utils';
+import { getUri, getWebviewUiToolkitUri } from './utils';
 
 /**
  * Create a webview that shows results of an LDAP search query.
@@ -28,6 +28,9 @@ export function createSearchResultsWebview(context: ExtensionContext, connection
       // JS required for the Webview UI toolkit https://github.com/microsoft/vscode-webview-ui-toolkit
       const toolkitUri = getWebviewUiToolkitUri(panel.webview, context.extensionUri);
 
+      // JS of the webview.
+      const scriptUri = getUri(panel.webview, context.extensionUri, ["assets", "createSearchResultsWebview.js"]);
+
       // Populate webview HTML with search results.
       panel.webview.html =
         `<!DOCTYPE html>
@@ -38,20 +41,8 @@ export function createSearchResultsWebview(context: ExtensionContext, connection
 				<body>
 				  <h1>${title}</h1>
 				  <vscode-data-grid id="grid" generate-header="sticky" aria-label="Search results"></vscode-data-grid>
-				  <script>
-				  // Populate grid in webview when receiving data from the extension.
-				  window.addEventListener('message', event => {
-					  switch (event.data.command) {
-					  case 'populate':
-						  const grid = document.getElementById("grid");
-						  // Column titles.
-						  grid.columnDefinitions = event.data.columnDefinitions;
-						  // Data (rows).
-						  grid.rowsData = event.data.rowsData;
-						  break;
-					  }
-				  });
-				</script>
+				  <script src="${scriptUri}"></script>
+        </body>
 			</html>`;
 
       // Store columns (attribute names) and rows (values) in arrays.

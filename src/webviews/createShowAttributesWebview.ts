@@ -1,6 +1,6 @@
 import { ExtensionContext, ViewColumn, window } from 'vscode';
 import { LdapConnection } from '../LdapConnection';
-import { getWebviewUiToolkitUri } from './utils';
+import { getUri, getWebviewUiToolkitUri } from './utils';
 
 /**
  * Create a webview that shows attributes of a single LDAP entry.
@@ -27,6 +27,9 @@ export function createShowAttributesWebview(connection: LdapConnection, dn: stri
       // JS required for the Webview UI toolkit https://github.com/microsoft/vscode-webview-ui-toolkit
       const toolkitUri = getWebviewUiToolkitUri(panel.webview, context.extensionUri);
 
+      // JS of the webview.
+      const scriptUri = getUri(panel.webview, context.extensionUri, ["assets", "createShowAttributesWebview.js"]);
+
       // Populate webview HTML with the list of attributes.
       panel.webview.html =
         `<!DOCTYPE html>
@@ -37,23 +40,8 @@ export function createShowAttributesWebview(connection: LdapConnection, dn: stri
 				<body>
 				  <h1>${dn}</h1>
 				  <vscode-data-grid id="grid" generate-header="sticky" aria-label="Attributes" grid-template-columns="1fr 7fr"></vscode-data-grid>
-				  <script>
-				  // Populate grid in webview when receiving data from the extension.
-				  window.addEventListener('message', event => {
-					  switch (event.data.command) {
-					  case 'populate':
-						  const grid = document.getElementById("grid");
-						  // Column titles.
-						  grid.columnDefinitions = [
-						    { columnDataKey: "name", title: "Attribute" },
-						    { columnDataKey: "value", title: "Value" },
-						  ];
-						  // Data (rows).
-						  grid.rowsData = event.data.rowsData;
-						  break;
-					  }
-				  });
-				</script>
+				  <script src="${scriptUri}"></script>
+        </body>
 			</html>`;
 
       // Ensure we received only one LDAP entry.

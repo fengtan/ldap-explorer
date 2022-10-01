@@ -13,7 +13,7 @@ ldapsearch -x -b "dc=example,dc=org" -H ldap://ldap:1389 -D "cn=admin,dc=example
 ```
 - make sure the code is well documented and consistent
 - explain Base DN, see that documentation drupal provides
-- list alternatives in README.md (container-based software I listed in jira, as well as Jxplorer) ; also http://www.ldapexplorer.com/ which requires a license ; also https://en.wikipedia.org/wiki/List_of_LDAP_software
+- list alternatives in README.md (container-based software I listed in jira, as well as Jxplorer) ; also http://www.ldapexplorer.com/ which requires a license ; also https://en.wikipedia.org/wiki/List_of_LDAP_software ; also `ldapsearch`
 - explain all commands accessible from the command palette
 - explain connections end up in user settings by default, you can add those to workspace settings or devcontainer.json if you like
 - anonymous bind: just leave binddn and bindpwd empty when creating a connection
@@ -37,7 +37,9 @@ ldapsearch -x -b "dc=example,dc=org" -H ldap://ldap:1389 -D "cn=admin,dc=example
   - support startTLS http://ldapjs.org/client.html#starttls
   - support to add/delete/edit/rename/remove new entry (and add checkbox "readonly connection" when creating/editing a connection)
   - define strings in package.nls.json so they are translatable and common
+  - option to reorder bookmarks
 - how to package / deploy extension with vsce
+- explain bookmarks, provide screenshot
 
 metadata / deployment
 - license (in package.json and in README.md)
@@ -48,7 +50,7 @@ metadata / deployment
 
 LATER
 - egrep todo
-- content security policy / sanitization https://code.visualstudio.com/api/extension-guides/webview#content-security-policy -> https://code.visualstudio.com/api/extension-guides/command#command-uris ; see example in webview-view-sample
+- content security policy / sanitization https://code.visualstudio.com/api/extension-guides/webview#content-security-policy -> https://code.visualstudio.com/api/extension-guides/command#command-uris ; see example in webview-view-sample ; move JS / CSS to external files ; allows another extension to call commands and pass junk in DN, which gets rendered in webview
 
 
 # ldap-explorer README

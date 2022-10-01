@@ -1,7 +1,7 @@
 import { commands, ExtensionContext, ViewColumn, window } from 'vscode';
 import { LdapConnection } from '../LdapConnection';
 import { LdapConnectionManager } from '../LdapConnectionManager';
-import { getWebviewUiToolkitUri } from './utils';
+import { getUri, getWebviewUiToolkitUri } from './utils';
 
 /**
  * Create a webview to edit or create a connection.
@@ -24,6 +24,9 @@ export function createAddEditConnectionWebview(context: ExtensionContext, existi
 
   // JS required for the Webview UI toolkit https://github.com/microsoft/vscode-webview-ui-toolkit
   const toolkitUri = getWebviewUiToolkitUri(panel.webview, context.extensionUri);
+
+  // JS of the webview.
+  const scriptUri = getUri(panel.webview, context.extensionUri, ["assets", "createAddEditConnectionWebview.js"]);
 
   // Populate webview HTML.
   // The VS Code API seems to provide no way to inspect the configuration schema (in package.json).
@@ -74,23 +77,7 @@ export function createAddEditConnectionWebview(context: ExtensionContext, existi
 			<vscode-button onClick="submitForm('save')">Save</vscode-button>
 			<vscode-button onClick="submitForm('test')" appearance="secondary">Test</vscode-button>
 
-			<script>
-        const vscode = acquireVsCodeApi();
-        function submitForm(command) {
-          vscode.postMessage({
-            command: command,
-            name: document.getElementById("name").value,
-            protocol: document.getElementById("protocol").value,
-            host: document.getElementById("host").value,
-            port: document.getElementById("port").value,
-            binddn: document.getElementById("binddn").value,
-            bindpwd: document.getElementById("bindpwd").value,
-            basedn: document.getElementById("basedn").value,
-            limit: document.getElementById("limit").value,
-            timeout: document.getElementById("timeout").value
-          });
-        }
-			</script>
+			<script src="${scriptUri}"></script>
 		</body>
 	</html>`;
 
@@ -108,7 +95,8 @@ export function createAddEditConnectionWebview(context: ExtensionContext, existi
         message.bindpwd,
         message.basedn,
         message.limit,
-        message.timeout
+        message.timeout,
+        []
       );
       switch (message.command) {
       case 'save':
@@ -153,7 +141,7 @@ export function createAddEditConnectionWebview(context: ExtensionContext, existi
             }
           );
         } else {
-          LdapConnectionManager.editConnection(newConnection, existingConnection).then(
+          LdapConnectionManager.editConnection(newConnection, existingConnection.getName()).then(
             value => {
               // If the connection was successfully updated, then refresh the tree view.
               commands.executeCommand("ldap-explorer.refresh");

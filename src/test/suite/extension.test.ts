@@ -14,7 +14,8 @@ suite('Extension test suite', () => {
       "foobar",
       "dc=example,dc=org",
       "0",
-      "5000"
+      "5000",
+      []
     );
     // Assert connection string.
     assert.strictEqual("ldap://myserver.com:1389", connection.getUrl());
@@ -31,7 +32,8 @@ suite('Extension test suite', () => {
       "${bindpwd}",
       "${basedn}",
       "${sizelimit}",
-      "${timeout}"
+      "${timeout}",
+      []
     );
     // Set environment variables.
     process.env = {

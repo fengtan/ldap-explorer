@@ -3,6 +3,7 @@ import { commands, env, ExtensionContext, window } from 'vscode';
 import { FakeEntry } from './FakeEntry';
 import { LdapConnection } from './LdapConnection';
 import { LdapConnectionManager } from './LdapConnectionManager';
+import { BookmarkTreeDataProvider } from './tree-providers/BookmarkTreeDataProvider';
 import { ConnectionTreeDataProvider } from './tree-providers/ConnectionTreeDataProvider';
 import { EntryTreeDataProvider } from './tree-providers/EntryTreeDataProvider';
 import { createAddEditConnectionWebview } from './webviews/createAddEditConnectionWebview';
@@ -14,13 +15,16 @@ import { SearchWebviewViewProvider } from './webviews/SearchWebviewViewProvider'
  */
 export function activate(context: ExtensionContext) {
 
-  // Create our views (connections, tree, search).
+  // Create our views (connections, tree, bookmarks, search).
 
   const connectionTreeDataProvider = new ConnectionTreeDataProvider(context);
   context.subscriptions.push(window.createTreeView('ldap-explorer-view-connections', { treeDataProvider: connectionTreeDataProvider }));
 
   const entryTreeDataProvider = new EntryTreeDataProvider(context);
   context.subscriptions.push(window.createTreeView('ldap-explorer-view-tree', { treeDataProvider: entryTreeDataProvider }));
+
+  const bookmarkTreeDataProvider = new BookmarkTreeDataProvider(context);
+  context.subscriptions.push(window.createTreeView('ldap-explorer-view-bookmarks', { treeDataProvider: bookmarkTreeDataProvider }));
 
   const searchWebviewViewProvider = new SearchWebviewViewProvider(context);
   context.subscriptions.push(
@@ -29,8 +33,8 @@ export function activate(context: ExtensionContext) {
 
   // Implement VS Code commands.
   // Where they show up is defined in package.json ("commands" and "menus").
-  // They should all be listed under "activationEvents" in package.json,otherwise
-  // calling them frrom the command palette would break if the extension is not loaded.
+  // They should all be listed under "activationEvents" in package.json, otherwise
+  // calling them from the command palette would break if the extension is not loaded.
 
   context.subscriptions.push(commands.registerCommand('ldap-explorer.add-connection', () => {
     createAddEditConnectionWebview(context);
@@ -93,9 +97,10 @@ export function activate(context: ExtensionContext) {
   }));
 
   context.subscriptions.push(commands.registerCommand('ldap-explorer.refresh', () => {
-    // Refresh both the connections view and the tree view.
+    // Refresh all views.
     connectionTreeDataProvider.refresh();
     entryTreeDataProvider.refresh();
+    bookmarkTreeDataProvider.refresh();
   }));
 
   // Copy DN of an entry to the system clipboard.
@@ -130,6 +135,60 @@ export function activate(context: ExtensionContext) {
 
     // Create webview with attributes of the DN.
     createShowAttributesWebview(connection, dn, context);
+  }));
+
+  context.subscriptions.push(commands.registerCommand('ldap-explorer.add-bookmark', async (entry?: SearchEntry | FakeEntry) => {
+    // If there is no active connection, then explicitly ask user to pick one.
+    const connection = LdapConnectionManager.getActiveConnection(context) ?? await pickConnection();
+
+    // User did not provide a connection: cancel command.
+    if (!connection) {
+      return;
+    }
+
+    // 'entry' may not be defined (e.g. if the command fired from the command palette instead of the tree view).
+    // If that is the case we explictly ask the user to enter a DN.
+    let dn: string | undefined;
+    if (!entry) {
+      dn = await pickDN();
+      // User did not provide a DN: cancel command.
+      if (!dn) {
+        return;
+      }
+    }
+    else {
+      dn = entry.dn;
+    }
+
+    // Add bookmark.
+    connection.addBookmark(dn);
+
+    // Persist bookmark in connection.
+    LdapConnectionManager.editConnection(connection, connection.getName());
+
+    // Refresh bookmarks view so the new bookmark shows up.
+    bookmarkTreeDataProvider.refresh();
+  }));
+
+  // This command does not show in the command palette (it fires from the tree view)
+  // so we are guaranteed to be provided with a non-null DN as an argument.
+  context.subscriptions.push(commands.registerCommand('ldap-explorer.delete-bookmark', async (dn: string) => {
+    // If there is no active connection, then explicitly ask user to pick one.
+    const connection = LdapConnectionManager.getActiveConnection(context) ?? await pickConnection();
+
+    // User did not provide a connection: cancel command.
+    if (!connection) {
+      return;
+    }
+
+    // Remove bookmark.
+    connection.deleteBookmark(dn);
+
+    // Persist removal of the bookmark from the connection.
+    LdapConnectionManager.editConnection(connection, connection.getName());
+
+    // Refresh bookmarks view so the bookmark goes away.
+    bookmarkTreeDataProvider.refresh();
   }));
 
 }

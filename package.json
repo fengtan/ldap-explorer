@@ -33,6 +33,8 @@
     "onCommand:ldap-explorer.refresh",
     "onCommand:ldap-explorer.copy-dn",
     "onCommand:ldap-explorer.show-attributes",
+    "onCommand:ldap-explorer.add-bookmark",
+    "onCommand:ldap-explorer.delete-bookmark",
     "onView:ldap-explorer-view-connections",
     "onView:ldap-explorer-view-tree",
     "onView:ldap-explorer-view-search"
@@ -58,6 +60,10 @@
           "name": "Tree"
         },
         {
+          "id": "ldap-explorer-view-bookmarks",
+          "name": "Bookmarks"
+        },
+        {
           "id": "ldap-explorer-view-search",
           "name": "Search",
           "type": "webview"
@@ -72,35 +78,39 @@
       {
         "view": "ldap-explorer-view-tree",
         "contents": "No active connection."
+      },
+      {
+        "view": "ldap-explorer-view-bookmarks",
+        "contents": "No bookmark."
       }
     ],
     "commands": [
       {
         "command": "ldap-explorer.add-connection",
-        "title": "Add new connection",
+        "title": "Add new Connection",
         "category": "LDAP Explorer",
         "icon": "$(add)"
       },
       {
         "command": "ldap-explorer.edit-connection",
-        "title": "Edit connection",
+        "title": "Edit Connection",
         "category": "LDAP Explorer",
         "icon": "$(edit)"
       },
       {
         "command": "ldap-explorer.delete-connection",
-        "title": "Delete connection",
+        "title": "Delete Connection",
         "category": "LDAP Explorer",
         "icon": "$(trash)"
       },
       {
         "command": "ldap-explorer.activate-connection",
-        "title": "Set active connection",
+        "title": "Set active Connection",
         "category": "LDAP Explorer"
       },
       {
         "command": "ldap-explorer.deactivate-connection",
-        "title": "Set no active connection",
+        "title": "Set no active Connection",
         "category": "LDAP Explorer"
       },
       {
@@ -112,18 +122,36 @@
       {
         "command": "ldap-explorer.show-attributes",
         "title": "Show Attributes",
-        "category": "LDAP Explorer"
+        "category": "LDAP Explorer",
+        "icon": "$(table)"
       },
       {
         "command": "ldap-explorer.copy-dn",
-        "title": "Copy DN",
-        "category": "LDAP Explorer"
+        "title": "Copy DN to clipboard",
+        "category": "LDAP Explorer",
+        "icon": "$(copy)"
+      },
+      {
+        "command": "ldap-explorer.add-bookmark",
+        "title": "Add to Bookmarks",
+        "category": "LDAP Explorer",
+        "icon": "$(bookmark)"
+      },
+      {
+        "command": "ldap-explorer.delete-bookmark",
+        "title": "Remove from Bookmarks",
+        "category": "LDAP Explorer",
+        "icon": "$(trash)"
       }
     ],
     "menus": {
       "commandPalette": [
         {
           "command": "ldap-explorer.copy-dn",
+          "when": "false"
+        },
+        {
+          "command": "ldap-explorer.delete-bookmark",
           "when": "false"
         }
       ],
@@ -135,26 +163,40 @@
         },
         {
           "command": "ldap-explorer.refresh",
-          "when": "view == ldap-explorer-view-connections || view == ldap-explorer-view-tree",
+          "when": "view == ldap-explorer-view-connections || view == ldap-explorer-view-tree || view == ldap-explorer-view-bookmarks",
           "group": "navigation"
         }
       ],
       "view/item/context": [
         {
           "command": "ldap-explorer.edit-connection",
-          "when": "view == ldap-explorer-view-connections"
+          "when": "view == ldap-explorer-view-connections",
+          "group": "inline"
         },
         {
           "command": "ldap-explorer.delete-connection",
-          "when": "view == ldap-explorer-view-connections"
+          "when": "view == ldap-explorer-view-connections",
+          "group": "inline"
         },
         {
           "command": "ldap-explorer.copy-dn",
-          "when": "view == ldap-explorer-view-tree"
+          "when": "view == ldap-explorer-view-tree",
+          "group": "inline"
         },
         {
           "command": "ldap-explorer.show-attributes",
-          "when": "view == ldap-explorer-view-tree"
+          "when": "view == ldap-explorer-view-tree",
+          "group": "inline"
+        },
+        {
+          "command": "ldap-explorer.add-bookmark",
+          "when": "view == ldap-explorer-view-tree",
+          "group": "inline"
+        },
+        {
+          "command": "ldap-explorer.delete-bookmark",
+          "when": "view == ldap-explorer-view-bookmarks",
+          "group": "inline"
         }
       ]
     },
@@ -229,6 +271,14 @@
                 "type": "string",
                 "description": "Timeout (milliseconds)",
                 "default": "5000"
+              },
+              "bookmarks": {
+                "type": "array",
+                "description": "Bookmarks",
+                "default": [],
+                "items": {
+                  "type": "string"
+                }
               }
             }
           }

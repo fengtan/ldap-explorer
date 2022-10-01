@@ -1,4 +1,5 @@
 import { Client, createClient, SearchEntry, SearchOptions } from 'ldapjs';
+import { FakeEntry } from './FakeEntry';
 import { LdapLogger } from './LdapLogger';
 
 /**
@@ -17,8 +18,9 @@ export class LdapConnection {
   private basedn: string;
   private limit: string;
   private timeout: string;
+  private bookmarks: string[];
 
-  constructor(name: string, protocol: string, host: string, port: string, binddn: string, bindpwd: string, basedn: string, limit: string, timeout: string) {
+  constructor(name: string, protocol: string, host: string, port: string, binddn: string, bindpwd: string, basedn: string, limit: string, timeout: string, bookmarks: string[]) {
     this.name = name;
     this.protocol = protocol;
     this.host = host;
@@ -28,6 +30,7 @@ export class LdapConnection {
     this.basedn = basedn;
     this.limit = limit;
     this.timeout = timeout;
+    this.bookmarks = bookmarks;
   }
 
   // Getters.
@@ -58,6 +61,9 @@ export class LdapConnection {
   public getTimeout(evaluate: boolean) {
     return this.get(this.timeout, evaluate);
   }
+  public getBookmarks() {
+    return this.bookmarks;
+  }
 
   /**
    * Get a value and evaluates it as an environment variable if necessary.
@@ -78,6 +84,28 @@ export class LdapConnection {
    */
   public setName(name: string) {
     this.name = name;
+  }
+
+  /**
+   * Adds a bookmark.
+   */
+  public addBookmark(dn: string) {
+    this.bookmarks.push(dn);
+  }
+
+  /**
+   * Removes a bookmark.
+   */
+  public deleteBookmark(dn: string) {
+    // Get index of bookmark to delete.
+    const index = this.bookmarks.findIndex(bookmark => bookmark === dn);
+    if (index < 0) {
+      // dn not found in existing bookmarks, nothing to remove.
+      return;
+    }
+
+    // Remove dn from the bookmarks.
+    this.bookmarks.splice(index, 1);
   }
 
   /**

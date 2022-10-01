@@ -1,7 +1,7 @@
 import { CancellationToken, ExtensionContext, WebviewView, WebviewViewProvider, WebviewViewResolveContext, window } from "vscode";
 import { createSearchResultsWebview } from "./createSearchResultsWebview";
 import { LdapConnectionManager } from "../LdapConnectionManager";
-import { getWebviewUiToolkitUri } from './utils';
+import { getUri, getWebviewUiToolkitUri } from './utils';
 
 /**
  * Webview that shows the search form ("Search" view).
@@ -20,6 +20,9 @@ export class SearchWebviewViewProvider implements WebviewViewProvider {
   public resolveWebviewView(webviewView: WebviewView, context: WebviewViewResolveContext<unknown>, token: CancellationToken): void | Thenable<void> {
     // JS required for the Webview UI toolkit https://github.com/microsoft/vscode-webview-ui-toolkit
     const toolkitUri = getWebviewUiToolkitUri(webviewView.webview, this.extensionContext.extensionUri);
+
+    // JS of the webview.
+    const scriptUri = getUri(webviewView.webview, this.extensionContext.extensionUri, ["assets", "SearchWebviewViewProvider.js"]);
 
     // @todo retainContextWhenHidden (and remove enableScripts and switch to state restore later).
     webviewView.webview.options = {
@@ -42,27 +45,7 @@ export class SearchWebviewViewProvider implements WebviewViewProvider {
 
           <vscode-button id="search" onClick="search()">Search</vscode-button>
 
-          <script>
-            const vscode = acquireVsCodeApi();
-            function search() {
-              vscode.postMessage({
-                command: "search",
-                filter: document.getElementById("filter").value,
-                attributes: document.getElementById("attributes").value
-              });
-            }
-            // Submit form when user focuses on filter text field and hits "Enter".
-            (function() {
-              document.getElementById("filter").addEventListener("keypress", function(event) {
-                if (event.key === "Enter") {
-                  // Cancel the default action.
-                  event.preventDefault();
-                  // Trigger the search button element with a click.
-                  document.getElementById("search").click();
-                }
-              });
-            })();
-			    </script>
+          <script src="${scriptUri}"></script>
         </body>
 			</html>`;
 

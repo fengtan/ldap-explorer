@@ -20,7 +20,8 @@ export class LdapConnectionManager {
       connection["bindpwd"],
       connection["basedn"],
       connection["limit"],
-      connection["timeout"]
+      connection["timeout"],
+      connection["bookmarks"]
     ));
   }
 
@@ -82,14 +83,14 @@ export class LdapConnectionManager {
   /**
    * Update an existing connection in settings.
    */
-  public static editConnection(newConnection: LdapConnection, existingConnection: LdapConnection): Thenable<void> {
+  public static editConnection(newConnection: LdapConnection, existingConnectionName: string): Thenable<void> {
     // Get list of existing connections.
     let connections = this.getConnections();
 
     // Get index of connection to edit.
-    const index = connections.findIndex(con => con.getName() === existingConnection.getName());
+    const index = connections.findIndex(con => con.getName() === existingConnectionName);
     if (index < 0) {
-      return Promise.reject(`Connection '${existingConnection.getName()}' does not exist in settings`);
+      return Promise.reject(`Connection '${existingConnectionName}' does not exist in settings`);
     }
 
     // Replace existing connection with new connection.
