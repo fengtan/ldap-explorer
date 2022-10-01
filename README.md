@@ -41,17 +41,15 @@ ldapsearch -x -b "dc=example,dc=org" -H ldap://ldap:1389 -D "cn=admin,dc=example
   - unsafe-inline CSP in all webviews
   - getState/setState is the preferred way to persist a webview's state (instead of retainContextWhenHidden which is more resource intensive and is used in all views) https://code.visualstudio.com/api/extension-guides/webview#getstate-and-setstate
 - how to package / deploy extension with vsce
+  - update CHANGELOG.txt
 - explain bookmarks, provide screenshot
 
 metadata / deployment
-- license (in package.json and in README.md)
 - make sure the repo URL listed in package.json is correct
 - CHANGELOG.txt
 - list anything that is not required for prod in .vscodeignore (e.g. devcontainer.json)
 - github action should run eslint + autotests https://code.visualstudio.com/api/working-with-extensions/continuous-integration#github-actions
-
-LATER
-- egrep todo
+- make github repo public
 
 # ldap-explorer README
 
