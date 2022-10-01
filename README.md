@@ -39,6 +39,7 @@ ldapsearch -x -b "dc=example,dc=org" -H ldap://ldap:1389 -D "cn=admin,dc=example
   - define strings in package.nls.json so they are translatable and common
   - option to reorder bookmarks
   - unsafe-inline CSP in all webviews
+  - getState/setState is the preferred way to persist a webview's state (instead of retainContextWhenHidden which is more resource intensive and is used in all views) https://code.visualstudio.com/api/extension-guides/webview#getstate-and-setstate
 - how to package / deploy extension with vsce
 - explain bookmarks, provide screenshot
 

@@ -18,7 +18,7 @@ export function createAddEditConnectionWebview(context: ExtensionContext, existi
     ViewColumn.One,
     {
       enableScripts: true,
-      retainContextWhenHidden: true // @todo remove and switch to state restore
+      retainContextWhenHidden: true
     }
   );
 

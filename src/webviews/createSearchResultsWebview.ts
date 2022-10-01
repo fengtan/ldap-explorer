@@ -21,7 +21,7 @@ export function createSearchResultsWebview(context: ExtensionContext, connection
         },
         {
           enableScripts: true,
-          retainContextWhenHidden: true // @todo remove and switch to state restore
+          retainContextWhenHidden: true
         }
       );
 
