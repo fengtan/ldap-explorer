@@ -42,7 +42,7 @@ export function createShowAttributesWebview(connection: LdapConnection, dn: stri
 				<body>
 				  <h1>${dn}</h1>
 				  <vscode-data-grid id="grid" generate-header="sticky" aria-label="Attributes" grid-template-columns="1fr 7fr"></vscode-data-grid>
-				  <script src="${scriptUri}"></script><!-- TODO is the nonce necessary here ? also no need for -->
+				  <script src="${scriptUri}"></script>
         </body>
 			</html>`;
 
