@@ -1,6 +1,7 @@
 documentation in README
 - screenshot etc
-- pointer to https://code.visualstudio.com/api
+- pointer to https://code.visualstudio.com/api, UI toolkit, ldapjs, etc
+- see template sophie
 - how to test:
   1. Open project in vscode (using remote-containers extension)
   2. Hit F5 - should open a new instance of VS Code with the extension running
@@ -43,6 +44,9 @@ ldapsearch -x -b "dc=example,dc=org" -H ldap://ldap:1389 -D "cn=admin,dc=example
 - how to package / deploy extension with vsce
   - update CHANGELOG.txt
 - explain bookmarks, provide screenshot
+- `Ctrl+Shift+P` and  type "LDAP explorer" to run commands from the palette
+- to run tests, you can also open the test view (`Ctrl+Shift+D`) andrun test "Extension Tests" ; to test extension pick "Run Extension"
+- mention CHANGELOG.md and CONTRIBUTING.md
 
 metadata / deployment
 - make sure the repo URL listed in package.json is correct
@@ -50,6 +54,8 @@ metadata / deployment
 - list anything that is not required for prod in .vscodeignore (e.g. devcontainer.json)
 - github action should run eslint + autotests https://code.visualstudio.com/api/working-with-extensions/continuous-integration#github-actions
 - make github repo public
+- bundle extension https://code.visualstudio.com/api/working-with-extensions/bundling-extension
+- publish extension https://code.visualstudio.com/api/working-with-extensions/publishing-extension
 
 # ldap-explorer README
 
@@ -79,46 +85,3 @@ This extension contributes the following settings:
 
 * `myExtension.enable`: Enable/disable this extension.
 * `myExtension.thing`: Set to `blah` to do something.
-
-## Known Issues
-
-Calling out known issues can help limit users opening duplicate issues against your extension.
-
-## Release Notes
-
-Users appreciate release notes as you update your extension.
-
-### 1.0.0
-
-Initial release of ...
-
-### 1.0.1
-
-Fixed issue #.
-
-### 1.1.0
-
-Added features X, Y, and Z.
-
----
-
-## Following extension guidelines
-
-Ensure that you've read through the extensions guidelines and follow the best practices for creating your extension.
-
-* [Extension Guidelines](https://code.visualstudio.com/api/references/extension-guidelines)
-
-## Working with Markdown
-
-You can author your README using Visual Studio Code. Here are some useful editor keyboard shortcuts:
-
-* Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux).
-* Toggle preview (`Shift+Cmd+V` on macOS or `Shift+Ctrl+V` on Windows and Linux).
-* Press `Ctrl+Space` (Windows, Linux, macOS) to see a list of Markdown snippets.
-
-## For more information
-
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
-
-**Enjoy!**
