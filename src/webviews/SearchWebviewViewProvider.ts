@@ -24,7 +24,7 @@ export class SearchWebviewViewProvider implements WebviewViewProvider {
     // JS of the webview.
     const scriptUri = getUri(webviewView.webview, this.extensionContext.extensionUri, ["assets", "SearchWebviewViewProvider.js"]);
 
-    // @todo retainContextWhenHidden
+    // Allow JS in the webview.
     webviewView.webview.options = {
       enableScripts: true
     };

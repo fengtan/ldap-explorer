@@ -28,7 +28,7 @@ export function activate(context: ExtensionContext) {
 
   const searchWebviewViewProvider = new SearchWebviewViewProvider(context);
   context.subscriptions.push(
-    window.registerWebviewViewProvider('ldap-explorer-view-search', searchWebviewViewProvider)
+    window.registerWebviewViewProvider('ldap-explorer-view-search', searchWebviewViewProvider, { webviewOptions: { retainContextWhenHidden: true } })
   );
 
   // Implement VS Code commands.
