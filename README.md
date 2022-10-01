@@ -51,6 +51,7 @@ metadata / deployment
 
 LATER
 - egrep todo
+- drop inline onClick="search()", and drop unsafe-inline from CSP
 
 
 # ldap-explorer README
