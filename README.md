@@ -8,15 +8,15 @@ TODO put animation here \!\[feature X\]\(images/feature-x.png\)
 
 ## Features
 
-### Browse LDAP tree
+### Browse the tree
 
 TODO "Directory Information Tree"
 
-### List LDAP attributes
+### List attributes
 
 TODO
 
-### Search for LDAP entries
+### Search and filter
 
 TODO
 
