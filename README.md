@@ -64,7 +64,6 @@ metadata / deployment
 - make github repo public
 - bundle extension https://code.visualstudio.com/api/working-with-extensions/bundling-extension
 - publish extension https://code.visualstudio.com/api/working-with-extensions/publishing-extension
-- add badge CI tests passing
 - package.json
   - galleryBanner https://marketplace.visualstudio.com/items?itemName=seanmcbreen.MDTools
   - badges
@@ -74,6 +73,8 @@ metadata / deployment
 - drop vsc-extension-quickstart.md
 - add link to vscode marketplace to README.md ; provide link that explains how to install a vscode extension
 - github automated publishing https://code.visualstudio.com/api/working-with-extensions/continuous-integration#github-actions-automated-publishing
+
+[![Build](https://github.com/fengtan/ldap-explorer/actions/workflows/build.yml/badge.svg)](https://github.com/fengtan/ldap-explorer/actions/workflows/build.yml)
 
 # ldap-explorer README
 
