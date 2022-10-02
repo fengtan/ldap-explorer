@@ -54,24 +54,27 @@ ldapsearch -x -b "dc=example,dc=org" -H ldap://ldap:1389 -D "cn=admin,dc=example
   - vscode-samples repo
   - api documentation
   - ldapjs documentation
+  - explain automated publisihing in github https://code.visualstudio.com/api/working-with-extensions/continuous-integration#github-actions-automated-publishing
 
 metadata / deployment
 - make sure the repo URL listed in package.json is correct
 - CHANGELOG.txt (is it actually necessary ? https://marketplace.visualstudio.com/items/GitHub.copilot/changelog)
 - list anything that is not required for prod in .vscodeignore (e.g. devcontainer.json)
 - github action should run eslint + autotests https://code.visualstudio.com/api/working-with-extensions/continuous-integration#github-actions
+- drop .github/workflows/github-actions-demo.yml
 - make github repo public
 - bundle extension https://code.visualstudio.com/api/working-with-extensions/bundling-extension
 - publish extension https://code.visualstudio.com/api/working-with-extensions/publishing-extension
 - add badge CI tests passing
 - package.json
-  - galleryBanner
+  - galleryBanner https://marketplace.visualstudio.com/items?itemName=seanmcbreen.MDTools
   - badges
   - icon (flaticon ?) - also add to github project
   - extensionKind (test in remote containers)
 - announce ldapjs mailing list
 - drop vsc-extension-quickstart.md
 - add link to vscode marketplace to README.md ; provide link that explains how to install a vscode extension
+- github automated publishing https://code.visualstudio.com/api/working-with-extensions/continuous-integration#github-actions-automated-publishing
 
 # ldap-explorer README
 
