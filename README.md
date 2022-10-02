@@ -47,15 +47,31 @@ ldapsearch -x -b "dc=example,dc=org" -H ldap://ldap:1389 -D "cn=admin,dc=example
 - `Ctrl+Shift+P` and  type "LDAP explorer" to run commands from the palette
 - to run tests, you can also open the test view (`Ctrl+Shift+D`) andrun test "Extension Tests" ; to test extension pick "Run Extension"
 - mention CHANGELOG.md and CONTRIBUTING.md
+- deployment process should include reviewing README.md and CTRONITBUTING.md and CHANGELOG.md and package.json metadata
+- CONTRIB.md resources:
+  - codicons
+  - webview ui toolkit
+  - vscode-samples repo
+  - api documentation
+  - ldapjs documentation
 
 metadata / deployment
 - make sure the repo URL listed in package.json is correct
-- CHANGELOG.txt
+- CHANGELOG.txt (is it actually necessary ? https://marketplace.visualstudio.com/items/GitHub.copilot/changelog)
 - list anything that is not required for prod in .vscodeignore (e.g. devcontainer.json)
 - github action should run eslint + autotests https://code.visualstudio.com/api/working-with-extensions/continuous-integration#github-actions
 - make github repo public
 - bundle extension https://code.visualstudio.com/api/working-with-extensions/bundling-extension
 - publish extension https://code.visualstudio.com/api/working-with-extensions/publishing-extension
+- add badge CI tests passing
+- package.json
+  - galleryBanner
+  - badges
+  - icon (flaticon ?) - also add to github project
+  - extensionKind (test in remote containers)
+- announce ldapjs mailing list
+- drop vsc-extension-quickstart.md
+- add link to vscode marketplace to README.md ; provide link that explains how to install a vscode extension
 
 # ldap-explorer README
 
