@@ -59,6 +59,9 @@ ldapsearch -x -b "dc=example,dc=org" -H ldap://ldap:1389 -D "cn=admin,dc=example
   - https://code.visualstudio.com/api/ux-guidelines/overview
 - explain github workflow runs lint & test & publish https://code.visualstudio.com/api/working-with-extensions/continuous-integration
 - README.md explain how alternative tools are different ; explain this tool is *readonly*
+- egrep todo README.md
+- explain settings are stored in user settings (typically found in *nix at `~/.config/xx`)
+- "this extension contributes the following commands / config" -> explain commands are accessible from palette ; config editable from settings UI
 
 metadata / deployment
 - CHANGELOG.txt (is it actually necessary

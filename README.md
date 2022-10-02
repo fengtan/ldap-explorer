@@ -4,15 +4,29 @@
 
 [LDAP](https://en.wikipedia.org/wiki/Lightweight_Directory_Access_Protocol) client for [VS Code](https://code.visualstudio.com/).
 
+TODO put animation here \!\[feature X\]\(images/feature-x.png\)
+
 ## Features
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
+### Browse LDAP tree
 
-For example if there is an image subfolder under your extension project workspace:
+TODO "Directory Information Tree"
 
-\!\[feature X\]\(images/feature-x.png\)
+### List LDAP attributes
 
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
+TODO
+
+### Search for LDAP entries
+
+TODO
+
+### Manage bookmarks
+
+TODO
+
+### Support for multiple connections
+
+TODO
 
 ## Installation
 
@@ -24,14 +38,37 @@ For example if there is an image subfolder under your extension project workspac
 
 This extension contributes the following commands:
 
+TODO explain all commands
+
+### Connections
+
+* **LDAP Explorer: Add new Connection**
+* **LDAP Explorer: Edit Connection**
+* **LDAP Explorer: Delete Connection**
+* **LDAP Explorer: Set active Connection**
+* **LDAP Explorer: Set no active Connection**
+
+### LDAP entries
+
+* **LDAP Explorer: Refresh**
+* **LDAP Explorer: Show Attributes**
+* **LDAP Explorer: Copy DN to clipboard**
+* **LDAP Explorer: Add to Bookmarks**
+* **LDAP Explorer: Remove from Bookmarks**
+
 ## Configuration
 
 This extension contributes the following settings:
 
-* `myExtension.enable`: Enable/disable this extension.
-* `myExtension.thing`: Set to `blah` to do something.
+**ldap-explorer.show-tree-item-icons** (`false`)
 
-## Similar tools
+Show/hide icons in the tree. TODO explain when icons are "ou", "cn", etc. TODO provide screenshots
+
+**ldap-explorer.connections** (`[]`)
+
+List of LDAP connections. TODO provide example
+
+## Alternative tools
 
 * [Apache Directory Studio](https://directory.apache.org/studio/) is a fully-featured LDAP client based on [Eclipse RCP](https://wiki.eclipse.org/Rich_Client_Platform)
 - [JXplorer](http://jxplorer.org/) is a cross-platform LDAP browser and editor with many features
