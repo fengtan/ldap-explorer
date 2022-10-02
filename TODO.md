@@ -14,7 +14,6 @@ ldapsearch -x -b "dc=example,dc=org" -H ldap://ldap:1389 -D "cn=admin,dc=example
 ```
 - make sure the code is well documented and consistent
 - explain Base DN, see that documentation drupal provides
-- list alternatives in README.md (container-based software I listed in jira, as well as Jxplorer) ; also http://www.ldapexplorer.com/ which requires a license ; also https://en.wikipedia.org/wiki/List_of_LDAP_software ; also `ldapsearch`
 - explain all commands accessible from the command palette
 - explain connections end up in user settings by default, you can add those to workspace settings or devcontainer.json if you like
 - anonymous bind: just leave binddn and bindpwd empty when creating a connection
@@ -59,6 +58,7 @@ ldapsearch -x -b "dc=example,dc=org" -H ldap://ldap:1389 -D "cn=admin,dc=example
   - `node_modules/@types/vscode/index.d.ts`
   - https://code.visualstudio.com/api/ux-guidelines/overview
 - explain github workflow runs lint & test & publish https://code.visualstudio.com/api/working-with-extensions/continuous-integration
+- README.md explain how alternative tools are different ; explain this tool is *readonly*
 
 metadata / deployment
 - CHANGELOG.txt (is it actually necessary
@@ -69,6 +69,9 @@ metadata / deployment
 - package.json
   - galleryBanner https://marketplace.visualstudio.com/items?itemName=seanmcbreen.MDTools
   - icon (flaticon ?) - also add to github project
-- announce ldapjs mailing list
-- add link to vscode marketplace to README.md (on title); provide link that explains how to install a vscode extension
 - github automated publishing https://code.visualstudio.com/api/working-with-extensions/continuous-integration#github-actions-automated-publishing
+
+later
+- verify hyperlink "LDAP explorer" in README.md does not lead to 404 (https://marketplace.visualstudio.com/items?itemName=fengtan.ldap-explorer)
+- verify `ext install fengtan.ldap-explorer` works are described in README.md
+- announce ldapjs mailing list
