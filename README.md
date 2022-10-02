@@ -55,12 +55,12 @@ ldapsearch -x -b "dc=example,dc=org" -H ldap://ldap:1389 -D "cn=admin,dc=example
   - api documentation
   - ldapjs documentation
   - explain automated publisihing in github https://code.visualstudio.com/api/working-with-extensions/continuous-integration#github-actions-automated-publishing
+- explain github workflow runs lint & test & publish
 
 metadata / deployment
 - make sure the repo URL listed in package.json is correct
 - CHANGELOG.txt (is it actually necessary ? https://marketplace.visualstudio.com/items/GitHub.copilot/changelog)
 - list anything that is not required for prod in .vscodeignore (e.g. devcontainer.json)
-- github action should run eslint + autotests https://code.visualstudio.com/api/working-with-extensions/continuous-integration#github-actions
 - make github repo public
 - bundle extension https://code.visualstudio.com/api/working-with-extensions/bundling-extension
 - publish extension https://code.visualstudio.com/api/working-with-extensions/publishing-extension
