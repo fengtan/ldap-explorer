@@ -41,6 +41,7 @@ ldapsearch -x -b "dc=example,dc=org" -H ldap://ldap:1389 -D "cn=admin,dc=example
   - option to reorder bookmarks
   - unsafe-inline CSP in all webviews
   - getState/setState is the preferred way to persist a webview's state (instead of retainContextWhenHidden which is more resource intensive and is used in all views) https://code.visualstudio.com/api/extension-guides/webview#getstate-and-setstate
+  - package.json: set extensionKind (test in remote containers)
 - how to package / deploy extension with vsce
   - update CHANGELOG.txt
 - explain bookmarks, provide screenshot
@@ -66,17 +67,15 @@ metadata / deployment
 - publish extension https://code.visualstudio.com/api/working-with-extensions/publishing-extension
 - package.json
   - galleryBanner https://marketplace.visualstudio.com/items?itemName=seanmcbreen.MDTools
-  - badges
   - icon (flaticon ?) - also add to github project
-  - extensionKind (test in remote containers)
 - announce ldapjs mailing list
 - drop vsc-extension-quickstart.md
 - add link to vscode marketplace to README.md ; provide link that explains how to install a vscode extension
 - github automated publishing https://code.visualstudio.com/api/working-with-extensions/continuous-integration#github-actions-automated-publishing
 
-[![Build](https://github.com/fengtan/ldap-explorer/actions/workflows/build.yml/badge.svg)](https://github.com/fengtan/ldap-explorer/actions/workflows/build.yml)
+# LDAP Explorer
 
-# ldap-explorer README
+[![Build](https://github.com/fengtan/ldap-explorer/actions/workflows/build.yml/badge.svg)](https://github.com/fengtan/ldap-explorer/actions/workflows/build.yml)
 
 This is the README for your extension "ldap-explorer". After writing up a brief description, we recommend including the following sections.
 

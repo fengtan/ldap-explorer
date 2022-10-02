@@ -18,6 +18,13 @@
   "bugs": {
     "url": "https://github.com/fengtan/ldap-explorer/issues"
   },
+  "badges": [
+    {
+      "url": "https://github.com/fengtan/ldap-explorer/actions/workflows/build.yml/badge.svg",
+      "href": "https://github.com/fengtan/ldap-explorer/actions/workflows/build.yml",
+      "description": "Build"
+    }
+  ],
   "license": "GPL-3.0-only",
   "publisher": "fengtan",
   "keywords": [
