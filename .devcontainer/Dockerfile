@@ -1,4 +1,6 @@
-# Same version of nodejs as that used for vscode itself https://github.com/Microsoft/vscode/wiki/How-to-Contribute#prerequisites
+# Same version of nodejs as that used for
+# - vscode itself https://github.com/Microsoft/vscode/wiki/How-to-Contribute#prerequisites
+# - CI tests .github/workflows/tests.yml
 FROM node:16-slim
 
 # Packages

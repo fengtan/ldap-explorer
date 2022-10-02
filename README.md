@@ -61,7 +61,6 @@ metadata / deployment
 - CHANGELOG.txt (is it actually necessary ? https://marketplace.visualstudio.com/items/GitHub.copilot/changelog)
 - list anything that is not required for prod in .vscodeignore (e.g. devcontainer.json)
 - github action should run eslint + autotests https://code.visualstudio.com/api/working-with-extensions/continuous-integration#github-actions
-- drop .github/workflows/github-actions-demo.yml
 - make github repo public
 - bundle extension https://code.visualstudio.com/api/working-with-extensions/bundling-extension
 - publish extension https://code.visualstudio.com/api/working-with-extensions/publishing-extension
