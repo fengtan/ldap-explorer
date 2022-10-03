@@ -36,37 +36,61 @@ TODO put animation here
 
 ## Commands
 
-This extension contributes the following commands:
-
-TODO explain all commands
+This extension contributes the following commands.
 
 ### Connections
 
 * **LDAP Explorer: Add new Connection**
 * **LDAP Explorer: Edit Connection**
 * **LDAP Explorer: Delete Connection**
-* **LDAP Explorer: Set active Connection**
-* **LDAP Explorer: Set no active Connection**
+* **LDAP Explorer: Set active Connection** - an active connection is required for the Tree, Bookmarks and Search views to be functional
+* **LDAP Explorer: Set no active Connection** - clears currently active connection, if any
 
 ### LDAP entries
 
-* **LDAP Explorer: Refresh**
-* **LDAP Explorer: Show Attributes**
+* **LDAP Explorer: Refresh** - refreshes the Connections, Tree and Bookmarks views
+* **LDAP Explorer: Show Attributes** - lists attributes of a given LDAP entry
 * **LDAP Explorer: Copy DN to clipboard**
-* **LDAP Explorer: Add to Bookmarks**
-* **LDAP Explorer: Remove from Bookmarks**
+* **LDAP Explorer: Add to Bookmarks** - the LDAP entry will be added to the Bookmarks view
+* **LDAP Explorer: Remove from Bookmarks** - the LDAP entry will be removed from the Bookmarks view
 
 ## Configuration
 
 This extension contributes the following settings:
 
-**ldap-explorer.show-tree-item-icons** (`false`)
+* **ldap-explorer.show-tree-item-icons** (`false`)
 
-Show/hide icons in the tree. TODO explain when icons are "ou", "cn", etc. TODO provide screenshots
+If set to `true`, LDAP entries will be rendered with an icon in the Tree view based on their entity type:
+- `dc`, `c`, `o` or `ou`: TODO
+- `cn`: TODO
+- otherwise: TODO
 
-**ldap-explorer.connections** (`[]`)
+TODO provide the two screenshots in assets/configuration.XX
 
-List of LDAP connections. TODO provide example
+* **ldap-explorer.connections** (`[]`)
+
+List of LDAP connections. Example:
+
+```json
+{
+  "ldap-explorer.connections": [
+    {
+      "name": "ACME prod",
+      "protocol": "ldap",
+      "host": "acme.example.net",
+      "port": "389",
+      "binddn": "cn=admin,dc=example,dc=org",
+      "bindpwd": "foobar",
+      "basedn": "dc=example,dc=org",
+      "limit": "0",
+      "timeout": "5000",
+      "bookmarks": [
+        "cn=readers,ou=users,dc=example,dc=org"
+      ]
+    }
+  ]
+}
+```
 
 ## Alternative tools
 
