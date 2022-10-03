@@ -4,29 +4,29 @@
 
 [LDAP](https://en.wikipedia.org/wiki/Lightweight_Directory_Access_Protocol) client for [VS Code](https://code.visualstudio.com/).
 
-TODO put animation here \!\[feature X\]\(images/feature-x.png\)
+TODO put animation here
 
 ## Features
 
-### Browse the tree
+### Browse the directory information tree
 
-TODO "Directory Information Tree"
+![Browse the directory information tree](.screenshots/features.tree.png)
 
 ### List attributes
 
-TODO
+![List attributes](.screenshots/features.attributes.png)
 
 ### Search and filter
 
-TODO
+![Search and filter](.screenshots/features.search.png)
 
 ### Manage bookmarks
 
-TODO
+![Manage bookmarks](.screenshots/features.bookmarks.png)
 
 ### Support for multiple connections
 
-TODO
+![Support for multiple connections](.screenshots/features.connections.png)
 
 ## Installation
 
@@ -74,7 +74,7 @@ List of LDAP connections. TODO provide example
 - [JXplorer](http://jxplorer.org/) is a cross-platform LDAP browser and editor with many features
 - [ldapsearch](https://linux.die.net/man/1/) is a command-line tool for *nix systems
 * [dsquery](https://learn.microsoft.com/en-us/previous-versions/windows/it-pro/windows-server-2012-r2-and-2012/cc754232(v=ws.11)) is a command-line tool for Windows
-- [LEX](http://www.ldapexplorer.com/) is a Windows-only desktop client that requires a paying license (free trial)
+- [LEX](http://www.ldapexplorer.com/) is a Windows-only desktop client that requires a paying license (a free trial is offered)
 - [Many others](https://en.wikipedia.org/wiki/List_of_LDAP_software)
 
 ## Contributing

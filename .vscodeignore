@@ -1,9 +1,12 @@
+.devcontainer/**
+.github/**
+.gitignore
+.pre-commit-config.yaml
+.screenshots/**
 .vscode/**
 .vscode-test/**
-src/**
-.gitignore
 .yarnrc
-vsc-extension-quickstart.md
+src/**
 **/tsconfig.json
 **/.eslintrc.json
 **/*.map

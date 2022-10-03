@@ -1,7 +1,4 @@
 documentation in README
-- screenshot etc
-- pointer to https://code.visualstudio.com/api, UI toolkit, ldapjs, etc
-- see template sophie
 - how to test:
   1. Open project in vscode (using remote-containers extension)
   2. Hit F5 - should open a new instance of VS Code with the extension running (Hit `Ctrl+R` to reload when you make changes) ; you can put breakpoints if necessary
@@ -34,16 +31,18 @@ ldapsearch -x -b "dc=example,dc=org" -H ldap://ldap:1389 -D "cn=admin,dc=example
 - Known limitations / never
   - no support for referrals and aliases
   - if tree item has no child then drop expandable status
+  - option to maintain search results in same webview
   - support startTLS http://ldapjs.org/client.html#starttls
   - support to add/delete/edit/rename/remove new entry (and add checkbox "readonly connection" when creating/editing a connection)
   - define strings in package.nls.json so they are translatable and common
   - option to reorder bookmarks
-  - unsafe-inline CSP in all webviews
+  - no support for LDIF because not supported by underlying library
+  - unsafe-inline CSP in all webviews -> open issue on ui toolkit project
   - getState/setState is the preferred way to persist a webview's state (instead of retainContextWhenHidden which is more resource intensive and is used in all views) https://code.visualstudio.com/api/extension-guides/webview#getstate-and-setstate
   - package.json: set extensionKind (test in remote containers)
 - how to package / deploy extension with vsce
   - update CHANGELOG.txt
-- explain bookmarks, provide screenshot
+- explain bookmarks
 - `Ctrl+Shift+P` and  type "LDAP explorer" to run commands from the palette
 - to run tests, you can also open the test view (`Ctrl+Shift+D`) andrun test "Extension Tests" ; to test extension pick "Run Extension"
 - mention CHANGELOG.md and CONTRIBUTING.md
@@ -54,6 +53,7 @@ ldapsearch -x -b "dc=example,dc=org" -H ldap://ldap:1389 -D "cn=admin,dc=example
   - vscode-samples repo
   - api documentation
   - ldapjs documentation
+  - pointer to https://code.visualstudio.com/api, UI toolkit, ldapjs, etc
   - explain automated publisihing in github https://code.visualstudio.com/api/working-with-extensions/continuous-integration#github-actions-automated-publishing
   - `node_modules/@types/vscode/index.d.ts`
   - https://code.visualstudio.com/api/ux-guidelines/overview
@@ -78,3 +78,4 @@ later
 - verify hyperlink "LDAP explorer" in README.md does not lead to 404 (https://marketplace.visualstudio.com/items?itemName=fengtan.ldap-explorer)
 - verify `ext install fengtan.ldap-explorer` works are described in README.md
 - announce ldapjs mailing list
+- showHN, r/vscode
