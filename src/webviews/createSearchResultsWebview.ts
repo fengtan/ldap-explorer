@@ -29,7 +29,7 @@ export function createSearchResultsWebview(context: ExtensionContext, connection
       const toolkitUri = getWebviewUiToolkitUri(panel.webview, context.extensionUri);
 
       // JS of the webview.
-      const scriptUri = getUri(panel.webview, context.extensionUri, ["assets", "createSearchResultsWebview.js"]);
+      const scriptUri = getUri(panel.webview, context.extensionUri, ["assets", "js", "createSearchResultsWebview.js"]);
 
       // Populate webview HTML with search results.
       panel.webview.html =

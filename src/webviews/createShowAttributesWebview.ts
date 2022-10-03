@@ -28,7 +28,7 @@ export function createShowAttributesWebview(connection: LdapConnection, dn: stri
       const toolkitUri = getWebviewUiToolkitUri(panel.webview, context.extensionUri);
 
       // JS of the webview.
-      const scriptUri = getUri(panel.webview, context.extensionUri, ["assets", "createShowAttributesWebview.js"]);
+      const scriptUri = getUri(panel.webview, context.extensionUri, ["assets", "js", "createShowAttributesWebview.js"]);
 
       // Populate webview HTML with the list of attributes.
       panel.webview.html =

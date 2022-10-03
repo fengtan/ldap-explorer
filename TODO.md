@@ -69,9 +69,6 @@ metadata / deployment
 - make github repo public
 - bundle extension https://code.visualstudio.com/api/working-with-extensions/bundling-extension
 - publish extension https://code.visualstudio.com/api/working-with-extensions/publishing-extension
-- package.json
-  - galleryBanner https://marketplace.visualstudio.com/items?itemName=seanmcbreen.MDTools
-  - icon (flaticon ?) - also add to github project
 - github automated publishing https://code.visualstudio.com/api/working-with-extensions/continuous-integration#github-actions-automated-publishing
 
 later
@@ -79,3 +76,4 @@ later
 - verify `ext install fengtan.ldap-explorer` works are described in README.md
 - announce ldapjs mailing list
 - showHN, r/vscode
+- package.json galleryBanner https://marketplace.visualstudio.com/items?itemName=seanmcbreen.MDTools

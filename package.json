@@ -6,6 +6,17 @@
   "engines": {
     "vscode": "^1.70.0"
   },
+  "license": "GPL-3.0-only",
+  "icon": "assets/img/icon.color.png",
+  "keywords": [
+    "directory",
+    "explorer",
+    "ldap"
+  ],
+  "categories": [
+    "Other"
+  ],
+  "publisher": "fengtan",
   "author": {
     "name": "fengtan",
     "url": "https://github.com/fengtan"
@@ -24,16 +35,6 @@
       "href": "https://github.com/fengtan/ldap-explorer/actions/workflows/build.yml",
       "description": "Build"
     }
-  ],
-  "license": "GPL-3.0-only",
-  "publisher": "fengtan",
-  "keywords": [
-    "directory",
-    "explorer",
-    "ldap"
-  ],
-  "categories": [
-    "Other"
   ],
   "main": "./out/extension.js",
   "activationEvents": [
@@ -57,7 +58,7 @@
         {
           "id": "ldap-explorer-container",
           "title": "LDAP Explorer",
-          "icon": "$(type-hierarchy-sub)"
+          "icon": "assets/img/icon.blackwhite.png"
         }
       ]
     },

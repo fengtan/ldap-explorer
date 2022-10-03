@@ -26,7 +26,7 @@ export function createAddEditConnectionWebview(context: ExtensionContext, existi
   const toolkitUri = getWebviewUiToolkitUri(panel.webview, context.extensionUri);
 
   // JS of the webview.
-  const scriptUri = getUri(panel.webview, context.extensionUri, ["assets", "createAddEditConnectionWebview.js"]);
+  const scriptUri = getUri(panel.webview, context.extensionUri, ["assets", "js", "createAddEditConnectionWebview.js"]);
 
   // Populate webview HTML.
   // The VS Code API seems to provide no way to inspect the configuration schema (in package.json).

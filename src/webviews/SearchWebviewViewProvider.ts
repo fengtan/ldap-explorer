@@ -22,7 +22,7 @@ export class SearchWebviewViewProvider implements WebviewViewProvider {
     const toolkitUri = getWebviewUiToolkitUri(webviewView.webview, this.extensionContext.extensionUri);
 
     // JS of the webview.
-    const scriptUri = getUri(webviewView.webview, this.extensionContext.extensionUri, ["assets", "SearchWebviewViewProvider.js"]);
+    const scriptUri = getUri(webviewView.webview, this.extensionContext.extensionUri, ["assets", "js", "SearchWebviewViewProvider.js"]);
 
     // Allow JS in the webview.
     webviewView.webview.options = {

@@ -1,8 +1,8 @@
 .devcontainer/**
 .github/**
 .gitignore
-.pre-commit-config.yaml
 .screenshots/**
+.pre-commit-config.yaml
 .vscode/**
 .vscode-test/**
 .yarnrc
