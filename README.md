@@ -36,23 +36,18 @@ TODO put animation here
 
 ## Commands
 
-This extension contributes the following commands.
-
-### Connections
+This extension contributes the following commands:
 
 * **LDAP Explorer: Add new Connection**
 * **LDAP Explorer: Edit Connection**
 * **LDAP Explorer: Delete Connection**
-* **LDAP Explorer: Set active Connection** - an active connection is required for the Tree, Bookmarks and Search views to be functional
-* **LDAP Explorer: Set no active Connection** - clears currently active connection, if any
-
-### LDAP entries
-
-* **LDAP Explorer: Refresh** - refreshes the Connections, Tree and Bookmarks views
-* **LDAP Explorer: Show Attributes** - lists attributes of a given LDAP entry
+* **LDAP Explorer: Set active Connection** - An active connection is required for the Tree, Bookmarks and Search views to be functional
+* **LDAP Explorer: Set no active Connection** - Clears currently active connection, if any
+* **LDAP Explorer: Refresh** - Refreshes the Connections, Tree and Bookmarks views
+* **LDAP Explorer: Show Attributes** - Lists attributes of a given LDAP entry
 * **LDAP Explorer: Copy DN to clipboard**
-* **LDAP Explorer: Add to Bookmarks** - the LDAP entry will be added to the Bookmarks view
-* **LDAP Explorer: Remove from Bookmarks** - the LDAP entry will be removed from the Bookmarks view
+* **LDAP Explorer: Add to Bookmarks** - The LDAP entry will be added to the Bookmarks view
+* **LDAP Explorer: Remove from Bookmarks** - The LDAP entry will be removed from the Bookmarks view
 
 ## Configuration
 
@@ -64,6 +59,12 @@ If set to `true`, LDAP entries in the Tree view will be rendered with an icon ba
 - `dc`, `c`, `o` or `ou`: ![organization icon](https://raw.githubusercontent.com/microsoft/vscode-codicons/main/src/icons/organization.svg)
 - `cn`: ![person icon](https://raw.githubusercontent.com/microsoft/vscode-codicons/main/src/icons/person.svg)
 - otherwise: ![primitive square icon](https://raw.githubusercontent.com/microsoft/vscode-codicons/main/src/icons/primitive-square.svg)
+
+Example:
+
+| `ldap-explorer.show-tree-item-icons: false` | `ldap-explorer.show-tree-item-icons: true` |
+|---------------------------------------------|--------------------------------------------|
+|![tree without icons](.screenshots/configuration.icons.false.png) | ![tree with icons](.screenshots/configuration.icons.true.png) |
 
 TODO provide the two screenshots in assets/configuration.XX
 
@@ -109,4 +110,4 @@ TODO
 
 This extension is powered by [ldapjs](http://ldapjs.org/).
 
-Main icon by [Freepik](https://www.freepik.com/) from [Flaticon](https://www.flaticon.com/) is licensed by [CC 3.0 BY](https://creativecommons.org/licenses/by/3.0/). TODO verify Freepik
+Main icon by [Freepik](https://www.freepik.com/) from [Flaticon](https://www.flaticon.com/) is licensed by [CC 3.0 BY](https://creativecommons.org/licenses/by/3.0/).
