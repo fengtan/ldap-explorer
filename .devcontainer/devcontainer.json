@@ -23,11 +23,13 @@
       80
     ],
     "files.exclude": {
-      "out": false
+      "out": false,
+      "dist": false
     },
     "files.trimTrailingWhitespace": true,
     "search.exclude": {
-      "out": true
+      "out": true,
+      "dist": true
     },
     "typescript.tsc.autoDetect": "off"
   }
