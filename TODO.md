@@ -70,6 +70,7 @@ metadata / deployment
 - bundle extension https://code.visualstudio.com/api/working-with-extensions/bundling-extension
 - publish extension https://code.visualstudio.com/api/working-with-extensions/publishing-extension
 - github automated publishing https://code.visualstudio.com/api/working-with-extensions/continuous-integration#github-actions-automated-publishing
+- ensure eslint still runs in CI
 
 later
 - verify hyperlink "LDAP explorer" in README.md does not lead to 404 (https://marketplace.visualstudio.com/items?itemName=fengtan.ldap-explorer)
