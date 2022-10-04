@@ -60,13 +60,9 @@ If set to `true`, LDAP entries in the Tree view will be rendered with an icon ba
 - `cn`: ![person icon](https://raw.githubusercontent.com/microsoft/vscode-codicons/main/src/icons/person.svg)
 - otherwise: ![primitive square icon](https://raw.githubusercontent.com/microsoft/vscode-codicons/main/src/icons/primitive-square.svg)
 
-Example:
-
 | `ldap-explorer.show-tree-item-icons: false` | `ldap-explorer.show-tree-item-icons: true` |
 |---------------------------------------------|--------------------------------------------|
 |![tree without icons](.screenshots/configuration.icons.false.png) | ![tree with icons](.screenshots/configuration.icons.true.png) |
-
-TODO provide the two screenshots in assets/configuration.XX
 
 * **ldap-explorer.connections** (`[]`)
 
