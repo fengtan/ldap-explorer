@@ -36,7 +36,6 @@
       "description": "Build"
     }
   ],
-  "main": "./out/extension.js",
   "activationEvents": [
     "onCommand:ldap-explorer.add-connection",
     "onCommand:ldap-explorer.edit-connection",
@@ -299,6 +298,7 @@
       }
     }
   },
+  "main": "./dist/extension",
   "scripts": {
     "vscode:prepublish": "npm run package",
     "compile": "webpack",
