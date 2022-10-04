@@ -10,23 +10,23 @@ TODO put animation here
 
 ### Browse the directory information tree
 
-![Browse the directory information tree](.screenshots/features.tree.png)
+![Browse the directory information tree](screenshots/features.tree.png)
 
 ### List attributes
 
-![List attributes](.screenshots/features.attributes.png)
+![List attributes](screenshots/features.attributes.png)
 
 ### Search and filter
 
-![Search and filter](.screenshots/features.search.png)
+![Search and filter](screenshots/features.search.png)
 
 ### Manage bookmarks
 
-![Manage bookmarks](.screenshots/features.bookmarks.png)
+![Manage bookmarks](screenshots/features.bookmarks.png)
 
 ### Support for multiple connections
 
-![Support for multiple connections](.screenshots/features.connections.png)
+![Support for multiple connections](screenshots/features.connections.png)
 
 ## Installation
 
@@ -62,7 +62,7 @@ If set to `true`, LDAP entries in the Tree view will be rendered with an icon ba
 
 | `ldap-explorer.show-tree-item-icons: false` | `ldap-explorer.show-tree-item-icons: true` |
 |---------------------------------------------|--------------------------------------------|
-|![tree without icons](.screenshots/configuration.icons.false.png) | ![tree with icons](.screenshots/configuration.icons.true.png) |
+|![tree without icons](screenshots/configuration.icons.false.png) | ![tree with icons](screenshots/configuration.icons.true.png) |
 
 * **ldap-explorer.connections** (`[]`)
 

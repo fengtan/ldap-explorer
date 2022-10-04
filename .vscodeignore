@@ -1,13 +1,17 @@
-.devcontainer/**
-.github/**
+.devcontainer
+.eslintrc.json
+.github
 .gitignore
-.screenshots/**
 .pre-commit-config.yaml
-.vscode/**
-.vscode-test/**
+.vscode
+.vscode-test
 .yarnrc
-src/**
-**/tsconfig.json
-**/.eslintrc.json
+# Webpack includes node_modules/ and out/ into dist/ so there is no need to include them
+node_modules
+out
+screenshots
+src
+tsconfig.json
+webpack.config.js
 **/*.map
 **/*.ts

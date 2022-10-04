@@ -62,15 +62,13 @@ ldapsearch -x -b "dc=example,dc=org" -H ldap://ldap:1389 -D "cn=admin,dc=example
 - egrep todo README.md
 - explain settings are stored in user settings (typically found in *nix at `~/.config/xx`)
 - "this extension contributes the following commands / config" -> explain commands are accessible from palette ; config editable from settings UI
+- explain application is bundled with webpack https://code.visualstudio.com/api/working-with-extensions/bundling-extension
 
 metadata / deployment
 - CHANGELOG.txt
-- list anything that is not required for prod in .vscodeignore (e.g. devcontainer.json)
 - make github repo public
-- bundle extension https://code.visualstudio.com/api/working-with-extensions/bundling-extension
 - publish extension https://code.visualstudio.com/api/working-with-extensions/publishing-extension
 - github automated publishing https://code.visualstudio.com/api/working-with-extensions/continuous-integration#github-actions-automated-publishing
-- ensure eslint still runs in CI
 
 later
 - verify hyperlink "LDAP explorer" in README.md does not lead to 404 (https://marketplace.visualstudio.com/items?itemName=fengtan.ldap-explorer)
