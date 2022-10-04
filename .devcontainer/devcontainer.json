@@ -6,7 +6,8 @@
   "shutdownAction": "stopCompose",
   "postCreateCommand": "test -f /workspaces/ldap-explorer/.git/hooks/pre-commit || pre-commit install",
   "extensions": [
-    "dbaeumer.vscode-eslint"
+    "dbaeumer.vscode-eslint",
+    "amodio.tsl-problem-matcher"
   ],
   "settings": {
     "editor.tabSize": 2,
