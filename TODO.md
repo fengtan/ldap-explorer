@@ -1,20 +1,8 @@
 documentation in README
-- how to test:
-  1. Open project in vscode (using remote-containers extension)
-  2. Hit F5 - should open a new instance of VS Code with the extension running (Hit `Ctrl+R` to reload when you make changes) ; you can put breakpoints if necessary
-  0 prolly need to run `npm install` too (add `npm install` to devcontainer.json's postCreateAction as well)
-- URL of project on github
-- drop of reference vsc-extension-quickstart.md
-- run this command in (devcontainer) terminal to list dummy users ; explain how to fill in the form (webview) to get similar results (e.g. set base DN to dc=example,dc=org)
-```
-ldapsearch -x -b "dc=example,dc=org" -H ldap://ldap:1389 -D "cn=admin,dc=example,dc=org" -w foobar -LLL
-```
-- make sure the code is well documented and consistent
-- explain Base DN, see that documentation drupal provides
 - explain all commands accessible from the command palette
 - explain connections end up in user settings by default, you can add those to workspace settings or devcontainer.json if you like
 - anonymous bind: just leave binddn and bindpwd empty when creating a connection
-- support for environment variables when value matches "${}" (hello, containers), also handy if you don't want to store unencrypted passwords in vscode settings ; a few environment variables are readily available in test (docker) environment: LDAP_*. If you change the env vars in docker-compose.yml then you will have to rebuild the container in order to see the changes in the UI
+- support for environment variables when value matches "${}" (hello, containers), also handy if you don't want to store unencrypted passwords in vscode settings
 - explain that connection details are added to the settings" (along with JSON object and location of the settings file i.e. whether it was stored in global or workspace settings) - provide an example
 - explain how to reveal the logs (logger output channel) ; also see browser console (`Ctrl+Shift+I`)
 - explain pre-commit, also explain how to disable it (rm .git/precommitfoobar) ; explain how to run it on all files (not just those staged to be committed)
@@ -64,6 +52,7 @@ ldapsearch -x -b "dc=example,dc=org" -H ldap://ldap:1389 -D "cn=admin,dc=example
 - "this extension contributes the following commands / config" -> explain commands are accessible from palette ; config editable from settings UI
 - explain application is bundled with webpack https://code.visualstudio.com/api/working-with-extensions/bundling-extension
 - in each feature section of README.md: explain feature
+- egrep TODO CONTRIBUTING.md
 
 metadata / deployment
 - CHANGELOG.txt

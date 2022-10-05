@@ -4,7 +4,7 @@
   "service": "node",
   "workspaceFolder": "/workspaces/ldap-explorer",
   "shutdownAction": "stopCompose",
-  "postCreateCommand": "test -f /workspaces/ldap-explorer/.git/hooks/pre-commit || pre-commit install",
+  "postCreateCommand": "(test -d /workspaces/ldap-explorer/node_modules || npm install); (test -f /workspaces/ldap-explorer/.git/hooks/pre-commit || pre-commit install)",
   "extensions": [
     "dbaeumer.vscode-eslint",
     "amodio.tsl-problem-matcher"
