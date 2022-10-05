@@ -63,6 +63,7 @@ ldapsearch -x -b "dc=example,dc=org" -H ldap://ldap:1389 -D "cn=admin,dc=example
 - explain settings are stored in user settings (typically found in *nix at `~/.config/xx`)
 - "this extension contributes the following commands / config" -> explain commands are accessible from palette ; config editable from settings UI
 - explain application is bundled with webpack https://code.visualstudio.com/api/working-with-extensions/bundling-extension
+- in each feature section of README.md: explain feature
 
 metadata / deployment
 - CHANGELOG.txt

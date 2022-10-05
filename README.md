@@ -4,7 +4,7 @@
 
 [LDAP](https://en.wikipedia.org/wiki/Lightweight_Directory_Access_Protocol) client for [VS Code](https://code.visualstudio.com/).
 
-TODO put animation here
+![Animation](screenshots/anim.gif)
 
 ## Features
 
