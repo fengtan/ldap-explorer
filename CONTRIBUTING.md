@@ -1,10 +1,8 @@
-# Prerequisites
+# Building the development environment
 
 [Install VS Code](https://code.visualstudio.com/docs/setup/setup-overview).
 
-Installing the [Dev Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) extension will provide you with a ready-to-use development environment.
-
-# Building the development environment
+Install the [Dev Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) extension.
 
 Open the project in VS Code:
 
@@ -26,8 +24,6 @@ Verify dependencies got installed by opening a terminal (hit `Ctrl+Shift~` or `C
 ```sh
 npm install
 ```
-
-# Testing the dummy LDAP server
 
 Verify you can access the dummy LDAP server from the dev container:
 
@@ -70,11 +66,23 @@ Run the linter:
 npm run lint
 ```
 
-A [pre-commit](https://pre-commit.com/) file is included in this repo and will run the linter on every git commit.
+A [pre-commit](https://pre-commit.com/) file is included in this repo and will run the linter on all files affected by a git commit.
+
+To run pre-commit on all files:
+
+```sh
+pre-commit run --all-files
+```
+
+Pre-commit gets automatically installed when building the dev container. To uninstall it:
+
+```sh
+rm -f .git/hooks/pre-commit
+```
 
 # Automated tests
 
-Run automated tests:
+Run automated tests (you may see failures about connecting to the bus - these can be ignored, see https://github.com/microsoft/vscode-test/issues/127):
 
 ```sh
 xvfb-run -a npm run test
@@ -90,8 +98,25 @@ Alternatively, open the [Run and Debug](https://code.visualstudio.com/docs/edito
 
 The automated tests also run in Github Actions (see `.github/workflows`). Check the results at https://github.com/fengtan/ldap-explorer/actions
 
-# Troubleshooting
+# Logs
 
 Errors typically show in a couple of places:
-1. Electron Console: hit `Ctrl+Shift+I` (or `Cmd+Shift+I`) or Help > Toggle Developer Tools
-2. Application logs: TODO
+1. Electron Console: hit `Ctrl+Shift+I` (or `Cmd+Shift+I`) or menu Help > Toggle Developer Tools
+2. Application logs: menu View > Output > LDAP Explorer
+
+# To do
+
+Features that might be worth implementing:
+- Support for StartTLS http://ldapjs.org/client.html#starttls
+- Support for write operations i.e. add, delete, edit, move LDAP entries
+- Localization https://github.com/microsoft/vscode-nls
+- Ability to reorder / sort bookmarks
+
+# Resources
+
+- [Codicons](https://microsoft.github.io/vscode-codicons/dist/codicon.html)
+- [Extension API](https://code.visualstudio.com/api)
+- [LDAPJS documentation](http://ldapjs.org/)
+- [Type definitions for VS Code](https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/types/vscode)
+- [VS Code Extension Samples](https://github.com/microsoft/vscode-extension-samples/)
+- [Webview UI Toolkit components](https://github.com/microsoft/vscode-webview-ui-toolkit/blob/main/docs/components.md)

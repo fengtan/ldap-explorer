@@ -100,7 +100,7 @@ List of LDAP connections. Example:
 
 ## Contributing
 
-TODO
+See [CONTRIBUTING.md](https://github.com/fengtan/ldap-explorer/blob/master/CONTRIBUTING.md).
 
 ## Credits
 
