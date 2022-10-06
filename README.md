@@ -89,6 +89,12 @@ List of LDAP connections. Example:
 }
 ```
 
+## Known limitations
+
+No support for the following as those are not supported by the underlying library:
+- [LDIF](https://en.wikipedia.org/wiki/LDAP_Data_Interchange_Format) - see http://ldapjs.org/#whats-not-in-the-box
+- [Aliases](https://ldapwiki.com/wiki/Alias) - see http://ldapjs.org/#whats-not-in-the-box
+
 ## Alternative tools
 
 * [Apache Directory Studio](https://directory.apache.org/studio/) is a fully-featured LDAP client based on [Eclipse RCP](https://wiki.eclipse.org/Rich_Client_Platform)
