@@ -1,8 +1,12 @@
 # Building the development environment
 
+## Prerequisites
+
 [Install VS Code](https://code.visualstudio.com/docs/setup/setup-overview).
 
 Install the [Dev Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) extension.
+
+## Build environment
 
 Open the project in VS Code:
 
@@ -24,6 +28,8 @@ Verify dependencies got installed by opening a terminal (hit `Ctrl+Shift~` or `C
 ```sh
 npm install
 ```
+
+## Dummy LDAP server
 
 Verify you can access the dummy LDAP server from the dev container:
 
