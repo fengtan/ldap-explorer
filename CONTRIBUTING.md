@@ -66,7 +66,9 @@ Hit `Ctrl+R` to refresh the test VS Code instance after you have made modificati
 
 Hit `Shift+F5` to stop the test VS Code instance.
 
-# Linting
+# Quality
+
+## Linting
 
 Run the linter:
 
@@ -88,7 +90,7 @@ Pre-commit gets automatically installed when building the dev container. To unin
 rm -f .git/hooks/pre-commit
 ```
 
-# Automated tests
+## Automated tests
 
 Run automated tests (you may see failures about connecting to the bus - these can be ignored, see https://github.com/microsoft/vscode-test/issues/127):
 
@@ -106,7 +108,7 @@ Alternatively, open the [Run and Debug](https://code.visualstudio.com/docs/edito
 
 The automated tests also run in Github Actions (see `.github/workflows`). Check the results at https://github.com/fengtan/ldap-explorer/actions
 
-# Logs
+# Troubleshooting
 
 Errors typically show in a couple of places:
 1. Electron Console: hit `Ctrl+Shift+I` (or `Cmd+Shift+I`) or menu Help > Toggle Developer Tools
