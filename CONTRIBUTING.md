@@ -51,12 +51,14 @@ This will compile the source code and install the extension in a new VS Code ins
 
 You may create a connection to the dummy LDAP server with these parameters (see `.devcontainer/docker-compose.yml`):
 
-| Protocol      | `ldap` |
-| Host          | `ldap` (or `${LDAP_HOST}`) |
-| Port          | `1389` (or `${LDAP_PORT}`) |
-| Bind DN       | `cn=admin,dc=example,dc=org` (or `${LDAP_BIND_DN}`) |
-| Bind Password | `foobar` (or `${LDAP_BIND_PWD}`) |
-| Base DN       | `dc=example,dc=org` (or `${LDAP_BASE_DN}` |
+| Parameter     | Value (explicit)             | Value (environment variable) |
+|---------------|------------------------------|------------------------------|
+| Protocol      | `ldap`                       | `${LDAP_PROTOCOL}`           |
+| Host          | `ldap`                       | `${LDAP_HOST}`               |
+| Port          | `1389`                       | `${LDAP_PORT}`               |
+| Bind DN       | `cn=admin,dc=example,dc=org` | `${LDAP_BIND_DN}`            |
+| Bind Password | `foobar`                     | `${LDAP_BIND_PWD}`           |
+| Base DN       | `dc=example,dc=org`          | `${LDAP_BASE_DN}`            |
 
 Set [breakpoints](https://code.visualstudio.com/docs/editor/debugging#_breakpoints) if necessary.
 
