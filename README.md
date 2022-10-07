@@ -2,31 +2,47 @@
 
 [![Build](https://github.com/fengtan/ldap-explorer/actions/workflows/build.yml/badge.svg)](https://github.com/fengtan/ldap-explorer/actions/workflows/build.yml)
 
-[LDAP](https://en.wikipedia.org/wiki/Lightweight_Directory_Access_Protocol) client for [VS Code](https://code.visualstudio.com/).
+[LDAP](https://en.wikipedia.org/wiki/Lightweight_Directory_Access_Protocol) client for [VS Code](https://code.visualstudio.com/). Browse the tree, list attributes, search, filter, bookmark LDAP entries.
 
 ![Animation](screenshots/anim.gif)
 
 ## Features
 
-### Browse the directory information tree
+### Browse the tree
 
-![Browse the directory information tree](screenshots/features.tree.png)
+Explore how the [DIT](https://en.wikipedia.org/wiki/Directory_information_tree) is structured and discover LDAP entries in an intuitive, hierarchical way.
+
+![Browse the tree](screenshots/features.tree.png)
 
 ### List attributes
+
+Find out about LDAP attributes, even if you don't know how to write LDAP search filters.
 
 ![List attributes](screenshots/features.attributes.png)
 
 ### Search and filter
 
+Quickly search for LDAP entries directly from the VS Code interface. [How do I write an LDAP search filter ?](https://ldap.com/ldap-filters/)
+
 ![Search and filter](screenshots/features.search.png)
 
 ### Manage bookmarks
+
+Bookmark LDAP entries you often check, or located in places you may forget.
 
 ![Manage bookmarks](screenshots/features.bookmarks.png)
 
 ### Support for multiple connections
 
+Manage multiple LDAP connections, such as a test and a production environment.
+
 ![Support for multiple connections](screenshots/features.connections.png)
+
+### Support for environment variables
+
+Any connection setting can be set with environment variables (you likely do not want to store your bind credentials unencrypted). This is also convenient when running VS Code in a [remote environment](https://code.visualstudio.com/docs/remote/remote-overview).
+
+![Support for environment variables](screenshots/features.envvars.png)
 
 ## Installation
 
@@ -91,9 +107,10 @@ List of LDAP connections. Example:
 
 ## Known limitations
 
-No support for the following as those are not supported by the underlying library:
-- [LDIF](https://en.wikipedia.org/wiki/LDAP_Data_Interchange_Format) - see http://ldapjs.org/#whats-not-in-the-box
-- [Aliases](https://ldapwiki.com/wiki/Alias) - see http://ldapjs.org/#whats-not-in-the-box
+No support for
+- [LDIF](https://en.wikipedia.org/wiki/LDAP_Data_Interchange_Format) - [not supported by ldapjs](http://ldapjs.org/#whats-not-in-the-box)
+- [LDAP aliases](https://ldapwiki.com/wiki/Alias) - [not supported by ldapjs](http://ldapjs.org/#whats-not-in-the-box)
+- [SASL](https://en.wikipedia.org/wiki/Simple_Authentication_and_Security_Layer) / [GSSAPI](https://en.wikipedia.org/wiki/Generic_Security_Services_Application_Program_Interface) binding - [not supported by ldapjs](https://github.com/ldapjs/node-ldapjs/issues/85)
 
 ## Alternative tools
 
@@ -107,6 +124,10 @@ No support for the following as those are not supported by the underlying librar
 ## Contributing
 
 See [CONTRIBUTING.md](https://github.com/fengtan/ldap-explorer/blob/master/CONTRIBUTING.md).
+
+## Changelog
+
+See [CHANGELOG.md](https://github.com/fengtan/ldap-explorer/blob/master/CHANGELOG.md).
 
 ## Credits
 
