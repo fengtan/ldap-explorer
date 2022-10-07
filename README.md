@@ -40,7 +40,9 @@ Manage multiple LDAP connections, such as a test and a production environment.
 
 ### Support for environment variables
 
-Any connection setting can be set with environment variables (you likely do not want to store your bind credentials unencrypted). This is also convenient when running VS Code in a [remote environment](https://code.visualstudio.com/docs/remote/remote-overview).
+Connection settings can be set with environment variables (you may not want to store your bind credentials unencrypted).
+
+This also means that this extension plays nicely with containers and [remote environments](https://code.visualstudio.com/docs/remote/remote-overview).
 
 ![Support for environment variables](screenshots/features.envvars.png)
 
@@ -49,6 +51,17 @@ Any connection setting can be set with environment variables (you likely do not 
 * Open VS Code
 * Open the [extension view](https://code.visualstudio.com/docs/editor/extension-marketplace) by hitting `Ctrl+Shift+X` (or `Cmd+Shift+X`) and install [LDAP Explorer](https://marketplace.visualstudio.com/items?itemName=fengtan.ldap-explorer)
 * Alternatively, hit `Ctrl+P` (or `Cmd+P`) and type `ext install fengtan.ldap-explorer`
+
+## Usage
+
+* Open the **LDAP Explorer** view from the [activity bar](https://code.visualstudio.com/docs/getstarted/userinterface)
+* Under **Connections**, click the button **Add new connection**
+* Fill in the connection settings
+  * As stated most of the settings support environment variables
+  * Leave **Bind DN** and **Bind Password** empty to bind as anonymous
+  * **Maximum number of entries to return** allows to limit the size of LDAP responses, although most LDAP servers will return at most 1,000 entries regardless of this setting. If an LDAP query returns more than this limit then you will be shown an error (in which case you may try to increase the limit).
+* Click on the connection to activate it
+* Now you may browse the tree, create bookmarks and run search queries from the **Tree**, **Bookmarks** and **Search** views, respectively
 
 ## Commands
 
