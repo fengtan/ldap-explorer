@@ -145,4 +145,5 @@ No support for
 - [LDAPJS documentation](http://ldapjs.org/)
 - [Type definitions for VS Code](https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/types/vscode)
 - [VS Code Extension Samples](https://github.com/microsoft/vscode-extension-samples/)
-- [Webview UI Toolkit components](https://github.com/microsoft/vscode-webview-ui-toolkit/blob/main/docs/components.md)
+- [Webview UI Toolkit Components](https://github.com/microsoft/vscode-webview-ui-toolkit/blob/main/docs/components.md)
+- [Webview UI Toolkit Samples Extensions](https://github.com/microsoft/vscode-webview-ui-toolkit-samples)
