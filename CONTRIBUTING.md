@@ -131,6 +131,13 @@ Enhancements
 - Persist webview states using `getState` / `setState` instead of `retainContextWhenHidden` which is more resource intensive https://code.visualstudio.com/api/extension-guides/webview#persistence
 - The webviews' content security policy includes `unsafe-inline` because the Webview UI Toolkit injects inline CSS and JS - that should be removed as it defeats the purpose of the CSP
 
+# Known limitations
+
+No support for
+- [LDIF](https://en.wikipedia.org/wiki/LDAP_Data_Interchange_Format) - [not supported by ldapjs](http://ldapjs.org/#whats-not-in-the-box)
+- [LDAP aliases](https://ldapwiki.com/wiki/Alias) - [not supported by ldapjs](http://ldapjs.org/#whats-not-in-the-box)
+- [SASL](https://en.wikipedia.org/wiki/Simple_Authentication_and_Security_Layer) / [GSSAPI](https://en.wikipedia.org/wiki/Generic_Security_Services_Application_Program_Interface) binding - [not supported by ldapjs](https://github.com/ldapjs/node-ldapjs/issues/85)
+
 # Resources
 
 - [Codicons](https://microsoft.github.io/vscode-codicons/dist/codicon.html)
