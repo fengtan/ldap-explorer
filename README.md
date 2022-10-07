@@ -22,13 +22,13 @@ Find out about LDAP attributes without writing any search filter.
 
 ### Search and filter
 
-Quickly search for LDAP entries directly from the VS Code interface. [How do I write an LDAP search filter ?](https://ldap.com/ldap-filters/)
+Quickly search for LDAP entries directly from the VS Code interface.
 
 ![Search and filter](screenshots/features.search.png)
 
 ### Manage bookmarks
 
-Bookmark LDAP entries you often check, or located in places you may forget.
+Bookmark LDAP entries you often need to check, or located in places you may forget.
 
 ![Manage bookmarks](screenshots/features.bookmarks.png)
 
@@ -62,6 +62,7 @@ This also means that this extension plays nicely with containers and [remote env
   * **Maximum number of entries to return** allows to limit the size of LDAP responses, although most LDAP servers will return at most 1,000 entries regardless of this setting. If an LDAP query returns more than this limit then you will be shown an error (in which case you may try to increase the limit).
 * Click on the connection to activate it
 * Now you may browse the tree, create bookmarks and run search queries from the **Tree**, **Bookmarks** and **Search** views, respectively
+* [How do I write LDAP search filters ?](https://ldap.com/ldap-filters/)
 
 ## Commands
 
