@@ -1,5 +1,4 @@
 import { Client, createClient, SearchEntry, SearchOptions } from 'ldapjs';
-import { FakeEntry } from './FakeEntry';
 import { LdapLogger } from './LdapLogger';
 
 /**

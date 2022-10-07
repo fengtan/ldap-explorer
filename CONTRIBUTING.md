@@ -116,11 +116,20 @@ Errors typically show in a couple of places:
 
 # To do
 
-Features that might be worth implementing:
+Features
 - Support for StartTLS http://ldapjs.org/client.html#starttls
 - Support for write operations i.e. add, delete, edit, move LDAP entries
+- Support LDAP referrals - currently those are simply logged, see `LdapConnection.search()`
+
+UI
 - Localization https://github.com/microsoft/vscode-nls
 - Ability to reorder / sort bookmarks
+- Always show LDAP search results in the same tab (instead of opening a new tab every time the user clicks `Search`)
+- Tree items with no child should not be expandable, although VS Code does not seem to allow changing the collapsible state after the tree item has been created (see `EntryTreeDataProvider.getTreeItem()`)
+
+Enhancements
+- Persist webview states using `getState` / `setState` instead of `retainContextWhenHidden` which is more resource intensive https://code.visualstudio.com/api/extension-guides/webview#persistence
+- The webviews' content security policy includes `unsafe-inline` because the Webview UI Toolkit injects inline CSS and JS - that should be removed as it defeats the purpose of the CSP
 
 # Resources
 
