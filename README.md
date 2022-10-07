@@ -2,7 +2,7 @@
 
 [![Build](https://github.com/fengtan/ldap-explorer/actions/workflows/build.yml/badge.svg)](https://github.com/fengtan/ldap-explorer/actions/workflows/build.yml)
 
-[LDAP](https://en.wikipedia.org/wiki/Lightweight_Directory_Access_Protocol) client for [VS Code](https://code.visualstudio.com/). Browse the tree, list attributes, search, filter, bookmark LDAP entries.
+[LDAP](https://en.wikipedia.org/wiki/Lightweight_Directory_Access_Protocol) client for [VS Code](https://code.visualstudio.com/). Browse the [DIT](https://en.wikipedia.org/wiki/Directory_information_tree), list attributes, search, filter, bookmark LDAP entries.
 
 ![Animation](screenshots/anim.gif)
 
@@ -10,13 +10,13 @@
 
 ### Browse the tree
 
-Explore how the [DIT](https://en.wikipedia.org/wiki/Directory_information_tree) is structured and discover LDAP entries in an intuitive, hierarchical way.
+Explore how the tree is structured and discover LDAP entries in an intuitive, hierarchical way.
 
 ![Browse the tree](screenshots/features.tree.png)
 
 ### List attributes
 
-Find out about LDAP attributes, even if you don't know how to write LDAP search filters.
+Find out about LDAP attributes without writing any search filter.
 
 ![List attributes](screenshots/features.attributes.png)
 
