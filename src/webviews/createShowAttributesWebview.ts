@@ -41,7 +41,7 @@ export function createShowAttributesWebview(connection: LdapConnection, dn: stri
           </head>
           <body>
             <h1>${dn}</h1>
-            <vscode-data-grid id="grid" generate-header="sticky" aria-label="Attributes" grid-template-columns="1fr 7fr"></vscode-data-grid>
+            <vscode-data-grid id="grid" generate-header="sticky" aria-label="Attributes" grid-template-columns="1fr 1fr"></vscode-data-grid>
             <script src="${scriptUri}"></script>
           </body>
         </html>
