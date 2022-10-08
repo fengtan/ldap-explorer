@@ -4,47 +4,16 @@
 
 [LDAP](https://en.wikipedia.org/wiki/Lightweight_Directory_Access_Protocol) client for [VS Code](https://code.visualstudio.com/). Browse the [DIT](https://en.wikipedia.org/wiki/Directory_information_tree), list attributes, search, filter, bookmark LDAP entries.
 
-![Animation](screenshots/anim.gif)
+![Overview](screenshots/overview.gif)
 
 ## Features
 
-### Browse the tree
-
-Explore how the tree is structured and discover LDAP entries in an intuitive, hierarchical way.
-
-![Browse the tree](screenshots/features.tree.png)
-
-### List attributes
-
-Find out about LDAP attributes without writing any search filter.
-
-![List attributes](screenshots/features.attributes.png)
-
-### Search and filter
-
-Quickly search for LDAP entries directly from the VS Code interface.
-
-![Search and filter](screenshots/features.search.png)
-
-### Manage bookmarks
-
-Bookmark LDAP entries you often need to check, or located in places you may forget.
-
-![Manage bookmarks](screenshots/features.bookmarks.png)
-
-### Support for multiple connections
-
-Manage multiple LDAP connections, such as a test and a production environment.
-
-![Support for multiple connections](screenshots/features.connections.png)
-
-### Support for environment variables
-
-Connection settings can be set with environment variables (you may not want to store your bind credentials unencrypted).
-
-This also means that this extension plays nicely with containers and [remote environments](https://code.visualstudio.com/docs/remote/remote-overview).
-
-![Support for environment variables](screenshots/features.envvars.png)
+* Browse the tree - Explore how the DIT is structured and discover LDAP entries in an intuitive, hierarchical way
+* List attributes - Find out about LDAP attributes without writing any search filter
+* Search and filter - Quickly search for LDAP entries directly from the VS Code interface
+* Manage bookmarks - Bookmark LDAP entries you often need to check, or located in places you may forget
+* Support for multiple connections - Manage multiple LDAP connections, such as a test and a production environment.
+* Support for environment variables - You may not want to store your bind credentials unencrypted
 
 ## Installation
 
