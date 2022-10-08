@@ -30,7 +30,8 @@ export class SearchWebviewViewProvider implements WebviewViewProvider {
     };
 
     // Populate webview HTML with search form.
-    webviewView.webview.html = `<!DOCTYPE html>
+    webviewView.webview.html = /* html */`
+    <!DOCTYPE html>
 			<html lang="en">
 				<head>
           <!-- Webview UI toolkit requires a CSP with unsafe-inline script-src and style-src (not ideal but we have no choice) -->
@@ -49,7 +50,8 @@ export class SearchWebviewViewProvider implements WebviewViewProvider {
 
           <script src="${scriptUri}"></script>
         </body>
-			</html>`;
+			</html>
+    `;
 
     // Submit handler when user clicks the "search" button.
     // See https://code.visualstudio.com/api/extension-guides/webview#passing-messages-from-a-webview-to-an-extension

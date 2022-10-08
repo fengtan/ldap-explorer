@@ -32,56 +32,58 @@ export function createAddEditConnectionWebview(context: ExtensionContext, existi
   // The VS Code API seems to provide no way to inspect the configuration schema (in package.json).
   // So make sure all HTML fields listed in the form below match the contributed
   // configuration described in package.json (field labels, types, default values).
-  panel.webview.html = `<!DOCTYPE html>
-	<html lang="en">
-		<head>
-      <!-- Webview UI toolkit requires a CSP with unsafe-inline script-src and style-src (not ideal but we have no choice) -->
-      <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src ${panel.webview.cspSource} 'unsafe-inline'; style-src ${panel.webview.cspSource} 'unsafe-inline';" />
-			<script type="module" src="${toolkitUri}"></script>
-  	</head>
-		<body>
-			<section>
-				<vscode-text-field type="text" id="name" placeholder="My connection" value="${existingConnection?.getName() ?? ''}">Connection name *</vscode-text-field>
-			</section>
-			<section>
-				<p>Protocol *</p>
-				<vscode-dropdown id="protocol" value="${existingConnection?.getProtocol(false) ?? 'ldap'}">
-					<vscode-option>ldap</vscode-option>
-					<vscode-option>ldaps</vscode-option>
-				</vscode-dropdown>
-			</section>
-			<section>
-				<vscode-text-field type="text" id="host" placeholder="e.g. example.net" value="${existingConnection?.getHost(false) ?? ''}">Host *</vscode-text-field>
-			</section>
-			<section>
-				<vscode-text-field type="text" id="port" placeholder="e.g. 389" value="${existingConnection?.getPort(false) ?? ''}">Port (standard: 389 for ldap, 636 for ldaps) *</vscode-text-field>
-			</section>
-			<section>
-				<vscode-text-field type="text" id="binddn" placeholder="e.g. cn=admin,dc=example,dc=org" value="${existingConnection?.getBindDn(false) ?? ''}">Bind DN</vscode-text-field>
-			</section>
-			<section>
-				<vscode-text-field type="text" id="bindpwd" value="${existingConnection?.getBindPwd(false) ?? ''}">Bind Password</vscode-text-field>
-			</section>
-			<section>
-				<vscode-text-field type="text" id="basedn" placeholder="e.g. dc=example,dc=org" value="${existingConnection?.getBaseDn(false) ?? ''}">Base DN *</vscode-text-field>
-			</section>
-			<section>
-				<vscode-text-field type="text" id="limit" value="${existingConnection?.getLimit(false) ?? '0'}">Maximum number of entries to return (set to 0 for unlimited)</vscode-text-field>
-			</section>
-      <section>
-				<vscode-text-field type="text" id="timeout" value="${existingConnection?.getTimeout(false) ?? '5000'}">Timeout in milliseconds (leave empty for infinity)</vscode-text-field>
-			</section>
+  panel.webview.html = /* html */`
+  <!DOCTYPE html>
+    <html lang="en">
+      <head>
+        <!-- Webview UI toolkit requires a CSP with unsafe-inline script-src and style-src (not ideal but we have no choice) -->
+        <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src ${panel.webview.cspSource} 'unsafe-inline'; style-src ${panel.webview.cspSource} 'unsafe-inline';" />
+        <script type="module" src="${toolkitUri}"></script>
+      </head>
+      <body>
+        <section>
+          <vscode-text-field type="text" id="name" placeholder="My connection" value="${existingConnection?.getName() ?? ''}">Connection name *</vscode-text-field>
+        </section>
+        <section>
+          <p>Protocol *</p>
+          <vscode-dropdown id="protocol" value="${existingConnection?.getProtocol(false) ?? 'ldap'}">
+            <vscode-option>ldap</vscode-option>
+            <vscode-option>ldaps</vscode-option>
+          </vscode-dropdown>
+        </section>
+        <section>
+          <vscode-text-field type="text" id="host" placeholder="e.g. example.net" value="${existingConnection?.getHost(false) ?? ''}">Host *</vscode-text-field>
+        </section>
+        <section>
+          <vscode-text-field type="text" id="port" placeholder="e.g. 389" value="${existingConnection?.getPort(false) ?? ''}">Port (standard: 389 for ldap, 636 for ldaps) *</vscode-text-field>
+        </section>
+        <section>
+          <vscode-text-field type="text" id="binddn" placeholder="e.g. cn=admin,dc=example,dc=org" value="${existingConnection?.getBindDn(false) ?? ''}">Bind DN</vscode-text-field>
+        </section>
+        <section>
+          <vscode-text-field type="text" id="bindpwd" value="${existingConnection?.getBindPwd(false) ?? ''}">Bind Password</vscode-text-field>
+        </section>
+        <section>
+          <vscode-text-field type="text" id="basedn" placeholder="e.g. dc=example,dc=org" value="${existingConnection?.getBaseDn(false) ?? ''}">Base DN *</vscode-text-field>
+        </section>
+        <section>
+          <vscode-text-field type="text" id="limit" value="${existingConnection?.getLimit(false) ?? '0'}">Maximum number of entries to return (set to 0 for unlimited)</vscode-text-field>
+        </section>
+        <section>
+          <vscode-text-field type="text" id="timeout" value="${existingConnection?.getTimeout(false) ?? '5000'}">Timeout in milliseconds (leave empty for infinity)</vscode-text-field>
+        </section>
 
-      <section>
-        <p>All fields except "Connection name" support environment variables. Syntax: <code>$\{my-env-var\}.</p>
-      </section>
+        <section>
+          <p>All fields except "Connection name" support environment variables. Syntax: <code>$\{my-env-var\}.</p>
+        </section>
 
-			<vscode-button onClick="submitForm('save')">Save</vscode-button>
-			<vscode-button onClick="submitForm('test')" appearance="secondary">Test</vscode-button>
+        <vscode-button onClick="submitForm('save')">Save</vscode-button>
+        <vscode-button onClick="submitForm('test')" appearance="secondary">Test</vscode-button>
 
-			<script src="${scriptUri}"></script>
-		</body>
-	</html>`;
+        <script src="${scriptUri}"></script>
+      </body>
+    </html>
+  `;
 
   // Handle messages from webview to the extension.
   // See https://code.visualstudio.com/api/extension-guides/webview#passing-messages-from-a-webview-to-an-extension

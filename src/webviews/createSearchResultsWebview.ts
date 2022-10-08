@@ -32,20 +32,21 @@ export function createSearchResultsWebview(context: ExtensionContext, connection
       const scriptUri = getUri(panel.webview, context.extensionUri, ["assets", "js", "createSearchResultsWebview.js"]);
 
       // Populate webview HTML with search results.
-      panel.webview.html =
-        `<!DOCTYPE html>
-			<html lang="en">
-				<head>
-          <!-- Webview UI toolkit requires a CSP with unsafe-inline script-src and style-src (not ideal but we have no choice) -->
-          <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src ${panel.webview.cspSource} 'unsafe-inline'; style-src ${panel.webview.cspSource} 'unsafe-inline';" />
-				  <script type="module" src="${toolkitUri}"></script>
-				</head>
-				<body>
-				  <h1>${title}</h1>
-				  <vscode-data-grid id="grid" generate-header="sticky" aria-label="Search results"></vscode-data-grid>
-				  <script src="${scriptUri}"></script>
-        </body>
-			</html>`;
+      panel.webview.html = /* html */ `
+      <!DOCTYPE html>
+        <html lang="en">
+          <head>
+            <!-- Webview UI toolkit requires a CSP with unsafe-inline script-src and style-src (not ideal but we have no choice) -->
+            <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src ${panel.webview.cspSource} 'unsafe-inline'; style-src ${panel.webview.cspSource} 'unsafe-inline';" />
+            <script type="module" src="${toolkitUri}"></script>
+          </head>
+          <body>
+            <h1>${title}</h1>
+            <vscode-data-grid id="grid" generate-header="sticky" aria-label="Search results"></vscode-data-grid>
+            <script src="${scriptUri}"></script>
+          </body>
+        </html>
+      `;
 
       // Store columns (attribute names) and rows (values) in arrays.
       let attributeNames: string[] = [];

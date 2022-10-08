@@ -129,7 +129,7 @@ UI
 
 Enhancements
 - Persist webview states using `getState` / `setState` instead of `retainContextWhenHidden` which is more resource intensive https://code.visualstudio.com/api/extension-guides/webview#persistence
-- The webviews' content security policy includes `unsafe-inline` because the Webview UI Toolkit injects inline CSS and JS - that should be removed as it defeats the purpose of the CSP
+- The webviews' content security policy includes `unsafe-inline` because the Webview UI Toolkit injects inline CSS and JS - that should be removed as it defeats the purpose of the CSP (see example in [issue #383](https://github.com/microsoft/vscode-webview-ui-toolkit/pull/383))
 
 # Known limitations
 

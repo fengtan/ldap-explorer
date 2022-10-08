@@ -7,7 +7,8 @@
   "postCreateCommand": "(test -d /workspaces/ldap-explorer/node_modules || npm install); (test -f /workspaces/ldap-explorer/.git/hooks/pre-commit || pre-commit install)",
   "extensions": [
     "dbaeumer.vscode-eslint",
-    "amodio.tsl-problem-matcher"
+    "amodio.tsl-problem-matcher",
+    "Tobermory.es6-string-html"
   ],
   "settings": {
     "editor.tabSize": 2,
