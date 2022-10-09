@@ -16,7 +16,7 @@ services:
       - pre-commit:/home/node/.cache/pre-commit
   # Dummy LDAP server for testing purposes
   # https://hub.docker.com/r/bitnami/openldap/
-  acme.example.net:
+  ldap:
     image: bitnami/openldap:2
     ports:
       - 1389:1389
