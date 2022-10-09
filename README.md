@@ -8,7 +8,7 @@
 
 ## Features
 
-* Browse the **tree** - Explore how the DIT is structured and discover LDAP entries in an intuitive, hierarchical way
+* Browse the **tree** - Explore how the [DIT](https://en.wikipedia.org/wiki/Directory_information_tree) is structured and discover LDAP entries in an intuitive, hierarchical way
 * List **attributes** - Find out about LDAP attributes without writing any search filter
 * **Search** and filter - Quickly search for LDAP entries directly from the VS Code interface
 * Manage **bookmarks** - Bookmark LDAP entries you often need to check, or located in places you may forget
