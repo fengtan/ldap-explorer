@@ -138,6 +138,17 @@ No support for
 - [LDAP aliases](https://ldapwiki.com/wiki/Alias) - [not supported by ldapjs](http://ldapjs.org/#whats-not-in-the-box)
 - [SASL](https://en.wikipedia.org/wiki/Simple_Authentication_and_Security_Layer) / [GSSAPI](https://en.wikipedia.org/wiki/Generic_Security_Services_Application_Program_Interface) binding - [not supported by ldapjs](https://github.com/ldapjs/node-ldapjs/issues/85)
 
+# Publishing a new release
+
+[ ] Verify tests & linting pass in [Github Actions](https://github.com/fengtan/ldap-explorer/actions)
+[ ] Check if any dependency deserves to be updated
+[ ] Update documentation ([README.md](https://github.com/fengtan/ldap-explorer/blob/master/README.md) and [CONTRIBUTING.md](https://github.com/fengtan/ldap-explorer/blob/master/CONTRIBUTING.md) if applicable
+[ ] Add record to [CHANGELOG.md](https://github.com/fengtan/ldap-explorer/blob/master/CHANGELOG.md)
+[ ] Bump up version in [package.json](https://github.com/fengtan/ldap-explorer/blob/master/package.json) and [package-lock.json](https://github.com/fengtan/ldap-explorer/blob/master/package-lock.json) and update metadata if applicable
+[ ] [Package and publish extension](https://code.visualstudio.com/api/working-with-extensions/publishing-extension#usage)
+[ ] Upload VSIX package as to [Github releases](https://github.com/fengtan/ldap-explorer/releases)
+[ ] Verify the extension was updated on [Marketplace](https://marketplace.visualstudio.com/items?itemName=fengtan.ldap-explorer)
+
 # Resources
 
 - [Codicons](https://microsoft.github.io/vscode-codicons/dist/codicon.html)
