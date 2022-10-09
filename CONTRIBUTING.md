@@ -114,7 +114,9 @@ Errors typically show in a couple of places:
 1. Electron Console: hit `Ctrl+Shift+I` (or `Cmd+Shift+I`) or menu Help > Toggle Developer Tools
 2. Application logs: menu View > Output > LDAP Explorer
 
-# To do
+# Scope
+
+## Things to do
 
 Features
 - Support for StartTLS http://ldapjs.org/client.html#starttls
@@ -131,7 +133,7 @@ Enhancements
 - Persist webview states using `getState` / `setState` instead of `retainContextWhenHidden` which is more resource intensive https://code.visualstudio.com/api/extension-guides/webview#persistence
 - The webviews' content security policy includes `unsafe-inline` because the Webview UI Toolkit injects inline CSS and JS - that should be removed as it defeats the purpose of the CSP (see example in [issue #383](https://github.com/microsoft/vscode-webview-ui-toolkit/pull/383))
 
-# Known limitations
+## Known limitations
 
 No support for
 - [LDIF](https://en.wikipedia.org/wiki/LDAP_Data_Interchange_Format) - [not supported by ldapjs](http://ldapjs.org/#whats-not-in-the-box)
