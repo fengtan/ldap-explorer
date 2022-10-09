@@ -2,18 +2,20 @@
 
 [![Build](https://github.com/fengtan/ldap-explorer/actions/workflows/build.yml/badge.svg)](https://github.com/fengtan/ldap-explorer/actions/workflows/build.yml)
 
-[LDAP](https://en.wikipedia.org/wiki/Lightweight_Directory_Access_Protocol) client for [VS Code](https://code.visualstudio.com/). Browse the [DIT](https://en.wikipedia.org/wiki/Directory_information_tree), list attributes, search, filter, bookmark LDAP entries.
+[LDAP](https://en.wikipedia.org/wiki/Lightweight_Directory_Access_Protocol) client for [VS Code](https://code.visualstudio.com/). Browse the [DIT](https://en.wikipedia.org/wiki/Directory_information_tree).
 
-![Overview](screenshots/overview.gif)
+![Overview](screenshots/overview.png)
 
 ## Features
 
-* Browse the tree - Explore how the DIT is structured and discover LDAP entries in an intuitive, hierarchical way
-* List attributes - Find out about LDAP attributes without writing any search filter
-* Search and filter - Quickly search for LDAP entries directly from the VS Code interface
-* Manage bookmarks - Bookmark LDAP entries you often need to check, or located in places you may forget
-* Support for multiple connections - Manage multiple LDAP connections, such as a test and a production environment.
-* Support for environment variables - You may not want to store your bind credentials unencrypted
+* Browse the **tree** - Explore how the DIT is structured and discover LDAP entries in an intuitive, hierarchical way
+* List **attributes** - Find out about LDAP attributes without writing any search filter
+* **Search** and filter - Quickly search for LDAP entries directly from the VS Code interface
+* Manage **bookmarks** - Bookmark LDAP entries you often need to check, or located in places you may forget
+* Support for **multiple connections** - Manage multiple LDAP connections, such as a test and a production environment.
+* Support for **environment variables** - You may not want to store your bind credentials unencrypted
+
+[Give me a tour](screenshots/anim.gif)
 
 ## Installation
 
@@ -31,7 +33,6 @@
   * **Maximum number of entries to return** allows to limit the size of LDAP responses, although most LDAP servers will return at most 1,000 entries regardless of this setting. If an LDAP query returns more than this limit then you will be shown an error (in which case you may try to increase the limit).
 * Click on the connection to activate it
 * Now you may browse the tree, create bookmarks and run search queries from the **Tree**, **Bookmarks** and **Search** views, respectively
-* [How do I write LDAP search filters ?](https://ldap.com/ldap-filters/)
 
 ## Commands
 
