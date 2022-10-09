@@ -140,14 +140,14 @@ No support for
 
 # Publishing a new release
 
-[ ] Verify tests & linting pass in [Github Actions](https://github.com/fengtan/ldap-explorer/actions)
-[ ] Check if any dependency deserves to be updated
-[ ] Update documentation ([README.md](https://github.com/fengtan/ldap-explorer/blob/master/README.md) and [CONTRIBUTING.md](https://github.com/fengtan/ldap-explorer/blob/master/CONTRIBUTING.md) if applicable
-[ ] Add record to [CHANGELOG.md](https://github.com/fengtan/ldap-explorer/blob/master/CHANGELOG.md)
-[ ] Bump up version in [package.json](https://github.com/fengtan/ldap-explorer/blob/master/package.json) and [package-lock.json](https://github.com/fengtan/ldap-explorer/blob/master/package-lock.json) and update metadata if applicable
-[ ] [Package and publish extension](https://code.visualstudio.com/api/working-with-extensions/publishing-extension#usage)
-[ ] Upload VSIX package as to [Github releases](https://github.com/fengtan/ldap-explorer/releases)
-[ ] Verify the extension was updated on [Marketplace](https://marketplace.visualstudio.com/items?itemName=fengtan.ldap-explorer)
+1. Verify tests & linting pass in [Github Actions](https://github.com/fengtan/ldap-explorer/actions)
+2. Check if any dependency deserves to be updated
+3. Update documentation ([README.md](https://github.com/fengtan/ldap-explorer/blob/master/README.md) and [CONTRIBUTING.md](https://github.com/fengtan/ldap-explorer/blob/master/CONTRIBUTING.md) if applicable
+4. Add record to [CHANGELOG.md](https://github.com/fengtan/ldap-explorer/blob/master/CHANGELOG.md)
+5. Bump up version in [package.json](https://github.com/fengtan/ldap-explorer/blob/master/package.json) and [package-lock.json](https://github.com/fengtan/ldap-explorer/blob/master/package-lock.json) and update metadata if applicable
+6. [Package and publish extension](https://code.visualstudio.com/api/working-with-extensions/publishing-extension#usage)
+7. Upload VSIX package as to [Github releases](https://github.com/fengtan/ldap-explorer/releases)
+8. Verify the extension was updated on [Marketplace](https://marketplace.visualstudio.com/items?itemName=fengtan.ldap-explorer)
 
 # Resources
 
