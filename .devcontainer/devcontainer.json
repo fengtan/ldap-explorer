@@ -5,6 +5,9 @@
   "workspaceFolder": "/workspaces/ldap-explorer",
   "shutdownAction": "stopCompose",
   "postCreateCommand": "(test -d /workspaces/ldap-explorer/node_modules || npm install); (test -f /workspaces/ldap-explorer/.git/hooks/pre-commit || pre-commit install)",
+  "remoteEnv": {
+    "PATH": "/workspaces/ldap-explorer/node_modules/.bin:${containerEnv:PATH}"
+  },
   "extensions": [
     "dbaeumer.vscode-eslint",
     "amodio.tsl-problem-matcher",

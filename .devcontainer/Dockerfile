@@ -38,7 +38,6 @@ RUN pip3 install --upgrade pre-commit \
 # See https://code.visualstudio.com/api/get-started/your-first-extension
 RUN npm install -g \
   generator-code \
-  vsce \
   yo
 
 # Runtime
