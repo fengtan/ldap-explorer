@@ -2,7 +2,7 @@
 
 [![Build](https://github.com/fengtan/ldap-explorer/actions/workflows/build.yml/badge.svg)](https://github.com/fengtan/ldap-explorer/actions/workflows/build.yml)
 
-[LDAP](https://en.wikipedia.org/wiki/Lightweight_Directory_Access_Protocol) client for [VS Code](https://code.visualstudio.com/). Browse the [DIT](https://en.wikipedia.org/wiki/Directory_information_tree).
+[LDAP](https://en.wikipedia.org/wiki/Lightweight_Directory_Access_Protocol) client for [VS Code](https://code.visualstudio.com/).
 
 ![Overview](screenshots/overview.png)
 
@@ -15,7 +15,9 @@
 * Support for **multiple connections** - Manage multiple LDAP connections, such as a test and a production environment.
 * Support for **environment variables** - You may not want to store your bind credentials unencrypted
 
-[Give me a tour](screenshots/anim.gif)
+## Demo
+
+See [this animation](screenshots/anim.gif) for a demo.
 
 ## Installation
 
