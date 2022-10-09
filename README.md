@@ -29,12 +29,11 @@ See [this animation](screenshots/anim.gif) for a demo.
 
 1. Open the **LDAP Explorer** view from the [activity bar](https://code.visualstudio.com/docs/getstarted/userinterface)
 2. Under panel **Connections**, click the button **Add new connection**
-3. Fill in the connection settings
-  * As stated most of the settings support environment variables
-  * Leave **Bind DN** and **Bind Password** empty to bind as anonymous
-  * **Maximum number of entries to return** allows to limit the size of LDAP responses, although most LDAP servers will return at most 1,000 entries regardless of this setting. If an LDAP query returns more than this limit then you will be shown an error (in which case you may try to increase the limit).
+3. Fill in the connection settings (leave **Bind DN** and **Bind Password** empty to bind as anonymous)
 4. Under panel **Connections**, click on the connection to activate it
 5. Now you may browse the tree, manage bookmarks and run search queries from the **Tree**, **Bookmarks** and **Search** panels, respectively
+
+Note that connections have a field **Maximum number of entries to return** to limit the size of LDAP responses. Most LDAP servers will return at most 1,000 entries regardless of this setting. If an LDAP query returns more than this limit then you will be shown an error, in which case you may try to increase the limit.
 
 ## Commands
 
