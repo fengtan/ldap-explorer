@@ -13,7 +13,7 @@
 * **Search and filter** - Conveniently search for LDAP entries directly from VS Code
 * **Manage bookmarks** - Bookmark LDAP entries you often need to check or located in awkward places
 * **Support for multiple connections** - Manage multiple LDAP connections, such as a test and a production connections
-* **Support for environment variables** - Easy integration with containers and increased security
+* **Support for environment variables** - Easy integration with containers and increased security: you don't have to store your bind credentials unencrypted in VS Code settings
 
 ## Demo
 
