@@ -111,4 +111,4 @@ See [CHANGELOG.md](https://github.com/fengtan/ldap-explorer/blob/master/CHANGELO
 
 This extension is powered by [ldapjs](http://ldapjs.org/).
 
-Main icon by [Freepik](https://www.freepik.com/) from [Flaticon](https://www.flaticon.com/) is licensed by [CC 3.0 BY](https://creativecommons.org/licenses/by/3.0/).
+[Main icon](https://www.flaticon.com/free-icon/hierarchy_4987367) by [Freepik](https://www.freepik.com/) from [Flaticon](https://www.flaticon.com/) is licensed by [CC 3.0 BY](https://creativecommons.org/licenses/by/3.0/).
