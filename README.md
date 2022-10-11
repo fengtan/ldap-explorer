@@ -57,9 +57,9 @@ This extension contributes the following settings:
 * **ldap-explorer.show-tree-item-icons** (`false`)
 
 If set to `true`, LDAP entries in the Tree view will be rendered with an icon based on their entity type:
-- `dc`, `c`, `o` or `ou`: ![organization icon](https://raw.githubusercontent.com/microsoft/vscode-codicons/main/src/icons/organization.svg)
-- `cn`: ![person icon](https://raw.githubusercontent.com/microsoft/vscode-codicons/main/src/icons/person.svg)
-- otherwise: ![primitive square icon](https://raw.githubusercontent.com/microsoft/vscode-codicons/main/src/icons/primitive-square.svg)
+- `dc`, `c`, `o` or `ou`: [organization icon](https://raw.githubusercontent.com/microsoft/vscode-codicons/main/src/icons/organization.svg)
+- `cn`: [person icon](https://raw.githubusercontent.com/microsoft/vscode-codicons/main/src/icons/person.svg)
+- otherwise: [primitive square icon](https://raw.githubusercontent.com/microsoft/vscode-codicons/main/src/icons/primitive-square.svg)
 
 | `ldap-explorer.show-tree-item-icons: false` | `ldap-explorer.show-tree-item-icons: true` |
 |---------------------------------------------|--------------------------------------------|
