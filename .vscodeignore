@@ -6,8 +6,8 @@
 .vscode
 .vscode-test
 .yarnrc
-# Webpack includes node_modules/ and out/ into dist/ so there is no need to include them
 node_modules
+!node_modules/@vscode/webview-ui-toolkit/dist/toolkit.js
 out
 screenshots
 src
