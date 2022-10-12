@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.1] - 2022-10-11
+### Fixed
+- Include ldapjs and its dependencies in package, addresses [ldapjs/node-ldapjs#421](https://github.com/ldapjs/node-ldapjs/issues/421)
+
 ## [1.0.0] - 2022-10-10
 ### Added
 - Connection management (panel, webview, commands, support for environment variables)
@@ -15,5 +19,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Bookmarks management (panel, commands)
 - Search interface (panel, webviews, commands)
 
-[Unreleased]: https://github.com/fengtan/ldap-explorer/compare/1.0.0...HEAD
+[Unreleased]: https://github.com/fengtan/ldap-explorer/compare/1.0.1...HEAD
+[1.0.1]: https://github.com/fengtan/ldap-explorer/compare/1.0.0...1.0.1
 [1.0.0]: https://github.com/fengtan/ldap-explorer/releases/tag/1.0.0

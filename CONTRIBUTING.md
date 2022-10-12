@@ -143,7 +143,7 @@ No support for
 # Publishing a new release
 
 1. Verify tests pass in [Github Actions](https://github.com/fengtan/ldap-explorer/actions)
-2. If ldapjs was updated, make sure its dependencies are listed in `.vscodeignore`
+2. If ldapjs or its dependencies were updated, make sure they are listed in `.vscodeignore` (because of [ldapjs/node-ldapjs#421](https://github.com/ldapjs/node-ldapjs/issues/421))
 3. Update documentation ([README.md](https://github.com/fengtan/ldap-explorer/blob/master/README.md) and [CONTRIBUTING.md](https://github.com/fengtan/dap-explorer/blob/master/CONTRIBUTING.md) if applicable
 4. Update metadata in [package.json](https://github.com/fengtan/ldap-explorer/blob/master/package.json) and [package-lock.json](https://github.com/fengtan/ldap-explorer/blob/master/package-lock.json) if applicable
 5. Add record to [CHANGELOG.md](https://github.com/fengtan/ldap-explorer/blob/master/CHANGELOG.md)
