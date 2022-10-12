@@ -25,7 +25,8 @@ const extensionConfig = {
     // The vscode-module is created on-the-fly and must be excluded https://webpack.js.org/configuration/externals/
     vscode: 'commonjs vscode',
     // ldapjs does not support webpack, see https://github.com/ldapjs/node-ldapjs/issues/421
-    ldapjs: 'global ldapjs'
+    // As a result ldapjs and its dependencies (direct and indirect) are listed as exceptions in .vscodeignore
+    ldapjs: 'commonjs ldapjs'
   },
   resolve: {
     // Support reading TypeScript and JavaScript files https://github.com/TypeStrong/ts-loader

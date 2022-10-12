@@ -13,6 +13,8 @@ export function getUri(webview: Webview, extensionUri: Uri, pathList: string[]) 
  * @see https://github.com/microsoft/vscode-webview-ui-toolkit
  */
 export function getWebviewUiToolkitUri(webview: Webview, extensionUri: Uri) {
+  // This script must be included in the VSIX and as a result is listed as an
+  // exception in .vscodeignore
   const pathList: string[] = [
     "node_modules",
     "@vscode",

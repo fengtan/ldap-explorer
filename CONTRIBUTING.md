@@ -142,14 +142,15 @@ No support for
 
 # Publishing a new release
 
-1. Verify tests & linting pass in [Github Actions](https://github.com/fengtan/ldap-explorer/actions)
-2. Check if any dependency deserves to be updated
-3. Update documentation ([README.md](https://github.com/fengtan/ldap-explorer/blob/master/README.md) and [CONTRIBUTING.md](https://github.com/fengtan/ldap-explorer/blob/master/CONTRIBUTING.md) if applicable
-4. Add record to [CHANGELOG.md](https://github.com/fengtan/ldap-explorer/blob/master/CHANGELOG.md)
-5. Bump up version in [package.json](https://github.com/fengtan/ldap-explorer/blob/master/package.json) and [package-lock.json](https://github.com/fengtan/ldap-explorer/blob/master/package-lock.json) and update metadata if applicable
-6. [Package and publish extension](https://code.visualstudio.com/api/working-with-extensions/publishing-extension#usage)
-7. [Create a release](https://github.com/fengtan/ldap-explorer/releases) on Github and attach the VSIX package to this release
-8. Verify the extension was updated on [Marketplace](https://marketplace.visualstudio.com/items?itemName=fengtan.ldap-explorer)
+1. Verify tests pass in [Github Actions](https://github.com/fengtan/ldap-explorer/actions)
+2. If ldapjs was updated, make sure its dependencies are listed in `.vscodeignore`
+3. Update documentation ([README.md](https://github.com/fengtan/ldap-explorer/blob/master/README.md) and [CONTRIBUTING.md](https://github.com/fengtan/dap-explorer/blob/master/CONTRIBUTING.md) if applicable
+4. Update metadata in [package.json](https://github.com/fengtan/ldap-explorer/blob/master/package.json) and [package-lock.json](https://github.com/fengtan/ldap-explorer/blob/master/package-lock.json) if applicable
+5. Add record to [CHANGELOG.md](https://github.com/fengtan/ldap-explorer/blob/master/CHANGELOG.md)
+6. Bump up version in [package.json](https://github.com/fengtan/ldap-explorer/blob/master/package.json) and [package-lock.json](https://github.com/fengtan/ldap-explorer/blob/master/package-lock.json)
+7. [Package and publish extension](https://code.visualstudio.com/api/working-with-extensions/publishing-extension#usage)
+8. [Create a release](https://github.com/fengtan/ldap-explorer/releases) on Github and attach the VSIX package to this release
+9. Verify the extension was updated on [Marketplace](https://marketplace.visualstudio.com/items?itemName=fengtan.ldap-explorer)
 
 # Resources
 

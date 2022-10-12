@@ -1,3 +1,4 @@
+# Development-specific
 .devcontainer
 .eslintrc.json
 .github
@@ -6,8 +7,6 @@
 .vscode
 .vscode-test
 .yarnrc
-node_modules
-!node_modules/@vscode/webview-ui-toolkit/dist/toolkit.js
 out
 screenshots
 src
@@ -15,3 +14,24 @@ tsconfig.json
 webpack.config.js
 **/*.map
 **/*.ts
+
+# Webpack bundles dependencies into the final archive
+node_modules
+# Required to render the Webview UI Toolkit, see src/webviews/utils.ts
+!node_modules/@vscode/webview-ui-toolkit/dist/toolkit.js
+# Required because ldapjs does not support webpack, see https://github.com/ldapjs/node-ldapjs/issues/421
+!node_modules/ldapjs
+# ldapjs dependencies (direct and indirect), see node_modules/ldapjs/package.json
+!node_modules/abstract-logging
+!node_modules/asn1
+!node_modules/assert-plus
+!node_modules/backoff
+!node_modules/core-util-is
+!node_modules/extsprintf
+!node_modules/ldap-filter
+!node_modules/once
+!node_modules/precond
+!node_modules/safer-buffer
+!node_modules/vasync
+!node_modules/verror
+!node_modules/wrappy
