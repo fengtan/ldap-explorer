@@ -87,6 +87,8 @@ export function activate(context: ExtensionContext) {
       // Refresh views so the new active connection shows up.
       commands.executeCommand("ldap-explorer.refresh");
     });
+
+    return connection;
   }));
 
   context.subscriptions.push(commands.registerCommand('ldap-explorer.deactivate-connection', () => {
@@ -135,12 +137,13 @@ export function activate(context: ExtensionContext) {
   }));
 
   context.subscriptions.push(commands.registerCommand('ldap-explorer.reveal-in-tree', async (dn?: string) => {
-    // If there is no active connection, then explicitly ask user to pick one.
-    const connection = LdapConnectionManager.getActiveConnection(context) ?? await pickConnection();
-
-    // User did not provide a connection: cancel command.
-    if (!connection) {
-      return;
+    // If there is no active connection, then ask user to pick one.
+    if (!LdapConnectionManager.getActiveConnection(context)) {
+      const connection = await commands.executeCommand("ldap-explorer.activate-connection");
+      if (!connection) {
+        // User did not provide a connection: cancel command.
+        return;
+      }
     }
 
     // 'dn' may not be defined (e.g. if the command fired from the command palette instead of the bookmarks view).
