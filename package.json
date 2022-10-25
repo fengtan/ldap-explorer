@@ -204,7 +204,7 @@
         },
         {
           "command": "ldap-explorer.copy-dn",
-          "when": "view == ldap-explorer-view-tree"
+          "when": "view == ldap-explorer-view-tree || view == ldap-explorer-view-bookmarks"
         },
         {
           "command": "ldap-explorer.show-attributes",
