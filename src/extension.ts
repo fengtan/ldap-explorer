@@ -158,7 +158,14 @@ export function activate(context: ExtensionContext) {
 
     // Reveal DN in tree.
     // Requires EntryTreeDataProvider.getParent() to be implemented.
-    entryTreeView.reveal(dn);
+    entryTreeView.reveal(dn).then(
+      value => {
+        // Entry was found in tree, do nothing.
+      },
+      reason => {
+        // Entry not found in tree, show error message.
+        window.showErrorMessage(`Unable to reveal ${dn} in tree: ${reason}`);
+      });
   }));
 
   context.subscriptions.push(commands.registerCommand('ldap-explorer.add-bookmark', async (dn?: string) => {
