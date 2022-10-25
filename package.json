@@ -147,7 +147,7 @@
         "command": "ldap-explorer.add-bookmark",
         "title": "Add to Bookmarks",
         "category": "LDAP Explorer",
-        "icon": "$(bookmark)"
+        "icon": "$(add)"
       },
       {
         "command": "ldap-explorer.delete-bookmark",
@@ -177,6 +177,11 @@
           "command": "ldap-explorer.refresh",
           "when": "view == ldap-explorer-view-connections || view == ldap-explorer-view-tree || view == ldap-explorer-view-bookmarks",
           "group": "navigation"
+        },
+        {
+          "command": "ldap-explorer.add-bookmark",
+          "when": "view == ldap-explorer-view-bookmarks",
+          "group": "navigation"
         }
       ],
       "view/item/context": [
@@ -192,8 +197,7 @@
         },
         {
           "command": "ldap-explorer.copy-dn",
-          "when": "view == ldap-explorer-view-tree",
-          "group": "inline"
+          "when": "view == ldap-explorer-view-tree"
         },
         {
           "command": "ldap-explorer.show-attributes",
@@ -202,8 +206,7 @@
         },
         {
           "command": "ldap-explorer.add-bookmark",
-          "when": "view == ldap-explorer-view-tree",
-          "group": "inline"
+          "when": "view == ldap-explorer-view-tree"
         },
         {
           "command": "ldap-explorer.delete-bookmark",
