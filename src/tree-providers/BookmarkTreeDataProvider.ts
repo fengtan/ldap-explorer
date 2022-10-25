@@ -1,11 +1,10 @@
 import { Event, EventEmitter, ExtensionContext, ThemeIcon, TreeDataProvider, TreeItem, TreeItemCollapsibleState, workspace } from 'vscode';
-import { FakeEntry } from '../FakeEntry';
 import { LdapConnectionManager } from '../LdapConnectionManager';
 
 /**
  * Tree provider that lists bookmarks from the current active connection.
  */
-export class BookmarkTreeDataProvider implements TreeDataProvider<FakeEntry> {
+export class BookmarkTreeDataProvider implements TreeDataProvider<string> {
 
   private context: ExtensionContext;
 
@@ -16,9 +15,9 @@ export class BookmarkTreeDataProvider implements TreeDataProvider<FakeEntry> {
   /**
    * {@inheritDoc}
    */
-  public getTreeItem(entry: FakeEntry): TreeItem {
+  public getTreeItem(dn: string): TreeItem {
     // Create tree item.
-    const treeItem = new TreeItem(entry.dn, TreeItemCollapsibleState.None);
+    const treeItem = new TreeItem(dn, TreeItemCollapsibleState.None);
 
     // Set tree item icon.
     treeItem.iconPath = new ThemeIcon("bookmark");
@@ -27,7 +26,7 @@ export class BookmarkTreeDataProvider implements TreeDataProvider<FakeEntry> {
     treeItem.command = {
       command: "ldap-explorer.show-attributes",
       title: "Show Attributes",
-      arguments: [entry]
+      arguments: [dn]
     };
 
     return treeItem;
@@ -36,10 +35,10 @@ export class BookmarkTreeDataProvider implements TreeDataProvider<FakeEntry> {
   /**
    * {@inheritDoc}
    */
-  public getChildren(entry?: FakeEntry): Thenable<FakeEntry[]> {
+  public getChildren(dn?: string): Thenable<string[]> {
     return new Promise((resolve, reject) => {
       // None of the top-level tree items are expandable i.e. they have no children.
-      if (entry) {
+      if (dn) {
         return resolve([]);
       }
 
@@ -51,7 +50,7 @@ export class BookmarkTreeDataProvider implements TreeDataProvider<FakeEntry> {
       }
 
       // We know we are at the top-level of the tree: return bookmarks.
-      return resolve(connection.getBookmarks().map(dn => new FakeEntry(dn)));
+      return resolve(connection.getBookmarks());
     });
   }
 
@@ -60,8 +59,8 @@ export class BookmarkTreeDataProvider implements TreeDataProvider<FakeEntry> {
    *
    * @see https://code.visualstudio.com/api/extension-guides/tree-view#updating-tree-view-content
    */
-  private _onDidChangeTreeData: EventEmitter<FakeEntry | undefined | null | void> = new EventEmitter<FakeEntry | undefined | null | void>();
-  readonly onDidChangeTreeData: Event<FakeEntry | undefined | null | void> = this._onDidChangeTreeData.event;
+  private _onDidChangeTreeData: EventEmitter<string | undefined | null | void> = new EventEmitter<string | undefined | null | void>();
+  readonly onDidChangeTreeData: Event<string | undefined | null | void> = this._onDidChangeTreeData.event;
   public refresh(): void {
     this._onDidChangeTreeData.fire();
   }

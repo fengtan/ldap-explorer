@@ -1,12 +1,11 @@
 import { SearchEntry } from 'ldapjs';
-import { Event, EventEmitter, ExtensionContext, ThemeIcon, TreeDataProvider, TreeItem, TreeItemCollapsibleState, workspace } from 'vscode';
+import { Event, EventEmitter, ExtensionContext, ProviderResult, ThemeIcon, TreeDataProvider, TreeItem, TreeItemCollapsibleState, workspace } from 'vscode';
 import { LdapConnectionManager } from '../LdapConnectionManager';
-import { FakeEntry } from '../FakeEntry';
 
 /**
  * Tree provider that lists LDAP entries from the active connection.
  */
-export class EntryTreeDataProvider implements TreeDataProvider<SearchEntry | FakeEntry> {
+export class EntryTreeDataProvider implements TreeDataProvider<string> {
 
   private context: ExtensionContext;
 
@@ -17,22 +16,20 @@ export class EntryTreeDataProvider implements TreeDataProvider<SearchEntry | Fak
   /**
    * {@inheritDoc}
    */
-  public getTreeItem(entry: SearchEntry | FakeEntry): TreeItem {
+  public getTreeItem(dn: string): TreeItem {
     // Whether the user wants to show icons or not.
     const showIcons = workspace.getConfiguration('ldap-explorer').get('show-tree-item-icons', false);
 
-    // Get display DN:
-    // - For fake entries (base DN) display the full DN (e.g. ou=foobar,dc=example,dc=org)
-    // - For regular entries (search results), display the relative DN (e.g. ou=foobar)
-    const displayDn = (entry instanceof FakeEntry) ? entry.dn : entry.dn.split(",")[0];
+    // Get relative DN, i.e. extract "ou=foobar" from "ou=foobar,dc=example,dc=org".
+    const rdn = dn.split(",")[0];
 
     // Get entity type and entity name (i.e. "ou" and "foobar" if the RDN is "ou=foobar").
-    const [entityType, entityName] = displayDn.split(/[=,]/);
+    const [entityType, entityName] = rdn.split(/[=,]/);
 
     // Set the label of the TreeItem.
     // - If the user wants to show icons, then only show the entity name ("foobar")
     // - Otherwise show the entire DN ("ou=foobar")
-    const label = showIcons ? entityName : displayDn;
+    const label = showIcons ? entityName : rdn;
 
     // By default all tree items are expandable, as we cannot determine whether
     // they have children or not just based on their DN.
@@ -46,7 +43,7 @@ export class EntryTreeDataProvider implements TreeDataProvider<SearchEntry | Fak
     const treeItem = new TreeItem(label, collapsibleState);
 
     // Set tooltip of the TreeItem to its full DN.
-    treeItem.tooltip = entry.dn;
+    treeItem.tooltip = dn;
 
     // Set icon depending on the entity type (and whether the user wants to show icons).
     if (showIcons) {
@@ -73,7 +70,7 @@ export class EntryTreeDataProvider implements TreeDataProvider<SearchEntry | Fak
   /**
    * {@inheritDoc}
    */
-  public getChildren(entry?: SearchEntry | FakeEntry): Thenable<SearchEntry[] | FakeEntry[]> {
+  public getChildren(dn?: string): Thenable<string[]> {
     return new Promise((resolve, reject) => {
       // Get active connection.
       const connection = LdapConnectionManager.getActiveConnection(this.context);
@@ -83,21 +80,21 @@ export class EntryTreeDataProvider implements TreeDataProvider<SearchEntry | Fak
       }
 
       // No parent item passed i.e. we are at the root of the tree.
-      // Just make up a single, fake entry with the base DN of the connection.
-      if (!entry) {
-        return resolve([new FakeEntry(connection.getBaseDn(true))]);
+      // Just return the base DN of the connection.
+      if (!dn) {
+        return resolve([connection.getBaseDn(true)]);
       }
 
       // A parent item was passed i.e. we are not at the top level of the tree.
       // Send a search request to the LDAP server to fetch the children.
       // The LDAP search scope is set to "one" so we only get the immediate subordinates https://ldapwiki.com/wiki/SingleLevel
       // The results are paged in case the item has more than 1,000 children (many LDAP servers return at most 1,000 results at a time).
-      return connection.search({ scope: "one", paged: true }, entry.dn).then(
+      return connection.search({ scope: "one", paged: true }, dn).then(
         (entries: SearchEntry[]) => {
-          return resolve(entries);
+          return resolve(entries.map(entry => entry.dn));
         },
         reason => {
-          return reject(`Unable to get children of ${entry.dn}: ${reason}`);
+          return reject(`Unable to get children of ${dn}: ${reason}`);
         }
       );
     });
@@ -108,8 +105,8 @@ export class EntryTreeDataProvider implements TreeDataProvider<SearchEntry | Fak
    *
    * @see https://code.visualstudio.com/api/extension-guides/tree-view#updating-tree-view-content
    */
-  private _onDidChangeTreeData: EventEmitter<SearchEntry | FakeEntry | undefined | null | void> = new EventEmitter<SearchEntry | FakeEntry | undefined | null | void>();
-  readonly onDidChangeTreeData: Event<SearchEntry | FakeEntry | undefined | null | void> = this._onDidChangeTreeData.event;
+  private _onDidChangeTreeData: EventEmitter<string | undefined | null | void> = new EventEmitter<string | undefined | null | void>();
+  readonly onDidChangeTreeData: Event<string | undefined | null | void> = this._onDidChangeTreeData.event;
   public refresh(): void {
     this._onDidChangeTreeData.fire();
   }
