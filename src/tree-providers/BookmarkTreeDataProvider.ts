@@ -5,7 +5,7 @@ import { LdapConnectionManager } from '../LdapConnectionManager';
 /**
  * Tree provider that lists bookmarks from the current active connection.
  */
-export class BookmarkTreeDataProvider implements TreeDataProvider<string> {
+export class BookmarkTreeDataProvider implements TreeDataProvider<FakeEntry> {
 
   private context: ExtensionContext;
 
@@ -16,9 +16,9 @@ export class BookmarkTreeDataProvider implements TreeDataProvider<string> {
   /**
    * {@inheritDoc}
    */
-  public getTreeItem(dn: string): TreeItem {
+  public getTreeItem(entry: FakeEntry): TreeItem {
     // Create tree item.
-    const treeItem = new TreeItem(dn, TreeItemCollapsibleState.None);
+    const treeItem = new TreeItem(entry.dn, TreeItemCollapsibleState.None);
 
     // Set tree item icon.
     treeItem.iconPath = new ThemeIcon("bookmark");
@@ -27,7 +27,7 @@ export class BookmarkTreeDataProvider implements TreeDataProvider<string> {
     treeItem.command = {
       command: "ldap-explorer.show-attributes",
       title: "Show Attributes",
-      arguments: [new FakeEntry(dn)]
+      arguments: [entry]
     };
 
     return treeItem;
@@ -36,10 +36,10 @@ export class BookmarkTreeDataProvider implements TreeDataProvider<string> {
   /**
    * {@inheritDoc}
    */
-  public getChildren(dn?: string): Thenable<string[]> {
+  public getChildren(entry?: FakeEntry): Thenable<FakeEntry[]> {
     return new Promise((resolve, reject) => {
       // None of the top-level tree items are expandable i.e. they have no children.
-      if (dn) {
+      if (entry) {
         return resolve([]);
       }
 
@@ -51,7 +51,7 @@ export class BookmarkTreeDataProvider implements TreeDataProvider<string> {
       }
 
       // We know we are at the top-level of the tree: return bookmarks.
-      return resolve(connection.getBookmarks());
+      return resolve(connection.getBookmarks().map(dn => new FakeEntry(dn)));
     });
   }
 
@@ -60,8 +60,8 @@ export class BookmarkTreeDataProvider implements TreeDataProvider<string> {
    *
    * @see https://code.visualstudio.com/api/extension-guides/tree-view#updating-tree-view-content
    */
-  private _onDidChangeTreeData: EventEmitter<string | undefined | null | void> = new EventEmitter<string | undefined | null | void>();
-  readonly onDidChangeTreeData: Event<string | undefined | null | void> = this._onDidChangeTreeData.event;
+  private _onDidChangeTreeData: EventEmitter<FakeEntry | undefined | null | void> = new EventEmitter<FakeEntry | undefined | null | void>();
+  readonly onDidChangeTreeData: Event<FakeEntry | undefined | null | void> = this._onDidChangeTreeData.event;
   public refresh(): void {
     this._onDidChangeTreeData.fire();
   }
