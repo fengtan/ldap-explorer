@@ -219,6 +219,10 @@
           "command": "ldap-explorer.delete-bookmark",
           "when": "view == ldap-explorer-view-bookmarks",
           "group": "inline"
+        },
+        {
+          "command": "ldap-explorer.reveal-in-tree",
+          "when": "view == ldap-explorer-view-bookmarks"
         }
       ]
     },

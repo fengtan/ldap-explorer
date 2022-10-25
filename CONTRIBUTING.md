@@ -122,7 +122,6 @@ Features
 - Support for StartTLS http://ldapjs.org/client.html#starttls
 - Support for write operations i.e. add, delete, edit, move LDAP entries
 - Support LDAP referrals - currently those are simply logged, see `LdapConnection.search()`
-- Command "Reveal DN in tree" that expands parents of a given entry
 
 UI
 - Alignment of search results attributes when there are many
