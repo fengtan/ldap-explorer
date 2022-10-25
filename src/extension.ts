@@ -176,7 +176,7 @@ export function activate(context: ExtensionContext) {
 
   // This command does not show in the command palette (it fires from the tree view)
   // so we are guaranteed to be provided with a non-null DN as an argument.
-  context.subscriptions.push(commands.registerCommand('ldap-explorer.delete-bookmark', async (dn: string) => {
+  context.subscriptions.push(commands.registerCommand('ldap-explorer.delete-bookmark', async (entry: FakeEntry) => {
     // If there is no active connection, then explicitly ask user to pick one.
     const connection = LdapConnectionManager.getActiveConnection(context) ?? await pickConnection();
 
@@ -186,7 +186,7 @@ export function activate(context: ExtensionContext) {
     }
 
     // Remove bookmark.
-    connection.deleteBookmark(dn);
+    connection.deleteBookmark(entry.dn);
 
     // Persist removal of the bookmark from the connection.
     LdapConnectionManager.editConnection(connection, connection.getName());
