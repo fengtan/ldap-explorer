@@ -125,7 +125,7 @@ Features
 - Command "Reveal DN in tree" that expands parents of a given entry
 
 UI
-- Alignment of attributes when there are many
+- Alignment of search results attributes when there are many
 - Progress bar for long-running searches, or (better) show results as they are received
 - Localization https://github.com/microsoft/vscode-nls
 - Ability to reorder / sort bookmarks and connections
