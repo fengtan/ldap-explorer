@@ -135,7 +135,27 @@ export function activate(context: ExtensionContext) {
   }));
 
   context.subscriptions.push(commands.registerCommand('ldap-explorer.reveal-in-tree', async (dn?: string) => {
-    // @todo
+    // If there is no active connection, then explicitly ask user to pick one.
+    const connection = LdapConnectionManager.getActiveConnection(context) ?? await pickConnection();
+
+    // User did not provide a connection: cancel command.
+    if (!connection) {
+      return;
+    }
+
+    // 'dn' may not be defined (e.g. if the command fired from the command palette instead of the bookmarks view).
+    // If that is the case we explictly ask the user to enter a DN.
+    if (!dn) {
+      dn = await pickDN();
+      // User did not provide a DN: cancel command.
+      if (!dn) {
+        return;
+      }
+    }
+
+    // Reveal DN in tree.
+    // Requires EntryTreeDataProvider.getParent() to be implemented.
+    entryTreeView.reveal(dn);
   }));
 
   context.subscriptions.push(commands.registerCommand('ldap-explorer.add-bookmark', async (dn?: string) => {
@@ -147,7 +167,7 @@ export function activate(context: ExtensionContext) {
       return;
     }
 
-    // 'entry' may not be defined (e.g. if the command fired from the command palette instead of the tree view).
+    // 'dn' may not be defined (e.g. if the command fired from the command palette instead of the tree view).
     // If that is the case we explictly ask the user to enter a DN.
     if (!dn) {
       dn = await pickDN();
@@ -169,6 +189,7 @@ export function activate(context: ExtensionContext) {
 
   // This command does not show in the command palette (it fires from the tree view)
   // so we are guaranteed to be provided with a non-null DN as an argument.
+  // @todo allow to open from command palette
   context.subscriptions.push(commands.registerCommand('ldap-explorer.delete-bookmark', async (dn: string) => {
     // If there is no active connection, then explicitly ask user to pick one.
     const connection = LdapConnectionManager.getActiveConnection(context) ?? await pickConnection();

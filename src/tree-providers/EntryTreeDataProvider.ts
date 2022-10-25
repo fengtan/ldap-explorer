@@ -100,6 +100,16 @@ export class EntryTreeDataProvider implements TreeDataProvider<string> {
     });
   }
 
+  /**
+   * {@inheritDoc}
+   *
+   * This method must be implemented for TreeItem.reveal() to work.
+   */
+  public getParent(dn: string): ProviderResult<string> {
+    // Given the DN "cn=foo,ou=bar,dc=example", return the parent DN i.e. "ou=bar,dc=example".
+    return dn.split(",").slice(1).join(",");
+  }
+
   /*
    * Logic to refresh the view.
    *
