@@ -168,10 +168,6 @@
         {
           "command": "ldap-explorer.copy-dn",
           "when": "false"
-        },
-        {
-          "command": "ldap-explorer.delete-bookmark",
-          "when": "false"
         }
       ],
       "view/title": [
