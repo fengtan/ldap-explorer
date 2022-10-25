@@ -45,6 +45,7 @@
     "onCommand:ldap-explorer.refresh",
     "onCommand:ldap-explorer.copy-dn",
     "onCommand:ldap-explorer.show-attributes",
+    "onCommand:ldap-explorer.reveal-in-tree",
     "onCommand:ldap-explorer.add-bookmark",
     "onCommand:ldap-explorer.delete-bookmark",
     "onView:ldap-explorer-view-connections",
@@ -142,6 +143,12 @@
         "title": "Copy DN to clipboard",
         "category": "LDAP Explorer",
         "icon": "$(copy)"
+      },
+      {
+        "command": "ldap-explorer.reveal-in-tree",
+        "title": "Reveal DN in tree",
+        "category": "LDAP Explorer",
+        "icon": "$(search)"
       },
       {
         "command": "ldap-explorer.add-bookmark",

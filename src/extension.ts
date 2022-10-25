@@ -137,6 +137,10 @@ export function activate(context: ExtensionContext) {
     createShowAttributesWebview(connection, dn, context);
   }));
 
+  context.subscriptions.push(commands.registerCommand('ldap-explorer.reveal-in-tree', async (entry?: SearchEntry | FakeEntry) => {
+    // @todo
+  }));
+
   context.subscriptions.push(commands.registerCommand('ldap-explorer.add-bookmark', async (entry?: SearchEntry | FakeEntry) => {
     // If there is no active connection, then explicitly ask user to pick one.
     const connection = LdapConnectionManager.getActiveConnection(context) ?? await pickConnection();
