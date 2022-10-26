@@ -126,6 +126,7 @@ Features
 UI
 - Alignment of search results attributes when there are many
 - Progress bar for long-running searches, or (better) show results as they are received
+- Progress bar when revealing deeply-nested DN's in the tree (command `Reveal DN in tree`)
 - Localization https://github.com/microsoft/vscode-nls
 - Ability to reorder / sort bookmarks and connections
 - Always show LDAP search results in the same tab (instead of opening a new tab every time the user clicks `Search`)

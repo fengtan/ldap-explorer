@@ -50,6 +50,7 @@
     "onCommand:ldap-explorer.delete-bookmark",
     "onView:ldap-explorer-view-connections",
     "onView:ldap-explorer-view-tree",
+    "onView:ldap-explorer-view-bookmarks",
     "onView:ldap-explorer-view-search"
   ],
   "contributes": {
