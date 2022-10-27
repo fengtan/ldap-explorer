@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.1.0] - 2022-10-26
+### Added
+- Command **LDAP Explorer: Reveal in Tree** (accessible either from the command palette or from the Bookmarks view)
+- Button **Add to Bookmarks** to Bookmarks view
+- Inline button **Copy DN to clipboard** to bookmarks
+
 ## [1.0.1] - 2022-10-11
 ### Fixed
 - Include ldapjs and its dependencies in package, addresses [ldapjs/node-ldapjs#421](https://github.com/ldapjs/node-ldapjs/issues/421)
