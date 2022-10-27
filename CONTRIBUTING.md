@@ -153,7 +153,7 @@ No support for
 6. Bump up version in [package.json](https://github.com/fengtan/ldap-explorer/blob/master/package.json) and [package-lock.json](https://github.com/fengtan/ldap-explorer/blob/master/package-lock.json)
 7. [Package and publish extension](https://code.visualstudio.com/api/working-with-extensions/publishing-extension#usage)
 8. [Create a release](https://github.com/fengtan/ldap-explorer/releases) on Github and attach the VSIX package to this release
-9. Verify the extension was updated on [Marketplace](https://marketplace.visualstudio.com/items?itemName=fengtan.ldap-explorer)
+9. Verify the extension was updated on [Marketplace](https://marketplace.visualstudio.com/items?itemName=fengtan.ldap-explorer) and [Extension Hub](https://marketplace.visualstudio.com/manage/publishers/fengtan/extensions/ldap-explorer/hub?_a=manageExtension)
 
 # Resources
 

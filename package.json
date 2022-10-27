@@ -147,7 +147,7 @@
       },
       {
         "command": "ldap-explorer.reveal-in-tree",
-        "title": "Reveal DN in tree",
+        "title": "Reveal in Tree",
         "category": "LDAP Explorer",
         "icon": "$(search)"
       },

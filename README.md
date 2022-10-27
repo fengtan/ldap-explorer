@@ -47,7 +47,7 @@ This extension contributes the following commands:
 * **LDAP Explorer: Refresh** - Refreshes the Connections, Tree and Bookmarks views
 * **LDAP Explorer: Show Attributes** - Lists attributes of a given LDAP entry
 * **LDAP Explorer: Copy DN to clipboard**
-* **LDAP Explorer: Reveal DN in tree** - Shows a given LDAP entry in the Tree view
+* **LDAP Explorer: Reveal in Tree** - Shows a given LDAP entry in the Tree view
 * **LDAP Explorer: Add to Bookmarks** - The LDAP entry will be added to the Bookmarks view
 * **LDAP Explorer: Remove from Bookmarks** - The LDAP entry will be removed from the Bookmarks view
 
