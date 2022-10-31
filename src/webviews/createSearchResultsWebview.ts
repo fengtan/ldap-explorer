@@ -41,6 +41,7 @@ export function createSearchResultsWebview(context: ExtensionContext, connection
         </head>
         <body>
           <h1>${title}</h1>
+          <h2 id="counter">0 result</h2>
           <vscode-data-grid id="grid" generate-header="sticky" aria-label="Search results"></vscode-data-grid>
           <script src="${scriptUri}"></script>
         </body>

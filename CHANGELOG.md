@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Added
+- Counter that shows how many search results were returned
 ### Changed
 - Search results are now displayed *as* they are received from the LDAP server (rather than waiting for *all* results to be received) resulting in a faster user experience
 

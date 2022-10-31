@@ -124,7 +124,6 @@ Features
 - Support LDAP referrals - currently those are simply logged, see `LdapConnection.search()`
 
 UI
-- Show number of search results
 - Join multivalue search results with a carriage return instead of a comma (not supported by webview ui toolkit grids)
 - Alignment of search results attributes when there are many
 - Progress bar when revealing deeply-nested DN's in the tree (command `Reveal DN in tree`)
