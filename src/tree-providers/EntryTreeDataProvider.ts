@@ -89,7 +89,7 @@ export class EntryTreeDataProvider implements TreeDataProvider<string> {
       // Send a search request to the LDAP server to fetch the children.
       // The LDAP search scope is set to "one" so we only get the immediate subordinates https://ldapwiki.com/wiki/SingleLevel
       // The results are paged in case the item has more than 1,000 children (many LDAP servers return at most 1,000 results at a time).
-      return connection.search({ scope: "one", paged: true }, dn).then(
+      connection.search({ scope: "one", paged: true }, dn).then(
         (entries: SearchEntry[]) => {
           return resolve(entries.map(entry => entry.dn));
         },

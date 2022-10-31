@@ -124,8 +124,9 @@ Features
 - Support LDAP referrals - currently those are simply logged, see `LdapConnection.search()`
 
 UI
+- Show number of search results
+- Join multivalue search results with a carriage return instead of a comma (not supported by webview ui toolkit grids)
 - Alignment of search results attributes when there are many
-- Progress bar for long-running searches, or (better) show results as they are received
 - Progress bar when revealing deeply-nested DN's in the tree (command `Reveal DN in tree`)
 - Localization https://github.com/microsoft/vscode-nls
 - Ability to reorder / sort bookmarks and connections

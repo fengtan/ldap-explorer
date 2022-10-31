@@ -1,12 +1,10 @@
-// Populate grid in webview when receiving data from the extension.
+// Add a row (search result) to the grid when receiving data from the extension.
 window.addEventListener('message', event => {
   switch (event.data.command) {
-  case 'populate':
+  case 'addRow':
     const grid = document.getElementById("grid");
-    // Column titles.
-    grid.columnDefinitions = event.data.columnDefinitions;
-    // Data (rows).
-    grid.rowsData = event.data.rowsData;
+    const row = event.data.row;
+    grid.rowsData = grid.rowsData.concat([row]);
     break;
   }
 });

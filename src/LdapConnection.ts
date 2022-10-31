@@ -128,9 +128,14 @@ export class LdapConnection {
   }
 
   /**
-   * Searches the LDAP connection and return the results.
+   * Searches the LDAP connection and calls a callback when a result is found or
+   * if the search failed.
+   *
+   * 2 ways to get the list of results:
+   * - Pass a callback onSearchEntryFound (will fire for *each* result as they are received)
+   * - Resolve callback - this function is Thenable (will fire when *all* results have been received)
    */
-  public search(options: SearchOptions, base: string = this.getBaseDn(true)): Thenable<SearchEntry[]> {
+  public search(options: SearchOptions, base: string = this.getBaseDn(true), onSearchEntryFound?: (entry: SearchEntry) => void): Thenable<SearchEntry[]> {
     return new Promise((resolve, reject) => {
 
       // Get ldapjs client.
@@ -163,7 +168,12 @@ export class LdapConnection {
               LdapLogger.appendLine(`Search request: ${JSON.stringify(searchRequest)}`);
             });
             res.on('searchEntry', (entry) => {
-              // Add each result to our array.
+              // Fire onSearchEntryFound callback (if one was provided).
+              if (onSearchEntryFound) {
+                onSearchEntryFound(entry);
+              }
+              // Add each result to our array, which will be returned by the
+              // resolve callback.
               results.push(entry);
             });
             res.on('searchReference', (referral) => {
