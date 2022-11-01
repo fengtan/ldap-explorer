@@ -10,6 +10,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Counter that shows how many search results were returned
 ### Changed
 - Search results are now displayed *as* they are received from the LDAP server (rather than waiting for *all* results to be received) resulting in a faster user experience
+### Fixed
+- Alignment of headers and cells in search results grid, addresses [microsoft/vscode-webview-ui-toolkit#411](https://github.com/microsoft/vscode-webview-ui-toolkit/issues/411)
 
 ## [1.1.0] - 2022-10-26
 ### Added

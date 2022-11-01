@@ -30,6 +30,9 @@ export function createSearchResultsWebview(context: ExtensionContext, connection
   // JS of the webview.
   const scriptUri = getUri(panel.webview, context.extensionUri, ["assets", "js", "createSearchResultsWebview.js"]);
 
+  // Custom CSS.
+  const stylesheetUri = getUri(panel.webview, context.extensionUri, ["assets", "css", "createSearchResultsWebview.css"]);
+
   // Populate webview HTML with search results.
   panel.webview.html = /* html */ `
     <!DOCTYPE html>
@@ -38,6 +41,7 @@ export function createSearchResultsWebview(context: ExtensionContext, connection
           <!-- Webview UI toolkit requires a CSP with unsafe-inline script-src and style-src (not ideal but we have no choice) -->
           <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src ${panel.webview.cspSource} 'unsafe-inline'; style-src ${panel.webview.cspSource} 'unsafe-inline';" />
           <script type="module" src="${toolkitUri}"></script>
+          <link type="text/css" rel="stylesheet" href="${stylesheetUri}" media="all">
         </head>
         <body>
           <h1>${title}</h1>

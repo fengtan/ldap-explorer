@@ -1,0 +1,7 @@
+/*
+ * Makes grid headers aligned with cells.
+ * Workaround for https: //github.com/microsoft/vscode-webview-ui-toolkit/issues/411
+ */
+vscode-data-grid .column-header {
+  overflow-wrap: anywhere;
+}
