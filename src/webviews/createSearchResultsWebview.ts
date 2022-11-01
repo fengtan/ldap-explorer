@@ -1,4 +1,3 @@
-import { Attribute } from 'ldapjs';
 import { ExtensionContext, ViewColumn, window } from 'vscode';
 import { LdapConnection } from '../LdapConnection';
 import { getUri, getWebviewUiToolkitUri } from './utils';
