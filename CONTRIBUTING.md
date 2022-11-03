@@ -147,11 +147,11 @@ No support for
 1. Verify tests pass in [Github Actions](https://github.com/fengtan/ldap-explorer/actions)
 2. If ldapjs or its dependencies were updated, make sure they are listed in `.vscodeignore` (because of [ldapjs/node-ldapjs#421](https://github.com/ldapjs/node-ldapjs/issues/421))
 3. Update documentation ([README.md](https://github.com/fengtan/ldap-explorer/blob/master/README.md) and [CONTRIBUTING.md](https://github.com/fengtan/dap-explorer/blob/master/CONTRIBUTING.md) if applicable
-4. Update metadata in [package.json](https://github.com/fengtan/ldap-explorer/blob/master/package.json) and [package-lock.json](https://github.com/fengtan/ldap-explorer/blob/master/package-lock.json) if applicable
+4. Bump up version and update metadata (if applicable) in [package.json](https://github.com/fengtan/ldap-explorer/blob/master/package.json) and [package-lock.json](https://github.com/fengtan/ldap-explorer/blob/master/package-lock.json)
 5. Add record to [CHANGELOG.md](https://github.com/fengtan/ldap-explorer/blob/master/CHANGELOG.md)
-6. Bump up version in [package.json](https://github.com/fengtan/ldap-explorer/blob/master/package.json) and [package-lock.json](https://github.com/fengtan/ldap-explorer/blob/master/package-lock.json)
-7. [Package and publish extension](https://code.visualstudio.com/api/working-with-extensions/publishing-extension#usage)
-8. [Create a release](https://github.com/fengtan/ldap-explorer/releases) on Github and attach the VSIX package to this release
+6. Package extension: `vsce package`
+7. [Create a release](https://github.com/fengtan/ldap-explorer/releases) on Github and attach the VSIX package to this release
+8. Publish extension: `vsce publish` (create a [Personal Access Token](https://dev.azure.com/fengtan/_usersSettings/tokens) by following [these instructions](https://code.visualstudio.com/api/working-with-extensions/publishing-extension#get-a-personal-access-token) if necessary)
 9. Verify the extension was updated on [Marketplace](https://marketplace.visualstudio.com/items?itemName=fengtan.ldap-explorer) and [Extension Hub](https://marketplace.visualstudio.com/manage/publishers/fengtan/extensions/ldap-explorer/hub?_a=manageExtension)
 
 # Resources
