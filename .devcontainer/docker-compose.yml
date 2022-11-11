@@ -16,6 +16,7 @@ services:
       - pre-commit:/home/node/.cache/pre-commit
   # Dummy LDAP server for testing purposes
   # https://hub.docker.com/r/bitnami/openldap/
+  # https://github.com/bitnami/bitnami-docker-openldap
   ldap:
     image: bitnami/openldap:2
     ports:
@@ -27,8 +28,29 @@ services:
       LDAP_USERS: user1,user2,user3
       LDAP_PASSWORDS: pwd1,pwd2,pwd3
     volumes:
-      - openldap_data:/bitnami/openldap
+      - ldap_data:/bitnami/openldap
+  # Another dummy LDAP server ; this one also supports TLS
+  # https://hub.docker.com/r/osixia/openldap
+  # https://github.com/osixia/docker-openldap
+  ldap2:
+    image: osixia/openldap:1.5.0
+    ports:
+      - 2389:389
+      - 2636:636
+    environment:
+      LDAP_ADMIN_PASSWORD: foobar
+      LDAP_DOMAIN: example.org
+      LDAP_ORGANISATION: Example
+      LDAP_OPENLDAP_UID: 1000
+      LDAP_OPENLDAP_GID: 1000
+    volumes:
+      - ./ldif:/container/service/slapd/assets/config/bootstrap/ldif
+      - ldap2_db:/var/lib/ldap
+      - ldap2_conf:/etc/ldap/slapd.d
+    # Fixes https://github.com/osixia/docker-openldap/issues/179
+    command: --copy-service
 volumes:
   pre-commit:
-  openldap_data:
-    driver: local
+  ldap_data:
+  ldap2_db:
+  ldap2_conf:
