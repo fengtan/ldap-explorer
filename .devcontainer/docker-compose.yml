@@ -39,6 +39,7 @@ services:
       - 2636:636
     environment:
       LDAP_ADMIN_PASSWORD: foobar
+      LDAP_BASE_DN: dc=example,dc=org
       LDAP_DOMAIN: example.org
       LDAP_ORGANISATION: Example
       LDAP_OPENLDAP_UID: 1000
