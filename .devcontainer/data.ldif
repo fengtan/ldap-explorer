@@ -1,0 +1,53 @@
+dn: ou=payroll,dc=example,dc=org
+ou: payroll
+objectClass: top
+objectClass: organizationalUnit
+
+dn: cn=1000002,ou=payroll,dc=example,dc=org
+objectClass: top
+objectClass: person
+objectClass: organizationalPerson
+objectClass: inetOrgPerson
+cn: 1000002
+cn: Bob
+sn: Bob
+description: This is Bob
+ou: Payroll
+title: Elite Payroll Assistant
+givenName: Bob
+mail: bob@example.org
+manager: cn=100474,ou=Administrative,dc=example,dc=org
+
+dn: cn=100135,ou=payroll,dc=example,dc=org
+objectClass: top
+objectClass: person
+objectClass: organizationalPerson
+objectClass: inetOrgPerson
+cn: 100135
+cn: Alice
+sn: Alice
+description: This is Alice
+ou: Payroll
+title: Elite Payroll Assistant
+givenName: Alice
+mail: alice@example.org
+manager: cn=100474,ou=Administrative,dc=example,dc=org
+
+dn: ou=administrative,dc=example,dc=org
+ou: administrative
+objectClass: top
+objectClass: organizationalUnit
+
+dn: cn=100474,ou=administrative,dc=example,dc=org
+objectClass: top
+objectClass: person
+objectClass: organizationalPerson
+objectClass: inetOrgPerson
+cn: 100474
+cn: Suzy
+sn: Suzy
+description: This is Suzy
+ou: administrative
+title: Superhero
+givenName: Suzy
+mail: suzy@example.org

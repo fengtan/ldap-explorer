@@ -29,19 +29,25 @@ Verify dependencies got installed by opening a terminal (hit `Ctrl+Shift~` or `C
 npm install
 ```
 
-## Dummy LDAP server
+## Dummy LDAP servers
 
-Verify you can access the dummy LDAP server from the dev container:
+Verify you can access the two dummy LDAP servers (`ldap1` and `ldap2`) from the dev container:
 
 ```sh
-ldapsearch -x -b "dc=example,dc=org" -H ldap://ldap:1389 -D "cn=admin,dc=example,dc=org" -w foobar -LLL
+ldapsearch -x -b "dc=example,dc=org" -H ldap://ldap1:1389 -D "cn=admin,dc=example,dc=org" -w foobar -LLL
+ldapsearch -x -b "dc=example,dc=org" -H ldap://ldap2:389 -D "cn=admin,dc=example,dc=org" -w foobar -LLL
 ```
 
 Alternatively, with the environment variables already set:
 
 ```sh
-ldapsearch -x -b "${LDAP_BASE_DN}" -H "${LDAP_PROTOCOL}://${LDAP_HOST}:${LDAP_PORT}" -D "${LDAP_BIND_DN}" -w "${LDAP_BIND_PWD}" -LLL
+ldapsearch -x -b "${LDAP_BASE_DN}" -H "${LDAP_PROTOCOL}://${LDAP_HOST1}:${LDAP_PORT1}" -D "${LDAP_BIND_DN}" -w "${LDAP_BIND_PWD}" -LLL
+ldapsearch -x -b "${LDAP_BASE_DN}" -H "${LDAP_PROTOCOL}://${LDAP_HOST2}:${LDAP_PORT2}" -D "${LDAP_BIND_DN}" -w "${LDAP_BIND_PWD}" -LLL
 ```
+
+`ldap1` comes with LDAP entries already populated.
+
+`ldap2` is empty by default (because of [osixia/docker-openldap#179](https://github.com/osixia/docker-openldap/issues/179)) but may be initialized by running `npm run ldif`. It supports TLS.
 
 # Testing the extension
 
@@ -49,16 +55,16 @@ Open the [Run and Debug](https://code.visualstudio.com/docs/editor/debugging) vi
 
 This will compile the source code and install the extension in a new VS Code instance where you can test it.
 
-You may create a connection to the dummy LDAP server with these parameters (see `.devcontainer/docker-compose.yml`):
+You may create a connection to the dummy LDAP servers with these parameters (see `.devcontainer/docker-compose.yml`):
 
-| Parameter     | Value (explicit)             | Value (environment variable) |
-|---------------|------------------------------|------------------------------|
-| Protocol      | `ldap`                       | `${LDAP_PROTOCOL}`           |
-| Host          | `ldap`                       | `${LDAP_HOST}`               |
-| Port          | `1389`                       | `${LDAP_PORT}`               |
-| Bind DN       | `cn=admin,dc=example,dc=org` | `${LDAP_BIND_DN}`            |
-| Bind Password | `foobar`                     | `${LDAP_BIND_PWD}`           |
-| Base DN       | `dc=example,dc=org`          | `${LDAP_BASE_DN}`            |
+| Parameter     | Value (explicit)                            | Value (environment variable)       |
+|---------------|---------------------------------------------|------------------------------------|
+| Protocol      | `ldap`                                      | `${LDAP_PROTOCOL}`                 |
+| Host          | `ldap1` or `ldap2`                          | `${LDAP_HOST1}` or `${LDAP_HOST2}` |
+| Port          | `1389` (for `ldap1`) or `389` (for `ldap2`) | `${LDAP_PORT1}` or `${LDAP_HOST2}` |
+| Bind DN       | `cn=admin,dc=example,dc=org`                | `${LDAP_BIND_DN}`                  |
+| Bind Password | `foobar`                                    | `${LDAP_BIND_PWD}`                 |
+| Base DN       | `dc=example,dc=org`                         | `${LDAP_BASE_DN}`                  |
 
 Set [breakpoints](https://code.visualstudio.com/docs/editor/debugging#_breakpoints) if necessary.
 

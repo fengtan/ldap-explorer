@@ -6,8 +6,10 @@ services:
     command: sleep infinity
     environment:
       LDAP_PROTOCOL: ldap
-      LDAP_HOST: ldap
-      LDAP_PORT: 1389
+      LDAP_HOST1: ldap1
+      LDAP_HOST2: ldap2
+      LDAP_PORT1: 1389
+      LDAP_PORT2: 389
       LDAP_BIND_DN: cn=admin,dc=example,dc=org
       LDAP_BIND_PWD: foobar
       LDAP_BASE_DN: dc=example,dc=org
@@ -17,7 +19,7 @@ services:
   # Dummy LDAP server for testing purposes
   # https://hub.docker.com/r/bitnami/openldap/
   # https://github.com/bitnami/bitnami-docker-openldap
-  ldap:
+  ldap1:
     image: bitnami/openldap:2
     ports:
       - 1389:1389
@@ -28,7 +30,7 @@ services:
       LDAP_USERS: user1,user2,user3
       LDAP_PASSWORDS: pwd1,pwd2,pwd3
     volumes:
-      - ldap_data:/bitnami/openldap
+      - ldap1_data:/bitnami/openldap
   # Another dummy LDAP server ; this one also supports TLS
   # https://hub.docker.com/r/osixia/openldap
   # https://github.com/osixia/docker-openldap
@@ -45,13 +47,12 @@ services:
       LDAP_OPENLDAP_UID: 1000
       LDAP_OPENLDAP_GID: 1000
     volumes:
-      - ./ldif:/container/service/slapd/assets/config/bootstrap/ldif
       - ldap2_db:/var/lib/ldap
       - ldap2_conf:/etc/ldap/slapd.d
     # Fixes https://github.com/osixia/docker-openldap/issues/179
     command: --copy-service
 volumes:
   pre-commit:
-  ldap_data:
+  ldap1_data:
   ldap2_db:
   ldap2_conf:
