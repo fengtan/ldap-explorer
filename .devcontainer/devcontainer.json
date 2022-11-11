@@ -10,6 +10,7 @@
   },
   "extensions": [
     "dbaeumer.vscode-eslint",
+    "jtavin.ldif",
     "amodio.tsl-problem-matcher",
     "Tobermory.es6-string-html"
   ],

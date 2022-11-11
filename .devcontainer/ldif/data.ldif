@@ -5,20 +5,20 @@
 # Both have the password 'password'
 #
 
-#dn: {{ LDAP_BASE_DN }}
-#objectClass: top
-#objectClass: dcObject
-#objectClass: organization
-#o: Example users
-#dc: {{ LDAP_ORGANISATION }}
-#description: Example users
+dn: {{ LDAP_BASE_DN }}
+objectClass: top
+objectClass: dcObject
+objectClass: organization
+o: Example users
+dc: {{ LDAP_ORGANISATION }}
+description: Example users
 
-#dn: cn=admin,{{ LDAP_BASE_DN }}
-#objectClass: simpleSecurityObject
-#objectClass: organizationalRole
-#cn: admin
-#description: LDAP administrator
-#userPassword: {SSHA}yI6cZwQadOA1e+/f+T+H3eCQQhRzYWx0
+dn: cn=admin,{{ LDAP_BASE_DN }}
+objectClass: simpleSecurityObject
+objectClass: organizationalRole
+cn: admin
+description: LDAP administrator
+userPassword: {SSHA}yI6cZwQadOA1e+/f+T+H3eCQQhRzYWx0
 
 dn: ou=people,{{ LDAP_BASE_DN }}
 objectClass: organizationalUnit
