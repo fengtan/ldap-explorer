@@ -325,7 +325,7 @@
     "pretest": "npm run compile-tests && npm run compile && npm run lint",
     "lint": "eslint src --ext ts",
     "test": "node ./out/test/runTest.js",
-    "ldif": "ldapadd -x -D ${LDAP_BIND_DN} -w ${LDAP_BIND_PWD} -H ${LDAP_PROTOCOL}://${LDAP_HOST2} -f .devcontainer/data.ldif"
+    "ldif": "ldapadd -x -D ${LDAP_BIND_DN} -w ${LDAP_BIND_PWD} -H ${LDAP_PROTOCOL}://${LDAP_HOST}:${LDAP_PORT} -f .devcontainer/data.ldif"
   },
   "devDependencies": {
     "@types/glob": "^7.2.0",

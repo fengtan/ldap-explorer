@@ -6,10 +6,8 @@ services:
     command: sleep infinity
     environment:
       LDAP_PROTOCOL: ldap
-      LDAP_HOST1: ldap1
-      LDAP_HOST2: ldap2
-      LDAP_PORT1: 1389
-      LDAP_PORT2: 389
+      LDAP_HOST: ldap
+      LDAP_PORT: 1389
       LDAP_BIND_DN: cn=admin,dc=example,dc=org
       LDAP_BIND_PWD: foobar
       LDAP_BASE_DN: dc=example,dc=org
@@ -19,7 +17,7 @@ services:
   # Dummy LDAP server for testing purposes
   # https://hub.docker.com/r/bitnami/openldap/
   # https://github.com/bitnami/bitnami-docker-openldap
-  ldap1:
+  ldap:
     image: bitnami/openldap:2
     ports:
       - 1389:1389
@@ -27,32 +25,39 @@ services:
     environment:
       LDAP_ADMIN_USERNAME: admin
       LDAP_ADMIN_PASSWORD: foobar
+      LDAP_GROUP: readers
+      LDAP_LDAPS_PORT_NUMBER: 1636
+      LDAP_PORT_NUMBER: 1389
+      LDAP_ROOT: dc=example,dc=org
+      LDAP_USER_DC: users
       LDAP_USERS: user1,user2,user3
       LDAP_PASSWORDS: pwd1,pwd2,pwd3
+      LDAP_ENABLE_TLS: "yes"
+      LDAP_TLS_CERT_FILE: /opt/bitnami/openldap/certs/slapd.crt
+      LDAP_TLS_KEY_FILE: /opt/bitnami/openldap/certs/slapd.key
+      LDAP_TLS_CA_FILE: /opt/bitnami/openldap/certs/slapd.crt
     volumes:
-      - ldap1_data:/bitnami/openldap
-  # Another dummy LDAP server ; this one also supports TLS
+      - ./certs:/opt/bitnami/openldap/certs
+      - ldap_data:/bitnami/openldap
+  # Alternative image
   # https://hub.docker.com/r/osixia/openldap
   # https://github.com/osixia/docker-openldap
-  ldap2:
-    image: osixia/openldap:1.5.0
-    ports:
-      - 2389:389
-      - 2636:636
-    environment:
-      LDAP_ADMIN_PASSWORD: foobar
-      LDAP_BASE_DN: dc=example,dc=org
-      LDAP_DOMAIN: example.org
-      LDAP_ORGANISATION: Example
-      LDAP_OPENLDAP_UID: 1000
-      LDAP_OPENLDAP_GID: 1000
-    volumes:
-      - ldap2_db:/var/lib/ldap
-      - ldap2_conf:/etc/ldap/slapd.d
-    # Fixes https://github.com/osixia/docker-openldap/issues/179
-    command: --copy-service
+  #ldap:
+  #  image: osixia/openldap:1.5.0
+  #  ports:
+  #    - 389:389
+  #    - 636:636
+  #  environment:
+  #    LDAP_ADMIN_PASSWORD: foobar
+  #    LDAP_BASE_DN: dc=example,dc=org
+  #    LDAP_DOMAIN: example.org
+  #    LDAP_ORGANISATION: Example
+  #    LDAP_OPENLDAP_UID: 1000
+  #    LDAP_OPENLDAP_GID: 1000
+  #  volumes:
+  #    - ldap_db:/var/lib/ldap
+  #    - ldap_conf:/etc/ldap/slapd.d
+  #  command: --copy-service
 volumes:
   pre-commit:
-  ldap1_data:
-  ldap2_db:
-  ldap2_conf:
+  ldap_data:
