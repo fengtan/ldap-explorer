@@ -141,7 +141,12 @@ export class LdapConnection {
       // Get ldapjs client.
       const client: Client = createClient({
         url: [this.getUrl()],
-        timeout: Number(this.getTimeout(true))
+        timeout: Number(this.getTimeout(true)),
+        // See https://nodejs.org/api/tls.html
+        // @todo only set tlsOptions when connection via ldaps:// and explicitly set those.
+        tlsOptions: {
+          rejectUnauthorized: false // @todo turn into connection option
+        }
       });
 
       // Pass errors to client class.
