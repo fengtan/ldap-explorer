@@ -29,7 +29,7 @@ Verify dependencies got installed by opening a terminal (hit `Ctrl+Shift~` or `C
 npm install
 ```
 
-## Dummy LDAP servers
+## Dummy LDAP server
 
 Verify you can access the dummy LDAP server from the dev container:
 
@@ -43,6 +43,12 @@ Alternatively, with the environment variables already set:
 ldapsearch -x -b "${LDAP_BASE_DN}" -H "${LDAP_PROTOCOL}://${LDAP_HOST}:${LDAP_PORT}" -D "${LDAP_BIND_DN}" -w "${LDAP_BIND_PWD}" -LLL
 ```
 
+Verify you can access the server with TLS:
+
+```sh
+LDAPTLS_REQCERT=never ldapsearch -x -b "dc=example,dc=org" -H ldaps://ldap:1636 -D "cn=admin,dc=example,dc=org" -w foobar -LLL
+```
+
 By default the dummy server contains a handful of LDAP entries. Add more entries by running `npm run ldif`, which will add the contents of `.devcontainer/data.ldif` to the server.
 
 # Testing the extension
@@ -51,7 +57,7 @@ Open the [Run and Debug](https://code.visualstudio.com/docs/editor/debugging) vi
 
 This will compile the source code and install the extension in a new VS Code instance where you can test it.
 
-You may create a connection to the dummy LDAP servers with these parameters (see `.devcontainer/docker-compose.yml`):
+You may create a connection to the dummy LDAP server with these parameters (see `.devcontainer/docker-compose.yml`):
 
 | Parameter     | Value (explicit)             | Value (environment variable) |
 |---------------|------------------------------|------------------------------|
@@ -61,6 +67,8 @@ You may create a connection to the dummy LDAP servers with these parameters (see
 | Bind DN       | `cn=admin,dc=example,dc=org` | `${LDAP_BIND_DN}`            |
 | Bind Password | `foobar`                     | `${LDAP_BIND_PWD}`           |
 | Base DN       | `dc=example,dc=org`          | `${LDAP_BASE_DN}`            |
+
+The dummy LDAP server also accepts TLS connections (`ldaps`) on port `1636`. Note that it is using a self-signed certificate located in `.devcontainer/certs`.
 
 Set [breakpoints](https://code.visualstudio.com/docs/editor/debugging#_breakpoints) if necessary.
 

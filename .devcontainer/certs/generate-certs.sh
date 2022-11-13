@@ -15,7 +15,7 @@ openssl req \
   -sha256 \
   -days 1825 \
   -out rootCA.pem \
-  -subj "/C=CA/ST=Quebec/L=Montreal/O=Code/CN=ldap" # CN must be set to server hostname
+  -subj "/C=CA/ST=Quebec/L=Montreal/O=Code/CN=example.org"
 
 # Generate server key
 openssl genrsa \
@@ -27,7 +27,7 @@ openssl req \
   -new \
   -key openldap.key \
   -out openldap.csr \
-  -subj "/C=CA/ST=Quebec/L=Montreal/O=Code/CN=ldap" # CN must be set to server hostname
+  -subj "/C=CA/ST=Quebec/L=Montreal/O=Code/CN=example.org"
 
 # Generate server cert
 openssl x509 \
