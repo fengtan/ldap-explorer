@@ -33,9 +33,9 @@ services:
       LDAP_USERS: user1,user2,user3
       LDAP_PASSWORDS: pwd1,pwd2,pwd3
       LDAP_ENABLE_TLS: "yes"
-      LDAP_TLS_CERT_FILE: /opt/bitnami/openldap/certs/slapd.crt
-      LDAP_TLS_KEY_FILE: /opt/bitnami/openldap/certs/slapd.key
-      LDAP_TLS_CA_FILE: /opt/bitnami/openldap/certs/slapd.crt
+      LDAP_TLS_CERT_FILE: /opt/bitnami/openldap/certs/server.crt
+      LDAP_TLS_KEY_FILE: /opt/bitnami/openldap/certs/server.key
+      LDAP_TLS_CA_FILE: /opt/bitnami/openldap/certs/rootCA.crt
     volumes:
       - ./certs:/opt/bitnami/openldap/certs
       - ldap_data:/bitnami/openldap
