@@ -1,3 +1,5 @@
+// @todo wildcard import
+import * as fs from 'fs';
 import { Client, createClient, SearchEntry, SearchOptions } from 'ldapjs';
 import { LdapLogger } from './LdapLogger';
 
@@ -144,8 +146,11 @@ export class LdapConnection {
         timeout: Number(this.getTimeout(true)),
         // See https://nodejs.org/api/tls.html
         // @todo only set tlsOptions when connection via ldaps:// and explicitly set those.
+        // @todo tlsOptions should also apply with starttls
         tlsOptions: {
-          rejectUnauthorized: false // @todo turn into connection option
+          // rejectUnauthorized: false // @todo turn into checkbox "Disable certificate verification (not recommended)"
+          ca: [fs.readFileSync('/workspaces/ldap-explorer/.devcontainer/certs/openldap.crt')], // @todo turn into fields "if the certificate of the server you're connecting to is not signed by a CA your system trusts (e.g. self-signed cert), then you may want to provide a CA cert here" ; somehow need to set openldap.crt instead of rootCA.pem ; document how to test in CONTRIBUTING.md
+          servername: "example.org" // @todo turn into optional field ; explain: must match CN field of the certificate
         }
       });
 
