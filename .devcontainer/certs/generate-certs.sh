@@ -3,7 +3,7 @@
 # Generate CA (certificate authority) key
 openssl genrsa \
   -des3 \
-  -out myCA.key \
+  -out rootCA.key \
   2048
 
 # Generate CA cert
@@ -11,11 +11,11 @@ openssl req \
   -x509 \
   -new \
   -nodes \
-  -key myCA.key \
+  -key rootCA.key \
   -sha256 \
   -days 1825 \
-  -out myCA.pem \
-  -subj "/C=CA/ST=Quebec/L=Montreal/O=Code/CN=example.org"
+  -out rootCA.pem \
+  -subj "/C=CA/ST=Quebec/L=Montreal/O=Code/CN=ldap" # CN must be set to server hostname
 
 # Generate server key
 openssl genrsa \
@@ -27,14 +27,14 @@ openssl req \
   -new \
   -key openldap.key \
   -out openldap.csr \
-  -subj "/C=CA/ST=Quebec/L=Montreal/O=Code/CN=example.org"
+  -subj "/C=CA/ST=Quebec/L=Montreal/O=Code/CN=ldap" # CN must be set to server hostname
 
 # Generate server cert
 openssl x509 \
   -req \
   -in openldap.csr \
-  -CA myCA.pem \
-  -CAkey myCA.key \
+  -CA rootCA.pem \
+  -CAkey rootCA.key \
   -CAcreateserial \
   -out openldap.crt \
   -days 825 \

@@ -22,6 +22,7 @@ services:
     ports:
       - 1389:1389
       - 1636:1636
+    hostname: ldap
     environment:
       LDAP_ADMIN_USERNAME: admin
       LDAP_ADMIN_PASSWORD: foobar
@@ -33,12 +34,11 @@ services:
       LDAP_USERS: user1,user2,user3
       LDAP_PASSWORDS: pwd1,pwd2,pwd3
       LDAP_ENABLE_TLS: "yes"
-      LDAP_TLS_CERT_FILE: /opt/bitnami/openldap/certs/openldap.crt
-      LDAP_TLS_KEY_FILE: /opt/bitnami/openldap/certs/openldap.key
-      LDAP_TLS_CA_FILE: /opt/bitnami/openldap/certs/myCA.pem
+      LDAP_TLS_CERT_FILE: /opt/bitnami/openldap/etc/certs/openldap.crt
+      LDAP_TLS_KEY_FILE: /opt/bitnami/openldap/etc/certs/openldap.key
+      LDAP_TLS_CA_FILE: /opt/bitnami/openldap/etc/certs/rootCA.pem
     volumes:
-      - ./certs:/opt/bitnami/openldap/certs
-      - ldap_data:/bitnami/openldap
+      - ./certs:/opt/bitnami/openldap/etc/certs
   # Alternative image
   # https://hub.docker.com/r/osixia/openldap
   # https://github.com/osixia/docker-openldap
@@ -60,4 +60,3 @@ services:
   #  command: --copy-service
 volumes:
   pre-commit:
-  ldap_data:
