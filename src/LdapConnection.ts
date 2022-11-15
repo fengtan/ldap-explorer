@@ -1,5 +1,6 @@
 // @todo wildcard import
 import * as fs from 'fs';
+import { workspace } from 'vscode';
 import { Client, createClient, SearchEntry, SearchOptions } from 'ldapjs';
 import { LdapLogger } from './LdapLogger';
 
@@ -139,19 +140,27 @@ export class LdapConnection {
    */
   public search(options: SearchOptions, base: string = this.getBaseDn(true), onSearchEntryFound?: (entry: SearchEntry) => void): Thenable<SearchEntry[]> {
     return new Promise((resolve, reject) => {
+      // Prepare TLS options if we are connecting with LDAPS.
+      // @todo also set TLS options if starttls
+      // @todo document in README.md (Usage section) + CONTRIBUTING.md how to set certificates + skip cert verification
+      // @todo explain in devcontainer documentation, set /workspaces/ldap-explorer/.devcontainer/certs/openldap.crt as root CA
+      // See https://nodejs.org/api/tls.html
+      let tlsOptions = {};
+      if (this.getProtocol(true) === "ldaps") {
+        // @todo complain if cacertFile does not exist, is not readable, etc
+        const cacerts: string[] = workspace.getConfiguration('ldap-explorer').get('cacerts', []).map(cacertFile => fs.readFileSync(cacertFile).toString());
+        tlsOptions = {
+          // rejectUnauthorized: false // @todo turn into checkbox "Disable certificate verification (not recommended)"
+          ca: cacerts, // @todo turn into fields "if the certificate of the server you're connecting to is not signed by a CA your system trusts (e.g. self-signed cert), then you may want to provide a CA cert here" ; somehow need to set openldap.crt instead of rootCA.pem
+          servername: "example.org" // @todo turn into optional field ; explain: must match CN field of the certificate (distinguised name ?)
+        };
+      }
 
       // Get ldapjs client.
       const client: Client = createClient({
         url: [this.getUrl()],
         timeout: Number(this.getTimeout(true)),
-        // See https://nodejs.org/api/tls.html
-        // @todo only set tlsOptions when connection via ldaps:// and explicitly set those.
-        // @todo tlsOptions should also apply with starttls
-        tlsOptions: {
-          // rejectUnauthorized: false // @todo turn into checkbox "Disable certificate verification (not recommended)"
-          ca: [fs.readFileSync('/workspaces/ldap-explorer/.devcontainer/certs/openldap.crt')], // @todo turn into fields "if the certificate of the server you're connecting to is not signed by a CA your system trusts (e.g. self-signed cert), then you may want to provide a CA cert here" ; somehow need to set openldap.crt instead of rootCA.pem ; document how to test in CONTRIBUTING.md
-          servername: "example.org" // @todo turn into optional field ; explain: must match CN field of the certificate
-        }
+        tlsOptions: tlsOptions,
       });
 
       // Pass errors to client class.

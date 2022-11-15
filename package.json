@@ -228,13 +228,19 @@
     },
     "configuration": {
       "type": "object",
-      "title": "LDAP Explorer settings",
+      "title": "LDAP Explorer",
       "properties": {
         "ldap-explorer.show-tree-item-icons": {
           "type": "boolean",
+          "title": "Show tree item icons",
           "description": "Render LDAP tree items with icons",
-          "default": false,
-          "title": "Show tree item icons"
+          "default": false
+        },
+        "ldap-explorer.cacerts": {
+          "type": "array",
+          "title": "CA certificates",
+          "description": "Paths to Certificate Authority (CA) certificates, e.g. /path/to/certs/*.pem",
+          "default": []
         },
         "ldap-explorer.connections": {
           "type": "array",
