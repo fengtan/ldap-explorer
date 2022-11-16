@@ -1,6 +1,6 @@
 // @todo wildcard import
 import * as fs from 'fs';
-import { workspace } from 'vscode';
+import { window, workspace } from 'vscode';
 import { Client, createClient, SearchEntry, SearchOptions } from 'ldapjs';
 import { LdapLogger } from './LdapLogger';
 
@@ -153,13 +153,22 @@ export class LdapConnection {
       // @todo in README.md "if the certificate of the server you're connecting to is not signed by a CA your system trusts (e.g. self-signed cert), then you may want to provide a CA cert here" ; somehow need to set openldap.crt instead of rootCA.pem
       // @todo confirm verifyssl works with environment variables
       // @todo document verifyssl option (as well as cacerts) in README.md settings snippet
+      // @todo make sure this works if user set boolean (not string) on verifyssl in settings.json
       // See https://nodejs.org/api/tls.html
       let tlsOptions = {};
       if (this.getProtocol(true) === "ldaps") {
-        // @todo complain if cacertFile does not exist, is not readable, etc
-        const cacerts: string[] = workspace.getConfiguration('ldap-explorer').get('cacerts', []).map(cacertFile => fs.readFileSync(cacertFile).toString());
+        // Read contents of CA certs.
+        const cacerts: string[] = [];
+        workspace.getConfiguration('ldap-explorer').get('cacerts', []).forEach(cacertUri => {
+          try {
+            cacerts.push(fs.readFileSync(cacertUri).toString());
+          } catch (err) {
+            window.showWarningMessage(`Unable to read CA certificate configured in settings: ${cacertUri}`);
+          }
+        });
+        // Set TLS options based on what the user configured.
         tlsOptions = {
-          rejectUnauthorized: (this.getVerifySSL(true).toLowerCase() !== 'true'), // @todo make sure this works if user set boolean (not string) in settings.json
+          rejectUnauthorized: (this.getVerifySSL(true).toLowerCase() === 'true'),
           ca: cacerts,
           servername: "example.org" // @todo turn into optional field ; explain: must match CN field of the certificate (distinguised name ?)
         };
