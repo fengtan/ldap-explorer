@@ -52,9 +52,8 @@ export function createAddEditConnectionWebview(context: ExtensionContext, existi
           </vscode-dropdown>
         </section>
         <section>
-          <vscode-checkbox id="verifyssl">Verify SSL certificate (recommended)</vscode-checkbox>
-          <!-- TODO document verifyssl (as well as cacerts) in README.md -->
-          <!-- TODO set default value ; should be backwards compatible (i.e. work if no set in settings.json) -->
+          <vscode-checkbox id="verifyssl" checked="${existingConnection?.getVerifySSL(false) ?? 'true'}">Verify SSL certificate (recommended)</vscode-checkbox>
+          <!-- TODO verify works if verifyssl is not set in settings.json) -->
           <!-- TODO show SSL options only if ldaps is selected -->
         </section>
         <section>

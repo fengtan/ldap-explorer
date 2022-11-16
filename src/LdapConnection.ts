@@ -152,6 +152,7 @@ export class LdapConnection {
       // @todo explain in README.md /workspaces/ldap-explorer/.devcontainer/certs/openldap.crt is already listed as trusted
       // @todo in README.md "if the certificate of the server you're connecting to is not signed by a CA your system trusts (e.g. self-signed cert), then you may want to provide a CA cert here" ; somehow need to set openldap.crt instead of rootCA.pem
       // @todo confirm verifyssl works with environment variables
+      // @todo document verifyssl option (as well as cacerts) in README.md settings snippet
       // See https://nodejs.org/api/tls.html
       let tlsOptions = {};
       if (this.getProtocol(true) === "ldaps") {
