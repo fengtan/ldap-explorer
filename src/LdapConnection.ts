@@ -143,7 +143,7 @@ export class LdapConnection {
       // Prepare TLS options if we are connecting with LDAPS.
       // @todo also set TLS options if starttls
       // @todo document in README.md (Usage section) + CONTRIBUTING.md how to set certificates + skip cert verification
-      // @todo explain in devcontainer documentation, set /workspaces/ldap-explorer/.devcontainer/certs/openldap.crt as root CA
+      // @todo explain in README.md /workspaces/ldap-explorer/.devcontainer/certs/openldap.crt is already listed as trusted
       // See https://nodejs.org/api/tls.html
       let tlsOptions = {};
       if (this.getProtocol(true) === "ldaps") {

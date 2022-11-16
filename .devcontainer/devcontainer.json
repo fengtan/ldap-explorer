@@ -36,6 +36,9 @@
       "out": true,
       "dist": true
     },
-    "typescript.tsc.autoDetect": "off"
+    "typescript.tsc.autoDetect": "off",
+    "ldap-explorer.cacerts": [
+      "/workspaces/ldap-explorer/.devcontainer/certs/openldap.crt"
+    ]
   }
 }
