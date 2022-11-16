@@ -12,16 +12,19 @@ export class LdapConnectionManager {
    */
   public static getConnections(): LdapConnection[] {
     return workspace.getConfiguration('ldap-explorer').get('connections', []).map(connection => new LdapConnection(
+      // Same default values as what is listed in package.json.
+      // Providing default values brings backwards compatibility when adding more attributes.
       connection["name"],
-      connection["protocol"],
-      connection["host"],
-      connection["port"],
-      connection["binddn"],
-      connection["bindpwd"],
-      connection["basedn"],
-      connection["limit"],
-      connection["timeout"],
-      connection["bookmarks"]
+      connection["protocol"] || "ldap",
+      connection["verifyssl"] || "true",
+      connection["host"] || "",
+      connection["port"] || "",
+      connection["binddn"] || "",
+      connection["bindpwd"] || "",
+      connection["basedn"] || "",
+      connection["limit"] || "0",
+      connection["timeout"] || "5000",
+      connection["bookmarks"] || []
     ));
   }
 

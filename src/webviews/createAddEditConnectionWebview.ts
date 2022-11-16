@@ -52,6 +52,12 @@ export function createAddEditConnectionWebview(context: ExtensionContext, existi
           </vscode-dropdown>
         </section>
         <section>
+          <vscode-checkbox id="verifyssl">Verify SSL certificate (recommended)</vscode-checkbox>
+          <!-- TODO document verifyssl (as well as cacerts) in README.md -->
+          <!-- TODO set default value ; should be backwards compatible (i.e. work if no set in settings.json) -->
+          <!-- TODO show SSL options only if ldaps is selected -->
+        </section>
+        <section>
           <vscode-text-field type="text" id="host" placeholder="e.g. example.net" value="${existingConnection?.getHost(false) ?? ''}">Host *</vscode-text-field>
         </section>
         <section>
@@ -93,6 +99,7 @@ export function createAddEditConnectionWebview(context: ExtensionContext, existi
       const newConnection = new LdapConnection(
         message.name,
         message.protocol,
+        message.verifyssl,
         message.host,
         message.port,
         message.binddn,

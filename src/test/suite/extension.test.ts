@@ -8,6 +8,7 @@ suite('Extension test suite', () => {
     const connection: LdapConnection = new LdapConnection(
       "my connection",
       "ldap",
+      "true",
       "myserver.com",
       "1389",
       "cn=admin,dc=example,dc=org",
@@ -26,6 +27,7 @@ suite('Extension test suite', () => {
     const connection: LdapConnection = new LdapConnection(
       "my connection with env vars",
       "${protocol}",
+      "${verifyssl}",
       "${host}",
       "${port}",
       "${binddn}",

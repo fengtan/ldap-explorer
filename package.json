@@ -269,6 +269,11 @@
                   "ldaps"
                 ]
               },
+              "verifyssl": {
+                "type": "string",
+                "description": "Verify SSL certificate",
+                "default": "true"
+              },
               "host": {
                 "type": "string",
                 "description": "Host",

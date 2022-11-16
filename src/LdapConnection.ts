@@ -11,8 +11,10 @@ export class LdapConnection {
 
   // Port, limit and timeout are stored as strings instead of numbers because
   // they may reference environment variables instead of actual numbers.
+  // The same applies to "Verify SSL" which would normally be a boolean.
   private name: string;
   private protocol: string;
+  private verifyssl: string;
   private host: string;
   private port: string;
   private binddn: string;
@@ -22,9 +24,10 @@ export class LdapConnection {
   private timeout: string;
   private bookmarks: string[];
 
-  constructor(name: string, protocol: string, host: string, port: string, binddn: string, bindpwd: string, basedn: string, limit: string, timeout: string, bookmarks: string[]) {
+  constructor(name: string, protocol: string, verifyssl: string, host: string, port: string, binddn: string, bindpwd: string, basedn: string, limit: string, timeout: string, bookmarks: string[]) {
     this.name = name;
     this.protocol = protocol;
+    this.verifyssl = verifyssl;
     this.host = host;
     this.port = port;
     this.binddn = binddn;
@@ -41,6 +44,9 @@ export class LdapConnection {
   }
   public getProtocol(evaluate: boolean) {
     return this.get(this.protocol, evaluate);
+  }
+  public getVerifySSL(evaluate: boolean) {
+    return this.get(this.verifyssl, evaluate);
   }
   public getHost(evaluate: boolean) {
     return this.get(this.host, evaluate);
@@ -144,14 +150,16 @@ export class LdapConnection {
       // @todo also set TLS options if starttls
       // @todo document in README.md (Usage section) + CONTRIBUTING.md how to set certificates + skip cert verification
       // @todo explain in README.md /workspaces/ldap-explorer/.devcontainer/certs/openldap.crt is already listed as trusted
+      // @todo in README.md "if the certificate of the server you're connecting to is not signed by a CA your system trusts (e.g. self-signed cert), then you may want to provide a CA cert here" ; somehow need to set openldap.crt instead of rootCA.pem
+      // @todo confirm verifyssl works with environment variables
       // See https://nodejs.org/api/tls.html
       let tlsOptions = {};
       if (this.getProtocol(true) === "ldaps") {
         // @todo complain if cacertFile does not exist, is not readable, etc
         const cacerts: string[] = workspace.getConfiguration('ldap-explorer').get('cacerts', []).map(cacertFile => fs.readFileSync(cacertFile).toString());
         tlsOptions = {
-          // rejectUnauthorized: false // @todo turn into checkbox "Disable certificate verification (not recommended)"
-          ca: cacerts, // @todo turn into fields "if the certificate of the server you're connecting to is not signed by a CA your system trusts (e.g. self-signed cert), then you may want to provide a CA cert here" ; somehow need to set openldap.crt instead of rootCA.pem
+          rejectUnauthorized: (this.getVerifySSL(true).toLowerCase() !== 'true'), // @todo make sure this works if user set boolean (not string) in settings.json
+          ca: cacerts,
           servername: "example.org" // @todo turn into optional field ; explain: must match CN field of the certificate (distinguised name ?)
         };
       }
