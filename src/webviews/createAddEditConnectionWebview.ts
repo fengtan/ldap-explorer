@@ -56,6 +56,10 @@ export function createAddEditConnectionWebview(context: ExtensionContext, existi
           <!-- TODO show SSL options only if ldaps is selected -->
         </section>
         <section>
+          <vscode-text-field type="text" id="sni" placeholder="e.g. example.net" value="${existingConnection?.getSni(false) ?? ''}">Server Name Indication (SNI)</vscode-text-field>
+          <!-- TODO explain "the name of the host being connected to, and must be a host name, and not an IP address. It can be used by a multi-homed server to choose the correct certificate to present to the client" ; leave empty if the certificate matches the host name -->
+        </section>
+        <section>
           <vscode-text-field type="text" id="host" placeholder="e.g. example.net" value="${existingConnection?.getHost(false) ?? ''}">Host *</vscode-text-field>
         </section>
         <section>
@@ -98,6 +102,7 @@ export function createAddEditConnectionWebview(context: ExtensionContext, existi
         message.name,
         message.protocol,
         message.verifyssl,
+        message.sni,
         message.host,
         message.port,
         message.binddn,

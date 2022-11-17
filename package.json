@@ -274,6 +274,11 @@
                 "description": "Verify SSL certificate",
                 "default": "true"
               },
+              "sni": {
+                "type": "string",
+                "description": "Server Name Indication (SNI)",
+                "default": ""
+              },
               "host": {
                 "type": "string",
                 "description": "Host",

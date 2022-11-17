@@ -39,6 +39,36 @@
     "typescript.tsc.autoDetect": "off",
     "ldap-explorer.cacerts": [
       "/workspaces/ldap-explorer/.devcontainer/certs/openldap.crt"
+    ],
+    "ldap-explorer.connections": [
+      {
+        "name": "dummy server (plain)",
+        "protocol": "ldap",
+        "verifyssl": "true",
+        "sni": "",
+        "host": "ldap",
+        "port": "1389",
+        "binddn": "cn=admin,dc=example,dc=org",
+        "bindpwd": "foobar",
+        "basedn": "dc=example,dc=org",
+        "limit": "0",
+        "timeout": "5000",
+        "bookmarks": []
+      },
+      {
+        "name": "dummy server (TLS)",
+        "protocol": "ldaps",
+        "verifyssl": "true",
+        "sni": "example.org",
+        "host": "ldap",
+        "port": "1636",
+        "binddn": "cn=admin,dc=example,dc=org",
+        "bindpwd": "foobar",
+        "basedn": "dc=example,dc=org",
+        "limit": "0",
+        "timeout": "5000",
+        "bookmarks": []
+      }
     ]
   }
 }

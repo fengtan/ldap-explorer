@@ -15,6 +15,7 @@ export class LdapConnection {
   private name: string;
   private protocol: string;
   private verifyssl: string;
+  private sni: string;
   private host: string;
   private port: string;
   private binddn: string;
@@ -24,10 +25,24 @@ export class LdapConnection {
   private timeout: string;
   private bookmarks: string[];
 
-  constructor(name: string, protocol: string, verifyssl: string, host: string, port: string, binddn: string, bindpwd: string, basedn: string, limit: string, timeout: string, bookmarks: string[]) {
+  constructor(
+    name: string,
+    protocol: string,
+    verifyssl: string,
+    sni: string,
+    host: string,
+    port: string,
+    binddn: string,
+    bindpwd: string,
+    basedn: string,
+    limit: string,
+    timeout: string,
+    bookmarks: string[]
+  ) {
     this.name = name;
     this.protocol = protocol;
     this.verifyssl = verifyssl;
+    this.sni = sni;
     this.host = host;
     this.port = port;
     this.binddn = binddn;
@@ -47,6 +62,9 @@ export class LdapConnection {
   }
   public getVerifySSL(evaluate: boolean) {
     return this.get(this.verifyssl, evaluate);
+  }
+  public getSni(evaluate: boolean) {
+    return this.get(this.sni, evaluate);
   }
   public getHost(evaluate: boolean) {
     return this.get(this.host, evaluate);
@@ -154,6 +172,7 @@ export class LdapConnection {
       // @todo confirm verifyssl works with environment variables
       // @todo document verifyssl option (as well as cacerts) in README.md settings snippet
       // @todo make sure this works if user set boolean (not string) on verifyssl in settings.json
+      // @todo CONTRIBUTING.md connections list is now automatically populated in devcontainer.json
       // See https://nodejs.org/api/tls.html
       let tlsOptions = {};
       if (this.getProtocol(true) === "ldaps") {
@@ -170,7 +189,7 @@ export class LdapConnection {
         tlsOptions = {
           rejectUnauthorized: (this.getVerifySSL(true).toLowerCase() === 'true'),
           ca: cacerts,
-          servername: "example.org" // @todo turn into optional field ; explain: must match CN field of the certificate (distinguised name ?)
+          servername: (this.getSni(false) ? this.getSni(true) : undefined),
         };
       }
 

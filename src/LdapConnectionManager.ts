@@ -17,6 +17,7 @@ export class LdapConnectionManager {
       connection["name"],
       connection["protocol"] || "ldap",
       connection["verifyssl"] || "true",
+      connection["sni"] || "",
       connection["host"] || "",
       connection["port"] || "",
       connection["binddn"] || "",

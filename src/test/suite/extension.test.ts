@@ -9,6 +9,7 @@ suite('Extension test suite', () => {
       "my connection",
       "ldap",
       "true",
+      "",
       "myserver.com",
       "1389",
       "cn=admin,dc=example,dc=org",
@@ -28,6 +29,7 @@ suite('Extension test suite', () => {
       "my connection with env vars",
       "${protocol}",
       "${verifyssl}",
+      "${sni}",
       "${host}",
       "${port}",
       "${binddn}",
@@ -40,6 +42,8 @@ suite('Extension test suite', () => {
     // Set environment variables.
     process.env = {
       protocol: "ldap",
+      verifyssl: "true",
+      sni: "myserver.com",
       host: "myserver.com",
       port: "1389",
       binddn: "cn=admin,dc=example,dc=org",
@@ -51,6 +55,8 @@ suite('Extension test suite', () => {
     // Assert values.
     assert.strictEqual("my connection with env vars", connection.getName());
     assert.strictEqual("ldap", connection.getProtocol(true));
+    assert.strictEqual("true", connection.getVerifySSL(true));
+    assert.strictEqual("myserver.com", connection.getSni(true));
     assert.strictEqual("myserver.com", connection.getHost(true));
     assert.strictEqual("1389", connection.getPort(true));
     assert.strictEqual("cn=admin,dc=example,dc=org", connection.getBindDn(true));
