@@ -16,7 +16,7 @@ export class LdapConnectionManager {
       // Providing default values brings backwards compatibility when adding more attributes.
       connection["name"],
       connection["protocol"] || "ldap",
-      connection["verifyssl"] || "true",
+      connection["verifycert"] || "true",
       connection["sni"] || "",
       connection["host"] || "",
       connection["port"] || "",

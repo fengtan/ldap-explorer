@@ -11,10 +11,10 @@ export class LdapConnection {
 
   // Port, limit and timeout are stored as strings instead of numbers because
   // they may reference environment variables instead of actual numbers.
-  // The same applies to "Verify SSL" which would normally be a boolean.
+  // The same applies to 'verifycert' which would normally be a boolean.
   private name: string;
   private protocol: string;
-  private verifyssl: string;
+  private verifycert: string;
   private sni: string;
   private host: string;
   private port: string;
@@ -28,7 +28,7 @@ export class LdapConnection {
   constructor(
     name: string,
     protocol: string,
-    verifyssl: string,
+    verifycert: string,
     sni: string,
     host: string,
     port: string,
@@ -41,7 +41,7 @@ export class LdapConnection {
   ) {
     this.name = name;
     this.protocol = protocol;
-    this.verifyssl = verifyssl;
+    this.verifycert = verifycert;
     this.sni = sni;
     this.host = host;
     this.port = port;
@@ -60,8 +60,8 @@ export class LdapConnection {
   public getProtocol(evaluate: boolean) {
     return this.get(this.protocol, evaluate);
   }
-  public getVerifySSL(evaluate: boolean) {
-    return this.get(this.verifyssl, evaluate);
+  public getVerifyCert(evaluate: boolean) {
+    return this.get(this.verifycert, evaluate);
   }
   public getSni(evaluate: boolean) {
     return this.get(this.sni, evaluate);
@@ -169,9 +169,8 @@ export class LdapConnection {
       // @todo document in README.md (Usage section) + CONTRIBUTING.md how to set certificates + skip cert verification
       // @todo explain in README.md /workspaces/ldap-explorer/.devcontainer/certs/openldap.crt is already listed as trusted
       // @todo in README.md "if the certificate of the server you're connecting to is not signed by a CA your system trusts (e.g. self-signed cert), then you may want to provide a CA cert here" ; somehow need to set openldap.crt instead of rootCA.pem
-      // @todo confirm verifyssl works with environment variables
-      // @todo document verifyssl option (as well as cacerts) in README.md settings snippet
-      // @todo make sure this works if user set boolean (not string) on verifyssl in settings.json
+      // @todo document verifycert option (as well as cacerts) in README.md settings snippet
+      // @todo make sure this works if user set boolean (not string) on verifycert in settings.json
       // @todo CONTRIBUTING.md connections list is now automatically populated in devcontainer.json
       // See https://nodejs.org/api/tls.html
       let tlsOptions = {};
@@ -187,7 +186,7 @@ export class LdapConnection {
         });
         // Set TLS options based on what the user configured.
         tlsOptions = {
-          rejectUnauthorized: (this.getVerifySSL(true).toLowerCase() === 'true'),
+          rejectUnauthorized: (this.getVerifyCert(true).toLowerCase() === 'true'),
           ca: cacerts,
           servername: (this.getSni(false) ? this.getSni(true) : undefined),
         };
