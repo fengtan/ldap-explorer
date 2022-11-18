@@ -269,6 +269,11 @@
                   "ldaps"
                 ]
               },
+              "starttls": {
+                "type": "string",
+                "description": "StartTLS",
+                "default": "false"
+              },
               "verifyssl": {
                 "type": "string",
                 "description": "Verify SSL certificate",

@@ -1,5 +1,4 @@
-// @todo wildcard import
-import * as fs from 'fs';
+import { readFileSync } from 'fs';
 import { window, workspace } from 'vscode';
 import { Client, createClient, SearchEntry, SearchOptions } from 'ldapjs';
 import { LdapLogger } from './LdapLogger';
@@ -11,9 +10,10 @@ export class LdapConnection {
 
   // Port, limit and timeout are stored as strings instead of numbers because
   // they may reference environment variables instead of actual numbers.
-  // The same applies to 'verifycert' which would normally be a boolean.
+  // The same applies to starttls and verifycert which would normally be booleans.
   private name: string;
   private protocol: string;
+  private starttls: string;
   private verifycert: string;
   private sni: string;
   private host: string;
@@ -28,6 +28,7 @@ export class LdapConnection {
   constructor(
     name: string,
     protocol: string,
+    starttls: string,
     verifycert: string,
     sni: string,
     host: string,
@@ -41,6 +42,7 @@ export class LdapConnection {
   ) {
     this.name = name;
     this.protocol = protocol;
+    this.starttls = starttls;
     this.verifycert = verifycert;
     this.sni = sni;
     this.host = host;
@@ -59,6 +61,9 @@ export class LdapConnection {
   }
   public getProtocol(evaluate: boolean) {
     return this.get(this.protocol, evaluate);
+  }
+  public getStartTLS(evaluate: boolean) {
+    return this.get(this.starttls, evaluate);
   }
   public getVerifyCert(evaluate: boolean) {
     return this.get(this.verifycert, evaluate);
@@ -89,6 +94,16 @@ export class LdapConnection {
   }
   public getBookmarks() {
     return this.bookmarks;
+  }
+
+  // These variables are stored as strings instead of booleans to allow the user
+  // to make use of environment variables.
+  // We define additional functions that do return booleans.
+  public getStartTLSBool(evaluate: boolean) {
+    return (this.getStartTLS(evaluate).toLowerCase() === "true");
+  }
+  public getVerifyCertBool(evaluate: boolean) {
+    return (this.getVerifyCert(evaluate).toLowerCase() === "true");
   }
 
   /**
@@ -167,7 +182,7 @@ export class LdapConnection {
     const cacerts: string[] = [];
     workspace.getConfiguration('ldap-explorer').get('cacerts', []).forEach(cacertUri => {
       try {
-        cacerts.push(fs.readFileSync(cacertUri).toString());
+        cacerts.push(readFileSync(cacertUri).toString());
       } catch (err) {
         window.showWarningMessage(`Unable to read CA certificate configured in settings: ${cacertUri}`);
       }
@@ -175,7 +190,7 @@ export class LdapConnection {
 
     // Return TLS options based on what the user configured.
     return {
-      rejectUnauthorized: (this.getVerifyCert(true).toLowerCase() === 'true'),
+      rejectUnauthorized: this.getVerifyCertBool(true),
       ca: cacerts,
       servername: (this.getSni(false) ? this.getSni(true) : undefined),
     };
@@ -189,7 +204,11 @@ export class LdapConnection {
    * - Pass a callback onSearchEntryFound (will fire for *each* result as they are received)
    * - Resolve callback - this function is Thenable (will fire when *all* results have been received)
    */
-  public search(options: SearchOptions, base: string = this.getBaseDn(true), onSearchEntryFound?: (entry: SearchEntry) => void): Thenable<SearchEntry[]> {
+  public search(
+    searchOptions: SearchOptions,
+    base: string = this.getBaseDn(true),
+    onSearchEntryFound?: (entry: SearchEntry) => void
+  ): Thenable<SearchEntry[]> {
     return new Promise((resolve, reject) => {
       // Get ldapjs client.
       const client: Client = createClient({
@@ -203,58 +222,86 @@ export class LdapConnection {
         return reject(`Connection error: ${err.message}`);
       });
 
-      // Bind.
-      client.bind(this.getBindDn(true), this.getBindPwd(true), (err) => {
-        if (err) {
-          return reject(`Unable to bind: ${err.message}`);
-        }
+      // Get results from server.
+      // Initiate StartTLS beforehand if the connection is LDAP + StartTLS.
+      if (this.getProtocol(true) === "ldap" && this.getStartTLSBool(true)) {
+        // Empty controls (second argument) should be removed once this issue is
+        // resolved: https://github.com/ldapjs/node-ldapjs/issues/326
+        client.starttls(this.getTLSOptions(), [], (err, res) => {
+          if (err) {
+            return reject(`Unable to initiate StartTLS: ${err.message}`);
+          }
+          return this.getResults(client, resolve, reject, searchOptions, base, onSearchEntryFound);
+        });
+      }
+      else {
+        return this.getResults(client, resolve, reject, searchOptions, base, onSearchEntryFound);
+      }
+    });
+  }
 
-        // Search.
-        options.sizeLimit = parseInt(this.limit);
-        try {
-          client.search(base, options, (err, res) => {
-            if (err) {
-              return reject(err.message);
-            }
+  /**
+   * Get results from LDAP servers.
+   */
+  protected getResults(
+    client: Client,
+    resolve: (value: SearchEntry[] | PromiseLike<SearchEntry[]>) => void,
+    reject: (reason?: any) => void,
+    searchOptions: SearchOptions,
+    base: string = this.getBaseDn(true),
+    onSearchEntryFound ?: (entry: SearchEntry) => void
+  ) {
 
-            let results: SearchEntry[] = [];
-            res.on('searchRequest', (searchRequest) => {
-              LdapLogger.appendLine(`Search request: ${JSON.stringify(searchRequest)}`);
-            });
-            res.on('searchEntry', (entry) => {
-              // Fire onSearchEntryFound callback (if one was provided).
-              if (onSearchEntryFound) {
-                onSearchEntryFound(entry);
-              }
-              // Add each result to our array, which will be returned by the
-              // resolve callback.
-              results.push(entry);
-            });
-            res.on('searchReference', (referral) => {
-              LdapLogger.appendLine(`Search referral: ${referral.uris.join()}`);
-            });
-            res.on('error', (err) => {
-              return reject(err.message);
-            });
-            res.on('end', (result) => {
-              // Unbind.
-              client.unbind();
-              // Verify status code returned by the server.
-              if (result?.status !== 0) {
-                return reject(`Server returned status code ${result?.status}: ${result?.errorMessage}`);
-              }
-              // Return results.
-              return resolve(results);
-            });
+    // Bind.
+    client.bind(this.getBindDn(true), this.getBindPwd(true), (err) => {
+      if (err) {
+        return reject(`Unable to bind: ${err.message}`);
+      }
 
+      // Search.
+      searchOptions.sizeLimit = parseInt(this.limit);
+      try {
+        client.search(base, searchOptions, (err, res) => {
+          if (err) {
+            return reject(err.message);
+          }
+
+          let results: SearchEntry[] = [];
+          res.on('searchRequest', (searchRequest) => {
+            LdapLogger.appendLine(`Search request: ${JSON.stringify(searchRequest)}`);
           });
-        } catch (cause) {
-          // This would happen if the user entered an invalid LDAP filter for instance.
-          // See https://github.com/ldapjs/node-ldapjs/issues/618
-          return reject(cause);
-        }
-      });
+          res.on('searchEntry', (entry) => {
+            // Fire onSearchEntryFound callback (if one was provided).
+            if (onSearchEntryFound) {
+              onSearchEntryFound(entry);
+            }
+            // Add each result to our array, which will be returned by the
+            // resolve callback.
+            results.push(entry);
+          });
+          res.on('searchReference', (referral) => {
+            LdapLogger.appendLine(`Search referral: ${referral.uris.join()}`);
+          });
+          res.on('error', (err) => {
+            return reject(err.message);
+          });
+          res.on('end', (result) => {
+            // Unbind.
+            client.unbind();
+            // Verify status code returned by the server.
+            if (result?.status !== 0) {
+              return reject(`Server returned status code ${result?.status}: ${result?.errorMessage}`);
+            }
+            // Return results.
+            return resolve(results);
+          });
 
+        });
+      } catch (cause) {
+        // This would happen if the user entered an invalid LDAP filter for instance.
+        // See https://github.com/ldapjs/node-ldapjs/issues/618
+        return reject(cause);
+      }
     });
   }
 

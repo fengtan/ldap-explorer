@@ -46,19 +46,25 @@ export function createAddEditConnectionWebview(context: ExtensionContext, existi
         </section>
         <section>
           <p>Protocol *</p>
-          <vscode-dropdown id="protocol" value="${existingConnection?.getProtocol(false) ?? 'ldap'}">
+          <vscode-dropdown id="protocol" value="${existingConnection?.getProtocol(false) ?? 'ldap'}" onChange="updateFieldsVisibility()">
             <vscode-option>ldap</vscode-option>
             <vscode-option>ldaps</vscode-option>
           </vscode-dropdown>
         </section>
         <section>
-          <vscode-checkbox id="verifycert" checked="${existingConnection?.getVerifyCert(false) ?? 'true'}">Verify certificate (recommended)</vscode-checkbox>
-          <!-- TODO show TLS options only if ldaps is selected -->
+          <vscode-checkbox id="starttls" checked="${existingConnection?.getStartTLS(false) ?? 'true'}" onChange="updateFieldsVisibility()">StartTLS</vscode-checkbox>
         </section>
-        <section>
-          <vscode-text-field type="text" id="sni" placeholder="e.g. example.net" value="${existingConnection?.getSni(false) ?? ''}">Server Name Indication (SNI)</vscode-text-field>
-          <!-- TODO explain "the name of the host being connected to, and must be a host name, and not an IP address. It can be used by a multi-homed server to choose the correct certificate to present to the client" ; leave empty if the certificate matches the host name -->
-        </section>
+        <fieldset id="tlsoptions">
+          <legend>TLS Options</legend>
+          <section>
+            <vscode-checkbox id="verifycert" checked="${existingConnection?.getVerifyCert(false) ?? 'true'}">Verify certificate (recommended)</vscode-checkbox>
+          </section>
+          <section>
+            <vscode-text-field type="text" id="sni" placeholder="e.g. example.net" value="${existingConnection?.getSni(false) ?? ''}">Server Name Indication (SNI)</vscode-text-field>
+            <!-- TODO explain "the name of the host being connected to, and must be a host name, and not an IP address. It can be used by a multi-homed server to choose the correct certificate to present to the client" ; leave empty if the certificate matches the host name -->
+            <!-- TODO add hyperlink into fieldset to define cacerts in settings -->
+          </section>
+        </fieldset>
         <section>
           <vscode-text-field type="text" id="host" placeholder="e.g. example.net" value="${existingConnection?.getHost(false) ?? ''}">Host *</vscode-text-field>
         </section>
@@ -101,6 +107,7 @@ export function createAddEditConnectionWebview(context: ExtensionContext, existi
       const newConnection = new LdapConnection(
         message.name,
         message.protocol,
+        message.starttls,
         message.verifycert,
         message.sni,
         message.host,

@@ -8,6 +8,7 @@ suite('Extension test suite', () => {
     const connection: LdapConnection = new LdapConnection(
       "my connection",
       "ldap",
+      "false",
       "true",
       "",
       "myserver.com",
@@ -28,6 +29,7 @@ suite('Extension test suite', () => {
     const connection: LdapConnection = new LdapConnection(
       "my connection with env vars",
       "${protocol}",
+      "${starttls}",
       "${verifycert}",
       "${sni}",
       "${host}",
@@ -42,6 +44,7 @@ suite('Extension test suite', () => {
     // Set environment variables.
     process.env = {
       protocol: "ldap",
+      starttls: "false",
       verifycert: "true",
       sni: "myserver.com",
       host: "myserver.com",
@@ -55,6 +58,7 @@ suite('Extension test suite', () => {
     // Assert values.
     assert.strictEqual("my connection with env vars", connection.getName());
     assert.strictEqual("ldap", connection.getProtocol(true));
+    assert.strictEqual("false", connection.getStartTLS(true));
     assert.strictEqual("true", connection.getVerifyCert(true));
     assert.strictEqual("myserver.com", connection.getSni(true));
     assert.strictEqual("myserver.com", connection.getHost(true));
