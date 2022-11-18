@@ -124,12 +124,9 @@ Errors typically show in a couple of places:
 1. Electron Console: hit `Ctrl+Shift+I` (or `Cmd+Shift+I`) or menu Help > Toggle Developer Tools
 2. Application logs: menu View > Output > LDAP Explorer
 
-# Scope
-
-## Things to do
+# Things to do
 
 Features
-- Support for StartTLS http://ldapjs.org/client.html#starttls
 - Support for write operations i.e. add, delete, edit, move LDAP entries
 - Support LDAP referrals - currently those are simply logged, see `LdapConnection.search()`
 
@@ -144,13 +141,6 @@ UI
 Enhancements
 - Persist webview states using `getState` / `setState` instead of `retainContextWhenHidden` which is more resource intensive https://code.visualstudio.com/api/extension-guides/webview#persistence
 - The webviews' content security policy includes `unsafe-inline` because the Webview UI Toolkit injects inline CSS and JS - that should be removed as it defeats the purpose of the CSP (see example in [issue #383](https://github.com/microsoft/vscode-webview-ui-toolkit/pull/383))
-
-## Known limitations
-
-No support for
-- [LDIF](https://en.wikipedia.org/wiki/LDAP_Data_Interchange_Format) - [not supported by ldapjs](http://ldapjs.org/#whats-not-in-the-box)
-- [LDAP aliases](https://ldapwiki.com/wiki/Alias) - [not supported by ldapjs](http://ldapjs.org/#whats-not-in-the-box)
-- [SASL](https://en.wikipedia.org/wiki/Simple_Authentication_and_Security_Layer) / [GSSAPI](https://en.wikipedia.org/wiki/Generic_Security_Services_Application_Program_Interface) binding - [not supported by ldapjs](https://github.com/ldapjs/node-ldapjs/issues/85)
 
 # Publishing a new release
 
