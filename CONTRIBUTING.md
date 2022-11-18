@@ -131,6 +131,7 @@ Features
 - Support LDAP referrals - currently those are simply logged, see `LdapConnection.search()`
 
 UI
+- A UI to set CA certificates - possibly a tree view
 - Join multivalue search results with a carriage return instead of a comma (not supported by webview ui toolkit grids)
 - Progress bar when revealing deeply-nested DN's in the tree (command `Reveal DN in tree`)
 - Localization https://github.com/microsoft/vscode-nls

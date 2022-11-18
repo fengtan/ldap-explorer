@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Support for StartTLS
 - TLS options:
-  - User-supplied Certificate Authority (CA) certificates
+  - Certificate Authority (CA) certificates
   - Server Name Indication (SNI)
   - Option to skip certificate verification
 ### Changed
