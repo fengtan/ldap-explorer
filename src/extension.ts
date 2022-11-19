@@ -17,7 +17,7 @@ export function activate(context: ExtensionContext) {
 
   // Create our views (connections, tree, bookmarks, search).
 
-  const cacertTreeDataProvider = new CACertificateTreeDataProvider(context);
+  const cacertTreeDataProvider = new CACertificateTreeDataProvider();
   const cacertTreeView = window.createTreeView('ldap-explorer-view-cacerts', { treeDataProvider: cacertTreeDataProvider });
   context.subscriptions.push(cacertTreeView);
 
@@ -283,8 +283,6 @@ async function pickDN(): Promise<string | undefined> {
 
 /**
  * Opens quick pick box asking the user to select a CA certificate.
- *
- * @todo autocomplete ?
  */
 async function pickCACert(): Promise<string | undefined> {
   const options = CACertificateManager.getCACerts();

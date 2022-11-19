@@ -36,8 +36,7 @@ export class CACertificateManager {
     const cacerts = this.getCACerts();
 
     // Get index of cert to delete.
-    // @todo do not resort to findIndex, use splice instead.
-    const index = cacerts.findIndex(cert => cert === cacert);
+    const index = cacerts.indexOf(cacert);
     if (index < 0) {
       return Promise.reject(`CA Cert '${cacert}' does not exist in settings`);
     }
