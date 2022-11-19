@@ -26,8 +26,6 @@ export class CACertificateManager {
     return workspace.getConfiguration('ldap-explorer').update('cacerts', cacerts, true);
   }
 
-  // @todo edit option ? Including editing the same item multiple times
-
   /**
    * Updates an existing cert.
    */

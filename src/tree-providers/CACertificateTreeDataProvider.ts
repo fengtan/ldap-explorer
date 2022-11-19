@@ -1,3 +1,4 @@
+import { existsSync } from 'fs';
 import { Event, EventEmitter, ThemeIcon, TreeDataProvider, TreeItem, TreeItemCollapsibleState } from 'vscode';
 import { CACertificateManager } from '../CACertificateManager';
 
@@ -13,8 +14,15 @@ export class CACertificateTreeDataProvider implements TreeDataProvider<string> {
     // Create tree item.
     const treeItem = new TreeItem(cacert, TreeItemCollapsibleState.None);
 
-    // Set tree item icon.
-    treeItem.iconPath = new ThemeIcon("lock");
+    // Set tree item icon (lock).
+    // If the file does not exist, then indicate there is a problem by setting
+    // the icon to a warning and leaving a message in the item's tooltip.
+    if (existsSync(cacert)) {
+      treeItem.iconPath = new ThemeIcon("lock");
+    } else {
+      treeItem.iconPath = new ThemeIcon("warning");
+      treeItem.tooltip = "This file does not exist.";
+    }
 
     // Clicking on the certificate opens it in the editor.
     const filename = cacert.replace(/^.*[\\\/]/, '');
