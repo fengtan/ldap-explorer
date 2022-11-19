@@ -152,11 +152,11 @@ export function activate(context: ExtensionContext) {
     bookmarkTreeDataProvider.refresh();
   }));
 
-  // Copy DN of an entry to the system clipboard.
-  // This command does not show in the command palette (it fires from the tree view)
+  // Copy a string (e.g. a entry's DN or a certificate) to the system clipboard.
+  // This command does not show in the command palette (it fires from the tree views)
   // so we are guaranteed to be provided with a non-null entry as an argument.
-  context.subscriptions.push(commands.registerCommand('ldap-explorer.copy-dn', (dn: string) => {
-    env.clipboard.writeText(dn);
+  context.subscriptions.push(commands.registerCommand('ldap-explorer.copy', (value: string) => {
+    env.clipboard.writeText(value);
   }));
 
   context.subscriptions.push(commands.registerCommand('ldap-explorer.show-attributes', async (dn?: string) => {

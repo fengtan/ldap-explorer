@@ -14,7 +14,6 @@ export class CACertificateTreeDataProvider implements TreeDataProvider<string> {
     const treeItem = new TreeItem(cacert, TreeItemCollapsibleState.None);
 
     // Set tree item icon.
-    // @todo command to copy cert location to clipboard
     treeItem.iconPath = new ThemeIcon("lock");
 
     // Clicking on the certificate opens it in the editor.

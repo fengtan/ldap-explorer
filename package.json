@@ -45,7 +45,7 @@
     "onCommand:ldap-explorer.activate-connection",
     "onCommand:ldap-explorer.deactivate-connection",
     "onCommand:ldap-explorer.refresh",
-    "onCommand:ldap-explorer.copy-dn",
+    "onCommand:ldap-explorer.copy",
     "onCommand:ldap-explorer.show-attributes",
     "onCommand:ldap-explorer.reveal-in-tree",
     "onCommand:ldap-explorer.add-bookmark",
@@ -93,7 +93,7 @@
     "viewsWelcome": [
       {
         "view": "ldap-explorer-view-cacerts",
-        "contents": "No custom CA certificate. Falling back to well-known CAs."
+        "contents": "No CA certificate: falling back to well-known CAs."
       },
       {
         "view": "ldap-explorer-view-connections",
@@ -162,8 +162,8 @@
         "icon": "$(table)"
       },
       {
-        "command": "ldap-explorer.copy-dn",
-        "title": "Copy DN to clipboard",
+        "command": "ldap-explorer.copy",
+        "title": "Copy to clipboard",
         "category": "LDAP Explorer",
         "icon": "$(copy)"
       },
@@ -189,7 +189,7 @@
     "menus": {
       "commandPalette": [
         {
-          "command": "ldap-explorer.copy-dn",
+          "command": "ldap-explorer.copy",
           "when": "false"
         }
       ],
@@ -232,8 +232,8 @@
           "group": "inline"
         },
         {
-          "command": "ldap-explorer.copy-dn",
-          "when": "view == ldap-explorer-view-tree || view == ldap-explorer-view-bookmarks",
+          "command": "ldap-explorer.copy",
+          "when": "view == ldap-explorer-view-cacerts || view == ldap-explorer-view-tree || view == ldap-explorer-view-bookmarks",
           "group": "inline"
         },
         {
