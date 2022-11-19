@@ -131,13 +131,13 @@ Features
 - Support LDAP referrals - currently those are simply logged, see `LdapConnection.search()`
 
 UI
-- A UI to set CA certificates - possibly a tree view
 - Join multivalue search results with a carriage return instead of a comma (not supported by webview ui toolkit grids)
 - Progress bar when revealing deeply-nested DN's in the tree (command `Reveal DN in tree`)
-- Localization https://github.com/microsoft/vscode-nls
 - Ability to reorder / sort bookmarks, connections and CA certificates
+- Option to define CA certificates using wildcards (e.g. `/etc/ca-certificates/*.crt`)
 - Always show LDAP search results in the same tab (instead of opening a new tab every time the user clicks `Search`)
 - Tree items with no child should not be expandable, although VS Code does not seem to allow changing the collapsible state after the tree item has been created (see `EntryTreeDataProvider.getTreeItem()`)
+- Localization https://github.com/microsoft/vscode-nls
 
 Enhancements
 - Persist webview states using `getState` / `setState` instead of `retainContextWhenHidden` which is more resource intensive https://code.visualstudio.com/api/extension-guides/webview#persistence

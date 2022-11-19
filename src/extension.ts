@@ -45,7 +45,6 @@ export function activate(context: ExtensionContext) {
 
   context.subscriptions.push(commands.registerCommand('ldap-explorer.add-cacert', async () => {
     // Ask user to provide a location.
-    // @todo support wildcards locations ?
     const cacert = await pickNewCACert();
 
     // User did not provide a cert: cancel command.
