@@ -1,7 +1,8 @@
 import { readFileSync } from 'fs';
-import { window, workspace } from 'vscode';
+import { window } from 'vscode';
 import { Client, createClient, SearchEntry, SearchOptions } from 'ldapjs';
 import { LdapLogger } from './LdapLogger';
+import { CACertificateManager } from './CACertificateManager';
 
 /**
  * Represents an LDAP connection.
@@ -180,18 +181,18 @@ export class LdapConnection {
   protected getTLSOptions() {
     // Read contents of CA cert files defined by the user, if any.
     const cacerts: string[] = [];
-    workspace.getConfiguration('ldap-explorer').get('cacerts', []).forEach(cacertUri => {
+    CACertificateManager.getCACerts().forEach(cacertUri => {
       try {
         cacerts.push(readFileSync(cacertUri).toString());
       } catch (err) {
-        window.showWarningMessage(`Unable to read CA certificate configured in settings: ${cacertUri}`);
+        window.showWarningMessage(`Unable to read CA certificate: ${cacertUri}`);
       }
     });
 
     // Return TLS options based on what the user configured.
     return {
       rejectUnauthorized: this.getVerifyCertBool(true),
-      ca: cacerts,
+      ca: cacerts.length > 0 ? cacerts : undefined,
       servername: (this.getSni(false) ? this.getSni(true) : undefined),
     };
   }

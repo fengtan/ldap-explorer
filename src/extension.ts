@@ -1,12 +1,14 @@
 import { commands, env, ExtensionContext, window } from 'vscode';
 import { LdapConnection } from './LdapConnection';
 import { LdapConnectionManager } from './LdapConnectionManager';
+import { CACertificateTreeDataProvider } from './tree-providers/CACertificateTreeDataProvider';
 import { BookmarkTreeDataProvider } from './tree-providers/BookmarkTreeDataProvider';
 import { ConnectionTreeDataProvider } from './tree-providers/ConnectionTreeDataProvider';
 import { EntryTreeDataProvider } from './tree-providers/EntryTreeDataProvider';
 import { createAddEditConnectionWebview } from './webviews/createAddEditConnectionWebview';
 import { createShowAttributesWebview } from './webviews/createShowAttributesWebview';
 import { SearchWebviewViewProvider } from './webviews/SearchWebviewViewProvider';
+import { CACertificateManager } from './CACertificateManager';
 
 /**
  * This method is called when the extension is activated (see activationEvents in package.json).
@@ -14,6 +16,10 @@ import { SearchWebviewViewProvider } from './webviews/SearchWebviewViewProvider'
 export function activate(context: ExtensionContext) {
 
   // Create our views (connections, tree, bookmarks, search).
+
+  const cacertTreeDataProvider = new CACertificateTreeDataProvider(context);
+  const cacertTreeView = window.createTreeView('ldap-explorer-view-cacerts', { treeDataProvider: cacertTreeDataProvider });
+  context.subscriptions.push(cacertTreeView);
 
   const connectionTreeDataProvider = new ConnectionTreeDataProvider(context);
   const connectionTreeView = window.createTreeView('ldap-explorer-view-connections', { treeDataProvider: connectionTreeDataProvider });
@@ -36,6 +42,45 @@ export function activate(context: ExtensionContext) {
   // Where they show up is defined in package.json ("commands" and "menus").
   // They should all be listed under "activationEvents" in package.json, otherwise
   // calling them from the command palette would break if the extension is not loaded.
+
+  context.subscriptions.push(commands.registerCommand('ldap-explorer.add-cacert', async () => {
+    // Ask user to provide a location.
+    // @todo support wildcards locations ?
+    const cacert = await window.showInputBox({ placeHolder: "Location of the certificate (e.g. /path/to/rootCA.pem)" });
+
+    // User did not provide a cert: cancel command.
+    if (!cacert) {
+      return;
+    }
+
+    // User provided a cert location: add it to the settings.
+    CACertificateManager.addCACert(cacert);
+
+    // Refresh view so the new cert shows up.
+    cacertTreeDataProvider.refresh();
+  }));
+
+  context.subscriptions.push(commands.registerCommand('ldap-explorer.delete-cacert', async (cacert?: string) => {
+    // Ask user to provide a location.
+    // @todo support wildcards locations ?
+    // @todo test reading the file and complain if we cannot
+
+    // No cert was provided, e.g. if the command fired from the command palette.
+    // Ask user to pick an existing cert.
+    if (!cacert) {
+      cacert = await pickCACert();
+      if (!cacert) {
+        // User did not pick any cert: do nothing.
+        return;
+      }
+    }
+
+    // Remove cert from the settings.
+    CACertificateManager.removeCACert(cacert);
+
+    // Refresh view so the cert does not show up anymore.
+    cacertTreeDataProvider.refresh();
+  }));
 
   context.subscriptions.push(commands.registerCommand('ldap-explorer.add-connection', () => {
     createAddEditConnectionWebview(context);
@@ -101,6 +146,7 @@ export function activate(context: ExtensionContext) {
 
   context.subscriptions.push(commands.registerCommand('ldap-explorer.refresh', () => {
     // Refresh all views.
+    cacertTreeDataProvider.refresh();
     connectionTreeDataProvider.refresh();
     entryTreeDataProvider.refresh();
     bookmarkTreeDataProvider.refresh();
@@ -233,6 +279,16 @@ export function activate(context: ExtensionContext) {
  */
 async function pickDN(): Promise<string | undefined> {
   return await window.showInputBox({ placeHolder: "Enter a DN (e.g. cn=readers,ou=users,dc=example,dc=org)" });
+}
+
+/**
+ * Opens quick pick box asking the user to select a CA certificate.
+ *
+ * @todo autocomplete ?
+ */
+async function pickCACert(): Promise<string | undefined> {
+  const options = CACertificateManager.getCACerts();
+  return await window.showQuickPick(options, { placeHolder: "Select a certificate" });
 }
 
 /**

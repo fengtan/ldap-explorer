@@ -44,7 +44,7 @@
       {
         "name": "dummy server (plain)",
         "protocol": "ldap",
-        "verifyssl": "true",
+        "verifycert": "true",
         "sni": "",
         "host": "ldap",
         "port": "1389",
@@ -58,7 +58,7 @@
       {
         "name": "dummy server (TLS)",
         "protocol": "ldaps",
-        "verifyssl": "true",
+        "verifycert": "true",
         "sni": "example.org",
         "host": "ldap",
         "port": "1636",

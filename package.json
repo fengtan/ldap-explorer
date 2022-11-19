@@ -37,6 +37,8 @@
     }
   ],
   "activationEvents": [
+    "onCommand:ldap-explorer.add-cacert",
+    "onCommand:ldap-explorer.delete-cacert",
     "onCommand:ldap-explorer.add-connection",
     "onCommand:ldap-explorer.edit-connection",
     "onCommand:ldap-explorer.delete-connection",
@@ -66,6 +68,10 @@
     "views": {
       "ldap-explorer-container": [
         {
+          "id": "ldap-explorer-view-cacerts",
+          "name": "Trusted CA certificates"
+        },
+        {
           "id": "ldap-explorer-view-connections",
           "name": "Connections"
         },
@@ -86,6 +92,10 @@
     },
     "viewsWelcome": [
       {
+        "view": "ldap-explorer-view-cacerts",
+        "contents": "No custom CA certificate. Falling back to well-known CAs."
+      },
+      {
         "view": "ldap-explorer-view-connections",
         "contents": "No connection.\n[Add new connection](command:ldap-explorer.add-connection)"
       },
@@ -99,6 +109,18 @@
       }
     ],
     "commands": [
+      {
+        "command": "ldap-explorer.add-cacert",
+        "title": "Add new CA certificate",
+        "category": "LDAP Explorer",
+        "icon": "$(add)"
+      },
+      {
+        "command": "ldap-explorer.delete-cacert",
+        "title": "Delete CA certificate",
+        "category": "LDAP Explorer",
+        "icon": "$(trash)"
+      },
       {
         "command": "ldap-explorer.add-connection",
         "title": "Add new Connection",
@@ -173,22 +195,32 @@
       ],
       "view/title": [
         {
-          "command": "ldap-explorer.add-connection",
-          "when": "view == ldap-explorer-view-connections",
+          "command": "ldap-explorer.add-cacert",
+          "when": "view == ldap-explorer-view-cacerts",
           "group": "navigation"
         },
         {
-          "command": "ldap-explorer.refresh",
-          "when": "view == ldap-explorer-view-connections || view == ldap-explorer-view-tree || view == ldap-explorer-view-bookmarks",
+          "command": "ldap-explorer.add-connection",
+          "when": "view == ldap-explorer-view-connections",
           "group": "navigation"
         },
         {
           "command": "ldap-explorer.add-bookmark",
           "when": "view == ldap-explorer-view-bookmarks",
           "group": "navigation"
+        },
+        {
+          "command": "ldap-explorer.refresh",
+          "when": "view == ldap-explorer-view-cacerts || view == ldap-explorer-view-connections || view == ldap-explorer-view-tree || view == ldap-explorer-view-bookmarks",
+          "group": "navigation"
         }
       ],
       "view/item/context": [
+        {
+          "command": "ldap-explorer.delete-cacert",
+          "when": "view == ldap-explorer-view-cacerts",
+          "group": "inline"
+        },
         {
           "command": "ldap-explorer.edit-connection",
           "when": "view == ldap-explorer-view-connections",
