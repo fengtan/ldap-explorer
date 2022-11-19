@@ -46,7 +46,8 @@ export function activate(context: ExtensionContext) {
   context.subscriptions.push(commands.registerCommand('ldap-explorer.add-cacert', async () => {
     // Ask user to provide a location.
     // @todo support wildcards locations ?
-    const cacert = await window.showInputBox({ placeHolder: "Location of the certificate (e.g. /path/to/rootCA.pem)" });
+    // @todo test reading the file and complain if we cannot
+    const cacert = await pickNewCACert();
 
     // User did not provide a cert: cancel command.
     if (!cacert) {
@@ -60,15 +61,36 @@ export function activate(context: ExtensionContext) {
     cacertTreeDataProvider.refresh();
   }));
 
-  context.subscriptions.push(commands.registerCommand('ldap-explorer.delete-cacert', async (cacert?: string) => {
-    // Ask user to provide a location.
-    // @todo support wildcards locations ?
-    // @todo test reading the file and complain if we cannot
+  context.subscriptions.push(commands.registerCommand('ldap-explorer.edit-cacert', async (existingCACert?: string) => {
+    // No cert was provided, e.g. if the command fired from the command palette.
+    // Ask user to pick an existing cert.
+    if (!existingCACert) {
+      existingCACert = await pickExistingCACert();
+      if (!existingCACert) {
+        // User did not pick any cert: do nothing.
+        return;
+      }
+    }
 
+    // Ask user for the new values.
+    const newCACert = await pickNewCACert();
+    if (!newCACert) {
+      // User did not provide a new value: do nothing.
+      return;
+    }
+
+    // Update cert in settings.
+    CACertificateManager.editCACert(newCACert, existingCACert);
+
+    // Refresh view so the cert does not show up anymore.
+    cacertTreeDataProvider.refresh();
+  }));
+
+  context.subscriptions.push(commands.registerCommand('ldap-explorer.delete-cacert', async (cacert?: string) => {
     // No cert was provided, e.g. if the command fired from the command palette.
     // Ask user to pick an existing cert.
     if (!cacert) {
-      cacert = await pickCACert();
+      cacert = await pickExistingCACert();
       if (!cacert) {
         // User did not pick any cert: do nothing.
         return;
@@ -282,9 +304,16 @@ async function pickDN(): Promise<string | undefined> {
 }
 
 /**
+ * Opens box asking the user to enter a new CA certificate.
+ */
+async function pickNewCACert(): Promise<string | undefined> {
+  return await window.showInputBox({ placeHolder: "Location of the certificate (e.g. /path/to/rootCA.pem)" });
+}
+
+/**
  * Opens quick pick box asking the user to select a CA certificate.
  */
-async function pickCACert(): Promise<string | undefined> {
+async function pickExistingCACert(): Promise<string | undefined> {
   const options = CACertificateManager.getCACerts();
   return await window.showQuickPick(options, { placeHolder: "Select a certificate" });
 }

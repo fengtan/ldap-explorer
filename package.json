@@ -38,6 +38,7 @@
   ],
   "activationEvents": [
     "onCommand:ldap-explorer.add-cacert",
+    "onCommand:ldap-explorer.edit-cacert",
     "onCommand:ldap-explorer.delete-cacert",
     "onCommand:ldap-explorer.add-connection",
     "onCommand:ldap-explorer.edit-connection",
@@ -114,6 +115,12 @@
         "title": "Add new CA certificate",
         "category": "LDAP Explorer",
         "icon": "$(add)"
+      },
+      {
+        "command": "ldap-explorer.edit-cacert",
+        "title": "Edit CA certificate",
+        "category": "LDAP Explorer",
+        "icon": "$(edit)"
       },
       {
         "command": "ldap-explorer.delete-cacert",
@@ -216,6 +223,11 @@
         }
       ],
       "view/item/context": [
+        {
+          "command": "ldap-explorer.edit-cacert",
+          "when": "view == ldap-explorer-view-cacerts",
+          "group": "inline"
+        },
         {
           "command": "ldap-explorer.delete-cacert",
           "when": "view == ldap-explorer-view-cacerts",
