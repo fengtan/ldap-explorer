@@ -8,8 +8,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 ### Added
 - Support for StartTLS
+- A view to let the user provide custom CA certificates
 - TLS options:
-  - User-provided Certificate Authority (CA) certificates
   - Server Name Indication (SNI)
   - Option to skip certificate verification
 ### Changed
