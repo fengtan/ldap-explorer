@@ -71,7 +71,7 @@ export function activate(context: ExtensionContext) {
     }
 
     // Ask user for the new values.
-    const newCACert = await pickNewCACert();
+    const newCACert = await pickNewCACert(existingCACert);
     if (!newCACert) {
       // User did not provide a new value: do nothing.
       return;
@@ -304,8 +304,11 @@ async function pickDN(): Promise<string | undefined> {
 /**
  * Opens box asking the user to enter a new CA certificate.
  */
-async function pickNewCACert(): Promise<string | undefined> {
-  return await window.showInputBox({ placeHolder: "Location of the certificate (e.g. /path/to/rootCA.pem)" });
+async function pickNewCACert(defaultValue:string = ""): Promise<string | undefined> {
+  return await window.showInputBox({
+    placeHolder: "Location of the certificate (e.g. /path/to/rootCA.pem)",
+    value: defaultValue
+  });
 }
 
 /**
