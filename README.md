@@ -27,6 +27,8 @@ See [this animation](screenshots/anim.gif) for a demo.
 
 ## Usage
 
+### Connecting to an LDAP server
+
 1. Open the **LDAP Explorer** view from the [activity bar](https://code.visualstudio.com/docs/getstarted/userinterface)
 2. Under panel **Connections**, click the button **Add new connection**
 3. Fill in the connection settings (leave **Bind DN** and **Bind Password** empty to bind as anonymous)
@@ -34,6 +36,20 @@ See [this animation](screenshots/anim.gif) for a demo.
 5. Now you may browse the tree, manage bookmarks and run search queries from the **Tree**, **Bookmarks** and **Search** panels, respectively
 
 Note that connections have a field **Maximum number of entries to return** to limit the size of LDAP responses. Most LDAP servers will return at most 1,000 entries regardless of this setting. If an LDAP query returns more than this limit then you will be shown an error, in which case you may try to increase the limit.
+
+### TLS
+
+TLS options show up if:
+- the connection's protocol is set to `ldaps` ; or
+- the connection's protocol is set to `ldap` and the checkbox `StartTLS` is checked
+
+If your server's certificate is self-signed then you may want to list your root Certificate Authority in the view `Trusted CA Certificates`.
+
+If your server is multi-homed then you may want to set the connection's `Server Name Indication (SNI)` field to the host being connected to (it should be a host name, not an IP address). Leave this field empty if the certificate matches the host name. The [opensslutils](https://marketplace.visualstudio.com/items?itemName=ffaraone.opensslutils) extension comes with a handy command to inspect the contents of a certificate, for instance if you need to confirm that the certificate's Common Name (CN) matches the host name.
+
+As a last resort uncheck `Verify certificate` to skip any certificate verification (not recommended).
+
+![TLS Options](screenshots/tls.png)
 
 ## Commands
 
@@ -75,6 +91,9 @@ List of LDAP connections. Example:
     {
       "name": "ACME prod",
       "protocol": "ldap",
+      "starttls": "false",
+      "verifycert": "true",
+      "sni": "",
       "host": "acme.example.net",
       "port": "389",
       "binddn": "cn=admin,dc=example,dc=org",
@@ -90,11 +109,29 @@ List of LDAP connections. Example:
 }
 ```
 
+* **ldap-explorer.cacerts** (`[]`)
+
+List of trusted root certificates. Example:
+
+```json
+{
+  "ldap-explorer.cacerts": [
+    "/etc/ca-certificates/myRootCA.crt"
+  ]
+}
+```
+
 ## Known limitations
 
 No support for
 - [LDAP aliases](https://ldapwiki.com/wiki/Alias) - [not supported by ldapjs](http://ldapjs.org/#whats-not-in-the-box)
 - [SASL](https://en.wikipedia.org/wiki/Simple_Authentication_and_Security_Layer) / [GSSAPI](https://en.wikipedia.org/wiki/Generic_Security_Services_Application_Program_Interface) binding - [not supported by ldapjs](https://github.com/ldapjs/node-ldapjs/issues/85)
+
+
+## Recommended extensions
+
+* [LDIF syntax](https://marketplace.visualstudio.com/items?itemName=jtavin.ldif) if you work with [LDIF](https://en.wikipedia.org/wiki/LDAP_Data_Interchange_Format) files
+* [opensslutils](https://marketplace.visualstudio.com/items?itemName=ffaraone.opensslutils) if you work with TLS connections (LDAPS or StartTLS)
 
 ## Alternative tools
 

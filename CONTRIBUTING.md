@@ -57,18 +57,12 @@ Open the [Run and Debug](https://code.visualstudio.com/docs/editor/debugging) vi
 
 This will compile the source code and install the extension in a new VS Code instance where you can test it.
 
-You may create a connection to the dummy LDAP server with these parameters (see `.devcontainer/docker-compose.yml`):
+By default the dummy server's self-signed certificate (located in `.devcontainer/certs`) is trusted and 3 connections are already set:
+* `dummy server (plain)`
+* `dummy server (StartTLS)`
+* `dummy server (LDAPS)`
 
-| Parameter     | Value (explicit)             | Value (environment variable) |
-|---------------|------------------------------|------------------------------|
-| Protocol      | `ldap`                       | `${LDAP_PROTOCOL}`           |
-| Host          | `ldap`                       | `${LDAP_HOST}`               |
-| Port          | `1389`                       | `${LDAP_PORT}`               |
-| Bind DN       | `cn=admin,dc=example,dc=org` | `${LDAP_BIND_DN}`            |
-| Bind Password | `foobar`                     | `${LDAP_BIND_PWD}`           |
-| Base DN       | `dc=example,dc=org`          | `${LDAP_BASE_DN}`            |
-
-The dummy LDAP server also accepts TLS connections (`ldaps`) on port `1636`. Note that it is using a self-signed certificate located in `.devcontainer/certs`.
+You may also create a connection with the environment variables defined in `.devcontainer/docker-compose.yml`.
 
 Set [breakpoints](https://code.visualstudio.com/docs/editor/debugging#_breakpoints) if necessary.
 
