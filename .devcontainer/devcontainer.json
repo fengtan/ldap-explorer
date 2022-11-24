@@ -44,6 +44,7 @@
       {
         "name": "dummy server (plain)",
         "protocol": "ldap",
+        "starttls": "false",
         "verifycert": "true",
         "sni": "",
         "host": "ldap",
@@ -56,8 +57,24 @@
         "bookmarks": []
       },
       {
-        "name": "dummy server (TLS)",
+        "name": "dummy server (StartTLS)",
+        "protocol": "ldap",
+        "starttls": "true",
+        "verifycert": "true",
+        "sni": "example.org",
+        "host": "ldap",
+        "port": "1389",
+        "binddn": "cn=admin,dc=example,dc=org",
+        "bindpwd": "foobar",
+        "basedn": "dc=example,dc=org",
+        "limit": "0",
+        "timeout": "5000",
+        "bookmarks": []
+      },
+      {
+        "name": "dummy server (LDAPS)",
         "protocol": "ldaps",
+        "starttls": "false",
         "verifycert": "true",
         "sni": "example.org",
         "host": "ldap",
