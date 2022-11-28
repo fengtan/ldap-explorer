@@ -133,6 +133,7 @@ UI
 - Option to define CA certificates using wildcards (e.g. `/etc/ca-certificates/*.crt`)
 - Expand `${workspaceFolder}` when set in CA certificates
 - Always show LDAP search results in the same tab (instead of opening a new tab every time the user clicks `Search`)
+- Show contextual commands (`view/item/context`) in a contextual menu (on top of inline buttons)
 - Tree items with no child should not be expandable, although VS Code does not seem to allow changing the collapsible state after the tree item has been created (see `EntryTreeDataProvider.getTreeItem()`)
 - Localization https://github.com/microsoft/vscode-nls
 
