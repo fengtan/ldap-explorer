@@ -1,7 +1,7 @@
 # Same version of nodejs as that used for
 # - vscode itself https://github.com/Microsoft/vscode/wiki/How-to-Contribute#prerequisites
 # - CI tests .github/workflows/tests.yml
-FROM node:16.18.1-slim
+FROM node:19.1.0-slim
 
 # Packages
 # Includes fix for "debconf: delaying package configuration, since apt-utils is not installed"
