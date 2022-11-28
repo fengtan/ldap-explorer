@@ -140,6 +140,12 @@ Enhancements
 - Persist webview states using `getState` / `setState` instead of `retainContextWhenHidden` which is more resource intensive https://code.visualstudio.com/api/extension-guides/webview#persistence
 - The webviews' content security policy includes `unsafe-inline` because the Webview UI Toolkit injects inline CSS and JS - that should be removed as it defeats the purpose of the CSP (see example in [issue #383](https://github.com/microsoft/vscode-webview-ui-toolkit/pull/383))
 
+# Updating dependencies
+
+A [dependabot](https://github.com/dependabot) service is enabled for this repo and configured in `.github/dependabot.yml`.
+
+The dependency graph is located at https://github.com/fengtan/ldap-explorer/network/updates
+
 # Publishing a new release
 
 1. Verify tests pass in [Github Actions](https://github.com/fengtan/ldap-explorer/actions)
