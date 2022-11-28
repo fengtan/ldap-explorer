@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+## [1.2.1] - 2022-11-27
+### Changed
+- Uncheck **StartTLS** checkbox by default in new connections
+- Updated dependencies
+
 ## [1.2.0] - 2022-11-23
 ### Added
 - Support for StartTLS
@@ -42,7 +48,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Bookmarks management (panel, commands)
 - Search interface (panel, webviews, commands)
 
-[Unreleased]: https://github.com/fengtan/ldap-explorer/compare/1.2.0...HEAD
+[Unreleased]: https://github.com/fengtan/ldap-explorer/compare/1.2.1...HEAD
+[1.2.1]: https://github.com/fengtan/ldap-explorer/compare/1.2.0...1.2.1
 [1.2.0]: https://github.com/fengtan/ldap-explorer/compare/1.1.1...1.2.0
 [1.1.1]: https://github.com/fengtan/ldap-explorer/compare/1.1.0...1.1.1
 [1.1.0]: https://github.com/fengtan/ldap-explorer/compare/1.0.1...1.1.0
