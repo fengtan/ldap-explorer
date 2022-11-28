@@ -52,7 +52,7 @@ export function createAddEditConnectionWebview(context: ExtensionContext, existi
           </vscode-dropdown>
         </section>
         <section>
-          <vscode-checkbox id="starttls" checked="${existingConnection?.getStartTLS(false) ?? 'true'}" onChange="updateFieldsVisibility()">StartTLS</vscode-checkbox>
+          <vscode-checkbox id="starttls" checked="${existingConnection?.getStartTLS(false) ?? 'false'}" onChange="updateFieldsVisibility()">StartTLS</vscode-checkbox>
         </section>
         <fieldset id="tlsoptions">
           <legend>TLS Options</legend>
