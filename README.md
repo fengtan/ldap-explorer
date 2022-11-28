@@ -39,15 +39,15 @@ Note that connections have a field **Maximum number of entries to return** to li
 
 ### TLS
 
-TLS options show up if:
-- the connection's protocol is set to `ldaps` ; or
-- the connection's protocol is set to `ldap` and the checkbox `StartTLS` is checked
+A fieldset **TLS options** shows up if:
+- The connection's protocol is set to **ldaps** ; or
+- The connection's protocol is set to **ldap** and the checkbox **StartTLS** is checked
 
-If your server's certificate is self-signed then you may want to list your root Certificate Authority in the view `Trusted CA Certificates`.
+If your server's certificate is self-signed then you may want to list your root Certificate Authority in the view **Trusted CA Certificates**.
 
-If your server is multi-homed then you may want to set the connection's `Server Name Indication (SNI)` field to the host being connected to (it should be a host name, not an IP address). Leave this field empty if the certificate matches the host name. The [opensslutils](https://marketplace.visualstudio.com/items?itemName=ffaraone.opensslutils) extension comes with a handy command to inspect the contents of a certificate, for instance if you need to confirm that the certificate's Common Name (CN) matches the host name.
+If your server is multi-homed then you may want to set the connection's **Server Name Indication (SNI)** field to the host being connected to (it should be a host name, not an IP address). Leave this field empty if the certificate matches the host name. The [opensslutils](https://marketplace.visualstudio.com/items?itemName=ffaraone.opensslutils) extension comes with a handy command to inspect the contents of a certificate, for instance if you need to confirm that the certificate's Common Name (CN) matches the host name.
 
-As a last resort uncheck `Verify certificate` to skip any certificate verification (not recommended).
+As a last resort uncheck **Verify certificate** to skip any certificate verification (not recommended).
 
 ![TLS Options](screenshots/tls.png)
 
@@ -60,11 +60,14 @@ This extension contributes the following commands:
 * **LDAP Explorer: Delete Connection**
 * **LDAP Explorer: Set active Connection** - An active connection is required for the Tree, Bookmarks and Search views to be functional
 * **LDAP Explorer: Set no active Connection** - Clears currently active connection, if any
-* **LDAP Explorer: Refresh** - Refreshes the Connections, Tree and Bookmarks views
+* **LDAP Explorer: Refresh** - Refreshes the Trusted CA Certificates, Connections, Tree and Bookmarks views
 * **LDAP Explorer: Show Attributes** - Lists attributes of a given LDAP entry
 * **LDAP Explorer: Reveal in Tree** - Shows a given LDAP entry in the Tree view
 * **LDAP Explorer: Add to Bookmarks** - The LDAP entry will be added to the Bookmarks view
 * **LDAP Explorer: Remove from Bookmarks** - The LDAP entry will be removed from the Bookmarks view
+* **LDAP Explorer: Add new CA certificate**
+* **LDAP Explorer: Edit CA certificate**
+* **LDAP Explorer: Delete CA certificate**
 
 ## Configuration
 
@@ -131,7 +134,7 @@ No support for
 ## Recommended extensions
 
 * [LDIF syntax](https://marketplace.visualstudio.com/items?itemName=jtavin.ldif) if you work with [LDIF](https://en.wikipedia.org/wiki/LDAP_Data_Interchange_Format) files
-* [opensslutils](https://marketplace.visualstudio.com/items?itemName=ffaraone.opensslutils) if you work with TLS connections (LDAPS or StartTLS)
+* [opensslutils](https://marketplace.visualstudio.com/items?itemName=ffaraone.opensslutils) if you need to troubleshoot TLS connections (LDAPS or StartTLS)
 
 ## Alternative tools
 
