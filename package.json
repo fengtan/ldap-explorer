@@ -393,7 +393,7 @@
     "ldif": "ldapadd -x -D ${LDAP_BIND_DN} -w ${LDAP_BIND_PWD} -H ${LDAP_PROTOCOL}://${LDAP_HOST}:${LDAP_PORT} -f .devcontainer/data.ldif"
   },
   "devDependencies": {
-    "@types/glob": "^7.2.0",
+    "@types/glob": "^8.0.1",
     "@types/ldapjs": "^2.2.3",
     "@types/mocha": "^9.1.1",
     "@types/node": "^16.11.54",
@@ -402,7 +402,7 @@
     "@typescript-eslint/parser": "^5.34.0",
     "@vscode/test-electron": "^2.1.5",
     "eslint": "^8.20.0",
-    "glob": "^8.0.3",
+    "glob": "^8.1.0",
     "mocha": "^10.0.0",
     "ts-loader": "^9.4.1",
     "typescript": "^4.7.4",
