@@ -149,15 +149,21 @@ The dependency graph is located at https://github.com/fengtan/ldap-explorer/netw
 
 # Publishing a new release
 
-1. Verify tests pass in [Github Actions](https://github.com/fengtan/ldap-explorer/actions)
-2. If ldapjs or its dependencies were updated, make sure they are listed in `.vscodeignore` (because of [ldapjs/node-ldapjs#421](https://github.com/ldapjs/node-ldapjs/issues/421))
-3. Update documentation ([README.md](https://github.com/fengtan/ldap-explorer/blob/master/README.md) and [CONTRIBUTING.md](https://github.com/fengtan/dap-explorer/blob/master/CONTRIBUTING.md) if applicable
-4. Bump up version and update metadata (if applicable) in [package.json](https://github.com/fengtan/ldap-explorer/blob/master/package.json) and [package-lock.json](https://github.com/fengtan/ldap-explorer/blob/master/package-lock.json)
-5. Add record to [CHANGELOG.md](https://github.com/fengtan/ldap-explorer/blob/master/CHANGELOG.md)
-6. Package extension: `vsce package`
-7. [Create a release](https://github.com/fengtan/ldap-explorer/releases) on Github and attach the VSIX package to this release
-8. Publish extension: `vsce publish` (create a [Personal Access Token](https://dev.azure.com/fengtan/_usersSettings/tokens) by following [these instructions](https://code.visualstudio.com/api/working-with-extensions/publishing-extension#get-a-personal-access-token) if necessary)
-9. Verify the extension was updated on [Marketplace](https://marketplace.visualstudio.com/items?itemName=fengtan.ldap-explorer) and [Extension Hub](https://marketplace.visualstudio.com/manage/publishers/fengtan/extensions/ldap-explorer/hub?_a=manageExtension)
+1. Verify
+  1. Verify tests pass in [Github Actions](https://github.com/fengtan/ldap-explorer/actions)
+  2. If ldapjs or its dependencies were updated, make sure they are listed in `.vscodeignore` (because of [ldapjs/node-ldapjs#421](https://github.com/ldapjs/node-ldapjs/issues/421))
+  3. Update documentation ([README.md](https://github.com/fengtan/ldap-explorer/blob/master/README.md) and [CONTRIBUTING.md](https://github.com/fengtan/dap-explorer/blob/master/CONTRIBUTING.md) if applicable
+2. Package
+  1. Bump up version and update metadata (if applicable) in [package.json](https://github.com/fengtan/ldap-explorer/blob/master/package.json) and [package-lock.json](https://github.com/fengtan/ldap-explorer/blob/master/package-lock.json)
+  2. Add record to [CHANGELOG.md](https://github.com/fengtan/ldap-explorer/blob/master/CHANGELOG.md)
+  3. Package extension: `vsce package`
+  4. [Create a release](https://github.com/fengtan/ldap-explorer/releases) on Github and attach the VSIX package to this release
+3. Release on [VS Code Marketplace](https://marketplace.visualstudio.com/)
+  1. Publish extension: `vsce publish` (create a [Personal Access Token](https://dev.azure.com/fengtan/_usersSettings/tokens) by following [these instructions](https://code.visualstudio.com/api/working-with-extensions/publishing-extension#get-a-personal-access-token) if necessary)
+  2. Verify the extension was updated on [Marketplace](https://marketplace.visualstudio.com/items?itemName=fengtan.ldap-explorer) and [Extension Hub](https://marketplace.visualstudio.com/manage/publishers/fengtan/extensions/ldap-explorer/hub?_a=manageExtension)
+4. Release on [Open VSX Registry](https://open-vsx.org/) (pending [#50](https://github.com/fengtan/ldap-explorer/issues/50))
+  1. Publish extensions with [these instructions](https://github.com/eclipse/openvsx/wiki/Publishing-Extensions)
+  2. Verify the extension was updated
 
 # Resources
 
