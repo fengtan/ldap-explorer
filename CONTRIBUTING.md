@@ -6,6 +6,8 @@
 
 Install the [Dev Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) extension.
 
+[Install Docker](https://docs.docker.com/engine/install/), preferably not via [Snap](https://en.wikipedia.org/wiki/Snap_(software)) otherwise you may run into a [permission denied error](https://forums.docker.com/t/bug-on-apt-install-permission-denied/100196/9) when building the image.
+
 ## Build environment
 
 Open the project in VS Code:
