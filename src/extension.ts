@@ -257,10 +257,17 @@ export function activate(context: ExtensionContext) {
     connection.addBookmark(dn);
 
     // Persist bookmark in connection.
-    LdapConnectionManager.editConnection(connection, connection.getName());
-
-    // Refresh bookmarks view so the new bookmark shows up.
-    bookmarkTreeDataProvider.refresh();
+    LdapConnectionManager.editConnection(connection, connection.getName()).then(
+      value => {
+        // If the connection was successfully updated, then refresh the
+        // bookmarks view so the new bookmark shows up.
+        bookmarkTreeDataProvider.refresh();
+      },
+      reason => {
+        // If connection could not be updated, then show error message.
+        window.showErrorMessage(`Unable to update connection: ${reason}`);
+      }
+    );
   }));
 
   context.subscriptions.push(commands.registerCommand('ldap-explorer.delete-bookmark', async (dn?: string) => {
@@ -286,10 +293,17 @@ export function activate(context: ExtensionContext) {
     connection.deleteBookmark(dn);
 
     // Persist removal of the bookmark from the connection.
-    LdapConnectionManager.editConnection(connection, connection.getName());
-
-    // Refresh bookmarks view so the bookmark goes away.
-    bookmarkTreeDataProvider.refresh();
+    LdapConnectionManager.editConnection(connection, connection.getName()).then(
+      value => {
+        // If the connection was successfully updated, then refresh the
+        // bookmarks view so the bookmark goes away.
+        bookmarkTreeDataProvider.refresh();
+      },
+      reason => {
+        // If connection could not be updated, then show error message.
+        window.showErrorMessage(`Unable to update connection: ${reason}`);
+      }
+    );
   }));
 
 }
