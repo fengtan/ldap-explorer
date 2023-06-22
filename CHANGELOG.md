@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.2.2] - 2023-06-21
+### Fixed
+- Refresh bookmarks view when adding/deleting a bookmark
+### Changed
+- Updated dependencies
+
 ## [1.2.1] - 2022-11-27
 ### Changed
 - Uncheck **StartTLS** checkbox by default in new connections
@@ -48,7 +54,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Bookmarks management (panel, commands)
 - Search interface (panel, webviews, commands)
 
-[Unreleased]: https://github.com/fengtan/ldap-explorer/compare/1.2.1...HEAD
+[Unreleased]: https://github.com/fengtan/ldap-explorer/compare/1.2.2...HEAD
+[1.2.2]: https://github.com/fengtan/ldap-explorer/compare/1.2.1...1.2.2
 [1.2.1]: https://github.com/fengtan/ldap-explorer/compare/1.2.0...1.2.1
 [1.2.0]: https://github.com/fengtan/ldap-explorer/compare/1.1.1...1.2.0
 [1.1.1]: https://github.com/fengtan/ldap-explorer/compare/1.1.0...1.1.1
