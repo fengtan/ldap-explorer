@@ -1,0 +1,12 @@
+/*
+ * Set minimum width on search results data grid.
+ *
+ * This cannot be set via the 'grid-template-columns' attribute because of
+ * https://github.com/microsoft/vscode-webview-ui-toolkit/issues/473
+ *
+ * @see https://github.com/fengtan/ldap-explorer/issues/52
+ */
+vscode-data-grid-cell {
+  /* @todo should be configurable via settings (and documented in README) */
+  min-width: 6em;
+}
