@@ -8,6 +8,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 ### Fixed
 - No minimum width on grid columns makes search results unreadable, addresses [#52](https://github.com/fengtan/ldap-explorer/issues/52)
+### Changed
+- Updated dependencies
 
 ## [1.2.2] - 2023-06-21
 ### Fixed
