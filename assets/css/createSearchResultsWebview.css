@@ -7,6 +7,5 @@
  * @see https://github.com/fengtan/ldap-explorer/issues/52
  */
 vscode-data-grid-cell {
-  /* @todo should be configurable via settings (and documented in README) */
   min-width: 6em;
 }
