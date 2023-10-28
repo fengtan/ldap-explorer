@@ -32,6 +32,9 @@ export function createSearchResultsWebview(context: ExtensionContext, connection
   // Custom CSS.
   const stylesheetUri = getUri(panel.webview, context.extensionUri, ["assets", "css", "createSearchResultsWebview.css"]);
 
+  // Codicons CSS.
+  const codiconsUri = getUri(panel.webview, context.extensionUri, ['node_modules', '@vscode/codicons', 'dist', 'codicon.css']);
+
   // Populate webview HTML with search results.
   panel.webview.html = /* html */ `
     <!DOCTYPE html>
@@ -40,12 +43,15 @@ export function createSearchResultsWebview(context: ExtensionContext, connection
           <!-- Webview UI toolkit requires a CSP with unsafe-inline script-src and style-src (not ideal but we have no choice) -->
           <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src ${panel.webview.cspSource} 'unsafe-inline'; style-src ${panel.webview.cspSource} 'unsafe-inline';" />
           <script type="module" src="${toolkitUri}"></script>
-          <link type="text/css" rel="stylesheet" href="${stylesheetUri}" media="all">
+          <link type="text/css" rel="stylesheet" href="${stylesheetUri}" media="all" />
+          <!-- TODO 404 "codicon.css does not exist", should import @vscode/codicons -->
+          <!--link type="text/css" rel="stylesheet" href="${codiconsUri}" media="all" /-->
         </head>
         <body>
           <h1>${title}</h1>
           <h2 id="counter">0 result</h2>
           <vscode-data-grid id="grid" generate-header="sticky" aria-label="Search results"></vscode-data-grid>
+          <vscode-button id="export-csv" appearance="secondary">Export CSV</vscode-button>
           <script src="${scriptUri}"></script>
         </body>
       </html>
@@ -79,6 +85,20 @@ export function createSearchResultsWebview(context: ExtensionContext, connection
     reason => {
       window.showErrorMessage(`Unable to search with filter "${filter}", attributes "${attributes?.join(', ')}": ${reason}`);
     }
+  );
+
+  // Handle messages from the webview to the extension.
+  // See https://code.visualstudio.com/api/extension-guides/webview#passing-messages-from-a-webview-to-an-extension
+  panel.webview.onDidReceiveMessage(
+    message => {
+      switch (message.command) {
+      case 'export-csv':
+        window.showErrorMessage("received message");
+        return;
+      }
+    },
+    undefined,
+    context.subscriptions
   );
 
 }
