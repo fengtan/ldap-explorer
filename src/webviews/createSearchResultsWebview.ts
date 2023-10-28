@@ -1,4 +1,4 @@
-import { ExtensionContext, ViewColumn, window } from 'vscode';
+import { ExtensionContext, Uri, ViewColumn, window } from 'vscode';
 import { LdapConnection } from '../LdapConnection';
 import { getUri, getWebviewUiToolkitUri } from './utils';
 import { SearchEntry } from 'ldapjs';
@@ -104,7 +104,18 @@ export function createSearchResultsWebview(context: ExtensionContext, connection
           // TODO populate CSV file
           console.log(entry);
         });
-        // TODO download CSV file
+        window.showSaveDialog({
+          defaultUri: Uri.file("/tmp/ldap-results.csv"),
+          saveLabel: "Export",
+          title: "Export CSV file"
+        }).then(
+          uri => {
+            console.log(`now saving to ${uri}`); // TODO build and populate CSV
+          },
+          reason => {
+            console.log(`failure`); // TODO show error
+          }
+        ); // TODO then save file
         break;
       }
     },

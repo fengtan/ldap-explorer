@@ -411,8 +411,10 @@
     "webpack-cli": "^4.10.0"
   },
   "dependencies": {
-    "@microsoft/vscode-file-downloader-api": "^1.0.1",
     "@vscode/webview-ui-toolkit": "^1.0.1",
     "ldapjs": "^2.3.3"
-  }
+  },
+  "extensionDependencies": [
+    "mindaro-dev.file-downloader"
+  ]
 }
