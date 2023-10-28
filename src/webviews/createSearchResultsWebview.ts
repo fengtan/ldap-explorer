@@ -1,6 +1,7 @@
 import { ExtensionContext, ViewColumn, window } from 'vscode';
 import { LdapConnection } from '../LdapConnection';
 import { getUri, getWebviewUiToolkitUri } from './utils';
+import { SearchEntry } from 'ldapjs';
 
 /**
  * Create a webview that shows results of an LDAP search query.
@@ -57,35 +58,41 @@ export function createSearchResultsWebview(context: ExtensionContext, connection
       </html>
     `;
 
-  // Defaults to scope "sub" i.e. returns the full substree of the base DN https://ldapwiki.com/wiki/WholeSubtree
-  connection.search(
-    { scope: "sub", paged: true, filter: filter, attributes: attributes },
-    connection.getBaseDn(true),
-    entry => {
-      // Turn LDAP entry into an object that matches the format expected by the grid.
-      // The LDAP attribute name will show up in the grid headers and the values will show up in the cells.
-      // See https://github.com/microsoft/vscode-webview-ui-toolkit/blob/main/src/data-grid/README.md
-      const row: any = {};
-      entry.attributes.forEach(attribute => {
-        row[attribute.type] = attribute.vals;
-      });
-      // Callback that fires when a new search result is found.
-      // Send message from extension to webview, tell it to add a row to the grid.
-      // See https://code.visualstudio.com/api/extension-guides/webview#passing-messages-from-an-extension-to-a-webview
-      panel.webview.postMessage({
-        command: "addRow",
-        row: row,
-      });
-    }
-  ).then(
-    entries => {
-      // Do nothing: onSearchResultFound callback is provided i.e. results are
-      // displayed as they are received.
-    },
-    reason => {
-      window.showErrorMessage(`Unable to search with filter "${filter}", attributes "${attributes?.join(', ')}": ${reason}`);
-    }
-  );
+  // Execute ldap search and run a given callback when an entry is found.
+  function search(onSearchEntryFound?: ((entry: SearchEntry) => void) | undefined) {
+    connection.search(
+      // Defaults to scope "sub" i.e. returns the full substree of the base DN https://ldapwiki.com/wiki/WholeSubtree
+      { scope: "sub", paged: true, filter: filter, attributes: attributes },
+      connection.getBaseDn(true),
+      onSearchEntryFound
+    ).then(
+      entries => {
+        // Do nothing: onSearchResultFound callback is provided i.e. results are
+        // displayed as they are received.
+      },
+      reason => {
+        window.showErrorMessage(`Unable to search with filter "${filter}", attributes "${attributes?.join(', ')}": ${reason}`);
+      }
+    );
+  }
+
+  // Execute ldap search and populate grid as results are received.
+  search(entry => {
+    // Turn LDAP entry into an object that matches the format expected by the grid.
+    // The LDAP attribute name will show up in the grid headers and the values will show up in the cells.
+    // See https://github.com/microsoft/vscode-webview-ui-toolkit/blob/main/src/data-grid/README.md
+    const row: any = {};
+    entry.attributes.forEach(attribute => {
+      row[attribute.type] = attribute.vals;
+    });
+    // Callback that fires when a new search result is found.
+    // Send message from extension to webview, tell it to add a row to the grid.
+    // See https://code.visualstudio.com/api/extension-guides/webview#passing-messages-from-an-extension-to-a-webview
+    panel.webview.postMessage({
+      command: "addRow",
+      row: row,
+    });
+  });
 
   // Handle messages from the webview to the extension.
   // See https://code.visualstudio.com/api/extension-guides/webview#passing-messages-from-a-webview-to-an-extension
@@ -93,8 +100,12 @@ export function createSearchResultsWebview(context: ExtensionContext, connection
     message => {
       switch (message.command) {
       case 'export-csv':
-        window.showErrorMessage("received message");
-        return;
+        search(entry => {
+          // TODO populate CSV file
+          console.log(entry);
+        });
+        // TODO download CSV file
+        break;
       }
     },
     undefined,
