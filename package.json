@@ -413,8 +413,5 @@
   "dependencies": {
     "@vscode/webview-ui-toolkit": "^1.0.1",
     "ldapjs": "^2.3.3"
-  },
-  "extensionDependencies": [
-    "mindaro-dev.file-downloader"
-  ]
+  }
 }

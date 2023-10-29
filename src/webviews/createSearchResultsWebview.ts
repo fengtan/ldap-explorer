@@ -2,6 +2,7 @@ import { ExtensionContext, Uri, ViewColumn, window } from 'vscode';
 import { LdapConnection } from '../LdapConnection';
 import { getUri, getWebviewUiToolkitUri } from './utils';
 import { SearchEntry } from 'ldapjs';
+import { openSync, writeFileSync } from "fs";
 
 /**
  * Create a webview that shows results of an LDAP search query.
@@ -100,17 +101,28 @@ export function createSearchResultsWebview(context: ExtensionContext, connection
     message => {
       switch (message.command) {
       case 'export-csv':
-        search(entry => {
-          // TODO populate CSV file
-          console.log(entry);
-        });
         window.showSaveDialog({
-          defaultUri: Uri.file("/tmp/ldap-results.csv"),
+          defaultUri: Uri.file("/tmp/export.csv"), // TODO homedir = require('os').homedir(); instead of /tmp
           saveLabel: "Export",
           title: "Export CSV file"
         }).then(
-          uri => {
-            console.log(`now saving to ${uri}`); // TODO build and populate CSV
+          uriCSV => {
+            // TODO write headers to csv
+            // TODO w+?
+            if (uriCSV === undefined) {
+              // TODO is this what happens when the user just does not provide a file path?
+              return;
+            }
+            const fileDescriptor = openSync(uriCSV.fsPath, 'w+');
+            search(entry => {
+              var line = entry.dn; // TODO populate line with all fields
+              writeFileSync(fileDescriptor, line + "\n"); // TODO foobar
+            });
+            // TODO Ideally write asynchronously as we receive results
+            // TODO what if there is an error?
+            // TODO test writing to a place that is not writable
+            // TODO show confirmation message / error message in vscode end-user interface
+            console.log(`now saving to ${uriCSV}`); // TODO build and populate CSV
           },
           reason => {
             console.log(`failure`); // TODO show error
