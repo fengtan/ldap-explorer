@@ -3,6 +3,8 @@ import { LdapConnection } from '../LdapConnection';
 import { getUri, getWebviewUiToolkitUri } from './utils';
 import { Attribute, SearchEntry } from 'ldapjs';
 import { openSync, writeFileSync } from "fs";
+import { homedir } from "os";
+import { sep } from "path";
 
 /**
  * Create a webview that shows results of an LDAP search query.
@@ -102,19 +104,20 @@ export function createSearchResultsWebview(context: ExtensionContext, connection
       switch (message.command) {
       case 'export-csv':
         window.showSaveDialog({
-          defaultUri: Uri.file("/tmp/export.csv"), // TODO homedir = require('os').homedir(); instead of /tmp
+          // Create CSV named "export.csv" in home directory by default.
+          defaultUri: Uri.file(homedir() + sep + "export.csv"),
           saveLabel: "Export",
           title: "Export CSV file"
         }).then(
           uriCSV => {
+            // TODO move button to the top of the page, ideally turn into icon
             // Make sure user provided a file path.
             // If not then just return and do nothing.
             if (uriCSV === undefined) {
               return;
             }
             // Open file for writing.
-            // TODO w+?
-            const fileDescriptor = openSync(uriCSV.fsPath, 'w+');
+            const fileDescriptor = openSync(uriCSV.fsPath, 'w');
             // Write CSV headers to the file.
             // TODO wrap headers with quotes + escape commas in value
             const attributesToExport: string[] = message.attributesToExport;
