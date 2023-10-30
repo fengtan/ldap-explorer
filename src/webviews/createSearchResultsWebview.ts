@@ -107,15 +107,20 @@ export function createSearchResultsWebview(context: ExtensionContext, connection
           title: "Export CSV file"
         }).then(
           uriCSV => {
-            // TODO write headers to csv
-            // TODO w+?
+            // Make sure user provided a file path.
+            // If not then just return and do nothing.
             if (uriCSV === undefined) {
-              // TODO is this what happens when the user just does not provide a file path?
               return;
             }
+            // Open file for writing.
+            // TODO w+?
             const fileDescriptor = openSync(uriCSV.fsPath, 'w+');
+            // Write CSV headers to the file.
+            // TODO wrap headers with quotes + escape commas in value
             const attributesToExport: string[] = message.attributesToExport;
-            // TODO or show CSV using virtual filesystem api?
+            writeFileSync(fileDescriptor, attributesToExport.join(",") + "\n");
+            // Execute LDAP search.
+            // For each result, format a CSV line and write it to the file.
             search(entry => {
               let entryValues: (string | string[])[] = [];
               attributesToExport.forEach(attributeToExport => {
@@ -131,7 +136,6 @@ export function createSearchResultsWebview(context: ExtensionContext, connection
             // TODO what if there is an error?
             // TODO test writing to a place that is not writable
             // TODO show confirmation message / error message in vscode end-user interface
-            console.log(`now saving to ${uriCSV}`); // TODO build and populate CSV
           },
           reason => {
             console.log(`failure`); // TODO show error
