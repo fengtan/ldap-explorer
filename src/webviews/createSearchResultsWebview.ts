@@ -1,7 +1,7 @@
 import { ExtensionContext, Uri, ViewColumn, window } from 'vscode';
 import { LdapConnection } from '../LdapConnection';
 import { getUri, getWebviewUiToolkitUri } from './utils';
-import { SearchEntry } from 'ldapjs';
+import { Attribute, SearchEntry } from 'ldapjs';
 import { openSync, writeFileSync } from "fs";
 
 /**
@@ -114,12 +114,14 @@ export function createSearchResultsWebview(context: ExtensionContext, connection
               return;
             }
             const fileDescriptor = openSync(uriCSV.fsPath, 'w+');
+            const attributesToExport: string[] = message.attributesToExport;
             // TODO or show CSV using virtual filesystem api?
             search(entry => {
               let entryValues: (string | string[])[] = [];
-              // TODO use message.attributes
-              entry.attributes.forEach(attribute => {
-                entryValues.push('"' + attribute.vals + '"'); // TODO escape double quotes ; feels like reinventing the wheel
+              attributesToExport.forEach(attributeToExport => {
+                const attributeElemToExport: Attribute | undefined = entry.attributes.find(attribute => attribute.type === attributeToExport);
+                // TODO escape double quotes in value ; feels like reinventing the wheel
+                entryValues.push("\"" + (attributeElemToExport?.vals ?? "") + "\"");
               });
               writeFileSync(fileDescriptor, entryValues.join(",") + "\n");
             });

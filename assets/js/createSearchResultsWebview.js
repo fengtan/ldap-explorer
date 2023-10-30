@@ -25,11 +25,11 @@ window.addEventListener('message', event => {
   exportCSV.addEventListener("click", function() {
     // Get list of attributes to export from the grid.
     const grid = document.getElementById("grid");
-    const attributes = grid.columnDefinitions.map(columnDefinition => columnDefinition.columnDataKey);
+    const attributesToExport = grid.columnDefinitions.map(columnDefinition => columnDefinition.columnDataKey);
     // Send message to extension.
     vscode.postMessage({
       "command": "export-csv",
-      "attributes": attributes
+      "attributesToExport": attributesToExport
     });
   }, false);
 
