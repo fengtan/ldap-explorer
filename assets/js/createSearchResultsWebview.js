@@ -23,8 +23,13 @@ window.addEventListener('message', event => {
   // extension which then generates and downloads the CSV file.
   const exportCSV = document.getElementById("export-csv");
   exportCSV.addEventListener("click", function() {
+    // Get list of attributes to export from the grid.
+    const grid = document.getElementById("grid");
+    const attributes = grid.columnDefinitions.map(columnDefinition => columnDefinition.columnDataKey);
+    // Send message to extension.
     vscode.postMessage({
-      "command": "export-csv"
+      "command": "export-csv",
+      "attributes": attributes
     });
   }, false);
 

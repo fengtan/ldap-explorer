@@ -115,9 +115,15 @@ export function createSearchResultsWebview(context: ExtensionContext, connection
             }
             const fileDescriptor = openSync(uriCSV.fsPath, 'w+');
             search(entry => {
-              var line = entry.dn; // TODO populate line with all fields
-              writeFileSync(fileDescriptor, line + "\n"); // TODO foobar
+              let entryValues: (string | string[])[] = [];
+              // TODO use message.attributes
+              entry.attributes.forEach(attribute => {
+                entryValues.push('"' + attribute.vals + '"'); // TODO escape double quotes ; feels like reinventing the wheel
+              });
+              writeFileSync(fileDescriptor, entryValues.join(",") + "\n");
             });
+            // TODO test when ldap value includes a quote or comma
+            // TODO test when ldap value is multivalued
             // TODO Ideally write asynchronously as we receive results
             // TODO what if there is an error?
             // TODO test writing to a place that is not writable
