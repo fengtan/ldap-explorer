@@ -131,7 +131,7 @@ Errors typically show in a couple of places:
 # Things to do
 
 Features
-- Support for write operations i.e. add, delete, edit, move LDAP entries
+- Support for write operations i.e. add, delete, edit, move LDAP entries (could make use of the [FileSystemProvider API](https://code.visualstudio.com/api/references/vscode-api#FileSystemProvider))
 - Support LDAP referrals - currently those are simply logged, see `LdapConnection.search()`
 
 UI

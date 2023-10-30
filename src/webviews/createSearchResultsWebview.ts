@@ -114,6 +114,7 @@ export function createSearchResultsWebview(context: ExtensionContext, connection
               return;
             }
             const fileDescriptor = openSync(uriCSV.fsPath, 'w+');
+            // TODO or show CSV using virtual filesystem api?
             search(entry => {
               let entryValues: (string | string[])[] = [];
               // TODO use message.attributes
@@ -134,6 +135,7 @@ export function createSearchResultsWebview(context: ExtensionContext, connection
             console.log(`failure`); // TODO show error
           }
         ); // TODO then save file
+        // TODO also support exporting from list view (single ldap entry)
         break;
       }
     },
