@@ -134,16 +134,16 @@ export function createSearchResultsWebview(context: ExtensionContext, connection
               writeFileSync(fileDescriptor, entryValues.join(",") + "\n");
             });
             // TODO test when ldap value includes a quote or comma
-            // TODO test when ldap value is multivalued
             // TODO Ideally write asynchronously as we receive results
             // TODO what if there is an error?
             // TODO test writing to a place that is not writable
             // TODO show confirmation message / error message in vscode end-user interface
+            // TODO progress bar for long-running queries?
           },
           reason => {
             console.log(`failure`); // TODO show error
           }
-        ); // TODO then save file
+        );
         // TODO also support exporting from list view (single ldap entry)
         break;
       }
