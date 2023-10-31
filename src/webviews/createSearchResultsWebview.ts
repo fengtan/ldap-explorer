@@ -2,7 +2,7 @@ import { ExtensionContext, Uri, ViewColumn, window } from 'vscode';
 import { LdapConnection } from '../LdapConnection';
 import { formatCsvValue, getUri, getWebviewUiToolkitUri } from './utils';
 import { Attribute, SearchEntry } from 'ldapjs';
-import { openSync, writeFileSync } from "fs";
+import { open, write } from "fs";
 import { homedir } from "os";
 import { sep } from "path";
 
@@ -119,34 +119,47 @@ export function createSearchResultsWebview(context: ExtensionContext, connection
               return;
             }
             // Open file for writing.
-            const fileDescriptor = openSync(uriCSV.fsPath, 'w');
-            // Write CSV headers to the file.
-            const attributesToExport: string[] = message.attributesToExport;
-            const csvHeaders: string[] = attributesToExport.map((attributeToExport) => formatCsvValue(attributeToExport));
-            writeFileSync(fileDescriptor, csvHeaders.join(",") + "\n");
-            // Execute LDAP search.
-            // For each result, format a CSV line and write it to the file.
-            search(entry => {
-              let entryValues: (string | string[])[] = [];
-              attributesToExport.forEach(attributeToExport => {
-                const attributeElemToExport: Attribute | undefined = entry.attributes.find(attribute => attribute.type === attributeToExport);
-                const entryValue = (attributeElemToExport?.vals.toString() ?? "");
-                entryValues.push(formatCsvValue(entryValue));
+            open(uriCSV.fsPath, "w", (err, fd) => {
+              if (err) {
+                window.showErrorMessage(`Unable to open ${uriCSV.fsPath} for writing: ${err}`);
+                return;
+              }
+              // Write CSV headers to the file.
+              const attributesToExport: string[] = message.attributesToExport;
+              const csvHeaders: string[] = attributesToExport.map((attributeToExport) => formatCsvValue(attributeToExport));
+              write(fd, csvHeaders.join(",") + "\n", (err) => {
+                if (err) {
+                  window.showErrorMessage(`Unable to write to ${uriCSV.fsPath}: ${err}`);
+                }
+                // Execute LDAP search.
+                // For each result, format a CSV line and write it to the file.
+                search(entry => {
+                  let entryValues: (string | string[])[] = [];
+                  attributesToExport.forEach(attributeToExport => {
+                    const attributeElemToExport: Attribute | undefined = entry.attributes.find(attribute => attribute.type === attributeToExport);
+                    const entryValue = (attributeElemToExport?.vals.toString() ?? "");
+                    entryValues.push(formatCsvValue(entryValue));
+                  });
+                  write(fd, entryValues.join(",") + "\n", (err) => {
+                    if (err) {
+                      window.showErrorMessage(`Unable to append line to ${uriCSV.fsPath}: ${err}`);
+                    }
+                    // Tell user the export is complete.
+                    // Show a button "Open" so the user can immediately read the contents of the CSV.
+                    window.showInformationMessage(`Exported CSV to ${uriCSV.fsPath}`, 'Open').then(() => {
+                      window.showTextDocument(uriCSV);
+                    });
+                  });
+                });
+
               });
-              writeFileSync(fileDescriptor, entryValues.join(",") + "\n");
-            });
-            // Tell user the export is complete.
-            // Show a button "Open" so the user can immediately read the contents of the CSV.
-            window.showInformationMessage(`Exported CSV to ${uriCSV.fsPath}`, 'Open').then(() => {
-              window.showTextDocument(uriCSV);
             });
           },
           reason => {
             window.showErrorMessage(`Unable to export CSV: ${reason}`);
           }
         );
-        // TODO what if there is an error?
-        // TODO test writing to a place that is not writable
+        // TODO merge commits
         // TODO also support exporting from list view (single ldap entry)
         break;
       }
