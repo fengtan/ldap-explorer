@@ -1,6 +1,6 @@
 import { ExtensionContext, Uri, ViewColumn, window } from 'vscode';
 import { LdapConnection } from '../LdapConnection';
-import { getUri, getWebviewUiToolkitUri } from './utils';
+import { formatCsvValue, getUri, getWebviewUiToolkitUri } from './utils';
 import { Attribute, SearchEntry } from 'ldapjs';
 import { openSync, writeFileSync } from "fs";
 import { homedir } from "os";
@@ -36,8 +36,9 @@ export function createSearchResultsWebview(context: ExtensionContext, connection
   // Custom CSS.
   const stylesheetUri = getUri(panel.webview, context.extensionUri, ["assets", "css", "createSearchResultsWebview.css"]);
 
-  // Codicons CSS.
-  const codiconsUri = getUri(panel.webview, context.extensionUri, ['node_modules', '@vscode/codicons', 'dist', 'codicon.css']);
+  // Codicons CSS and font.
+  const codiconsStylesheetUri = getUri(panel.webview, context.extensionUri, ['node_modules', '@vscode', 'codicons', 'dist', 'codicon.css']);
+  const codiconsFontUri = getUri(panel.webview, context.extensionUri, ['node_modules', '@vscode', 'codicons', 'dist', 'codicon.ttf']);
 
   // Populate webview HTML with search results.
   panel.webview.html = /* html */ `
@@ -45,17 +46,19 @@ export function createSearchResultsWebview(context: ExtensionContext, connection
       <html lang="en">
         <head>
           <!-- Webview UI toolkit requires a CSP with unsafe-inline script-src and style-src (not ideal but we have no choice) -->
-          <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src ${panel.webview.cspSource} 'unsafe-inline'; style-src ${panel.webview.cspSource} 'unsafe-inline';" />
+          <!-- scheme 'vscode-resource' allows to load codicon resources, see https://github.com/microsoft/vscode/issues/95199 -->
+          <meta http-equiv="Content-Security-Policy" content="default-src 'none'; font-src vscode-resource:; script-src ${panel.webview.cspSource} 'unsafe-inline'; style-src ${panel.webview.cspSource} vscode-resource: 'unsafe-inline';" />
           <script type="module" src="${toolkitUri}"></script>
           <link type="text/css" rel="stylesheet" href="${stylesheetUri}" media="all" />
-          <!-- TODO 404 "codicon.css does not exist", should import @vscode/codicons -->
-          <!--link type="text/css" rel="stylesheet" href="${codiconsUri}" media="all" /-->
+          <link type="text/css" rel="stylesheet" href="${codiconsStylesheetUri}" media="all">
         </head>
         <body>
           <h1>${title}</h1>
           <h2 id="counter">0 result</h2>
+          <vscode-button id="export-csv" appearance="icon" aria-label="Export CSV" title="Export CSV">
+            <span class="codicon codicon-go-to-file"></span>
+          </vscode-button>
           <vscode-data-grid id="grid" generate-header="sticky" aria-label="Search results"></vscode-data-grid>
-          <vscode-button id="export-csv" appearance="secondary">Export CSV</vscode-button>
           <script src="${scriptUri}"></script>
         </body>
       </html>
@@ -104,13 +107,12 @@ export function createSearchResultsWebview(context: ExtensionContext, connection
       switch (message.command) {
       case 'export-csv':
         window.showSaveDialog({
-          // Create CSV named "export.csv" in home directory by default.
+          // By default the CSV is named "export.csv" and located int the user's home directory.
           defaultUri: Uri.file(homedir() + sep + "export.csv"),
           saveLabel: "Export",
           title: "Export CSV file"
         }).then(
           uriCSV => {
-            // TODO move button to the top of the page, ideally turn into icon
             // Make sure user provided a file path.
             // If not then just return and do nothing.
             if (uriCSV === undefined) {
@@ -119,31 +121,32 @@ export function createSearchResultsWebview(context: ExtensionContext, connection
             // Open file for writing.
             const fileDescriptor = openSync(uriCSV.fsPath, 'w');
             // Write CSV headers to the file.
-            // TODO wrap headers with quotes + escape commas in value
             const attributesToExport: string[] = message.attributesToExport;
-            writeFileSync(fileDescriptor, attributesToExport.join(",") + "\n");
+            const csvHeaders: string[] = attributesToExport.map((attributeToExport) => formatCsvValue(attributeToExport));
+            writeFileSync(fileDescriptor, csvHeaders.join(",") + "\n");
             // Execute LDAP search.
             // For each result, format a CSV line and write it to the file.
             search(entry => {
               let entryValues: (string | string[])[] = [];
               attributesToExport.forEach(attributeToExport => {
                 const attributeElemToExport: Attribute | undefined = entry.attributes.find(attribute => attribute.type === attributeToExport);
-                // TODO escape double quotes in value ; feels like reinventing the wheel
-                entryValues.push("\"" + (attributeElemToExport?.vals ?? "") + "\"");
+                const entryValue = (attributeElemToExport?.vals.toString() ?? "");
+                entryValues.push(formatCsvValue(entryValue));
               });
               writeFileSync(fileDescriptor, entryValues.join(",") + "\n");
             });
-            // TODO test when ldap value includes a quote or comma
-            // TODO Ideally write asynchronously as we receive results
-            // TODO what if there is an error?
-            // TODO test writing to a place that is not writable
-            // TODO show confirmation message / error message in vscode end-user interface
-            // TODO progress bar for long-running queries?
+            // Tell user the export is complete.
+            // Show a button "Open" so the user can immediately read the contents of the CSV.
+            window.showInformationMessage(`Exported CSV to ${uriCSV.fsPath}`, 'Open').then(() => {
+              window.showTextDocument(uriCSV);
+            });
           },
           reason => {
-            console.log(`failure`); // TODO show error
+            window.showErrorMessage(`Unable to export CSV: ${reason}`);
           }
         );
+        // TODO what if there is an error?
+        // TODO test writing to a place that is not writable
         // TODO also support exporting from list view (single ldap entry)
         break;
       }

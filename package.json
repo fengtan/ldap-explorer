@@ -411,6 +411,7 @@
     "webpack-cli": "^4.10.0"
   },
   "dependencies": {
+    "@vscode/codicons": "^0.0.35",
     "@vscode/webview-ui-toolkit": "^1.0.1",
     "ldapjs": "^2.3.3"
   }

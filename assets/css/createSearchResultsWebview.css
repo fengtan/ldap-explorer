@@ -9,3 +9,21 @@
 vscode-data-grid-cell {
   min-width: 6em;
 }
+
+/*
+ * Position button "Export CSV" and counter ("XX results") side by side.
+ */
+#counter {
+  float: left;
+}
+
+#export-csv {
+  float: left;
+  /* Same margin top/bottom (0.83em) and same font size as h2#counter so both are aligned horitontally */
+  margin: 0.83em 0.5em;
+  font-size: 1.5em;
+}
+
+#grid {
+  clear: both;
+}

@@ -24,3 +24,13 @@ export function getWebviewUiToolkitUri(webview: Webview, extensionUri: Uri) {
   ];
   return getUri(webview, extensionUri, pathList);
 }
+
+/**
+ * Formats a value so it can be inserted into a CSV file:
+ * 1. Wraps the value with double quotes
+ * 2. Escapes any double quote the value may contains (the right way to escape
+ * double quotes in CSV is to double them i.e. replace " with "")
+ */
+export function formatCsvValue(value: string) {
+  return `"${value.replace(/"/g, '""')}"`;
+}
