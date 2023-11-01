@@ -34,7 +34,7 @@ export function createSearchResultsWebview(context: ExtensionContext, connection
   const scriptUri = getUri(panel.webview, context.extensionUri, ["assets", "js", "createSearchResultsWebview.js"]);
 
   // Custom CSS.
-  const stylesheetUri = getUri(panel.webview, context.extensionUri, ["assets", "css", "createSearchResultsWebview.css"]);
+  const stylesheetUri = getUri(panel.webview, context.extensionUri, ["assets", "css", "styles.css"]);
 
   // Populate webview HTML with search results.
   panel.webview.html = /* html */ `

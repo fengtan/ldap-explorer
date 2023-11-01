@@ -30,6 +30,9 @@ export function createShowAttributesWebview(connection: LdapConnection, dn: stri
       // JS of the webview.
       const scriptUri = getUri(panel.webview, context.extensionUri, ["assets", "js", "createShowAttributesWebview.js"]);
 
+      // Custom CSS.
+      const stylesheetUri = getUri(panel.webview, context.extensionUri, ["assets", "css", "styles.css"]);
+
       // Populate webview HTML with the list of attributes.
       panel.webview.html = /* html */ `
       <!DOCTYPE html>
@@ -38,10 +41,12 @@ export function createShowAttributesWebview(connection: LdapConnection, dn: stri
             <!-- Webview UI toolkit requires a CSP with unsafe-inline script-src and style-src (not ideal but we have no choice) -->
             <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src ${panel.webview.cspSource} 'unsafe-inline'; style-src ${panel.webview.cspSource} 'unsafe-inline';" />
             <script type="module" src="${toolkitUri}"></script>
+            <link type="text/css" rel="stylesheet" href="${stylesheetUri}" media="all" />
           </head>
           <body>
             <h1>${dn}</h1>
             <vscode-data-grid id="grid" generate-header="sticky" aria-label="Attributes" grid-template-columns="1fr 1fr"></vscode-data-grid>
+            <vscode-button id="export-csv" appearance="secondary">Export CSV</vscode-button>
             <script src="${scriptUri}"></script>
           </body>
         </html>
