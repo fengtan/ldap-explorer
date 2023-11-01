@@ -36,29 +36,21 @@ export function createSearchResultsWebview(context: ExtensionContext, connection
   // Custom CSS.
   const stylesheetUri = getUri(panel.webview, context.extensionUri, ["assets", "css", "createSearchResultsWebview.css"]);
 
-  // Codicons CSS and font.
-  const codiconsStylesheetUri = getUri(panel.webview, context.extensionUri, ['node_modules', '@vscode', 'codicons', 'dist', 'codicon.css']);
-  const codiconsFontUri = getUri(panel.webview, context.extensionUri, ['node_modules', '@vscode', 'codicons', 'dist', 'codicon.ttf']);
-
   // Populate webview HTML with search results.
   panel.webview.html = /* html */ `
     <!DOCTYPE html>
       <html lang="en">
         <head>
           <!-- Webview UI toolkit requires a CSP with unsafe-inline script-src and style-src (not ideal but we have no choice) -->
-          <!-- scheme 'vscode-resource' allows to load codicon resources, see https://github.com/microsoft/vscode/issues/95199 -->
-          <meta http-equiv="Content-Security-Policy" content="default-src 'none'; font-src vscode-resource:; script-src ${panel.webview.cspSource} 'unsafe-inline'; style-src ${panel.webview.cspSource} vscode-resource: 'unsafe-inline';" />
+          <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src ${panel.webview.cspSource} 'unsafe-inline'; style-src ${panel.webview.cspSource} 'unsafe-inline';" />
           <script type="module" src="${toolkitUri}"></script>
           <link type="text/css" rel="stylesheet" href="${stylesheetUri}" media="all" />
-          <link type="text/css" rel="stylesheet" href="${codiconsStylesheetUri}" media="all">
         </head>
         <body>
           <h1>${title}</h1>
           <h2 id="counter">0 result</h2>
-          <vscode-button id="export-csv" appearance="icon" aria-label="Export CSV" title="Export CSV">
-            <span class="codicon codicon-go-to-file"></span>
-          </vscode-button>
           <vscode-data-grid id="grid" generate-header="sticky" aria-label="Search results"></vscode-data-grid>
+          <vscode-button id="export-csv" appearance="secondary">Export CSV</vscode-button>
           <script src="${scriptUri}"></script>
         </body>
       </html>
