@@ -1,6 +1,9 @@
-import { ExtensionContext, ViewColumn, window } from 'vscode';
+import { ExtensionContext, Uri, ViewColumn, window } from 'vscode';
 import { LdapConnection } from '../LdapConnection';
-import { getUri, getWebviewUiToolkitUri } from './utils';
+import { formatCsvValue, getUri, getWebviewUiToolkitUri } from './utils';
+import { open, write } from "fs";
+import { homedir } from "os";
+import { sep } from "path";
 
 /**
  * Create a webview that shows attributes of a single LDAP entry.
@@ -76,9 +79,65 @@ export function createShowAttributesWebview(connection: LdapConnection, dn: stri
         rowsData: rowsData
       });
 
+      // Handle messages from the webview to the extension.
+      // See https://code.visualstudio.com/api/extension-guides/webview#passing-messages-from-a-webview-to-an-extension
+      panel.webview.onDidReceiveMessage(
+        message => {
+          switch (message.command) {
+          case 'export-csv':
+            window.showSaveDialog({
+              // By default the CSV is named "export.csv" and located in the user's home directory.
+              defaultUri: Uri.file(homedir() + sep + "export.csv"),
+              saveLabel: "Export",
+              title: "Export CSV file"
+            }).then(
+              uriCSV => {
+                // Make sure user provided a file path.
+                // If not then just return and do nothing.
+                if (uriCSV === undefined) {
+                  return;
+                }
+                // Open file for writing.
+                open(uriCSV.fsPath, "w", (err, fd) => {
+                  if (err) {
+                    window.showErrorMessage(`Unable to open ${uriCSV.fsPath} for writing: ${err}`);
+                    return;
+                  }
+                  // Write CSV headers to the file.
+                  // TODO utils formatCsvLine()
+                  const headers: string[] = ["attribute", "value"].map((attributeToExport) => formatCsvValue(attributeToExport));
+                  write(fd, headers.join(",") + "\n", (err) => {
+                    if (err) {
+                      window.showErrorMessage(`Unable to write to ${uriCSV.fsPath}: ${err}`);
+                    }
+                    // Write attributes to the file.
+                    rowsData.forEach((row) => {
+                      const line = formatCsvValue(row.name) + "," + formatCsvValue(row.value) + "\n";
+                      write(fd, line, (err) => {
+                        window.showErrorMessage(`Unable to append line to ${uriCSV.fsPath}: ${err}`);
+                      });
+                    });
+                  });
+                });
+              },
+              reason => {
+                window.showErrorMessage(`Unable to export CSV: ${reason}`);
+              }
+            );
+            // TODO merge commits
+            // TODO also support exporting from list view (single ldap entry)
+            // TODO precommit fails
+            break;
+          }
+        },
+        undefined,
+        context.subscriptions
+      );
+
     },
     reason => {
       window.showErrorMessage(`Unable to display attributes for dn "${dn}": ${reason}`);
     }
   );
+
 }

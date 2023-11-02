@@ -13,3 +13,19 @@ window.addEventListener('message', event => {
     break;
   }
 });
+
+
+(function () {
+  const vscode = acquireVsCodeApi();
+
+  // Clicking the "Export CSV" button in the webview sends a message back to the
+  // extension which then generates and downloads the CSV file.
+  const exportCSV = document.getElementById("export-csv");
+  exportCSV.addEventListener("click", function () {
+    // Send message to extension.
+    vscode.postMessage({
+      "command": "export-csv"
+    });
+  }, false);
+
+}());

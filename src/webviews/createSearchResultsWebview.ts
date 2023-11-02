@@ -99,7 +99,7 @@ export function createSearchResultsWebview(context: ExtensionContext, connection
       switch (message.command) {
       case 'export-csv':
         window.showSaveDialog({
-          // By default the CSV is named "export.csv" and located int the user's home directory.
+          // By default the CSV is named "export.csv" and located in the user's home directory.
           defaultUri: Uri.file(homedir() + sep + "export.csv"),
           saveLabel: "Export",
           title: "Export CSV file"
@@ -138,6 +138,7 @@ export function createSearchResultsWebview(context: ExtensionContext, connection
                     }
                     // Tell user the export is complete.
                     // Show a button "Open" so the user can immediately read the contents of the CSV.
+                    console.log("TODO is this called multiple times?");
                     window.showInformationMessage(`Exported CSV to ${uriCSV.fsPath}`, 'Open').then(() => {
                       window.showTextDocument(uriCSV);
                     });
@@ -153,6 +154,7 @@ export function createSearchResultsWebview(context: ExtensionContext, connection
         );
         // TODO merge commits
         // TODO also support exporting from list view (single ldap entry)
+        // TODO precommit fails
         break;
       }
     },
