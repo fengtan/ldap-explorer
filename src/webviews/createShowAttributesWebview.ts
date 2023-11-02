@@ -126,7 +126,6 @@ export function createShowAttributesWebview(connection: LdapConnection, dn: stri
                 window.showErrorMessage(`Unable to export CSV: ${reason}`);
               }
             );
-            // TODO merge commits
             // TODO precommit fails
             break;
           }
