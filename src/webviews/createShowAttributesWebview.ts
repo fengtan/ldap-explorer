@@ -118,6 +118,11 @@ export function createShowAttributesWebview(connection: LdapConnection, dn: stri
                       });
                     });
                   });
+                  // Tell user the export is complete.
+                  // Show a button "Open" so the user can immediately read the contents of the CSV.
+                  window.showInformationMessage(`Exported CSV to ${uriCSV.fsPath}`, 'Open').then(() => {
+                    window.showTextDocument(uriCSV);
+                  });
                 });
               },
               reason => {
