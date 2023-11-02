@@ -1,7 +1,7 @@
 import { ExtensionContext, Uri, ViewColumn, window } from 'vscode';
 import { LdapConnection } from '../LdapConnection';
-import { formatCsvValue, getUri, getWebviewUiToolkitUri } from './utils';
-import { Attribute, SearchEntry, SearchOptions } from 'ldapjs';
+import { formatCsvLine, getUri, getWebviewUiToolkitUri } from './utils';
+import { Attribute, SearchOptions } from 'ldapjs';
 import { open, write } from "fs";
 import { homedir } from "os";
 import { sep } from "path";
@@ -124,8 +124,7 @@ export function createSearchResultsWebview(context: ExtensionContext, connection
               }
               // Write CSV headers to the file.
               const attributesToExport: string[] = message.attributesToExport;
-              const csvHeaders: string[] = attributesToExport.map((attributeToExport) => formatCsvValue(attributeToExport));
-              write(fd, csvHeaders.join(",") + "\n", (err) => {
+              write(fd, formatCsvLine(attributesToExport), (err) => {
                 if (err) {
                   window.showErrorMessage(`Unable to write to ${uriCSV.fsPath}: ${err}`);
                 }
@@ -138,10 +137,10 @@ export function createSearchResultsWebview(context: ExtensionContext, connection
                     let entryValues: (string | string[])[] = [];
                     attributesToExport.forEach(attributeToExport => {
                       const attributeElemToExport: Attribute | undefined = entry.attributes.find(attribute => attribute.type === attributeToExport);
-                      const entryValue = (attributeElemToExport?.vals.toString() ?? "");
-                      entryValues.push(formatCsvValue(entryValue));
+                      const entryValue = attributeElemToExport?.vals.toString() ?? "";
+                      entryValues.push(entryValue);
                     });
-                    write(fd, entryValues.join(",") + "\n", (err) => {
+                    write(fd, formatCsvLine(entryValues), (err) => {
                       if (err) {
                         window.showErrorMessage(`Unable to append line to ${uriCSV.fsPath}: ${err}`);
                       }

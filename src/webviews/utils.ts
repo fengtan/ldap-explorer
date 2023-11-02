@@ -26,11 +26,14 @@ export function getWebviewUiToolkitUri(webview: Webview, extensionUri: Uri) {
 }
 
 /**
- * Formats a value so it can be inserted into a CSV file:
- * 1. Wraps the value with double quotes
- * 2. Escapes any double quote the value may contains (the right way to escape
- * double quotes in CSV is to double them i.e. replace " with "")
+ * Formats an array of values into a line so it can be inserted into a CSV file:
+ * 1. Wraps values with double quotes
+ * 2. Escapes any double quote the values may contains
+ * 3. Joins all values with a comma
  */
-export function formatCsvValue(value: string) {
-  return `"${value.replace(/"/g, '""')}"`;
+export function formatCsvLine(values: (string | string[])[]) {
+  // The right way to escape double quotes in CSV is to double them
+  // i.e.replace " with ""
+  const valuesEscaped = values.map((value) => `"${value.toString().replace(/"/g, '""')}"`);
+  return valuesEscaped.join(",") + "\n";
 }

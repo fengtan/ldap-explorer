@@ -1,6 +1,6 @@
 import { ExtensionContext, Uri, ViewColumn, window } from 'vscode';
 import { LdapConnection } from '../LdapConnection';
-import { formatCsvValue, getUri, getWebviewUiToolkitUri } from './utils';
+import { formatCsvLine, getUri, getWebviewUiToolkitUri } from './utils';
 import { open, write } from "fs";
 import { homedir } from "os";
 import { sep } from "path";
@@ -104,16 +104,13 @@ export function createShowAttributesWebview(connection: LdapConnection, dn: stri
                     return;
                   }
                   // Write CSV headers to the file.
-                  // TODO utils formatCsvLine()
-                  const headers: string[] = ["attribute", "value"].map((attributeToExport) => formatCsvValue(attributeToExport));
-                  write(fd, headers.join(",") + "\n", (err) => {
+                  write(fd, formatCsvLine(["attribute", "value"]), (err) => {
                     if (err) {
                       window.showErrorMessage(`Unable to write to ${uriCSV.fsPath}: ${err}`);
                     }
                     // Write attributes to the file.
                     rowsData.forEach((row) => {
-                      const line = formatCsvValue(row.name) + "," + formatCsvValue(row.value) + "\n";
-                      write(fd, line, (err) => {
+                      write(fd, formatCsvLine([row.name, row.value]), (err) => {
                         window.showErrorMessage(`Unable to append line to ${uriCSV.fsPath}: ${err}`);
                       });
                     });
