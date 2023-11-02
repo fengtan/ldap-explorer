@@ -1,7 +1,7 @@
 import { ExtensionContext, Uri, ViewColumn, window } from 'vscode';
 import { LdapConnection } from '../LdapConnection';
 import { formatCsvValue, getUri, getWebviewUiToolkitUri } from './utils';
-import { Attribute, SearchEntry } from 'ldapjs';
+import { Attribute, SearchEntry, SearchOptions } from 'ldapjs';
 import { open, write } from "fs";
 import { homedir } from "os";
 import { sep } from "path";
@@ -56,41 +56,47 @@ export function createSearchResultsWebview(context: ExtensionContext, connection
       </html>
     `;
 
-  // Execute ldap search and run a given callback when an entry is found.
-  function search(onSearchEntryFound?: ((entry: SearchEntry) => void) | undefined) {
-    connection.search(
-      // Defaults to scope "sub" i.e. returns the full substree of the base DN https://ldapwiki.com/wiki/WholeSubtree
-      { scope: "sub", paged: true, filter: filter, attributes: attributes },
-      connection.getBaseDn(true),
-      onSearchEntryFound
-    ).then(
-      entries => {
-        // Do nothing: onSearchResultFound callback is provided i.e. results are
-        // displayed as they are received.
-      },
-      reason => {
-        window.showErrorMessage(`Unable to search with filter "${filter}", attributes "${attributes?.join(', ')}": ${reason}`);
-      }
-    );
+  // Get options for executing the ldap search.
+  function getSearchOptions(): SearchOptions {
+    return {
+      // Defaults to scope "sub" i.e. returns the full substree of the base DN.
+      // See https://ldapwiki.com/wiki/WholeSubtree
+      scope: "sub",
+      paged: true,
+      filter: filter,
+      attributes: attributes
+    };
   }
 
   // Execute ldap search and populate grid as results are received.
-  search(entry => {
-    // Turn LDAP entry into an object that matches the format expected by the grid.
-    // The LDAP attribute name will show up in the grid headers and the values will show up in the cells.
-    // See https://github.com/microsoft/vscode-webview-ui-toolkit/blob/main/src/data-grid/README.md
-    const row: any = {};
-    entry.attributes.forEach(attribute => {
-      row[attribute.type] = attribute.vals;
-    });
-    // Callback that fires when a new search result is found.
-    // Send message from extension to webview, tell it to add a row to the grid.
-    // See https://code.visualstudio.com/api/extension-guides/webview#passing-messages-from-an-extension-to-a-webview
-    panel.webview.postMessage({
-      command: "addRow",
-      row: row,
-    });
-  });
+  connection.search(
+    getSearchOptions(),
+    connection.getBaseDn(true),
+    (entry) => {
+      // Turn LDAP entry into an object that matches the format expected by the grid.
+      // The LDAP attribute name will show up in the grid headers and the values will show up in the cells.
+      // See https://github.com/microsoft/vscode-webview-ui-toolkit/blob/main/src/data-grid/README.md
+      const row: any = {};
+      entry.attributes.forEach(attribute => {
+        row[attribute.type] = attribute.vals;
+      });
+      // Callback that fires when a new search result is found.
+      // Send message from extension to webview, tell it to add a row to the grid.
+      // See https://code.visualstudio.com/api/extension-guides/webview#passing-messages-from-an-extension-to-a-webview
+      panel.webview.postMessage({
+        command: "addRow",
+        row: row,
+      });
+    }
+  ).then(
+    entries => {
+      // Do nothing: onSearchResultFound callback is provided i.e. results are
+      // displayed as they are received.
+    },
+    reason => {
+      window.showErrorMessage(`Unable to search with filter "${filter}", attributes "${attributes?.join(', ')}": ${reason}`);
+    }
+  );
 
   // Handle messages from the webview to the extension.
   // See https://code.visualstudio.com/api/extension-guides/webview#passing-messages-from-a-webview-to-an-extension
@@ -124,27 +130,35 @@ export function createSearchResultsWebview(context: ExtensionContext, connection
                   window.showErrorMessage(`Unable to write to ${uriCSV.fsPath}: ${err}`);
                 }
                 // Execute LDAP search.
-                // For each result, format a CSV line and write it to the file.
-                search(entry => {
-                  let entryValues: (string | string[])[] = [];
-                  attributesToExport.forEach(attributeToExport => {
-                    const attributeElemToExport: Attribute | undefined = entry.attributes.find(attribute => attribute.type === attributeToExport);
-                    const entryValue = (attributeElemToExport?.vals.toString() ?? "");
-                    entryValues.push(formatCsvValue(entryValue));
-                  });
-                  write(fd, entryValues.join(",") + "\n", (err) => {
-                    if (err) {
-                      window.showErrorMessage(`Unable to append line to ${uriCSV.fsPath}: ${err}`);
-                    }
+                connection.search(
+                  getSearchOptions(),
+                  connection.getBaseDn(true),
+                  (entry) => {
+                    // For each result, format a CSV line and write it to the file.
+                    let entryValues: (string | string[])[] = [];
+                    attributesToExport.forEach(attributeToExport => {
+                      const attributeElemToExport: Attribute | undefined = entry.attributes.find(attribute => attribute.type === attributeToExport);
+                      const entryValue = (attributeElemToExport?.vals.toString() ?? "");
+                      entryValues.push(formatCsvValue(entryValue));
+                    });
+                    write(fd, entryValues.join(",") + "\n", (err) => {
+                      if (err) {
+                        window.showErrorMessage(`Unable to append line to ${uriCSV.fsPath}: ${err}`);
+                      }
+                    });
+                  }
+                ).then(
+                  entries => {
                     // Tell user the export is complete.
                     // Show a button "Open" so the user can immediately read the contents of the CSV.
-                    console.log("TODO is this called multiple times?");
                     window.showInformationMessage(`Exported CSV to ${uriCSV.fsPath}`, 'Open').then(() => {
                       window.showTextDocument(uriCSV);
                     });
-                  });
-                });
-
+                  },
+                  reason => {
+                    window.showErrorMessage(`Unable to search with filter "${filter}", attributes "${attributes?.join(', ')}": ${reason}`);
+                  }
+                );
               });
             });
           },
