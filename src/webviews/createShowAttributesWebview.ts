@@ -127,7 +127,6 @@ export function createShowAttributesWebview(connection: LdapConnection, dn: stri
               }
             );
             // TODO merge commits
-            // TODO also support exporting from list view (single ldap entry)
             // TODO precommit fails
             break;
           }

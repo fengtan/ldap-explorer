@@ -165,8 +165,6 @@ export function createSearchResultsWebview(context: ExtensionContext, connection
             window.showErrorMessage(`Unable to export CSV: ${reason}`);
           }
         );
-        // TODO merge commits
-        // TODO precommit fails
         break;
       }
     },
