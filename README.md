@@ -11,6 +11,7 @@
 * **Browse the tree** - Explore how the [DIT](https://en.wikipedia.org/wiki/Directory_information_tree) is structured and discover LDAP entries in an intuitive interface
 * **List attributes** - Find out about LDAP attributes without writing search filters
 * **Search and filter** - Conveniently search for LDAP entries directly from VS Code
+* **Export LDAP entries as CSV** - Share and analyze LDAP results using a standard CSV format
 * **Manage bookmarks** - Bookmark LDAP entries you often need to check or located in awkward places
 * **Support for multiple connections** - Manage multiple LDAP connections, such as a test and a production connections
 * **Support for environment variables** - Easy integration with containers and increased security: you don't have to store your bind credentials unencrypted in VS Code settings
