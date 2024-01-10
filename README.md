@@ -52,6 +52,12 @@ As a last resort uncheck **Verify certificate** to skip any certificate verifica
 
 ![TLS Options](screenshots/tls.png)
 
+### CSV export
+
+When listing LDAP entries, a button labeled **Export CSV** is provided at the bottom of the page and allows to export the contents as CSV:
+
+![CSV Button](screenshots/csv.png)
+
 ## Commands
 
 This extension contributes the following commands:
