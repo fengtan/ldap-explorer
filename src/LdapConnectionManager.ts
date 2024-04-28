@@ -25,6 +25,7 @@ export class LdapConnectionManager {
       connection["bindpwd"] || "",
       connection["basedn"] || "",
       connection["limit"] || "0",
+      connection["paged"] || "true",
       connection["timeout"] || "5000",
       connection["bookmarks"] || []
     ));

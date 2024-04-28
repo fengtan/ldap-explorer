@@ -11,7 +11,8 @@ export class LdapConnection {
 
   // Port, limit and timeout are stored as strings instead of numbers because
   // they may reference environment variables instead of actual numbers.
-  // The same applies to starttls and verifycert which would normally be booleans.
+  // The same applies to starttls, verifycert and paged which would normally be
+  // booleans.
   private name: string;
   private protocol: string;
   private starttls: string;
@@ -23,6 +24,7 @@ export class LdapConnection {
   private bindpwd: string;
   private basedn: string;
   private limit: string;
+  private paged: string;
   private timeout: string;
   private bookmarks: string[];
 
@@ -38,6 +40,7 @@ export class LdapConnection {
     bindpwd: string,
     basedn: string,
     limit: string,
+    paged: string,
     timeout: string,
     bookmarks: string[]
   ) {
@@ -52,6 +55,7 @@ export class LdapConnection {
     this.bindpwd = bindpwd;
     this.basedn = basedn;
     this.limit = limit;
+    this.paged = paged;
     this.timeout = timeout;
     this.bookmarks = bookmarks;
   }
@@ -90,6 +94,9 @@ export class LdapConnection {
   public getLimit(evaluate: boolean) {
     return this.get(this.limit, evaluate);
   }
+  public getPaged(evaluate: boolean) {
+    return this.get(this.paged, evaluate);
+  }
   public getTimeout(evaluate: boolean) {
     return this.get(this.timeout, evaluate);
   }
@@ -105,6 +112,9 @@ export class LdapConnection {
   }
   public getVerifyCertBool(evaluate: boolean) {
     return (this.getVerifyCert(evaluate).toLowerCase() === "true");
+  }
+  public getPagedBool(evaluate: boolean) {
+    return (this.getPaged(evaluate).toLowerCase() === "true");
   }
 
   /**
@@ -260,7 +270,7 @@ export class LdapConnection {
       }
 
       // Search.
-      searchOptions.sizeLimit = parseInt(this.limit);
+      searchOptions.sizeLimit = parseInt(this.getLimit(true));
       try {
         client.search(base, searchOptions, (err, res) => {
           if (err) {
