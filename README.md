@@ -36,8 +36,6 @@ See [this animation](screenshots/anim.gif) for a demo.
 4. Under panel **Connections**, click on the connection to activate it
 5. Now you may browse the tree, manage bookmarks and run search queries from the **Tree**, **Bookmarks** and **Search** panels, respectively
 
-Note that connections have a field **Maximum number of entries to return** to limit the size of LDAP responses. Most LDAP servers will return at most 1,000 entries regardless of this setting. If an LDAP query returns more than this limit then you will be shown an error, in which case you may try to increase the limit.
-
 ### TLS
 
 A fieldset **TLS options** shows up if:
