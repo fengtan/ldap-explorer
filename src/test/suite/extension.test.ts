@@ -17,6 +17,7 @@ suite('Extension test suite', () => {
       "foobar",
       "dc=example,dc=org",
       "0",
+      "true",
       "5000",
       []
     );
@@ -38,6 +39,7 @@ suite('Extension test suite', () => {
       "${bindpwd}",
       "${basedn}",
       "${sizelimit}",
+      "${paged}",
       "${timeout}",
       []
     );
@@ -53,6 +55,7 @@ suite('Extension test suite', () => {
       bindpwd: "foobar",
       basedn: "dc=example,dc=org",
       sizelimit: "0",
+      paged: "true",
       timeout: "5000"
     };
     // Assert values.
@@ -67,6 +70,7 @@ suite('Extension test suite', () => {
     assert.strictEqual("foobar", connection.getBindPwd(true));
     assert.strictEqual("dc=example,dc=org", connection.getBaseDn(true));
     assert.strictEqual("0", connection.getLimit(true));
+    assert.strictEqual("true", connection.getPaged(true));
     assert.strictEqual("5000", connection.getTimeout(true));
   });
 

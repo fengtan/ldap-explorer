@@ -110,6 +110,7 @@ List of LDAP connections. Example:
       "bindpwd": "foobar",
       "basedn": "dc=example,dc=org",
       "limit": "0",
+      "paged": "true",
       "timeout": "5000",
       "bookmarks": [
         "cn=readers,ou=users,dc=example,dc=org"

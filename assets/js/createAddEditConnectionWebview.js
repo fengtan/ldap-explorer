@@ -17,6 +17,7 @@ function submitForm(command) {
     bindpwd: document.getElementById("bindpwd").value,
     basedn: document.getElementById("basedn").value,
     limit: document.getElementById("limit").value,
+    paged: document.getElementById("paged").checked ? "true" : "false",
     timeout: document.getElementById("timeout").value
   });
 }
