@@ -1,7 +1,7 @@
 # Same version of nodejs as that used for
 # - vscode itself https://github.com/Microsoft/vscode/wiki/How-to-Contribute#prerequisites
-# - CI tests .github/workflows/tests.yml
-FROM node:16.20.0-slim
+# - CI tests .github/workflows/build.yml
+FROM node:20.13.1-slim
 
 # Packages
 # Includes fix for "debconf: delaying package configuration, since apt-utils is not installed"
@@ -25,14 +25,9 @@ RUN apt-get -y install \
   git \
   ldap-utils \
   less \
+  pipx \
   sudo \
   vim
-
-# Python packages
-RUN apt-get -y install python3-pip
-RUN pip3 install --upgrade pre-commit \
- && mkdir -p /home/node/.cache/pre-commit \
- && chown node /home/node/.cache/pre-commit
 
 # NPM packages
 # See https://code.visualstudio.com/api/get-started/your-first-extension
@@ -43,3 +38,7 @@ RUN npm install -g \
 # Runtime
 ENV DEBIAN_FRONTEND=dialog
 USER node
+
+# Python packages
+RUN pipx install pre-commit \
+ && mkdir -p /home/node/.cache/pre-commit

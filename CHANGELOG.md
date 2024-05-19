@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 ### Changed
 - Updated dependencies
+- Upgraded build & test environments from nodejs 16 to nodejs 20
 
 ## [1.3.1] - 2024-04-28
 ### Added

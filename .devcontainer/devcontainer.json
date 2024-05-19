@@ -6,87 +6,91 @@
   "shutdownAction": "stopCompose",
   "postCreateCommand": "(test -d /workspaces/ldap-explorer/node_modules || npm install); (test -f /workspaces/ldap-explorer/.git/hooks/pre-commit || pre-commit install)",
   "remoteEnv": {
-    "PATH": "/workspaces/ldap-explorer/node_modules/.bin:${containerEnv:PATH}",
+    "PATH": "/workspaces/ldap-explorer/node_modules/.bin:/home/node/.local/bin:${containerEnv:PATH}",
     "VSCE_PAT": "${localEnv:VSCE_PAT}"
   },
-  "extensions": [
-    "dbaeumer.vscode-eslint",
-    "jtavin.ldif",
-    "amodio.tsl-problem-matcher",
-    "Tobermory.es6-string-html"
-  ],
-  "settings": {
-    "editor.tabSize": 2,
-    "editor.autoIndent": "full",
-    "editor.detectIndentation": false,
-    "editor.insertSpaces": true,
-    "editor.formatOnPaste": true,
-    "editor.formatOnSave": false,
-    "editor.renderWhitespace": "boundary",
-    "editor.wordWrapColumn": 80,
-    "editor.wordWrap": "on",
-    "editor.rulers": [
-      80
-    ],
-    "files.exclude": {
-      "out": false,
-      "dist": false
-    },
-    "files.trimTrailingWhitespace": true,
-    "search.exclude": {
-      "out": true,
-      "dist": true
-    },
-    "typescript.tsc.autoDetect": "off",
-    "ldap-explorer.cacerts": [
-      "/workspaces/ldap-explorer/.devcontainer/certs/openldap.crt"
-    ],
-    "ldap-explorer.connections": [
-      {
-        "name": "dummy server (plain)",
-        "protocol": "ldap",
-        "starttls": "false",
-        "verifycert": "true",
-        "sni": "",
-        "host": "ldap",
-        "port": "1389",
-        "binddn": "cn=admin,dc=example,dc=org",
-        "bindpwd": "foobar",
-        "basedn": "dc=example,dc=org",
-        "limit": "0",
-        "timeout": "5000",
-        "bookmarks": []
-      },
-      {
-        "name": "dummy server (StartTLS)",
-        "protocol": "ldap",
-        "starttls": "true",
-        "verifycert": "true",
-        "sni": "example.org",
-        "host": "ldap",
-        "port": "1389",
-        "binddn": "cn=admin,dc=example,dc=org",
-        "bindpwd": "foobar",
-        "basedn": "dc=example,dc=org",
-        "limit": "0",
-        "timeout": "5000",
-        "bookmarks": []
-      },
-      {
-        "name": "dummy server (LDAPS)",
-        "protocol": "ldaps",
-        "starttls": "false",
-        "verifycert": "true",
-        "sni": "example.org",
-        "host": "ldap",
-        "port": "1636",
-        "binddn": "cn=admin,dc=example,dc=org",
-        "bindpwd": "foobar",
-        "basedn": "dc=example,dc=org",
-        "limit": "0",
-        "timeout": "5000",
-        "bookmarks": []
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "dbaeumer.vscode-eslint",
+        "jtavin.ldif",
+        "amodio.tsl-problem-matcher",
+        "Tobermory.es6-string-html"
+      ],
+      "settings": {
+        "editor.tabSize": 2,
+        "editor.autoIndent": "full",
+        "editor.detectIndentation": false,
+        "editor.insertSpaces": true,
+        "editor.formatOnPaste": true,
+        "editor.formatOnSave": false,
+        "editor.renderWhitespace": "boundary",
+        "editor.wordWrapColumn": 80,
+        "editor.wordWrap": "on",
+        "editor.rulers": [
+          80
+        ],
+        "files.exclude": {
+          "out": false,
+          "dist": false
+        },
+        "files.trimTrailingWhitespace": true,
+        "search.exclude": {
+          "out": true,
+          "dist": true
+        },
+        "typescript.tsc.autoDetect": "off",
+        "ldap-explorer.cacerts": [
+          "/workspaces/ldap-explorer/.devcontainer/certs/openldap.crt"
+        ],
+        "ldap-explorer.connections": [
+          {
+            "name": "dummy server (plain)",
+            "protocol": "ldap",
+            "starttls": "false",
+            "verifycert": "true",
+            "sni": "",
+            "host": "ldap",
+            "port": "1389",
+            "binddn": "cn=admin,dc=example,dc=org",
+            "bindpwd": "foobar",
+            "basedn": "dc=example,dc=org",
+            "limit": "0",
+            "timeout": "5000",
+            "bookmarks": []
+          },
+          {
+            "name": "dummy server (StartTLS)",
+            "protocol": "ldap",
+            "starttls": "true",
+            "verifycert": "true",
+            "sni": "example.org",
+            "host": "ldap",
+            "port": "1389",
+            "binddn": "cn=admin,dc=example,dc=org",
+            "bindpwd": "foobar",
+            "basedn": "dc=example,dc=org",
+            "limit": "0",
+            "timeout": "5000",
+            "bookmarks": []
+          },
+          {
+            "name": "dummy server (LDAPS)",
+            "protocol": "ldaps",
+            "starttls": "false",
+            "verifycert": "true",
+            "sni": "example.org",
+            "host": "ldap",
+            "port": "1636",
+            "binddn": "cn=admin,dc=example,dc=org",
+            "bindpwd": "foobar",
+            "basedn": "dc=example,dc=org",
+            "limit": "0",
+            "timeout": "5000",
+            "bookmarks": []
+          }
+        ]
       }
-    ]
+    }
   }
 }
