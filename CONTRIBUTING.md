@@ -130,6 +130,10 @@ Errors typically show in a couple of places:
 
 # Things to do
 
+Updates
+- Upgrade to [ldapjs 3+](https://github.com/ldapjs/node-ldapjs/releases/tag/v3.0.0)
+- [ldapjs decommissionned in May 2024](https://github.com/ldapjs/node-ldapjs/blob/8ffd0bc9c149088a10ec4c1ec6a18450f76ad05d/README.md) - possibly switch to another library if it does not get revived
+
 Features
 - Support for write operations i.e. add, delete, edit, move LDAP entries (could make use of the [FileSystemProvider API](https://code.visualstudio.com/api/references/vscode-api#FileSystemProvider))
 - Support LDAP referrals - currently those are simply logged, see `LdapConnection.search()`
