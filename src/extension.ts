@@ -117,6 +117,10 @@ export function activate(context: ExtensionContext) {
       }
     }
 
+    // Reload connection details from settings.
+    // Ensures the connection object includes bookmarks.
+    connection = LdapConnectionManager.getConnection(connection.getName());
+
     // Create webview to edit connection.
     createAddEditConnectionWebview(context, connection);
   }));

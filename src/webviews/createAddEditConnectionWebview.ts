@@ -119,7 +119,10 @@ export function createAddEditConnectionWebview(context: ExtensionContext, existi
         message.limit,
         message.paged,
         message.timeout,
-        []
+        // Bookmarks are not editable via the connection add/edit form.
+        // Maintain pre-existing bookarks when editing a connection, and default
+        // to empty array when adding a new connection.
+        (existingConnection === undefined) ? [] : existingConnection.getBookmarks()
       );
       switch (message.command) {
       case 'save':
