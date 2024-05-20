@@ -11,6 +11,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Updated dependencies
 - Upgraded build & test environments from nodejs 16 to nodejs 20
+- Display bind password form field as password instead of plain text ([#58](https://github.com/fengtan/ldap-explorer/pull/58))
+### Thanks
+- This extension now has 10,000+ unique installations. Thanks for using it!
 
 ## [1.3.1] - 2024-04-28
 ### Added
