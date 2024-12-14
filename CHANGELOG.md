@@ -6,6 +6,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+- Decode binary attributes: as UUID for the `objectGUID` attribute and as Base64 for others ([#33](https://github.com/fengtan/ldap-explorer/issues/33) - thanks [@petarov](https://github.com/petarov))
 
 ## [1.3.2] - 2024-05-20
 ### Fixed
