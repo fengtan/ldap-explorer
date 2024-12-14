@@ -1,6 +1,32 @@
 import { Uri, Webview } from 'vscode';
 
 /**
+ * Convert binary data to Base 64.
+ */
+export function binaryToBase64(binary: Buffer) {
+  return btoa(String.fromCharCode(...binary));
+}
+
+/**
+ * Convert binary data to a UUID.
+ *
+ * @see https://github.com/fengtan/ldap-explorer/issues/33
+ */
+export function binaryToUUID(binary: Buffer) {
+  const dashPos = [4, 6, 8, 10];
+  let uuid = "";
+
+  for (let i = 0; i < binary.length; i++) {
+    if (dashPos.includes(i)) {
+      uuid += "-";
+    }
+    uuid += binary[i].toString(16).padStart(2, "0");
+  }
+
+  return uuid;
+}
+
+/**
  * Utility function to get the webview URI of a given file.
  */
 export function getUri(webview: Webview, extensionUri: Uri, pathList: string[]) {

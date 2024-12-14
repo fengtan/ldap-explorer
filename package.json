@@ -274,11 +274,30 @@
       "type": "object",
       "title": "LDAP Explorer",
       "properties": {
-        "ldap-explorer.show-tree-item-icons": {
+        "ldap-explorer.binary-attributes": {
+          "type": "array",
+          "title": "Binary attributes",
+          "description": "Name of attributes that should be treated as binary (case insentitive); they will be rendered as a Base64 string",
+          "default": [
+            "caCertificate",
+            "jpegPhoto",
+            "krbExtraData",
+            "msExchArchiveGUID",
+            "msExchBlockedSendersHash",
+            "msExchMailboxGuid",
+            "msExchSafeSendersHash",
+            "networkAddress",
+            "objectGUID",
+            "objectSid",
+            "userCertificate",
+            "userSMIMECertificate"
+          ]
+        },
+        "ldap-explorer.binary-decode": {
           "type": "boolean",
-          "title": "Show tree item icons",
-          "description": "Render LDAP tree items with icons",
-          "default": false
+          "title": "Decode binary attributes",
+          "description": "Translate binary attributes to their text equivalents; currently only the 'objectGUID' attribute is supported",
+          "default": true
         },
         "ldap-explorer.cacerts": {
           "type": "array",
@@ -373,6 +392,12 @@
               }
             }
           }
+        },
+        "ldap-explorer.show-tree-item-icons": {
+          "type": "boolean",
+          "title": "Show tree item icons",
+          "description": "Render LDAP tree items with icons",
+          "default": false
         }
       }
     }

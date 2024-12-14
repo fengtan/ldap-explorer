@@ -1,6 +1,6 @@
-import { ExtensionContext, Uri, ViewColumn, window } from 'vscode';
+import { ExtensionContext, Uri, ViewColumn, window, workspace } from 'vscode';
 import { LdapConnection } from '../LdapConnection';
-import { formatCsvLine, getUri, getWebviewUiToolkitUri } from './utils';
+import { binaryToBase64, binaryToUUID, formatCsvLine, getUri, getWebviewUiToolkitUri } from './utils';
 import { Attribute, SearchOptions } from 'ldapjs';
 import { open, write } from "fs";
 import { homedir } from "os";
@@ -56,18 +56,6 @@ export function createSearchResultsWebview(context: ExtensionContext, connection
       </html>
     `;
 
-  // https://github.com/ldapjs/node-ldapjs/issues/297
-  // https://github.com/ldapjs/node-ldapjs/issues/850
-  // https://github.com/ldapjs/node-ldapjs/issues/481#issuecomment-884041032
-  function objectGUIDToUUID(objectGUID: string) {
-    const hexValue = Buffer.from(objectGUID, 'binary').toString('hex');
-    return hexValue.replace(
-      //   (   $1:A4   )(   $2:A3   )(   $3:A2   )(   $4:A1   )(   $5:B2   )(   $6:B1   )(   $7:C2   )(   $8:C1   )(   $9:D    )(   $10:F    )
-      /([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{4})([0-9a-f]{10})/,
-      '$4$3$2$1-$6$5-$8$7-$9-$10',
-    );
-  }
-
   // Get options for executing the ldap search.
   function getSearchOptions(): SearchOptions {
     return {
@@ -76,15 +64,26 @@ export function createSearchResultsWebview(context: ExtensionContext, connection
       scope: "sub",
       paged: true,
       filter: filter,
-      // attributes: attributes,
-      attributes: [
-        // TODO hardcoded
-        "distinguishedName",
-        "objectGUID",
-        "objectGUID;binary"
-      ],
+      attributes: attributes
     };
   }
+
+  // Get settings about binary attributes.
+  const binaryAttributes: string[] = workspace.getConfiguration('ldap-explorer').get('binary-attributes', [
+    "caCertificate",
+    "jpegPhoto",
+    "krbExtraData",
+    "msExchArchiveGUID",
+    "msExchBlockedSendersHash",
+    "msExchMailboxGuid",
+    "msExchSafeSendersHash",
+    "networkAddress",
+    "objectGUID",
+    "objectSid",
+    "userCertificate",
+    "userSMIMECertificate"
+  ]).map(attribute => attribute.toLowerCase());
+  const binaryDecode: boolean = workspace.getConfiguration('ldap-explorer').get('binary-decode', true);
 
   // Execute ldap search and populate grid as results are received.
   connection.search(
@@ -96,10 +95,18 @@ export function createSearchResultsWebview(context: ExtensionContext, connection
       // See https://github.com/microsoft/vscode-webview-ui-toolkit/blob/main/src/data-grid/README.md
       const row: any = {};
       entry.attributes.forEach(attribute => {
-        // TODO hardcoded
-        row[attribute.type] = (attribute.type === "objectGUID" || attribute.type === "objectGUID;binary")
-          ? objectGUIDToUUID(attribute.vals[0])
-          : attribute.vals;
+        if (binaryDecode && (attribute.type.toLowerCase() === "objectGUID".toLowerCase())) {
+          // Binary attribute objectGUID: render as UUID.
+          row[attribute.type] = attribute.buffers.map(buffer => binaryToUUID(buffer));
+        }
+        else if (binaryAttributes.includes(attribute.type.toLowerCase())) {
+          // Binary attribute (not objectGUID): render as Base64.
+          row[attribute.type] = attribute.buffers.map(buffer => binaryToBase64(buffer));
+        }
+        else {
+          // Regular attribute.
+          row[attribute.type] = attribute.vals;
+        }
       });
       // Callback that fires when a new search result is found.
       // Send message from extension to webview, tell it to add a row to the grid.
