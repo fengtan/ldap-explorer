@@ -31,3 +31,4 @@ jobs:
       with:
         name: ldap-explorer
         path: ldap-explorer-*.vsix
+      if: runner.os == 'Linux'
