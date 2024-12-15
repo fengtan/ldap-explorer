@@ -16,13 +16,18 @@ jobs:
         # - vscode itself https://github.com/Microsoft/vscode/wiki/How-to-Contribute#prerequisites
         # - dev container .devcontainer/Dockerfile
         node-version: 20.x
-    - run: npm install
-    - run: xvfb-run -a npm test
+    - name: Install dependencies
+      run: npm install
+    - name: Run tests (not Linux)
+      run: xvfb-run -a npm test
       if: runner.os == 'Linux'
-    - run: npm test
+    - name: Run tests (Linux)
+      run: npm test
       if: runner.os != 'Linux'
-    - run: node_modules/.bin/vsce package
+    - name: Package extension
+      run: node_modules/.bin/vsce package
     - name: Upload package as artifact
       uses: actions/upload-artifact@v4
       with:
+        name: ldap-explorer
         path: ldap-explorer-*.vsix
