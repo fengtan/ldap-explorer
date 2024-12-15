@@ -21,3 +21,8 @@ jobs:
       if: runner.os == 'Linux'
     - run: npm test
       if: runner.os != 'Linux'
+    - run: ls
+    - run: ls node_modules
+    - run: ls node_modules/.bin
+    - run: which vsce
+    - run: vsce package
