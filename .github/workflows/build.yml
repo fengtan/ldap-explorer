@@ -16,11 +16,18 @@ jobs:
         # - vscode itself https://github.com/Microsoft/vscode/wiki/How-to-Contribute#prerequisites
         # - dev container .devcontainer/Dockerfile
         node-version: 20.x
-    - run: npm install
-    - run: xvfb-run -a npm test
+    - name: Install dependencies
+      run: npm install
+    - name: Run tests
+      run: xvfb-run -a npm test
       if: runner.os == 'Linux'
-    - run: npm test
+    - name: Run tests
+      run: npm test
       if: runner.os != 'Linux'
-    - run: ls node_modules/.bin/vsce
-    - run: node_modules/.bin/vsce package
-    - run: ls
+    - name: Package extension
+      run: node_modules/.bin/vsce package
+    - name: Upload package as artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: extension-vsix
+        path: !*.vsix
