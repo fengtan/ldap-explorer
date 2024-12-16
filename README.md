@@ -78,16 +78,17 @@ This extension contributes the following commands:
 
 This extension contributes the following settings:
 
-* **ldap-explorer.show-tree-item-icons** (`false`)
+* **ldap-explorer.cacerts** (`[]`)
 
-If set to `true`, LDAP entries in the Tree view will be rendered with an icon based on their entity type:
-- `dc`, `c`, `o` or `ou`: [organization icon](https://raw.githubusercontent.com/microsoft/vscode-codicons/main/src/icons/organization.svg)
-- `cn`: [person icon](https://raw.githubusercontent.com/microsoft/vscode-codicons/main/src/icons/person.svg)
-- otherwise: [primitive square icon](https://raw.githubusercontent.com/microsoft/vscode-codicons/main/src/icons/primitive-square.svg)
+List of trusted root certificates. Example:
 
-| `ldap-explorer.show-tree-item-icons: false` | `ldap-explorer.show-tree-item-icons: true` |
-|---------------------------------------------|--------------------------------------------|
-|![tree without icons](screenshots/configuration.icons.false.png) | ![tree with icons](screenshots/configuration.icons.true.png) |
+```json
+{
+  "ldap-explorer.cacerts": [
+    "/etc/ca-certificates/myRootCA.crt"
+  ]
+}
+```
 
 * **ldap-explorer.connections** (`[]`)
 
@@ -118,17 +119,16 @@ List of LDAP connections. Example:
 }
 ```
 
-* **ldap-explorer.cacerts** (`[]`)
+* **ldap-explorer.show-tree-item-icons** (`false`)
 
-List of trusted root certificates. Example:
+If set to `true`, LDAP entries in the Tree view will be rendered with an icon based on their entity type:
+- `dc`, `c`, `o` or `ou`: [organization icon](https://raw.githubusercontent.com/microsoft/vscode-codicons/main/src/icons/organization.svg)
+- `cn`: [person icon](https://raw.githubusercontent.com/microsoft/vscode-codicons/main/src/icons/person.svg)
+- otherwise: [primitive square icon](https://raw.githubusercontent.com/microsoft/vscode-codicons/main/src/icons/primitive-square.svg)
 
-```json
-{
-  "ldap-explorer.cacerts": [
-    "/etc/ca-certificates/myRootCA.crt"
-  ]
-}
-```
+| `ldap-explorer.show-tree-item-icons: false` | `ldap-explorer.show-tree-item-icons: true` |
+|---------------------------------------------|--------------------------------------------|
+|![tree without icons](screenshots/configuration.icons.false.png) | ![tree with icons](screenshots/configuration.icons.true.png) |
 
 ## Known limitations
 
