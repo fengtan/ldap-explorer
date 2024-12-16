@@ -10,7 +10,12 @@ export function binaryToBase64(binary: Buffer) {
 /**
  * Convert binary data to a UUID.
  *
- * @see https://github.com/fengtan/ldap-explorer/issues/33
+ * The curly braced string representation is used.
+ *
+ * @see https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-dtyp/001eec5a-7f8b-4293-9e21-ca349392db40
+ * @see https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-dtyp/222af2d3-5c00-4899-bc87-ed4c6515e80d
+ * @see https://en.wikipedia.org/wiki/Universally_unique_identifier
+ * @see https://github.com/fengtan/ldap-explorer/pull/60
  */
 export function binaryToUUID(binary: Buffer) {
   const dashPos = [4, 6, 8, 10];
@@ -23,7 +28,7 @@ export function binaryToUUID(binary: Buffer) {
     uuid += binary[i].toString(16).padStart(2, "0");
   }
 
-  return uuid;
+  return "{" + uuid + "}";
 }
 
 /**
