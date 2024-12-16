@@ -1,6 +1,6 @@
-import { ExtensionContext, Uri, ViewColumn, window, workspace } from 'vscode';
+import { ExtensionContext, Uri, ViewColumn, window } from 'vscode';
 import { LdapConnection } from '../LdapConnection';
-import { binaryToBase64, binaryToUUID, formatCsvLine, getUri, getWebviewUiToolkitUri } from './utils';
+import { decodeAttribute, formatCsvLine, getUri, getWebviewUiToolkitUri } from './utils';
 import { Attribute, SearchOptions } from 'ldapjs';
 import { open, write } from "fs";
 import { homedir } from "os";
@@ -68,23 +68,6 @@ export function createSearchResultsWebview(context: ExtensionContext, connection
     };
   }
 
-  // Get settings about binary attributes.
-  const binaryAttributes: string[] = workspace.getConfiguration('ldap-explorer').get('binary-attributes', [
-    "caCertificate",
-    "jpegPhoto",
-    "krbExtraData",
-    "msExchArchiveGUID",
-    "msExchBlockedSendersHash",
-    "msExchMailboxGuid",
-    "msExchSafeSendersHash",
-    "networkAddress",
-    "objectGUID",
-    "objectSid",
-    "userCertificate",
-    "userSMIMECertificate"
-  ]).map(attribute => attribute.toLowerCase());
-  const binaryDecode: boolean = workspace.getConfiguration('ldap-explorer').get('binary-decode', true);
-
   // Execute ldap search and populate grid as results are received.
   connection.search(
     getSearchOptions(),
@@ -95,18 +78,7 @@ export function createSearchResultsWebview(context: ExtensionContext, connection
       // See https://github.com/microsoft/vscode-webview-ui-toolkit/blob/main/src/data-grid/README.md
       const row: any = {};
       entry.attributes.forEach(attribute => {
-        if (binaryDecode && (attribute.type.toLowerCase() === "objectGUID".toLowerCase())) {
-          // Binary attribute objectGUID: render as UUID.
-          row[attribute.type] = attribute.buffers.map(buffer => binaryToUUID(buffer));
-        }
-        else if (binaryAttributes.includes(attribute.type.toLowerCase())) {
-          // Binary attribute (not objectGUID): render as Base64.
-          row[attribute.type] = attribute.buffers.map(buffer => binaryToBase64(buffer));
-        }
-        else {
-          // Regular attribute.
-          row[attribute.type] = attribute.vals;
-        }
+        row[attribute.type] = decodeAttribute(attribute);
       });
       // Callback that fires when a new search result is found.
       // Send message from extension to webview, tell it to add a row to the grid.
@@ -165,7 +137,7 @@ export function createSearchResultsWebview(context: ExtensionContext, connection
                     let entryValues: (string | string[])[] = [];
                     attributesToExport.forEach(attributeToExport => {
                       const attributeElemToExport: Attribute | undefined = entry.attributes.find(attribute => attribute.type === attributeToExport);
-                      const entryValue = attributeElemToExport?.vals.toString() ?? "";
+                      const entryValue = attributeElemToExport ? decodeAttribute(attributeElemToExport).toString() : "";
                       entryValues.push(entryValue);
                     });
                     write(fd, formatCsvLine(entryValues), (err) => {

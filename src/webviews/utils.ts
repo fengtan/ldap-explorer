@@ -1,9 +1,10 @@
-import { Uri, Webview } from 'vscode';
+import { Attribute } from 'ldapjs';
+import { Uri, Webview, workspace } from 'vscode';
 
 /**
  * Convert binary data to Base 64.
  */
-export function binaryToBase64(binary: Buffer) {
+function binaryToBase64(binary: Buffer) {
   return btoa(String.fromCharCode(...binary));
 }
 
@@ -17,7 +18,7 @@ export function binaryToBase64(binary: Buffer) {
  * @see https://en.wikipedia.org/wiki/Universally_unique_identifier
  * @see https://github.com/fengtan/ldap-explorer/pull/60
  */
-export function binaryToUUID(binary: Buffer) {
+function binaryToUUID(binary: Buffer) {
   const dashPos = [4, 6, 8, 10];
   let uuid = "";
 
@@ -29,6 +30,42 @@ export function binaryToUUID(binary: Buffer) {
   }
 
   return "{" + uuid + "}";
+}
+
+/**
+ * Return attribute value (decoded if binary, raw otherwise).
+ */
+export function decodeAttribute(attribute: Attribute) {
+
+  // Get settings about binary attributes.
+  const binaryDecode: boolean = workspace.getConfiguration('ldap-explorer').get('binary-decode', true);
+  const binaryAttributes: string[] = workspace.getConfiguration('ldap-explorer').get('binary-attributes', [
+    "caCertificate",
+    "jpegPhoto",
+    "krbExtraData",
+    "msExchArchiveGUID",
+    "msExchBlockedSendersHash",
+    "msExchMailboxGuid",
+    "msExchSafeSendersHash",
+    "networkAddress",
+    "objectGUID",
+    "objectSid",
+    "userCertificate",
+    "userSMIMECertificate"
+  ]).map((attributeName: string) => attributeName.toLowerCase());
+
+  // Binary attribute objectGUID: render as UUID.
+  if (binaryDecode && (attribute.type.toLowerCase() === "objectGUID".toLowerCase())) {
+    return attribute.buffers.map(buffer => binaryToUUID(buffer));
+  }
+
+  // Binary attribute (not objectGUID): render as Base64.
+  if (binaryAttributes.includes(attribute.type.toLowerCase())) {
+    return attribute.buffers.map(buffer => binaryToBase64(buffer));
+  }
+
+  // Regular attribute.
+  return attribute.vals;
 }
 
 /**
