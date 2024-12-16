@@ -277,7 +277,7 @@
         "ldap-explorer.binary-attributes": {
           "type": "array",
           "title": "Binary attributes",
-          "description": "Name of attributes that should be treated as binary (case insentitive); they will be rendered as a Base64 string",
+          "description": "Name of binary attributes (case insentitive). They will be represented as Base64 strings.",
           "default": [
             "caCertificate",
             "jpegPhoto",
@@ -296,7 +296,7 @@
         "ldap-explorer.binary-decode": {
           "type": "boolean",
           "title": "Decode binary attributes",
-          "description": "Translate binary attributes to their text equivalents; currently only the 'objectGUID' attribute is supported",
+          "description": "Whether the 'objectGUID' binary attribute should be decoded and represented as a UUID.",
           "default": true
         },
         "ldap-explorer.cacerts": {
