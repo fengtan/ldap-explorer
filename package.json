@@ -274,12 +274,6 @@
       "type": "object",
       "title": "LDAP Explorer",
       "properties": {
-        "ldap-explorer.show-tree-item-icons": {
-          "type": "boolean",
-          "title": "Show tree item icons",
-          "description": "Render LDAP tree items with icons",
-          "default": false
-        },
         "ldap-explorer.cacerts": {
           "type": "array",
           "title": "CA certificates",
@@ -373,6 +367,12 @@
               }
             }
           }
+        },
+        "ldap-explorer.show-tree-item-icons": {
+          "type": "boolean",
+          "title": "Show tree item icons",
+          "description": "Render LDAP tree items with icons",
+          "default": false
         }
       }
     }
