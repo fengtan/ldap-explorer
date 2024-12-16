@@ -86,7 +86,7 @@ Name of attributes that should be treated as binary (case insentitive). They wil
 {
   "ldap-explorer.binary-attributes": [
     "objectGUID",
-    "objectSid
+    "objectSid"
   ]
 }
 ```
