@@ -80,20 +80,11 @@ This extension contributes the following settings:
 
 * **ldap-explorer.binary-attributes** (`["caCertificate", "jpegPhoto", "krbExtraData", "msExchArchiveGUID", "msExchBlockedSendersHash", "msExchMailboxGuid", "msExchSafeSendersHash", "networkAddress", "objectGUID", "objectSid", "userCertificate", "userSMIMECertificate"]`)
 
-Name of attributes that should be treated as binary (case insentitive). They will be rendered as a Base64 string. Example:
-
-```json
-{
-  "ldap-explorer.binary-attributes": [
-    "objectGUID",
-    "objectSid"
-  ]
-}
-```
+Name of binary attributes (case insentitive). They will be represented as Base64 strings.
 
 * **ldap-explorer.binary-decode** (`true`)
 
-Whether binary attributes should be translated to their text equivalents. currently only the `objectGUID` attribute is supported.
+If `true` then the `objectGUID` binary attribute will be decoded and represented as a UUID.
 
 * **ldap-explorer.cacerts** (`[]`)
 
