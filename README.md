@@ -84,7 +84,7 @@ Name of binary attributes (case insentitive). They will be represented as Base64
 
 * **ldap-explorer.binary-decode** (`true`)
 
-If `true` then the `objectGUID` binary attribute will be decoded and represented as a UUID.
+If `true` then the `objectGUID` binary attribute will be decoded and represented as a UUID (regardless of whether `objectGUID` is listed in `ldap-explorer.binary-attributes`).
 
 * **ldap-explorer.cacerts** (`[]`)
 
