@@ -78,6 +78,14 @@ This extension contributes the following commands:
 
 This extension contributes the following settings:
 
+* **ldap-explorer.binary-attributes** (`["caCertificate", "jpegPhoto", "krbExtraData", "msExchArchiveGUID", "msExchBlockedSendersHash", "msExchMailboxGuid", "msExchSafeSendersHash", "networkAddress", "objectGUID", "objectSid", "userCertificate", "userSMIMECertificate"]`)
+
+Name of binary attributes (case insentitive). They will be represented as Base64 strings.
+
+* **ldap-explorer.binary-decode** (`true`)
+
+If `true` then the `objectGUID` binary attribute will be decoded and represented as a UUID (regardless of whether `objectGUID` is listed in `ldap-explorer.binary-attributes`).
+
 * **ldap-explorer.cacerts** (`[]`)
 
 List of trusted root certificates. Example:

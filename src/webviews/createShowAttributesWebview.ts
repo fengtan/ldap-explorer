@@ -1,6 +1,6 @@
 import { ExtensionContext, Uri, ViewColumn, window } from 'vscode';
 import { LdapConnection } from '../LdapConnection';
-import { formatCsvLine, getUri, getWebviewUiToolkitUri } from './utils';
+import { decodeAttribute, formatCsvLine, getUri, getWebviewUiToolkitUri } from './utils';
 import { open, write } from "fs";
 import { homedir } from "os";
 import { sep } from "path";
@@ -65,7 +65,10 @@ export function createShowAttributesWebview(connection: LdapConnection, dn: stri
       let rowsData: any[] = [];
       entries.forEach(entry => {
         entry.attributes.forEach(attribute => {
-          const vals: string[] = Array.isArray(attribute.vals) ? attribute.vals : [attribute.vals];
+          let vals: string | string[] = decodeAttribute(attribute);
+          if (!Array.isArray(vals)) {
+            vals = [vals];
+          }
           vals.forEach(val => {
             rowsData.push({ name: attribute.type, value: val });
           });

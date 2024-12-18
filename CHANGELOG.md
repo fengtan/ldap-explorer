@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Changed
+- Binary attributes are now represented as text: as UUID for the `objectGUID` attribute and as Base64 for other attributes; this is configurable via the new settings `ldap-explorer.binary-decode` and `ldap-explorer.binary-attributes` ([#33](https://github.com/fengtan/ldap-explorer/issues/33) - thanks [@petarov](https://github.com/petarov))
 - Updated dependencies
 
 ## [1.3.2] - 2024-05-20
