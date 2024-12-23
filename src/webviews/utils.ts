@@ -9,7 +9,7 @@ function binaryToBase64(binary: Buffer) {
 }
 
 /**
- * Convert binary data to a UUID.
+ * Convert binary GUID data to its text representation (UUID).
  *
  * The curly braced string representation is used.
  *
@@ -18,7 +18,7 @@ function binaryToBase64(binary: Buffer) {
  * @see https://en.wikipedia.org/wiki/Universally_unique_identifier
  * @see https://github.com/fengtan/ldap-explorer/pull/60
  */
-function binaryToUUID(binary: Buffer) {
+function binaryGUIDToTextUUID(binary: Buffer) {
   const dashPos = [4, 6, 8, 10];
   let uuid = "";
 
@@ -56,7 +56,7 @@ export function decodeAttribute(attribute: Attribute) {
 
   // Binary attribute objectGUID: render as UUID.
   if (binaryDecode && (attribute.type.toLowerCase() === "objectGUID".toLowerCase())) {
-    return attribute.buffers.map(buffer => binaryToUUID(buffer));
+    return attribute.buffers.map(buffer => binaryGUIDToTextUUID(buffer));
   }
 
   // Binary attribute (not objectGUID): render as Base64.
