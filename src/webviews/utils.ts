@@ -22,6 +22,15 @@ function binaryGUIDToTextUUID(binary: Buffer) {
   const dashPos = [4, 6, 8, 10];
   let uuid = "";
 
+  // Active Directory stores objectGUID's in little-endian so we must reorder
+  // the bytes.
+  const binaryOrdered = [
+    ...Array.from(binary.subarray(0, 4).reverse()),
+    ...Array.from(binary.subarray(4, 6).reverse()),
+    ...Array.from(binary.subarray(6, 8).reverse()),
+    ...Array.from(binary.subarray(8, 16)),
+  ];
+
   for (let i = 0; i < binary.length; i++) {
     if (dashPos.includes(i)) {
       uuid += "-";
