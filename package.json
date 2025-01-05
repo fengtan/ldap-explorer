@@ -274,6 +274,31 @@
       "type": "object",
       "title": "LDAP Explorer",
       "properties": {
+        "ldap-explorer.binary-attributes": {
+          "type": "array",
+          "title": "Binary attributes",
+          "description": "Name of binary attributes (case insentitive). They will be represented as Base64 strings.",
+          "default": [
+            "caCertificate",
+            "jpegPhoto",
+            "krbExtraData",
+            "msExchArchiveGUID",
+            "msExchBlockedSendersHash",
+            "msExchMailboxGuid",
+            "msExchSafeSendersHash",
+            "networkAddress",
+            "objectGUID",
+            "objectSid",
+            "userCertificate",
+            "userSMIMECertificate"
+          ]
+        },
+        "ldap-explorer.binary-decode": {
+          "type": "boolean",
+          "title": "Decode binary attributes",
+          "description": "Whether the 'objectGUID' binary attribute should be decoded and represented as a UUID.",
+          "default": true
+        },
         "ldap-explorer.cacerts": {
           "type": "array",
           "title": "CA certificates",
