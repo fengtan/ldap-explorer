@@ -135,9 +135,10 @@ Updates
 - [ldapjs decommissionned in May 2024](https://github.com/ldapjs/node-ldapjs/blob/8ffd0bc9c149088a10ec4c1ec6a18450f76ad05d/README.md) - possibly switch to another library if it does not get revived
 
 Features
-- Support for write operations i.e. add, delete, edit, move LDAP entries (could make use of the [FileSystemProvider API](https://code.visualstudio.com/api/references/vscode-api#FileSystemProvider))
+- Support for write operations i.e. add, delete, edit, move LDAP entries (could make use of the [FileSystemProvider API](https://code.visualstudio.com/api/references/vscode-api#FileSystemProvider)) - see [#51](https://github.com/fengtan/ldap-explorer/issues/51)
 - Support LDAP referrals - currently those are simply logged, see `LdapConnection.search()`
 - Support pausing at the end of each page to limit server load when fetching large data sets - see parameter `pagePause` at [paging](http://ldapjs.org/client.html#paging))
+- Decode binary attributes other than `objectGUID` - see [#33](https://github.com/fengtan/ldap-explorer/issues/33)
 
 UI
 - Join multivalue search results with a carriage return instead of a comma (not supported by webview ui toolkit grids)
