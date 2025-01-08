@@ -42,6 +42,36 @@ function binaryGUIDToTextUUID(binary: Buffer) {
 }
 
 /**
+ * Convert binary security identifier data to its text representation (SID).
+ *
+ * The curly braced string representation is used.
+ *
+ * @see https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/manage/understand-security-identifiers 
+ * @see https://learn.microsoft.com/en-us/windows/win32/adschema/a-objectsid
+ */
+function binarySIDToText(binary: Buffer) {
+  if (binary.length < 8) {
+    return "Invalid SID: less than 8 bytes";
+  }
+
+  const revision = binary.readUint8(0);
+  const subAuthorityCount = binary.readUint8(1);
+
+  // 6 bytes (big-endian)
+  const identifierAuthority = binary.readUIntBE(2, 6);
+
+  let sid = `S-${revision}-${identifierAuthority}`;
+
+  // Sub authorities are 4 bytes each, starting from byte 8
+  for (let i = 0; i < subAuthorityCount; i++) {
+    let subAuthority = binary.readUInt32LE(8 + i * 4); // little-endian
+    sid += `-${subAuthority}`;
+  }
+
+  return sid;
+}
+
+/**
  * Return attribute value (decoded if binary, raw otherwise).
  */
 export function decodeAttribute(attribute: Attribute) {
@@ -66,6 +96,11 @@ export function decodeAttribute(attribute: Attribute) {
   // Binary attribute objectGUID: render as UUID.
   if (binaryDecode && (attribute.type.toLowerCase() === "objectGUID".toLowerCase())) {
     return attribute.buffers.map(buffer => binaryGUIDToTextUUID(buffer));
+  }
+
+  // Binary attribute objectSid: render as security identifier (SID) string.
+  if (binaryDecode && (attribute.type.toLowerCase() === "objectSid".toLowerCase())) {
+    return attribute.buffers.map(buffer => binarySIDToText(buffer));
   }
 
   // Binary attribute (not objectGUID): render as Base64.
