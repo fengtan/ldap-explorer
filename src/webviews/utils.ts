@@ -18,7 +18,7 @@ function binaryToBase64(binary: Buffer) {
  * @see https://en.wikipedia.org/wiki/Universally_unique_identifier
  * @see https://github.com/fengtan/ldap-explorer/pull/60
  */
-function binaryGUIDToTextUUID(binary: Buffer) {
+export function binaryGUIDToTextUUID(binary: Buffer) {
   const dashPos = [4, 6, 8, 10];
   let uuid = "";
 
