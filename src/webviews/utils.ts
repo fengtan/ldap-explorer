@@ -49,7 +49,7 @@ function binaryGUIDToTextUUID(binary: Buffer) {
  * @see https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/manage/understand-security-identifiers 
  * @see https://learn.microsoft.com/en-us/windows/win32/adschema/a-objectsid
  */
-function binarySIDToText(binary: Buffer) {
+export function binarySIDToText(binary: Buffer) {
   if (binary.length < 8) {
     return "Invalid SID: less than 8 bytes";
   }

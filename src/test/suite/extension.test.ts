@@ -1,5 +1,6 @@
 import * as assert from 'assert';
 import { LdapConnection } from '../../LdapConnection';
+import * as utils from '../../webviews/utils';
 
 suite('Extension test suite', () => {
 
@@ -72,6 +73,20 @@ suite('Extension test suite', () => {
     assert.strictEqual("0", connection.getLimit(true));
     assert.strictEqual("true", connection.getPaged(true));
     assert.strictEqual("5000", connection.getTimeout(true));
+  });
+
+  test('Test binarySIDToText', () => {
+    assert.strictEqual("S-1-5-21-4169144328-3425172002-2123581430-1103", 
+      utils.binarySIDToText(Buffer.from("AQUAAAAAAAUVAAAACBiA+CL6J8z2R5N+TwQAAA==", "base64")));
+
+    assert.strictEqual("S-1-5-21-4169144328-3425172002-2123581430-1140", 
+      utils.binarySIDToText(Buffer.from("AQUAAAAAAAUVAAAACBiA+CL6J8z2R5N+dAQAAA==", "base64")));
+
+    assert.strictEqual("S-1-5-21-4169144328-3425172002-2123581430-1130", 
+      utils.binarySIDToText(Buffer.from("AQUAAAAAAAUVAAAACBiA+CL6J8z2R5N+agQAAA==", "base64")));
+
+    assert.strictEqual("S-1-5-21-4169144328-3425172002-2123581430-1129", 
+      utils.binarySIDToText(Buffer.from("AQUAAAAAAAUVAAAACBiA+CL6J8z2R5N+aQQAAA==", "base64")));
   });
 
 });
