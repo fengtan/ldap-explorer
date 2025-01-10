@@ -377,6 +377,11 @@
                 "description": "Size Limit",
                 "default": "0"
               },
+              "connectTimeout": {
+                "type": "string",
+                "description": "Connect timeout (milliseconds)",
+                "default": "5000"
+              },
               "timeout": {
                 "type": "string",
                 "description": "Timeout (milliseconds)",

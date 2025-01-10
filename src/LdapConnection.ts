@@ -25,6 +25,7 @@ export class LdapConnection {
   private basedn: string;
   private limit: string;
   private paged: string;
+  private connectTimeout: string;
   private timeout: string;
   private bookmarks: string[];
 
@@ -41,6 +42,7 @@ export class LdapConnection {
     basedn: string,
     limit: string,
     paged: string,
+    connectTimeout: string,
     timeout: string,
     bookmarks: string[]
   ) {
@@ -56,6 +58,7 @@ export class LdapConnection {
     this.basedn = basedn;
     this.limit = limit;
     this.paged = paged;
+    this.connectTimeout = connectTimeout;
     this.timeout = timeout;
     this.bookmarks = bookmarks;
   }
@@ -99,6 +102,9 @@ export class LdapConnection {
   }
   public getTimeout(evaluate: boolean) {
     return this.get(this.timeout, evaluate);
+  }
+  public getConnectTimeout(evaluate: boolean) {
+    return this.get(this.connectTimeout, evaluate);
   }
   public getBookmarks() {
     return this.bookmarks;
@@ -224,6 +230,7 @@ export class LdapConnection {
       // Get ldapjs client.
       const client: Client = createClient({
         url: [this.getUrl()],
+        connectTimeout: Number(this.getConnectTimeout(true)),
         timeout: Number(this.getTimeout(true)),
         tlsOptions: (this.getProtocol(true) === "ldaps" ? this.getTLSOptions() : {}),
       });

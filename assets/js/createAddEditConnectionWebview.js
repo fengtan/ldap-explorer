@@ -18,6 +18,7 @@ function submitForm(command) {
     basedn: document.getElementById("basedn").value,
     limit: document.getElementById("limit").value,
     paged: document.getElementById("paged").checked ? "true" : "false",
+    connectTimeout: document.getElementById("connectTimeout").value,
     timeout: document.getElementById("timeout").value
   });
 }

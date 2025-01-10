@@ -19,6 +19,7 @@ suite('Extension test suite', () => {
       "0",
       "true",
       "5000",
+      "5000",
       []
     );
     // Assert connection string.
@@ -40,6 +41,7 @@ suite('Extension test suite', () => {
       "${basedn}",
       "${sizelimit}",
       "${paged}",
+      "${connectTimeout}",
       "${timeout}",
       []
     );
@@ -56,6 +58,7 @@ suite('Extension test suite', () => {
       basedn: "dc=example,dc=org",
       sizelimit: "0",
       paged: "true",
+      connectTimeout: "2000",
       timeout: "5000"
     };
     // Assert values.
@@ -71,6 +74,7 @@ suite('Extension test suite', () => {
     assert.strictEqual("dc=example,dc=org", connection.getBaseDn(true));
     assert.strictEqual("0", connection.getLimit(true));
     assert.strictEqual("true", connection.getPaged(true));
+    assert.strictEqual("2000", connection.getConnectTimeout(true));
     assert.strictEqual("5000", connection.getTimeout(true));
   });
 
