@@ -84,6 +84,9 @@ suite('Extension test suite', () => {
 
     assert.strictEqual("{32b1434c-cc5f-4ec1-8afa-e14c300a9070}", 
       utils.binaryGUIDToTextUUID(Buffer.from("TEOxMl/MwU6K+uFMMAqQcA==", "base64")));
+
+    assert.strictEqual("{541be56a-668c-4e78-a317-7fb201d5abc0}", 
+      utils.binaryGUIDToTextUUID(Buffer.from("auUbVIxmeE6jF3+yAdWrwA==", "base64")));
   });
 
   test('Test binarySIDToText', () => {
@@ -96,8 +99,8 @@ suite('Extension test suite', () => {
     assert.strictEqual("S-1-5-21-4169144328-3425172002-2123581430-1130", 
       utils.binarySIDToText(Buffer.from("AQUAAAAAAAUVAAAACBiA+CL6J8z2R5N+agQAAA==", "base64")));
 
-    assert.strictEqual("S-1-5-21-4169144328-3425172002-2123581430-1129", 
-      utils.binarySIDToText(Buffer.from("AQUAAAAAAAUVAAAACBiA+CL6J8z2R5N+aQQAAA==", "base64")));
+    assert.strictEqual("S-1-5-21-3316208387-3203859757-1631524618-1117", 
+      utils.binarySIDToText(Buffer.from("AQUAAAAAAAUVAAAAA1OpxS0F974KFz9hXQQAAA==", "base64")));
   });
 
 });
