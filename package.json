@@ -296,7 +296,7 @@
         "ldap-explorer.binary-decode": {
           "type": "boolean",
           "title": "Decode binary attributes",
-          "description": "Whether the 'objectGUID' binary attribute should be decoded and represented as a UUID.",
+          "description": "Whether the 'objectGUID', 'objectSid' binary attributes should be decoded and represented as text values.",
           "default": true
         },
         "ldap-explorer.cacerts": {
