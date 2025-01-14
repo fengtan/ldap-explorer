@@ -46,7 +46,7 @@ export function binaryGUIDToTextUUID(binary: Buffer) {
  *
  * The curly braced string representation is used.
  *
- * @see https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/manage/understand-security-identifiers 
+ * @see https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/manage/understand-security-identifiers
  * @see https://learn.microsoft.com/en-us/windows/win32/adschema/a-objectsid
  */
 export function binarySIDToText(binary: Buffer) {
@@ -103,7 +103,7 @@ export function decodeAttribute(attribute: Attribute) {
     return attribute.buffers.map(buffer => binarySIDToText(buffer));
   }
 
-  // Binary attribute (not objectGUID): render as Base64.
+  // Binary attribute (not decodable): render as Base64.
   if (binaryAttributes.includes(attribute.type.toLowerCase())) {
     return attribute.buffers.map(buffer => binaryToBase64(buffer));
   }
