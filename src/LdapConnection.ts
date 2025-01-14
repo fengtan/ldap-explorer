@@ -9,7 +9,7 @@ import { CACertificateManager } from './CACertificateManager';
  */
 export class LdapConnection {
 
-  // Port, limit and timeout are stored as strings instead of numbers because
+  // Port, limit and timeouts are stored as strings instead of numbers because
   // they may reference environment variables instead of actual numbers.
   // The same applies to starttls, verifycert and paged which would normally be
   // booleans.
@@ -100,11 +100,11 @@ export class LdapConnection {
   public getPaged(evaluate: boolean) {
     return this.get(this.paged, evaluate);
   }
-  public getTimeout(evaluate: boolean) {
-    return this.get(this.timeout, evaluate);
-  }
   public getConnectTimeout(evaluate: boolean) {
     return this.get(this.connectTimeout, evaluate);
+  }
+  public getTimeout(evaluate: boolean) {
+    return this.get(this.timeout, evaluate);
   }
   public getBookmarks() {
     return this.bookmarks;
