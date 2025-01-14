@@ -138,7 +138,7 @@ Features
 - Support for write operations i.e. add, delete, edit, move LDAP entries (could make use of the [FileSystemProvider API](https://code.visualstudio.com/api/references/vscode-api#FileSystemProvider)) - see [#51](https://github.com/fengtan/ldap-explorer/issues/51)
 - Support LDAP referrals - currently those are simply logged, see `LdapConnection.search()`
 - Support pausing at the end of each page to limit server load when fetching large data sets - see parameter `pagePause` at [paging](http://ldapjs.org/client.html#paging))
-- Decode binary attributes other than `objectGUID` - see [#33](https://github.com/fengtan/ldap-explorer/issues/33)
+- Decode binary attributes other than `objectGUID` and `objectSid` - see [#33](https://github.com/fengtan/ldap-explorer/issues/33)
 
 UI
 - Join multivalue search results with a carriage return instead of a comma (not supported by webview ui toolkit grids)
