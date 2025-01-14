@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 ### Added
 - Represent binary attribute `objectSid` as text ([#62](https://github.com/fengtan/ldap-explorer/pull/62) - thanks [@petarov](https://github.com/petarov))
+- Connect timeout, configurable on connections edit screen ([#63](https://github.com/fengtan/ldap-explorer/pull/63) - thanks again [@petarov](https://github.com/petarov)!)
 
 ## [1.4.0] - 2025-01-04
 ### Added
