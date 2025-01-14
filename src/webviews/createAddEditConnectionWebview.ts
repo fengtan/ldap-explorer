@@ -85,10 +85,10 @@ export function createAddEditConnectionWebview(context: ExtensionContext, existi
           <vscode-checkbox id="paged" checked="${existingConnection?.getPaged(false) ?? 'true'}">Automatic result paging<small><div>Many LDAP servers enforce limits upon the returned result set (commonly 1,000).</div><div>Enable this option to make sure all results are returned.</div>Disable this option if your server does not support paged results.</div></small></vscode-checkbox>
         </section>
         <section>
-          <vscode-text-field type="text" id="connectTimeout" value="${existingConnection?.getConnectTimeout(false) ?? '5000'}" size="48">Connect timeout in milliseconds (leave empty for infinity)</vscode-text-field>
+          <vscode-text-field type="text" id="connectTimeout" value="${existingConnection?.getConnectTimeout(false) ?? '5000'}" size="48">Connect timeout in milliseconds (default: OS default)</vscode-text-field>
         </section>
         <section>
-          <vscode-text-field type="text" id="timeout" value="${existingConnection?.getTimeout(false) ?? '5000'}" size="48">Timeout in milliseconds (leave empty for infinity)</vscode-text-field>
+          <vscode-text-field type="text" id="timeout" value="${existingConnection?.getTimeout(false) ?? '5000'}" size="48">Timeout in milliseconds (default: infinity)</vscode-text-field>
         </section>
 
         <section>
