@@ -93,14 +93,18 @@ export function decodeAttribute(attribute: Attribute) {
     "userSMIMECertificate"
   ]).map((attributeName: string) => attributeName.toLowerCase());
 
-  // Binary attribute objectGUID: render as UUID.
-  if (binaryDecode && (attribute.type.toLowerCase() === "objectGUID".toLowerCase())) {
-    return attribute.buffers.map(buffer => binaryGUIDToTextUUID(buffer));
-  }
+  // Decode binary attributes (if decodable and if user wants decoded values).
+  if (binaryDecode) {
+    switch (attribute.type.toLowerCase()) {
 
-  // Binary attribute objectSid: render as security identifier (SID) string.
-  if (binaryDecode && (attribute.type.toLowerCase() === "objectSid".toLowerCase())) {
-    return attribute.buffers.map(buffer => binarySIDToText(buffer));
+    // Binary attribute objectGUID: render as UUID.
+    case "objectGUID".toLowerCase():
+      return attribute.buffers.map(buffer => binaryGUIDToTextUUID(buffer));
+
+    // Binary attribute objectSid: render as security identifier (SID) string.
+    case "objectSid".toLowerCase():
+      return attribute.buffers.map(buffer => binarySIDToText(buffer));
+    }
   }
 
   // Binary attribute (not decodable): render as Base64.
