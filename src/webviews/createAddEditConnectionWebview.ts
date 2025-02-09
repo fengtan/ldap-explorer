@@ -207,7 +207,10 @@ export function createAddEditConnectionWebview(context: ExtensionContext, connec
 
       case 'test':
         // Test connection.
-        newConnection.search(context, {}).then(
+        // Load password from connection object (PasswordMode.settings) even if
+        // another password mode was selected: the connection may not have been
+        // persisted yet (e.g. password may not be stored in secret storage).
+        newConnection.search(context, {}, PasswordMode.settings).then(
           value => {
             window.showInformationMessage('Connection succeeded');
           },

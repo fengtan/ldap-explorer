@@ -72,6 +72,7 @@ export function createSearchResultsWebview(context: ExtensionContext, connection
   connection.search(
     context,
     getSearchOptions(),
+    connection.getPwdMode(true),
     connection.getBaseDn(true),
     (entry) => {
       // Turn LDAP entry into an object that matches the format expected by the grid.
@@ -133,6 +134,7 @@ export function createSearchResultsWebview(context: ExtensionContext, connection
                 connection.search(
                   context,
                   getSearchOptions(),
+                  connection.getPwdMode(true),
                   connection.getBaseDn(true),
                   (entry) => {
                     // For each result, format a CSV line and write it to the file.

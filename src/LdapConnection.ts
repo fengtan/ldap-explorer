@@ -243,6 +243,7 @@ export class LdapConnection {
   public search(
     context: ExtensionContext,
     searchOptions: SearchOptions,
+    pwdmode: string = this.getPwdMode(true),
     base: string = this.getBaseDn(true),
     onSearchEntryFound?: (entry: SearchEntry) => void
   ): Thenable<SearchEntry[]> {
@@ -269,11 +270,11 @@ export class LdapConnection {
           if (err) {
             return reject(`Unable to initiate StartTLS: ${err.message}`);
           }
-          return this.getResults(context, client, resolve, reject, searchOptions, base, onSearchEntryFound);
+          return this.getResults(context, client, resolve, reject, searchOptions, pwdmode, base, onSearchEntryFound);
         });
       }
       else {
-        return this.getResults(context, client, resolve, reject, searchOptions, base, onSearchEntryFound);
+        return this.getResults(context, client, resolve, reject, searchOptions, pwdmode, base, onSearchEntryFound);
       }
     });
   }
@@ -294,12 +295,13 @@ export class LdapConnection {
     resolve: (value: SearchEntry[] | PromiseLike<SearchEntry[]>) => void,
     reject: (reason?: any) => void,
     searchOptions: SearchOptions,
+    pwdmode: string = this.getPwdMode(true),
     base: string = this.getBaseDn(true),
     onSearchEntryFound ?: (entry: SearchEntry) => void
   ) {
     // Get bind password depending on password mode.
     let bindpwd: string | undefined;
-    switch (this.getPwdMode(true)) {
+    switch (pwdmode) {
     case PasswordMode.ask:
       bindpwd = await this.pickBindPassword();
       if (!bindpwd) {
