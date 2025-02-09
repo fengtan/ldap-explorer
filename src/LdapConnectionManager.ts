@@ -165,7 +165,7 @@ export class LdapConnectionManager {
   /**
    * Remove an existing connection from settings.
    *
-   * Also removes the password from secret storage, if applicable.
+   * Also removes the password from secret storage.
    */
   public async removeConnection(connection: LdapConnection): Promise<void> {
     // Get list of existing connections.
@@ -180,10 +180,8 @@ export class LdapConnectionManager {
     // Remove connection from the list.
     connections.splice(index, 1);
 
-    // Remove password from secret store depending on password mode.
-    if (connection.getPwdMode(true) === PasswordMode.secretStorage) {
-      await this.deleteBindPwdFromSecretStorage(connection);
-    }
+    // Remove password from secret store (regardless of current password mode).
+    await this.deleteBindPwdFromSecretStorage(connection);
 
     // Save new list of connections and return Thenable.
     return workspace.getConfiguration('ldap-explorer').update('connections', connections, true);
