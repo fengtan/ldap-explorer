@@ -14,7 +14,8 @@
 * **Export LDAP entries as CSV** - Share and analyze LDAP results using a standard CSV format
 * **Manage bookmarks** - Bookmark LDAP entries you often need to check or located in awkward places
 * **Support for multiple connections** - Manage multiple LDAP connections, such as a test and a production connections
-* **Support for environment variables** - Easy integration with containers and increased security: you don't have to store your bind credentials unencrypted in VS Code settings
+* **Support for environment variables** - Easy integration with containers
+* **Secure bind passwords** - Option to store bind passwords either encrypted in VS Code's secret storage, as plain text in VS Code settings, or to ask for it at connection time
 
 ## Demo
 
@@ -117,6 +118,7 @@ List of LDAP connections. Example:
       "host": "acme.example.net",
       "port": "389",
       "binddn": "cn=admin,dc=example,dc=org",
+      "pwdmode": "settings",
       "bindpwd": "foobar",
       "basedn": "dc=example,dc=org",
       "limit": "0",
@@ -130,6 +132,11 @@ List of LDAP connections. Example:
   ]
 }
 ```
+
+Supported values for `pwdmode`:
+- `secret` will read the bind password from VS Code's secret storage
+- `ask` will ask the bind password at connection time
+- `settings` will read the bind password from VS Code settings (`bindpwd`)
 
 * **ldap-explorer.show-tree-item-icons** (`false`)
 

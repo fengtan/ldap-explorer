@@ -15,25 +15,27 @@ import { CACertificateManager } from './CACertificateManager';
  */
 export function activate(context: ExtensionContext) {
 
+  const connectionManager = new LdapConnectionManager(context);
+
   // Create our views (connections, tree, bookmarks, search).
 
   const cacertTreeDataProvider = new CACertificateTreeDataProvider();
   const cacertTreeView = window.createTreeView('ldap-explorer-view-cacerts', { treeDataProvider: cacertTreeDataProvider });
   context.subscriptions.push(cacertTreeView);
 
-  const connectionTreeDataProvider = new ConnectionTreeDataProvider(context);
+  const connectionTreeDataProvider = new ConnectionTreeDataProvider(connectionManager);
   const connectionTreeView = window.createTreeView('ldap-explorer-view-connections', { treeDataProvider: connectionTreeDataProvider });
   context.subscriptions.push(connectionTreeView);
 
-  const entryTreeDataProvider = new EntryTreeDataProvider(context);
+  const entryTreeDataProvider = new EntryTreeDataProvider(context, connectionManager);
   const entryTreeView = window.createTreeView('ldap-explorer-view-tree', { treeDataProvider: entryTreeDataProvider });
   context.subscriptions.push(entryTreeView);
 
-  const bookmarkTreeDataProvider = new BookmarkTreeDataProvider(context);
+  const bookmarkTreeDataProvider = new BookmarkTreeDataProvider(connectionManager);
   const bookmarkTreeView = window.createTreeView('ldap-explorer-view-bookmarks', { treeDataProvider: bookmarkTreeDataProvider });
   context.subscriptions.push(bookmarkTreeView);
 
-  const searchWebviewViewProvider = new SearchWebviewViewProvider(context);
+  const searchWebviewViewProvider = new SearchWebviewViewProvider(context, connectionManager);
   context.subscriptions.push(
     window.registerWebviewViewProvider('ldap-explorer-view-search', searchWebviewViewProvider, { webviewOptions: { retainContextWhenHidden: true } })
   );
@@ -103,14 +105,14 @@ export function activate(context: ExtensionContext) {
   }));
 
   context.subscriptions.push(commands.registerCommand('ldap-explorer.add-connection', () => {
-    createAddEditConnectionWebview(context);
+    createAddEditConnectionWebview(context, connectionManager);
   }));
 
   context.subscriptions.push(commands.registerCommand('ldap-explorer.edit-connection', async (connection?: LdapConnection) => {
     // connection may not be defined (e.g. if the command fired from the command palette instead of the tree view).
     // If that is the case we explictly ask the user to pick a connection.
     if (!connection) {
-      connection = await pickConnection();
+      connection = await pickConnection(connectionManager);
       // User did not provide a connection: cancel command.
       if (!connection) {
         return;
@@ -119,17 +121,17 @@ export function activate(context: ExtensionContext) {
 
     // Reload connection details from settings.
     // Ensures the connection object includes bookmarks.
-    connection = LdapConnectionManager.getConnection(connection.getName());
+    connection = connectionManager.getConnection(connection.getName());
 
     // Create webview to edit connection.
-    createAddEditConnectionWebview(context, connection);
+    createAddEditConnectionWebview(context, connectionManager, connection);
   }));
 
   context.subscriptions.push(commands.registerCommand('ldap-explorer.delete-connection', async (connection?: LdapConnection) => {
     // connection may not be defined (e.g. if the command fired from the command palette instead of the tree view).
     // If that is the case we explictly ask the user to pick a connection.
     if (!connection) {
-      connection = await pickConnection();
+      connection = await pickConnection(connectionManager);
       // User did not provide a connection: cancel command.
       if (!connection) {
         return;
@@ -137,14 +139,14 @@ export function activate(context: ExtensionContext) {
     }
 
     // Remove connection.
-    askAndRemoveConnection(connection);
+    askAndRemoveConnection(connectionManager, connection);
   }));
 
   context.subscriptions.push(commands.registerCommand('ldap-explorer.activate-connection', async (connection?: LdapConnection) => {
     // connection may not be defined (e.g. if the command fired from the command palette instead of the tree view).
     // If that is the case we explictly ask the user to pick a connection.
     if (!connection) {
-      connection = await pickConnection();
+      connection = await pickConnection(connectionManager);
       // User did not provide a connection: cancel command.
       if (!connection) {
         return;
@@ -152,7 +154,7 @@ export function activate(context: ExtensionContext) {
     }
 
     // Store name of new active connection in Memento.
-    LdapConnectionManager.setActiveConnection(context, connection).then(() => {
+    connectionManager.setActiveConnection(connection).then(() => {
       // Refresh views so the new active connection shows up.
       commands.executeCommand("ldap-explorer.refresh");
     });
@@ -162,7 +164,7 @@ export function activate(context: ExtensionContext) {
 
   context.subscriptions.push(commands.registerCommand('ldap-explorer.deactivate-connection', () => {
     // Set no active connection.
-    LdapConnectionManager.setNoActiveConnection(context).then(() => {
+    connectionManager.setNoActiveConnection().then(() => {
       // Refresh views so the new active connection shows up.
       commands.executeCommand("ldap-explorer.refresh");
     });
@@ -185,7 +187,7 @@ export function activate(context: ExtensionContext) {
 
   context.subscriptions.push(commands.registerCommand('ldap-explorer.show-attributes', async (dn?: string) => {
     // If there is no active connection, then explicitly ask user to pick one.
-    const connection = LdapConnectionManager.getActiveConnection(context) ?? await pickConnection();
+    const connection = connectionManager.getActiveConnection() ?? await pickConnection(connectionManager);
 
     // User did not provide a connection: cancel command.
     if (!connection) {
@@ -208,7 +210,7 @@ export function activate(context: ExtensionContext) {
 
   context.subscriptions.push(commands.registerCommand('ldap-explorer.reveal-in-tree', async (dn?: string) => {
     // If there is no active connection, then ask user to pick one.
-    if (!LdapConnectionManager.getActiveConnection(context)) {
+    if (!connectionManager.getActiveConnection()) {
       const connection = await commands.executeCommand("ldap-explorer.activate-connection");
       if (!connection) {
         // User did not provide a connection: cancel command.
@@ -240,7 +242,7 @@ export function activate(context: ExtensionContext) {
 
   context.subscriptions.push(commands.registerCommand('ldap-explorer.add-bookmark', async (dn?: string) => {
     // If there is no active connection, then explicitly ask user to pick one.
-    const connection = LdapConnectionManager.getActiveConnection(context) ?? await pickConnection();
+    const connection = connectionManager.getActiveConnection() ?? await pickConnection(connectionManager);
 
     // User did not provide a connection: cancel command.
     if (!connection) {
@@ -261,7 +263,7 @@ export function activate(context: ExtensionContext) {
     connection.addBookmark(dn);
 
     // Persist bookmark in connection.
-    LdapConnectionManager.editConnection(connection, connection.getName()).then(
+    connectionManager.editConnection(connection, connection.getName()).then(
       value => {
         // If the connection was successfully updated, then refresh the
         // bookmarks view so the new bookmark shows up.
@@ -276,7 +278,7 @@ export function activate(context: ExtensionContext) {
 
   context.subscriptions.push(commands.registerCommand('ldap-explorer.delete-bookmark', async (dn?: string) => {
     // If there is no active connection, then explicitly ask user to pick one.
-    const connection = LdapConnectionManager.getActiveConnection(context) ?? await pickConnection();
+    const connection = connectionManager.getActiveConnection() ?? await pickConnection(connectionManager);
 
     // User did not provide a connection: cancel command.
     if (!connection) {
@@ -297,7 +299,7 @@ export function activate(context: ExtensionContext) {
     connection.deleteBookmark(dn);
 
     // Persist removal of the bookmark from the connection.
-    LdapConnectionManager.editConnection(connection, connection.getName()).then(
+    connectionManager.editConnection(connection, connection.getName()).then(
       value => {
         // If the connection was successfully updated, then refresh the
         // bookmarks view so the bookmark goes away.
@@ -340,8 +342,8 @@ async function pickExistingCACert(): Promise<string | undefined> {
 /**
  * Opens quick pick box asking the user to select a connection.
  */
-async function pickConnection(): Promise<LdapConnection | undefined> {
-  const options = LdapConnectionManager.getConnections().map(connection => {
+async function pickConnection(connectionManager: LdapConnectionManager): Promise<LdapConnection | undefined> {
+  const options = connectionManager.getConnections().map(connection => {
     return {
       label: connection.getName(),
       description: connection.getUrl(),
@@ -356,16 +358,16 @@ async function pickConnection(): Promise<LdapConnection | undefined> {
   }
 
   // Otherwise return connection object.
-  return LdapConnectionManager.getConnection(option.name);
+  return connectionManager.getConnection(option.name);
 }
 
 /**
  * Ask for a confirmation and actually remove a connection from settings.
  */
-function askAndRemoveConnection(connection: LdapConnection) {
+function askAndRemoveConnection(connectionManager: LdapConnectionManager, connection: LdapConnection) {
   window.showInformationMessage(`Are you sure you want to remove the connection '${connection.getName()} ?`, { modal: true }, "Yes").then(confirm => {
     if (confirm) {
-      LdapConnectionManager.removeConnection(connection).then(
+      connectionManager.removeConnection(connection).then(
         value => {
           // If connection was successfully removed, refresh tree view so it does not show up anymore.
           commands.executeCommand("ldap-explorer.refresh");

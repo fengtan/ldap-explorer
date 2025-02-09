@@ -8,9 +8,11 @@ import { LdapConnectionManager } from '../LdapConnectionManager';
 export class EntryTreeDataProvider implements TreeDataProvider<string> {
 
   private context: ExtensionContext;
+  private connectionManager: LdapConnectionManager;
 
-  constructor(context: ExtensionContext) {
+  constructor(context: ExtensionContext, connectionManager: LdapConnectionManager) {
     this.context = context;
+    this.connectionManager = connectionManager;
   }
 
   /**
@@ -73,7 +75,7 @@ export class EntryTreeDataProvider implements TreeDataProvider<string> {
   public getChildren(dn?: string): Thenable<string[]> {
     return new Promise((resolve, reject) => {
       // Get active connection.
-      const connection = LdapConnectionManager.getActiveConnection(this.context);
+      const connection = this.connectionManager.getActiveConnection();
       if (connection === undefined) {
         // No active connection: return empty array.
         return resolve([]);
@@ -88,7 +90,7 @@ export class EntryTreeDataProvider implements TreeDataProvider<string> {
       // A parent item was passed i.e. we are not at the top level of the tree.
       // Send a search request to the LDAP server to fetch the children.
       // The LDAP search scope is set to "one" so we only get the immediate subordinates https://ldapwiki.com/wiki/SingleLevel
-      connection.search({ scope: "one", paged: connection.getPagedBool(true) }, dn).then(
+      connection.search(this.context, { scope: "one", paged: connection.getPagedBool(true) }, dn).then(
         (entries: SearchEntry[]) => {
           return resolve(entries.map(entry => entry.dn));
         },

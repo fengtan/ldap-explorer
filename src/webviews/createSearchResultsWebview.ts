@@ -70,6 +70,7 @@ export function createSearchResultsWebview(context: ExtensionContext, connection
 
   // Execute ldap search and populate grid as results are received.
   connection.search(
+    context,
     getSearchOptions(),
     connection.getBaseDn(true),
     (entry) => {
@@ -130,6 +131,7 @@ export function createSearchResultsWebview(context: ExtensionContext, connection
                 }
                 // Execute LDAP search.
                 connection.search(
+                  context,
                   getSearchOptions(),
                   connection.getBaseDn(true),
                   (entry) => {

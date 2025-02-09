@@ -1,8 +1,9 @@
 import { readFileSync } from 'fs';
-import { window } from 'vscode';
+import { ExtensionContext, window } from 'vscode';
 import { Client, createClient, SearchEntry, SearchOptions } from 'ldapjs';
 import { LdapLogger } from './LdapLogger';
 import { CACertificateManager } from './CACertificateManager';
+import { PasswordMode } from './PasswordMode';
 
 /**
  * Represents an LDAP connection.
@@ -21,7 +22,8 @@ export class LdapConnection {
   private host: string;
   private port: string;
   private binddn: string;
-  private bindpwd: string;
+  private pwdmode: string;
+  private bindpwd: string | undefined;
   private basedn: string;
   private limit: string;
   private paged: string;
@@ -38,6 +40,7 @@ export class LdapConnection {
     host: string,
     port: string,
     binddn: string,
+    pwdmode: string,
     bindpwd: string,
     basedn: string,
     limit: string,
@@ -54,6 +57,7 @@ export class LdapConnection {
     this.host = host;
     this.port = port;
     this.binddn = binddn;
+    this.pwdmode = pwdmode;
     this.bindpwd = bindpwd;
     this.basedn = basedn;
     this.limit = limit;
@@ -89,7 +93,15 @@ export class LdapConnection {
     return this.get(this.binddn, evaluate);
   }
   public getBindPwd(evaluate: boolean) {
+    // If bindpwd is undefined then return empty string.
+    if (!this.bindpwd) {
+      return "";
+    }
+    // Otherwise return the value and evaluate it, if necessary.
     return this.get(this.bindpwd, evaluate);
+  }
+  public getPwdMode(evaluate: boolean) {
+    return this.get(this.pwdmode, evaluate);
   }
   public getBaseDn(evaluate: boolean) {
     return this.get(this.basedn, evaluate);
@@ -142,6 +154,13 @@ export class LdapConnection {
    */
   public setName(name: string) {
     this.name = name;
+  }
+
+  /**
+   * Set the bind password of the connection.
+   */
+  public setBindPwd(bindpwd: string | undefined) {
+    this.bindpwd = bindpwd;
   }
 
   /**
@@ -222,6 +241,7 @@ export class LdapConnection {
    * - Resolve callback - this function is Thenable (will fire when *all* results have been received)
    */
   public search(
+    context: ExtensionContext,
     searchOptions: SearchOptions,
     base: string = this.getBaseDn(true),
     onSearchEntryFound?: (entry: SearchEntry) => void
@@ -249,19 +269,27 @@ export class LdapConnection {
           if (err) {
             return reject(`Unable to initiate StartTLS: ${err.message}`);
           }
-          return this.getResults(client, resolve, reject, searchOptions, base, onSearchEntryFound);
+          return this.getResults(context, client, resolve, reject, searchOptions, base, onSearchEntryFound);
         });
       }
       else {
-        return this.getResults(client, resolve, reject, searchOptions, base, onSearchEntryFound);
+        return this.getResults(context, client, resolve, reject, searchOptions, base, onSearchEntryFound);
       }
     });
   }
 
   /**
+ * Opens input box asking the user to enter a bind password.
+   */
+  protected async pickBindPassword(): Promise<string | undefined> {
+    return await window.showInputBox({ prompt: "Bind password" });
+  }
+
+  /**
    * Get results from LDAP servers.
    */
-  protected getResults(
+  protected async getResults(
+    context: ExtensionContext,
     client: Client,
     resolve: (value: SearchEntry[] | PromiseLike<SearchEntry[]>) => void,
     reject: (reason?: any) => void,
@@ -269,9 +297,31 @@ export class LdapConnection {
     base: string = this.getBaseDn(true),
     onSearchEntryFound ?: (entry: SearchEntry) => void
   ) {
+    // Get bind password depending on password mode.
+    let bindpwd: string | undefined;
+    switch (this.getPwdMode(true)) {
+    case PasswordMode.ask:
+      bindpwd = await this.pickBindPassword();
+      if (!bindpwd) {
+        return reject("No bind password was provided.");
+      }
+      break;
+    case PasswordMode.secretStorage:
+      bindpwd = await context.secrets.get(this.getName());
+      if (!bindpwd) {
+        return reject(`No password for connection "${this.getName()}" found in secret storage.`);
+      }
+      break;
+    case PasswordMode.settings:
+    default:
+      // Default option (i.e. when the connection has no password mode) = read
+      // password from VS Code settings (this was the only storage mode
+      // available  before this extension started to support password modes).
+      bindpwd = this.getBindPwd(true);
+    }
 
     // Bind.
-    client.bind(this.getBindDn(true), this.getBindPwd(true), (err) => {
+    client.bind(this.getBindDn(true), bindpwd, (err) => {
       if (err) {
         return reject(`Unable to bind: ${err.message}`);
       }

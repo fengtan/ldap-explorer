@@ -11,7 +11,7 @@ import { sep } from "path";
 export function createShowAttributesWebview(connection: LdapConnection, dn: string, context: ExtensionContext) {
 
   // Scope is set to "base" so we only get attributes about the entry provided https://ldapwiki.com/wiki/BaseObject
-  connection.search({ scope: "base" }, dn).then(
+  connection.search(context, { scope: "base" }, dn).then(
     entries => {
       // Create webview.
       const panel = window.createWebviewPanel(

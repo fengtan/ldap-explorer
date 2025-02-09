@@ -1,16 +1,23 @@
-import { ExtensionContext, workspace } from 'vscode';
+import { ExtensionContext, SecretStorage, window, workspace } from 'vscode';
 import { LdapConnection } from './LdapConnection';
 import { LdapLogger } from './LdapLogger';
+import { PasswordMode } from './PasswordMode';
 
 /**
  * Manages storage of connections in VS Code settings.
  */
 export class LdapConnectionManager {
 
+  private context: ExtensionContext;
+
+  public constructor(context: ExtensionContext) {
+    this.context = context;
+  }
+
   /**
    * Get all connections stored in VS Code settings.
    */
-  public static getConnections(): LdapConnection[] {
+  public getConnections(): LdapConnection[] {
     return workspace.getConfiguration('ldap-explorer').get('connections', []).map(connection => new LdapConnection(
       // Same default values as what is listed in package.json.
       // Providing default values brings backwards compatibility when adding more attributes.
@@ -22,6 +29,7 @@ export class LdapConnectionManager {
       connection["host"] || "",
       connection["port"] || "",
       connection["binddn"] || "",
+      connection["pwdmode"] || "settings", // Default to settings if pwd mode is not set for backwards compatibility.
       connection["bindpwd"] || "",
       connection["basedn"] || "",
       connection["limit"] || "0",
@@ -37,7 +45,7 @@ export class LdapConnectionManager {
    *
    * Returns 'undefined' if no connection with such a name was found.
    */
-  public static getConnection(name: string): LdapConnection | undefined {
+  public getConnection(name: string): LdapConnection | undefined {
     const filteredConnections = this.getConnections().filter(connection => connection.getName() === name);
     if (filteredConnections.length < 1) {
       return undefined;
@@ -51,22 +59,22 @@ export class LdapConnectionManager {
   /**
    * Set the active connection.
    */
-  public static setActiveConnection(context: ExtensionContext, connection: LdapConnection): Thenable<void> {
-    return context.globalState.update('active-connection', connection.getName());
+  public setActiveConnection(connection: LdapConnection): Thenable<void> {
+    return this.context.globalState.update('active-connection', connection.getName());
   }
 
   /**
    * Sets no active connection.
    */
-  public static setNoActiveConnection(context: ExtensionContext): Thenable<void> {
-    return context.globalState.update('active-connection', undefined);
+  public setNoActiveConnection(): Thenable<void> {
+    return this.context.globalState.update('active-connection', undefined);
   }
 
   /**
    * Get the currently active connection.
    */
-  public static getActiveConnection(context: ExtensionContext): LdapConnection | undefined {
-    const connectionName: string | undefined = context.globalState.get('active-connection');
+  public getActiveConnection(): LdapConnection | undefined {
+    const connectionName: string | undefined = this.context.globalState.get('active-connection');
     if (connectionName === undefined) {
       return undefined;
     }
@@ -74,14 +82,49 @@ export class LdapConnectionManager {
   }
 
   /**
+   * Update a bind password in secret storage.
+   *
+   * If the connection's password mode is "secrets": updates secret storage.
+   * Otherwise: clears password from secret storage.
+   */
+  public updateBindPwdInSecretStorage(connection: LdapConnection) {
+    if (connection.getPwdMode(true) === PasswordMode.secretStorage) {
+      // Return Thenable.
+      // The SecretStorage API automatically takes care of namespacing so we don't need to worry about collistions with other extensions.
+      return this.context.secrets.store(connection.getName(), connection.getBindPwd(false));
+    } else {
+      return this.deleteBindPwdFromSecretStorage(connection);
+    }
+  }
+
+  /**
+   * Remove a bind password from secret store.
+   */
+  public async deleteBindPwdFromSecretStorage(connection: LdapConnection) {
+    return this.context.secrets.delete(connection.getName());
+  }
+
+  /**
    * Add a new connection to settings.
    */
-  public static addConnection(connection: LdapConnection): Thenable<void> {
+  public async addConnection(connection: LdapConnection): Promise<void> {
     // Get list of existing connections.
     let connections = this.getConnections();
 
+    // Update or delete password  in secret storage.
+    await this.updateBindPwdInSecretStorage(connection);
+
     // Add the new connection.
+    // Temporarily remove bind password from connection object so it is not
+    // persisted, if password mode is different from "settings".
+    const bindpwd = connection.getBindPwd(false);
+    if (connection.getPwdMode(true) !== PasswordMode.settings) {
+      connection.setBindPwd(undefined);
+    }
     connections.push(connection);
+    if (connection.getPwdMode(true) !== PasswordMode.settings) {
+      connection.setBindPwd(bindpwd);
+    }
 
     // Save new list of connections and return Thenable.
     return workspace.getConfiguration('ldap-explorer').update('connections', connections, true);
@@ -90,7 +133,7 @@ export class LdapConnectionManager {
   /**
    * Update an existing connection in settings.
    */
-  public static editConnection(newConnection: LdapConnection, existingConnectionName: string): Thenable<void> {
+  public async editConnection(newConnection: LdapConnection, existingConnectionName: string): Promise<void> {
     // Get list of existing connections.
     let connections = this.getConnections();
 
@@ -100,8 +143,20 @@ export class LdapConnectionManager {
       return Promise.reject(`Connection '${existingConnectionName}' does not exist in settings`);
     }
 
+    // Update or delete password  in secret storage.
+    await this.updateBindPwdInSecretStorage(newConnection);
+
     // Replace existing connection with new connection.
+    // Temporarily remove bind password from connection object so it is not
+    // persisted, if password mode is different from "settings".
+    const bindpwd = newConnection.getBindPwd(false);
+    if (newConnection.getPwdMode(true) !== PasswordMode.settings) {
+      newConnection.setBindPwd(undefined);
+    }
     connections[index] = newConnection;
+    if (newConnection.getPwdMode(true) !== PasswordMode.settings) {
+      newConnection.setBindPwd(bindpwd);
+    }
 
     // Save new list of connections and return Thenable.
     return workspace.getConfiguration('ldap-explorer').update('connections', connections, true);
@@ -109,8 +164,10 @@ export class LdapConnectionManager {
 
   /**
    * Remove an existing connection from settings.
+   *
+   * Also removes the password from secret storage, if applicable.
    */
-  public static removeConnection(connection: LdapConnection): Thenable<void> {
+  public async removeConnection(connection: LdapConnection): Promise<void> {
     // Get list of existing connections.
     const connections = this.getConnections();
 
@@ -122,6 +179,11 @@ export class LdapConnectionManager {
 
     // Remove connection from the list.
     connections.splice(index, 1);
+
+    // Remove password from secret store depending on password mode.
+    if (connection.getPwdMode(true) === PasswordMode.secretStorage) {
+      await this.deleteBindPwdFromSecretStorage(connection);
+    }
 
     // Save new list of connections and return Thenable.
     return workspace.getConfiguration('ldap-explorer').update('connections', connections, true);
