@@ -403,6 +403,12 @@
           "title": "Show tree item icons",
           "description": "Render LDAP tree items with icons.",
           "default": false
+        },
+        "ldap-explorer.sort-attributes": {
+          "type": "boolean",
+          "title": "Sort attributes alphabetically",
+          "description": "If unchecked, LDAP attributes will be displayed in the order received from the LDAP server.If checked, they will be ordered alphabetically by name.",
+          "default": false
         }
       }
     }

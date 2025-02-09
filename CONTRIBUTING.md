@@ -137,7 +137,7 @@ Updates
 Features
 - Support for write operations i.e. add, delete, edit, move LDAP entries (could make use of the [FileSystemProvider API](https://code.visualstudio.com/api/references/vscode-api#FileSystemProvider)) - see [#51](https://github.com/fengtan/ldap-explorer/issues/51)
 - Support LDAP referrals - currently those are simply logged, see `LdapConnection.search()`
-- Support pausing at the end of each page to limit server load when fetching large data sets - see parameter `pagePause` at [paging](http://ldapjs.org/client.html#paging))
+- Support pausing at the end of each page to limit server load when fetching large data sets - see parameter `pagePause` at [paging](https://github.com/ldapjs/node-ldapjs/blob/master/docs/client.md#paging))
 - Decode binary attributes other than `objectGUID` and `objectSid` - see [#33](https://github.com/fengtan/ldap-explorer/issues/33)
 
 UI
@@ -185,7 +185,7 @@ The dependency graph is located at https://github.com/fengtan/ldap-explorer/netw
 
 - [Codicons](https://microsoft.github.io/vscode-codicons/dist/codicon.html)
 - [Extension API](https://code.visualstudio.com/api)
-- [LDAPJS documentation](http://ldapjs.org/)
+- [LDAPJS documentation](https://github.com/ldapjs/node-ldapjs/tree/master/docs)
 - [Type definitions for VS Code](https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/types/vscode)
 - [VS Code Extension Samples](https://github.com/microsoft/vscode-extension-samples/)
 - [Webview UI Toolkit Components](https://github.com/microsoft/vscode-webview-ui-toolkit/blob/main/docs/components.md)

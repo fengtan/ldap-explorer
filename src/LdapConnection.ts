@@ -1,6 +1,6 @@
 import { readFileSync } from 'fs';
-import { window } from 'vscode';
-import { Client, createClient, SearchEntry, SearchOptions } from 'ldapjs';
+import { window, workspace } from 'vscode';
+import { Attribute, Client, createClient, SearchEntry, SearchOptions } from 'ldapjs';
 import { LdapLogger } from './LdapLogger';
 import { CACertificateManager } from './CACertificateManager';
 
@@ -284,11 +284,20 @@ export class LdapConnection {
             return reject(err.message);
           }
 
+          // Check if user wants to sort attributes alphabetically.
+          const sortAttributes = workspace.getConfiguration('ldap-explorer').get('sort-attributes', false);
+
           let results: SearchEntry[] = [];
           res.on('searchRequest', (searchRequest) => {
             LdapLogger.appendLine(`Search request: ${JSON.stringify(searchRequest)}`);
           });
           res.on('searchEntry', (entry) => {
+            // Sort attributes alphabetically by name, if user wants to.
+            if (sortAttributes) {
+              entry.attributes.sort((attribute1: Attribute, attribute2: Attribute) => {
+                return attribute1.type.localeCompare(attribute2.type);
+              });
+            }
             // Fire onSearchEntryFound callback (if one was provided).
             if (onSearchEntryFound) {
               onSearchEntryFound(entry);
