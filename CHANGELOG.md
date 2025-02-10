@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Added
+- New setting `ldap-explorer.sort-attributes` allows to order attributes alphabetically by name
 - Bind passwords can now be stored encrypted in secret storage or prompted at connection time ; this is configurable via a new field labeled "Bind Password mode" on the connection edit screen ([#64](https://github.com/fengtan/ldap-explorer/issues/64))
 - Button to reveal or hide bind passwords ([#64](https://github.com/fengtan/ldap-explorer/issues/64))
 

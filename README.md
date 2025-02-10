@@ -149,10 +149,16 @@ If set to `true`, LDAP entries in the Tree view will be rendered with an icon ba
 |---------------------------------------------|--------------------------------------------|
 |![tree without icons](screenshots/configuration.icons.false.png) | ![tree with icons](screenshots/configuration.icons.true.png) |
 
+* **ldap-explorer.sort-attributes** (`false`)
+
+If set to `false`, LDAP attributes will be displayed in the order received from the LDAP server.
+
+If set to `true`, they will be ordered alphabetically by name.
+
 ## Known limitations
 
 No support for
-- [LDAP aliases](https://ldapwiki.com/wiki/Alias) - [not supported by ldapjs](http://ldapjs.org/#whats-not-in-the-box)
+- [LDAP aliases](https://ldapwiki.com/wiki/Alias) - [not supported by ldapjs](https://github.com/ldapjs/node-ldapjs/blob/master/docs/index.md#whats-not-in-the-box)
 - [SASL](https://en.wikipedia.org/wiki/Simple_Authentication_and_Security_Layer) / [GSSAPI](https://en.wikipedia.org/wiki/Generic_Security_Services_Application_Program_Interface) binding - [not supported by ldapjs](https://github.com/ldapjs/node-ldapjs/issues/85)
 
 
@@ -180,6 +186,6 @@ See [CHANGELOG.md](https://github.com/fengtan/ldap-explorer/blob/master/CHANGELO
 
 ## Credits
 
-This extension is powered by [ldapjs](http://ldapjs.org/).
+This extension is powered by [ldapjs](https://github.com/ldapjs/node-ldapjs).
 
 [Main icon](https://www.flaticon.com/free-icon/hierarchy_4987367) by [Freepik](https://www.freepik.com/) from [Flaticon](https://www.flaticon.com/) is licensed by [CC 3.0 BY](https://creativecommons.org/licenses/by/3.0/).
