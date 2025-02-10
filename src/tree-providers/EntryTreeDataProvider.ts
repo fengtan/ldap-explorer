@@ -90,7 +90,14 @@ export class EntryTreeDataProvider implements TreeDataProvider<string> {
       // A parent item was passed i.e. we are not at the top level of the tree.
       // Send a search request to the LDAP server to fetch the children.
       // The LDAP search scope is set to "one" so we only get the immediate subordinates https://ldapwiki.com/wiki/SingleLevel
-      connection.search(this.context, { scope: "one", paged: connection.getPagedBool(true) }, connection.getPwdMode(true), dn).then(
+      connection.search({
+        context: this.context,
+        searchOptions: {
+          scope: "one",
+          paged: connection.getPagedBool(true),
+        },
+        base: dn,
+      }).then(
         (entries: SearchEntry[]) => {
           return resolve(entries.map(entry => entry.dn));
         },

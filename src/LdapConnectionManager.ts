@@ -18,26 +18,26 @@ export class LdapConnectionManager {
    * Get all connections stored in VS Code settings.
    */
   public getConnections(): LdapConnection[] {
-    return workspace.getConfiguration('ldap-explorer').get('connections', []).map(connection => new LdapConnection(
+    return workspace.getConfiguration('ldap-explorer').get('connections', []).map(connection => new LdapConnection({
       // Same default values as what is listed in package.json.
       // Providing default values brings backwards compatibility when adding more attributes.
-      connection["name"],
-      connection["protocol"] || "ldap",
-      connection["starttls"] || "false",
-      connection["verifycert"] || "true",
-      connection["sni"] || "",
-      connection["host"] || "",
-      connection["port"] || "",
-      connection["binddn"] || "",
-      connection["pwdmode"] || "settings", // Default to settings if pwd mode is not set for backwards compatibility.
-      connection["bindpwd"] || "",
-      connection["basedn"] || "",
-      connection["limit"] || "0",
-      connection["paged"] || "true",
-      connection["connectTimeout"] || "5000",
-      connection["timeout"] || "5000",
-      connection["bookmarks"] || []
-    ));
+      name: connection["name"],
+      protocol: connection["protocol"] || "ldap",
+      starttls: connection["starttls"] || "false",
+      verifycert: connection["verifycert"] || "true",
+      sni: connection["sni"] || "",
+      host: connection["host"] || "",
+      port: connection["port"] || "",
+      binddn: connection["binddn"] || "",
+      pwdmode: connection["pwdmode"] || "settings", // Default to settings if pwd mode is not set for backwards compatibility.
+      bindpwd: connection["bindpwd"] || "",
+      basedn: connection["basedn"] || "",
+      limit: connection["limit"] || "0",
+      paged: connection["paged"] || "true",
+      connectTimeout: connection["connectTimeout"] || "5000",
+      timeout: connection["timeout"] || "5000",
+      bookmarks: connection["bookmarks"] || [],
+    }));
   }
 
   /**

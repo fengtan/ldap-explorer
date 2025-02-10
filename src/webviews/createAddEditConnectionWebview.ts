@@ -122,27 +122,27 @@ export function createAddEditConnectionWebview(context: ExtensionContext, connec
   panel.webview.onDidReceiveMessage(
     message => {
       // Build connection object.
-      const newConnection = new LdapConnection(
-        message.name,
-        message.protocol,
-        message.starttls,
-        message.verifycert,
-        message.sni,
-        message.host,
-        message.port,
-        message.binddn,
-        message.pwdmode,
-        message.bindpwd,
-        message.basedn,
-        message.limit,
-        message.paged,
-        message.connectTimeout,
-        message.timeout,
+      const newConnection = new LdapConnection({
+        name: message.name,
+        protocol: message.protocol,
+        starttls: message.starttls,
+        verifycert: message.verifycert,
+        sni: message.sni,
+        host: message.host,
+        port: message.port,
+        binddn: message.binddn,
+        pwdmode: message.pwdmode,
+        bindpwd: message.bindpwd,
+        basedn: message.basedn,
+        limit: message.limit,
+        paged: message.paged,
+        connectTimeout: message.connectTimeout,
+        timeout: message.timeout,
         // Bookmarks are not editable via the connection add/edit form.
-        // Maintain pre-existing bookarks when editing a connection, and default
+        // Maintain pre-existing bookmarks when editing a connection, and default
         // to empty array when adding a new connection.
-        (existingConnection === undefined) ? [] : existingConnection.getBookmarks()
-      );
+        bookmarks: (existingConnection === undefined) ? [] : existingConnection.getBookmarks(),
+      });
       switch (message.command) {
       case 'save':
         // Verify mandatory fields are not empty.
@@ -207,10 +207,16 @@ export function createAddEditConnectionWebview(context: ExtensionContext, connec
 
       case 'test':
         // Test connection.
-        // Load password from connection object (PasswordMode.settings) even if
-        // another password mode was selected: the connection may not have been
-        // persisted yet (e.g. password may not be stored in secret storage).
-        newConnection.search(context, {}, PasswordMode.settings).then(
+        // If the connection is configured to load the password from secret
+        // storage, then load it from the form / local connection object instead
+        // ("settings") as it has not yet been persisted in secret storage.
+        newConnection.search({
+          context: context,
+          searchOptions: {},
+          pwdmode: (newConnection.getPwdMode(true) === PasswordMode.secretStorage)
+            ? PasswordMode.settings
+            : newConnection.getPwdMode(true)
+        }).then(
           value => {
             window.showInformationMessage('Connection succeeded');
           },

@@ -31,7 +31,24 @@ export class LdapConnection {
   private timeout: string;
   private bookmarks: string[];
 
-  constructor(
+  constructor({
+    name,
+    protocol,
+    starttls,
+    verifycert,
+    sni,
+    host,
+    port,
+    binddn,
+    pwdmode,
+    bindpwd,
+    basedn,
+    limit,
+    paged,
+    connectTimeout,
+    timeout,
+    bookmarks,
+  }: {
     name: string,
     protocol: string,
     starttls: string,
@@ -47,8 +64,8 @@ export class LdapConnection {
     paged: string,
     connectTimeout: string,
     timeout: string,
-    bookmarks: string[]
-  ) {
+    bookmarks: string[],
+  }) {
     this.name = name;
     this.protocol = protocol;
     this.starttls = starttls;
@@ -240,13 +257,19 @@ export class LdapConnection {
    * - Pass a callback onSearchEntryFound (will fire for *each* result as they are received)
    * - Resolve callback - this function is Thenable (will fire when *all* results have been received)
    */
-  public search(
+  public search({
+    context,
+    searchOptions,
+    pwdmode,
+    base,
+    onSearchEntryFound,
+  }: {
     context: ExtensionContext,
     searchOptions: SearchOptions,
-    pwdmode: string = this.getPwdMode(true),
-    base: string = this.getBaseDn(true),
-    onSearchEntryFound?: (entry: SearchEntry) => void
-  ): Thenable<SearchEntry[]> {
+    pwdmode?: string,
+    base?: string,
+    onSearchEntryFound?: (entry: SearchEntry) => void,
+  }): Thenable<SearchEntry[]> {
     return new Promise((resolve, reject) => {
       // Get ldapjs client.
       const client: Client = createClient({
@@ -270,11 +293,29 @@ export class LdapConnection {
           if (err) {
             return reject(`Unable to initiate StartTLS: ${err.message}`);
           }
-          return this.getResults(context, client, resolve, reject, searchOptions, pwdmode, base, onSearchEntryFound);
+          return this.getResults({
+            context: context,
+            client: client,
+            resolve: resolve,
+            reject: reject,
+            searchOptions: searchOptions,
+            pwdmode: pwdmode,
+            base: base,
+            onSearchEntryFound: onSearchEntryFound,
+          });
         });
       }
       else {
-        return this.getResults(context, client, resolve, reject, searchOptions, pwdmode, base, onSearchEntryFound);
+        return this.getResults({
+          context: context,
+          client: client,
+          resolve: resolve,
+          reject: reject,
+          searchOptions: searchOptions,
+          pwdmode: pwdmode,
+          base: base,
+          onSearchEntryFound: onSearchEntryFound,
+        });
       }
     });
   }
@@ -283,25 +324,38 @@ export class LdapConnection {
  * Opens input box asking the user to enter a bind password.
    */
   protected async pickBindPassword(): Promise<string | undefined> {
-    return await window.showInputBox({ prompt: "Bind password" });
+    return await window.showInputBox({ prompt: `Bind password for connection "${this.getName()}"` });
   }
 
   /**
    * Get results from LDAP servers.
    */
-  protected async getResults(
+  protected async getResults({
+    context,
+    client,
+    resolve,
+    reject,
+    searchOptions,
+    pwdmode,
+    base,
+    onSearchEntryFound,
+  }: {
     context: ExtensionContext,
     client: Client,
     resolve: (value: SearchEntry[] | PromiseLike<SearchEntry[]>) => void,
     reject: (reason?: any) => void,
     searchOptions: SearchOptions,
-    pwdmode: string = this.getPwdMode(true),
-    base: string = this.getBaseDn(true),
+    // Override password mode configured for this connection.
+    // Essentially used when testing the connection (in which case the bind password may not yet be persisted in settings or secret store).
+    pwdmode?: string,
+    // Override base DN.
+    // Essentially used to search for immeditate children in tree view.
+    base?: string,
     onSearchEntryFound ?: (entry: SearchEntry) => void
-  ) {
+  }) {
     // Get bind password depending on password mode.
     let bindpwd: string | undefined;
-    switch (pwdmode) {
+    switch (pwdmode ?? this.getPwdMode(true)) {
     case PasswordMode.ask:
       bindpwd = await this.pickBindPassword();
       if (!bindpwd) {
@@ -331,7 +385,7 @@ export class LdapConnection {
       // Search.
       searchOptions.sizeLimit = parseInt(this.getLimit(true));
       try {
-        client.search(base, searchOptions, (err, res) => {
+        client.search(base ?? this.getBaseDn(true), searchOptions, (err, res) => {
           if (err) {
             return reject(err.message);
           }

@@ -6,48 +6,48 @@ suite('Extension test suite', () => {
 
   test('Test connection string', () => {
     // Create dummy connection.
-    const connection: LdapConnection = new LdapConnection(
-      "my connection",
-      "ldap",
-      "false",
-      "true",
-      "",
-      "myserver.com",
-      "1389",
-      "cn=admin,dc=example,dc=org",
-      "settings",
-      "foobar",
-      "dc=example,dc=org",
-      "0",
-      "true",
-      "5000",
-      "5000",
-      []
-    );
+    const connection: LdapConnection = new LdapConnection({
+      name: "my connection",
+      protocol: "ldap",
+      starttls: "false",
+      verifycert: "true",
+      sni: "",
+      host: "myserver.com",
+      port: "1389",
+      binddn: "cn=admin,dc=example,dc=org",
+      pwdmode: "settings",
+      bindpwd: "foobar",
+      basedn: "dc=example,dc=org",
+      limit: "0",
+      paged: "true",
+      connectTimeout: "5000",
+      timeout: "5000",
+      bookmarks: [],
+    });
     // Assert connection string.
     assert.strictEqual("ldap://myserver.com:1389", connection.getUrl());
   });
 
   test('Test environment variables', () => {
     // Create connection which parameters are defined with environment variables.
-    const connection: LdapConnection = new LdapConnection(
-      "my connection with env vars",
-      "${protocol}",
-      "${starttls}",
-      "${verifycert}",
-      "${sni}",
-      "${host}",
-      "${port}",
-      "${binddn}",
-      "${pwdmode}",
-      "${bindpwd}",
-      "${basedn}",
-      "${sizelimit}",
-      "${paged}",
-      "${connectTimeout}",
-      "${timeout}",
-      []
-    );
+    const connection: LdapConnection = new LdapConnection({
+      name: "my connection with env vars",
+      protocol: "${protocol}",
+      starttls: "${starttls}",
+      verifycert: "${verifycert}",
+      sni: "${sni}",
+      host: "${host}",
+      port: "${port}",
+      binddn: "${binddn}",
+      pwdmode: "${pwdmode}",
+      bindpwd: "${bindpwd}",
+      basedn: "${basedn}",
+      limit: "${sizelimit}",
+      paged: "${paged}",
+      connectTimeout: "${connectTimeout}",
+      timeout: "${timeout}",
+      bookmarks: [],
+    });
     // Set environment variables.
     process.env = {
       protocol: "ldap",
