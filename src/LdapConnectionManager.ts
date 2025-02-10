@@ -122,12 +122,14 @@ export class LdapConnectionManager {
       connection.setBindPwd(undefined);
     }
     connections.push(connection);
-    if (connection.getPwdMode(true) !== PasswordMode.settings) {
-      connection.setBindPwd(bindpwd);
-    }
 
     // Save new list of connections and return Thenable.
-    return workspace.getConfiguration('ldap-explorer').update('connections', connections, true);
+    // Reinstate bind password is password mode is different from "settings".
+    return workspace.getConfiguration('ldap-explorer').update('connections', connections, true).then(() => {
+      if (connection.getPwdMode(true) !== PasswordMode.settings) {
+        connection.setBindPwd(bindpwd);
+      }
+    });
   }
 
   /**
@@ -154,12 +156,14 @@ export class LdapConnectionManager {
       newConnection.setBindPwd(undefined);
     }
     connections[index] = newConnection;
-    if (newConnection.getPwdMode(true) !== PasswordMode.settings) {
-      newConnection.setBindPwd(bindpwd);
-    }
 
     // Save new list of connections and return Thenable.
-    return workspace.getConfiguration('ldap-explorer').update('connections', connections, true);
+    // Reinstate bind password is password mode is different from "settings".
+    return workspace.getConfiguration('ldap-explorer').update('connections', connections, true).then(() => {
+      if (newConnection.getPwdMode(true) !== PasswordMode.settings) {
+        newConnection.setBindPwd(bindpwd);
+      }
+    });
   }
 
   /**
