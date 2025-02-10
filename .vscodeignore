@@ -21,6 +21,7 @@ node_modules
 !node_modules/@vscode/webview-ui-toolkit/dist/toolkit.js
 # Required to embed codicons in webviews, see srv/webviews/utils.ts
 !node_modules/@vscode/codicons/dist/codicon.css
+!node_modules/@vscode/codicons/dist/codicon.ttf
 # Required because ldapjs does not support webpack, see https://github.com/ldapjs/node-ldapjs/issues/421
 !node_modules/ldapjs
 # ldapjs dependencies (direct and indirect), see node_modules/ldapjs/package.json
