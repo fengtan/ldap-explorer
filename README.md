@@ -15,7 +15,7 @@
 * **Manage bookmarks** - Bookmark LDAP entries you often need to check or located in awkward places
 * **Support for multiple connections** - Manage multiple LDAP connections, such as a test and a production connections
 * **Support for environment variables** - Easy integration with containers
-* **Secure bind passwords** - Option to store bind passwords either encrypted in VS Code's secret storage, as plain text in VS Code settings, or to ask for it at connection time
+* **Secure credentials** - Bind passwords may be stored encrypted in secret storage, or not stored at all and requested at connection time
 
 ## Demo
 
@@ -134,9 +134,9 @@ List of LDAP connections. Example:
 ```
 
 Supported values for `pwdmode`:
-- `secret` will read the bind password from VS Code's secret storage
-- `ask` will ask the bind password at connection time
-- `settings` will read the bind password from VS Code settings (`bindpwd`)
+- `secret` will read the bind password from secret storage (encrypted)
+- `ask` will ask for the bind password at connection time
+- `settings` will read the bind password from settings (`bindpwd` - plain text)
 
 * **ldap-explorer.show-tree-item-icons** (`false`)
 

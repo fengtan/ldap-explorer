@@ -100,7 +100,7 @@ export class LdapConnectionManager {
   /**
    * Remove a bind password from secret store.
    */
-  public async deleteBindPwdFromSecretStorage(connection: LdapConnection) {
+  public deleteBindPwdFromSecretStorage(connection: LdapConnection) {
     return this.context.secrets.delete(connection.getName());
   }
 
