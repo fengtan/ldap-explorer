@@ -7,7 +7,6 @@
     ],
     "sourceMap": true,
     "rootDir": "src",
-    "strict": true,
-    "noImplicitReturns": true
+    "strict": true
   }
 }

@@ -69,10 +69,10 @@ export function createSearchResultsWebview(context: ExtensionContext, connection
   }
 
   // Execute ldap search and populate grid as results are received.
-  connection.search(
-    getSearchOptions(),
-    connection.getBaseDn(true),
-    (entry) => {
+  connection.search({
+    context: context,
+    searchOptions: getSearchOptions(),
+    onSearchEntryFound: (entry) => {
       // Turn LDAP entry into an object that matches the format expected by the grid.
       // The LDAP attribute name will show up in the grid headers and the values will show up in the cells.
       // See https://github.com/microsoft/vscode-webview-ui-toolkit/blob/main/src/data-grid/README.md
@@ -88,7 +88,7 @@ export function createSearchResultsWebview(context: ExtensionContext, connection
         row: row,
       });
     }
-  ).then(
+  }).then(
     entries => {
       // Do nothing: onSearchResultFound callback is provided i.e. results are
       // displayed as they are received.
@@ -129,10 +129,10 @@ export function createSearchResultsWebview(context: ExtensionContext, connection
                   window.showErrorMessage(`Unable to write to ${uriCSV.fsPath}: ${err}`);
                 }
                 // Execute LDAP search.
-                connection.search(
-                  getSearchOptions(),
-                  connection.getBaseDn(true),
-                  (entry) => {
+                connection.search({
+                  context: context,
+                  searchOptions: getSearchOptions(),
+                  onSearchEntryFound: (entry) => {
                     // For each result, format a CSV line and write it to the file.
                     let entryValues: (string | string[])[] = [];
                     attributesToExport.forEach(attributeToExport => {
@@ -146,7 +146,7 @@ export function createSearchResultsWebview(context: ExtensionContext, connection
                       }
                     });
                   }
-                ).then(
+                }).then(
                   entries => {
                     // Tell user the export is complete.
                     // Show a button "Open" so the user can immediately read the contents of the CSV.

@@ -8,10 +8,12 @@ import { getUri, getWebviewUiToolkitUri } from './utils';
  */
 export class SearchWebviewViewProvider implements WebviewViewProvider {
 
-  private extensionContext: ExtensionContext;
+  private context: ExtensionContext;
+  private connectionManager: LdapConnectionManager;
 
-  constructor(extensionContext: ExtensionContext) {
-    this.extensionContext = extensionContext;
+  constructor(context: ExtensionContext, connectionManager: LdapConnectionManager) {
+    this.context = context;
+    this.connectionManager = connectionManager;
   }
 
   /**
@@ -19,10 +21,10 @@ export class SearchWebviewViewProvider implements WebviewViewProvider {
    */
   public resolveWebviewView(webviewView: WebviewView, context: WebviewViewResolveContext<unknown>, token: CancellationToken): void | Thenable<void> {
     // JS required for the Webview UI toolkit https://github.com/microsoft/vscode-webview-ui-toolkit
-    const toolkitUri = getWebviewUiToolkitUri(webviewView.webview, this.extensionContext.extensionUri);
+    const toolkitUri = getWebviewUiToolkitUri(webviewView.webview, this.context.extensionUri);
 
     // JS of the webview.
-    const scriptUri = getUri(webviewView.webview, this.extensionContext.extensionUri, ["assets", "js", "SearchWebviewViewProvider.js"]);
+    const scriptUri = getUri(webviewView.webview, this.context.extensionUri, ["assets", "js", "SearchWebviewViewProvider.js"]);
 
     // Allow JS in the webview.
     webviewView.webview.options = {
@@ -60,7 +62,7 @@ export class SearchWebviewViewProvider implements WebviewViewProvider {
         switch (message.command) {
         case 'search':
           // Get active connection.
-          const connection = LdapConnectionManager.getActiveConnection(this.extensionContext);
+          const connection = this.connectionManager.getActiveConnection();
           if (connection === undefined) {
             window.showErrorMessage(`No active connection`);
             return;
@@ -78,12 +80,12 @@ export class SearchWebviewViewProvider implements WebviewViewProvider {
           const attributes = (message.attributes === '') ? undefined : message.attributes.split(/\r?\n/);
 
           // Show search results in a webview.
-          createSearchResultsWebview(this.extensionContext, connection, message.filter, attributes);
+          createSearchResultsWebview(this.context, connection, message.filter, attributes);
           break;
         }
       },
       undefined,
-      this.extensionContext.subscriptions
+      this.context.subscriptions
     );
 
   }

@@ -124,6 +124,24 @@ export function getUri(webview: Webview, extensionUri: Uri, pathList: string[]) 
 }
 
 /**
+ * Utility function to get the URI of the Codicons CSS.
+ *
+ * @see https://github.com/microsoft/vscode-extension-samples/tree/main/webview-codicons-sample
+ */
+export function getCodiconsUri(webview: Webview, extensionUri: Uri) {
+  // This CSS must be included in the VSIX and as a result is listed as an
+  // exception in .vscodeignore.
+  const pathList: string[] = [
+    "node_modules",
+    "@vscode",
+    "codicons",
+    "dist",
+    "codicon.css",
+  ];
+  return getUri(webview, extensionUri, pathList);
+}
+
+/**
  * Utility function to get the URI of the Webview UI toolkit.
  *
  * @see https://github.com/microsoft/vscode-webview-ui-toolkit

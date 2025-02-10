@@ -7,10 +7,10 @@ import { LdapConnectionManager } from '../LdapConnectionManager';
  */
 export class ConnectionTreeDataProvider implements TreeDataProvider<LdapConnection> {
 
-  private context: ExtensionContext;
+  private connectionManager: LdapConnectionManager;
 
-  public constructor(context: ExtensionContext) {
-    this.context = context;
+  public constructor(connectionManager: LdapConnectionManager) {
+    this.connectionManager = connectionManager;
   }
 
   /**
@@ -22,7 +22,7 @@ export class ConnectionTreeDataProvider implements TreeDataProvider<LdapConnecti
     treeItem.description = connection.getUrl();
 
     // Add icon and tooltip so user knows whether the connection is active.
-    const isActive = (connection.getName() === LdapConnectionManager.getActiveConnection(this.context)?.getName());
+    const isActive = (connection.getName() === this.connectionManager.getActiveConnection()?.getName());
     treeItem.iconPath = new ThemeIcon(isActive ? 'circle-filled' : 'circle');
     treeItem.tooltip = isActive ? "Active connection" : "Inactive connection";
 
@@ -42,7 +42,7 @@ export class ConnectionTreeDataProvider implements TreeDataProvider<LdapConnecti
   public getChildren(treeItem?: LdapConnection): Thenable<LdapConnection[]> {
     // Top-level tree items: list of connections.
     if (!treeItem) {
-      const connections = LdapConnectionManager.getConnections();
+      const connections = this.connectionManager.getConnections();
       return Promise.resolve(connections);
     }
 
