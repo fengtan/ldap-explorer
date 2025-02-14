@@ -119,7 +119,7 @@ List of LDAP connections. Example:
       "port": "389",
       "binddn": "cn=admin,dc=example,dc=org",
       "pwdmode": "settings",
-      "bindpwd": "foobar",
+      "bindpwd": "foobar", // Only applicable if "pwdmode" is "settings"
       "basedn": "dc=example,dc=org",
       "limit": "0",
       "paged": "true",
@@ -136,7 +136,7 @@ List of LDAP connections. Example:
 Supported values for `pwdmode`:
 - `secret` will read the bind password from secret storage (encrypted)
 - `ask` will ask for the bind password at connection time
-- `settings` will read the bind password from settings (`bindpwd` - plain text)
+- `settings` will read the bind password as plaint text from settings (connection attribute `bindpwd`)
 
 * **ldap-explorer.show-tree-item-icons** (`false`)
 

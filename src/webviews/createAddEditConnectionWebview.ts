@@ -81,15 +81,15 @@ export function createAddEditConnectionWebview(context: ExtensionContext, connec
           <p>Bind Password mode</p>
           <vscode-dropdown id="pwdmode" value="${existingConnection?.getPwdMode(false) ?? 'secret'}" onChange="updateFieldsVisibility()">
             <vscode-option value="${PasswordMode.secretStorage}">Store encrypted in secret storage</vscode-option>
-            <vscode-option value="${PasswordMode.settings}">Store as plain text in settings</vscode-option>
             <vscode-option value="${PasswordMode.ask}">Ask on connect</vscode-option>
+            <vscode-option value="${PasswordMode.settings}">Store as plain text in settings</vscode-option>
           </vscode-dropdown>
         </section>
         <section id="bindpwd-container">
-          <!-- For security reasons, do not populate default value of bind
-            password is password mode is "secrets". As a result leaving
-            field empty will not update its value in secret storage when hitting
-            the "Save" button ; see LdapConnectionManager->editConnection() -->
+          <!-- For security reasons, do not populate the default value of the
+            bind password field if the password mode is "secrets". As a result
+            leaving this field empty will not update its value in secret storage
+            when hitting the "Save" button ; see LdapConnectionManager->editConnection() -->
           <vscode-text-field type="password" id="bindpwd" value="${existingConnection?.getPwdMode(false) === 'secret' ? '' : (existingConnection?.getBindPwd(false) ?? '')}">Bind Password</vscode-text-field>
           <vscode-button appearance="icon" onClick="toggleBindPwdVisibility()" id="bindpwd-toggle"></vscode-button>
         </section>
@@ -211,13 +211,15 @@ export function createAddEditConnectionWebview(context: ExtensionContext, connec
 
       case 'test':
         // Test connection.
-        // Load password from the text field ("settings") since it may not have
-        // been persisted yet (or the persisted password may be different from
-        // the form field.)
+        // If the connection is configured to load the password from secret
+        // storage, then load it from the form / local connection object instead
+        // ("settings") as it has not yet been persisted in secret storage.
         newConnection.search({
           context: context,
           searchOptions: {},
-          pwdmode: PasswordMode.settings,
+          pwdmode: (newConnection.getPwdMode(true) === PasswordMode.secretStorage)
+            ? PasswordMode.settings
+            : newConnection.getPwdMode(true)
         }).then(
           value => {
             window.showInformationMessage('Connection succeeded');
