@@ -356,6 +356,9 @@ export class LdapConnection {
     // Get bind password depending on password mode.
     let bindpwd: string | undefined;
     switch (pwdmode ?? this.getPwdMode(true)) {
+    case PasswordMode.anonymous:
+      bindpwd = "";
+      break;
     case PasswordMode.ask:
       bindpwd = await this.pickBindPassword();
       if (!bindpwd) {
@@ -371,8 +374,8 @@ export class LdapConnection {
     case PasswordMode.settings:
     default:
       // Default option (i.e. when the connection has no password mode) = read
-      // password from VS Code settings (this was the only storage mode
-      // available  before this extension started to support password modes).
+      // password from VS Code settings. This was the only storage mode
+      // available before this extension started to support password modes.
       bindpwd = this.getBindPwd(true);
     }
 

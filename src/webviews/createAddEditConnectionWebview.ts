@@ -81,8 +81,9 @@ export function createAddEditConnectionWebview(context: ExtensionContext, connec
           <p>Bind Password mode</p>
           <vscode-dropdown id="pwdmode" value="${existingConnection?.getPwdMode(false) ?? 'secret'}" onChange="updateFieldsVisibility()">
             <vscode-option value="${PasswordMode.secretStorage}">Store encrypted in secret storage</vscode-option>
-            <vscode-option value="${PasswordMode.ask}">Ask on connect</vscode-option>
             <vscode-option value="${PasswordMode.settings}">Store as plain text in settings</vscode-option>
+            <vscode-option value="${PasswordMode.ask}">Ask on connect</vscode-option>
+            <vscode-option value="${PasswordMode.anonymous}">Anonymous bind</vscode-option>
           </vscode-dropdown>
         </section>
         <section id="bindpwd-container">
@@ -207,15 +208,13 @@ export function createAddEditConnectionWebview(context: ExtensionContext, connec
 
       case 'test':
         // Test connection.
-        // If the connection is configured to load the password from secret
-        // storage, then load it from the form / local connection object instead
-        // ("settings") as it has not yet been persisted in secret storage.
+        // Load password from the text field ("settings") since it may not have
+        // been persisted yet (or the persisted password may be different from
+        // the form field.)
         newConnection.search({
           context: context,
           searchOptions: {},
-          pwdmode: (newConnection.getPwdMode(true) === PasswordMode.secretStorage)
-            ? PasswordMode.settings
-            : newConnection.getPwdMode(true)
+          pwdmode: PasswordMode.settings,
         }).then(
           value => {
             window.showInformationMessage('Connection succeeded');

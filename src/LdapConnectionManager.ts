@@ -115,8 +115,8 @@ export class LdapConnectionManager {
     await this.updateBindPwdInSecretStorage(connection);
 
     // Add the new connection.
-    // Temporarily remove bind password from connection object so it is not
-    // persisted, if password mode is different from "settings".
+    // If password mode is different from "settings" then we don't want to
+    // persist it here so we temporarily remove it from the connection object.
     const bindpwd = connection.getBindPwd(false);
     if (connection.getPwdMode(true) !== PasswordMode.settings) {
       connection.setBindPwd(undefined);
@@ -149,8 +149,8 @@ export class LdapConnectionManager {
     await this.updateBindPwdInSecretStorage(newConnection);
 
     // Replace existing connection with new connection.
-    // Temporarily remove bind password from connection object so it is not
-    // persisted, if password mode is different from "settings".
+    // If password mode is different from "settings" then we don't want to
+    // persist it here so we temporarily remove it from the connection object.
     const bindpwd = newConnection.getBindPwd(false);
     if (newConnection.getPwdMode(true) !== PasswordMode.settings) {
       newConnection.setBindPwd(undefined);

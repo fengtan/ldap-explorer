@@ -55,9 +55,10 @@ function updateFieldsVisibility() {
   // 2. Protocol is set to "ldap" and StartTLS checkbox is checked
   document.getElementById("tlsoptions").style["display"] = ((protocol === "ldaps") || (protocol === "ldap" && starttls)) ? "" : "none";
 
-  // Show Bind Password field only if Password mode is not "Ask on connect".
-  // "ask" = PasswordMode.Ask.
-  document.getElementById("bindpwd-container").style["display"] = (pwdmode === "ask") ? "none" : "";
+  // Show Bind Password field only if password mode is "secret" or "settings"
+  // (there is no ned to ask for a password if the mode is "ask" or "anonymous").
+  // See PasswordMode.ts.
+  document.getElementById("bindpwd-container").style["display"] = ((pwdmode === "secret") || (pwdmode === "settings")) ? "" : "none";
 }
 
 // Initialize fields visibility & icons when loading the webview.
