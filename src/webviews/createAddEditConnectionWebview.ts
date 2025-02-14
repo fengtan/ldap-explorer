@@ -83,7 +83,6 @@ export function createAddEditConnectionWebview(context: ExtensionContext, connec
             <vscode-option value="${PasswordMode.secretStorage}">Store encrypted in secret storage</vscode-option>
             <vscode-option value="${PasswordMode.settings}">Store as plain text in settings</vscode-option>
             <vscode-option value="${PasswordMode.ask}">Ask on connect</vscode-option>
-            <vscode-option value="${PasswordMode.anonymous}">Anonymous bind</vscode-option>
           </vscode-dropdown>
         </section>
         <section id="bindpwd-container">

@@ -11,7 +11,4 @@ export enum PasswordMode {
   // Ask for bind password everytime a connection is made.
   ask = "ask",
 
-  // Anonymous bind.
-  anonymous = "anonymous",
-
 }
