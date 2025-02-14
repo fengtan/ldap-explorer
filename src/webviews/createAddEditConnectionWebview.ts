@@ -87,7 +87,10 @@ export function createAddEditConnectionWebview(context: ExtensionContext, connec
           </vscode-dropdown>
         </section>
         <section id="bindpwd-container">
-          <vscode-text-field type="password" id="bindpwd" value="${existingConnection?.getBindPwd(false) ?? ''}">Bind Password</vscode-text-field>
+          <!-- Do not populate default value of bind password for security reasons.
+            As a result leaving this field empty will not update its value in settings /
+            secret storage when hitting the "Save" button -->
+          <vscode-text-field type="password" id="bindpwd" value="">Bind Password</vscode-text-field>
           <vscode-button appearance="icon" onClick="toggleBindPwdVisibility()" id="bindpwd-toggle"></vscode-button>
         </section>
         <section>
