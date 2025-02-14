@@ -366,10 +366,7 @@ export class LdapConnection {
       }
       break;
     case PasswordMode.secretStorage:
-      bindpwd = await context.secrets.get(this.getName());
-      if (!bindpwd) {
-        return reject(`No password for connection "${this.getName()}" found in secret storage.`);
-      }
+      bindpwd = await context.secrets.get(this.getName()) ?? "";
       break;
     case PasswordMode.settings:
     default:

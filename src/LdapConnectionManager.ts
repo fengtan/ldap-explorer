@@ -83,18 +83,11 @@ export class LdapConnectionManager {
 
   /**
    * Update a bind password in secret storage.
-   *
-   * If the connection's password mode is "secrets": updates secret storage.
-   * Otherwise: clears password from secret storage.
    */
   public updateBindPwdInSecretStorage(connection: LdapConnection) {
-    if (connection.getPwdMode(true) === PasswordMode.secretStorage) {
-      // Return Thenable.
-      // The SecretStorage API automatically takes care of namespacing so we don't need to worry about collistions with other extensions.
-      return this.context.secrets.store(connection.getName(), connection.getBindPwd(false));
-    } else {
-      return this.deleteBindPwdFromSecretStorage(connection);
-    }
+    // The SecretStorage API automatically takes care of namespacing so we don't
+    // need to worry about collistions with other extensions.
+    return this.context.secrets.store(connection.getName(), connection.getBindPwd(false));
   }
 
   /**
@@ -111,8 +104,12 @@ export class LdapConnectionManager {
     // Get list of existing connections.
     let connections = this.getConnections();
 
-    // Update or delete password  in secret storage.
-    await this.updateBindPwdInSecretStorage(connection);
+    // Update or delete password in secret storage.
+    if (connection.getPwdMode(true) === PasswordMode.secretStorage) {
+      await this.updateBindPwdInSecretStorage(connection);
+    } else {
+      await this.deleteBindPwdFromSecretStorage(connection);
+    }
 
     // Add the new connection.
     // If password mode is different from "settings" then we don't want to
@@ -145,8 +142,18 @@ export class LdapConnectionManager {
       return Promise.reject(`Connection '${existingConnectionName}' does not exist in settings`);
     }
 
-    // Update or delete password  in secret storage.
-    await this.updateBindPwdInSecretStorage(newConnection);
+    // Update or delete password in secret storage.
+    if (newConnection.getPwdMode(true) === PasswordMode.secretStorage) {
+      // Default value of bind password text field is empty for security reasons.
+      // Hence we only update the password in secret storage only if the user
+      // actually provided a new password.
+      // See createAddEditConnectionWebview.ts.
+      if (newConnection.getBindPwd(false) !== "") {
+        await this.updateBindPwdInSecretStorage(newConnection);
+      }
+    } else {
+      await this.deleteBindPwdFromSecretStorage(newConnection);
+    }
 
     // Replace existing connection with new connection.
     // If password mode is different from "settings" then we don't want to
