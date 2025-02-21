@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [1.4.2] - 2025-02-20
+## [1.5.0] - 2025-02-20
 ### Added
 - New setting `ldap-explorer.sort-attributes` orders LDAP attributes alphabetically
 - Bind passwords can now be stored encrypted in secret storage or prompted at connection time ; this is configurable via a new field "Bind Password mode" on the connection edit screen ([#64](https://github.com/fengtan/ldap-explorer/issues/64))
@@ -97,8 +97,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Bookmarks management (panel, commands)
 - Search interface (panel, webviews, commands)
 
-[Unreleased]: https://github.com/fengtan/ldap-explorer/compare/1.4.2...HEAD
-[1.4.2]: https://github.com/fengtan/ldap-explorer/compare/1.4.1...1.4.2
+[Unreleased]: https://github.com/fengtan/ldap-explorer/compare/1.5.0...HEAD
+[1.4.2]: https://github.com/fengtan/ldap-explorer/compare/1.4.1...1.5.0
 [1.4.1]: https://github.com/fengtan/ldap-explorer/compare/1.4.0...1.4.1
 [1.4.0]: https://github.com/fengtan/ldap-explorer/compare/1.3.2...1.4.0
 [1.3.2]: https://github.com/fengtan/ldap-explorer/compare/1.3.1...1.3.2
