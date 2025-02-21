@@ -1,4 +1,4 @@
-import { Event, EventEmitter, ExtensionContext, ThemeIcon, TreeDataProvider, TreeItem, TreeItemCollapsibleState, workspace } from 'vscode';
+import { Event, EventEmitter, ThemeIcon, TreeDataProvider, TreeItem, TreeItemCollapsibleState } from 'vscode';
 import { LdapConnectionManager } from '../LdapConnectionManager';
 
 /**
@@ -6,10 +6,10 @@ import { LdapConnectionManager } from '../LdapConnectionManager';
  */
 export class BookmarkTreeDataProvider implements TreeDataProvider<string> {
 
-  private context: ExtensionContext;
+  private connectionManager: LdapConnectionManager;
 
-  constructor(context: ExtensionContext) {
-    this.context = context;
+  constructor(connectionManager: LdapConnectionManager) {
+    this.connectionManager = connectionManager;
   }
 
   /**
@@ -43,7 +43,7 @@ export class BookmarkTreeDataProvider implements TreeDataProvider<string> {
       }
 
       // Get active connection.
-      const connection = LdapConnectionManager.getActiveConnection(this.context);
+      const connection = this.connectionManager.getActiveConnection();
       if (connection === undefined) {
         // No active connection: return empty array.
         return resolve([]);

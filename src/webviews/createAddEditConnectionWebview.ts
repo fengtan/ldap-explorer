@@ -1,7 +1,8 @@
 import { commands, ExtensionContext, ViewColumn, window } from 'vscode';
 import { LdapConnection } from '../LdapConnection';
 import { LdapConnectionManager } from '../LdapConnectionManager';
-import { getUri, getWebviewUiToolkitUri } from './utils';
+import { getCodiconsUri, getUri, getWebviewUiToolkitUri } from './utils';
+import { PasswordMode } from '../PasswordMode';
 
 /**
  * Create a webview to edit or create a connection.
@@ -9,7 +10,7 @@ import { getUri, getWebviewUiToolkitUri } from './utils';
  * If no connection is provided in the arguments then the form will create a new connection.
  * Otherwise it will edit the connection.
  */
-export function createAddEditConnectionWebview(context: ExtensionContext, existingConnection?: LdapConnection) {
+export function createAddEditConnectionWebview(context: ExtensionContext, connectionManager: LdapConnectionManager, existingConnection?: LdapConnection) {
 
   // Create webview.
   const panel = window.createWebviewPanel(
@@ -28,6 +29,9 @@ export function createAddEditConnectionWebview(context: ExtensionContext, existi
   // JS of the webview.
   const scriptUri = getUri(panel.webview, context.extensionUri, ["assets", "js", "createAddEditConnectionWebview.js"]);
 
+  // CSS for codicons.
+  const codiconsUri = getCodiconsUri(panel.webview, context.extensionUri);
+
   // Populate webview HTML.
   // The VS Code API seems to provide no way to inspect the configuration schema (in package.json).
   // So make sure all HTML fields listed in the form below match the contributed
@@ -37,8 +41,9 @@ export function createAddEditConnectionWebview(context: ExtensionContext, existi
     <html lang="en">
       <head>
         <!-- Webview UI toolkit requires a CSP with unsafe-inline script-src and style-src (not ideal but we have no choice) -->
-        <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src ${panel.webview.cspSource} 'unsafe-inline'; style-src ${panel.webview.cspSource} 'unsafe-inline';" />
+        <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src ${panel.webview.cspSource} 'unsafe-inline'; style-src ${panel.webview.cspSource} 'unsafe-inline'; font-src ${panel.webview.cspSource};" />
         <script type="module" src="${toolkitUri}"></script>
+        <link href="${codiconsUri}" rel="stylesheet" />
       </head>
       <body>
         <section>
@@ -73,7 +78,20 @@ export function createAddEditConnectionWebview(context: ExtensionContext, existi
           <vscode-text-field type="text" id="binddn" placeholder="e.g. cn=admin,dc=example,dc=org" value="${existingConnection?.getBindDn(false) ?? ''}">Bind DN</vscode-text-field>
         </section>
         <section>
-          <vscode-text-field type="password" id="bindpwd" value="${existingConnection?.getBindPwd(false) ?? ''}">Bind Password</vscode-text-field>
+          <p>Bind Password mode</p>
+          <vscode-dropdown id="pwdmode" value="${existingConnection?.getPwdMode(false) ?? 'secret'}" onChange="updateFieldsVisibility()">
+            <vscode-option value="${PasswordMode.secretStorage}">Store encrypted in secret storage</vscode-option>
+            <vscode-option value="${PasswordMode.ask}">Ask on connect</vscode-option>
+            <vscode-option value="${PasswordMode.settings}">Store as plain text in settings</vscode-option>
+          </vscode-dropdown>
+        </section>
+        <section id="bindpwd-container">
+          <!-- For security reasons, do not populate the default value of the
+            bind password field if the password mode is "secrets". As a result
+            leaving this field empty will not update its value in secret storage
+            when hitting the "Save" button ; see LdapConnectionManager->editConnection() -->
+          <vscode-text-field type="password" id="bindpwd" value="${existingConnection?.getPwdMode(false) === 'secret' ? '' : (existingConnection?.getBindPwd(false) ?? '')}">Bind Password</vscode-text-field>
+          <vscode-button appearance="icon" onClick="toggleBindPwdVisibility()" id="bindpwd-toggle"></vscode-button>
         </section>
         <section>
           <vscode-text-field type="text" id="basedn" placeholder="e.g. dc=example,dc=org" value="${existingConnection?.getBaseDn(false) ?? ''}">Base DN *</vscode-text-field>
@@ -108,26 +126,27 @@ export function createAddEditConnectionWebview(context: ExtensionContext, existi
   panel.webview.onDidReceiveMessage(
     message => {
       // Build connection object.
-      const newConnection = new LdapConnection(
-        message.name,
-        message.protocol,
-        message.starttls,
-        message.verifycert,
-        message.sni,
-        message.host,
-        message.port,
-        message.binddn,
-        message.bindpwd,
-        message.basedn,
-        message.limit,
-        message.paged,
-        message.connectTimeout,
-        message.timeout,
+      const newConnection = new LdapConnection({
+        name: message.name,
+        protocol: message.protocol,
+        starttls: message.starttls,
+        verifycert: message.verifycert,
+        sni: message.sni,
+        host: message.host,
+        port: message.port,
+        binddn: message.binddn,
+        pwdmode: message.pwdmode,
+        bindpwd: message.bindpwd,
+        basedn: message.basedn,
+        limit: message.limit,
+        paged: message.paged,
+        connectTimeout: message.connectTimeout,
+        timeout: message.timeout,
         // Bookmarks are not editable via the connection add/edit form.
-        // Maintain pre-existing bookarks when editing a connection, and default
+        // Maintain pre-existing bookmarks when editing a connection, and default
         // to empty array when adding a new connection.
-        (existingConnection === undefined) ? [] : existingConnection.getBookmarks()
-      );
+        bookmarks: (existingConnection === undefined) ? [] : existingConnection.getBookmarks(),
+      });
       switch (message.command) {
       case 'save':
         // Verify mandatory fields are not empty.
@@ -153,12 +172,12 @@ export function createAddEditConnectionWebview(context: ExtensionContext, existi
         if (existingConnection === undefined) {
 
           // Verify connection name does not already exist.
-          if (LdapConnectionManager.getConnection(newConnection.getName())) {
+          if (connectionManager.getConnection(newConnection.getName())) {
             window.showErrorMessage(`A connection named "${newConnection.getName()} already exists, please pick a different name`);
             return;
           }
 
-          LdapConnectionManager.addConnection(newConnection).then(
+          connectionManager.addConnection(newConnection).then(
             value => {
               // If the connection was successfully added, then refresh the tree view so it shows up.
               commands.executeCommand("ldap-explorer.refresh");
@@ -171,7 +190,7 @@ export function createAddEditConnectionWebview(context: ExtensionContext, existi
             }
           );
         } else {
-          LdapConnectionManager.editConnection(newConnection, existingConnection.getName()).then(
+          connectionManager.editConnection(newConnection, existingConnection.getName()).then(
             value => {
               // If the connection was successfully updated, then refresh the tree view.
               commands.executeCommand("ldap-explorer.refresh");
@@ -192,7 +211,16 @@ export function createAddEditConnectionWebview(context: ExtensionContext, existi
 
       case 'test':
         // Test connection.
-        newConnection.search({}).then(
+        // If the connection is configured to load the password from secret
+        // storage, then load it from the form / local connection object instead
+        // ("settings") as it has not yet been persisted in secret storage.
+        newConnection.search({
+          context: context,
+          searchOptions: {},
+          pwdmode: (newConnection.getPwdMode(true) === PasswordMode.secretStorage)
+            ? PasswordMode.settings
+            : newConnection.getPwdMode(true)
+        }).then(
           value => {
             window.showInformationMessage('Connection succeeded');
           },
