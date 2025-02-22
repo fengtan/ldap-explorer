@@ -134,9 +134,9 @@ List of LDAP connections. Example:
 ```
 
 Supported values for `pwdmode`:
-- `secret` will read the bind password from secret storage (encrypted)
+- `secret` will read the bind password from [secret storage](https://code.visualstudio.com/api/references/vscode-api#SecretStorage) (encrypted)
 - `ask` will ask for the bind password at connection time
-- `settings` will read the bind password as plaint text from settings (connection attribute `bindpwd`)
+- `settings` will read the bind password as plaint text from [settings](https://code.visualstudio.com/docs/editor/settings) (connection attribute `bindpwd`)
 
 * **ldap-explorer.show-tree-item-icons** (`false`)
 
