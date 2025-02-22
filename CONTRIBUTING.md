@@ -174,7 +174,7 @@ The dependency graph is located at https://github.com/fengtan/ldap-explorer/netw
 3. Release on [Github](https://github.com/fengtan/ldap-explorer/releases)
     1. [Create a release](https://github.com/fengtan/ldap-explorer/releases) on Github
     2. Attach the VSIX package to this release
-3. Release on [VS Code Marketplace](https://marketplace.visualstudio.com/)
+3. Release on [VS Code Marketplace](https://marketplace.visualstudio.com/manage/publishers/fengtan)
     1. Publish extension: `vsce publish` (create a [Personal Access Token](https://dev.azure.com/fengtan/_usersSettings/tokens) by following [these instructions](https://code.visualstudio.com/api/working-with-extensions/publishing-extension#get-a-personal-access-token) if necessary)
     2. Verify the extension was updated on [Marketplace](https://marketplace.visualstudio.com/items?itemName=fengtan.ldap-explorer) and [Extension Hub](https://marketplace.visualstudio.com/manage/publishers/fengtan/extensions/ldap-explorer/hub?_a=manageExtension)
 4. Release on [Open VSX Registry](https://open-vsx.org/) (pending [#50](https://github.com/fengtan/ldap-explorer/issues/50))
