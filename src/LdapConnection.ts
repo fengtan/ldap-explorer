@@ -324,7 +324,10 @@ export class LdapConnection {
  * Opens input box asking the user to enter a bind password.
    */
   protected async pickBindPassword(): Promise<string | undefined> {
-    return await window.showInputBox({ prompt: `Bind password for connection "${this.getName()}"` });
+    return await window.showInputBox({
+      password: true,
+      prompt: `Bind password for connection "${this.getName()}"`,
+    });
   }
 
   /**
