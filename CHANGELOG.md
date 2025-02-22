@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+## [1.5.1] - 2025-02-21
 ### Changed
 - Mask input when asking for bind password at connection time ([#66](https://github.com/fengtan/ldap-explorer/issues/66))
 
@@ -99,7 +101,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Bookmarks management (panel, commands)
 - Search interface (panel, webviews, commands)
 
-[Unreleased]: https://github.com/fengtan/ldap-explorer/compare/1.5.0...HEAD
+[Unreleased]: https://github.com/fengtan/ldap-explorer/compare/1.5.1...HEAD
+[1.5.1]: https://github.com/fengtan/ldap-explorer/compare/1.5.0...1.5.1
 [1.5.0]: https://github.com/fengtan/ldap-explorer/compare/1.4.1...1.5.0
 [1.4.1]: https://github.com/fengtan/ldap-explorer/compare/1.4.0...1.4.1
 [1.4.0]: https://github.com/fengtan/ldap-explorer/compare/1.3.2...1.4.0
