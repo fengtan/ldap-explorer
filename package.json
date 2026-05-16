@@ -432,7 +432,7 @@
     "@types/glob": "^8.0.1",
     "@types/ldapjs": "^2.2.3",
     "@types/mocha": "^10.0.1",
-    "@types/node": "^22.19.19",
+    "@types/node": "^25.8.0",
     "@types/vscode": "^1.70.0",
     "@typescript-eslint/eslint-plugin": "^5.34.0",
     "@typescript-eslint/parser": "^5.54.1",
