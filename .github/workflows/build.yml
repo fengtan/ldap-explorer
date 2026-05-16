@@ -15,7 +15,7 @@ jobs:
         # Same version of nodejs as that used for
         # - vscode itself https://github.com/Microsoft/vscode/wiki/How-to-Contribute#prerequisites
         # - dev container .devcontainer/Dockerfile
-        node-version: 20.x
+        node-version: 22.x
     - name: Install dependencies
       run: npm install
     - name: Run tests (not Linux)
