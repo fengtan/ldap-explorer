@@ -429,16 +429,15 @@
     "ldif": "ldapadd -x -D ${LDAP_BIND_DN} -w ${LDAP_BIND_PWD} -H ${LDAP_PROTOCOL_LDAP}://${LDAP_HOST}:${LDAP_PORT_LDAP} -f .devcontainer/data.ldif"
   },
   "devDependencies": {
-    "@types/glob": "^8.0.1",
     "@types/ldapjs": "^2.2.3",
     "@types/mocha": "^10.0.1",
     "@types/node": "^22.19.19",
     "@types/vscode": "^1.70.0",
-    "@typescript-eslint/eslint-plugin":"^8.59.3",
+    "@typescript-eslint/eslint-plugin": "^8.59.3",
     "@vscode/test-electron": "^2.1.5",
     "@vscode/vsce": "^3.9.1",
     "eslint": "^8.39.0",
-    "glob": "^8.1.0",
+    "glob": "^13.0.6",
     "mocha": "^10.0.0",
     "ts-loader": "^9.4.1",
     "typescript": "^4.7.4",
