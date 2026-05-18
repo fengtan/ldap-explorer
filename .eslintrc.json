@@ -10,7 +10,6 @@
     ],
     "rules": {
         "@typescript-eslint/naming-convention": "error",
-        "@typescript-eslint/semi": "error",
         "curly": "error",
         "eqeqeq": "error",
         "indent": ["error", 2],
