@@ -429,6 +429,7 @@
     "ldif": "ldapadd -x -D ${LDAP_BIND_DN} -w ${LDAP_BIND_PWD} -H ${LDAP_PROTOCOL_LDAP}://${LDAP_HOST}:${LDAP_PORT_LDAP} -f .devcontainer/data.ldif"
   },
   "devDependencies": {
+    "@types/glob": "^8.1.0",
     "@types/ldapjs": "^2.2.3",
     "@types/mocha": "^10.0.1",
     "@types/node": "^22.19.19",
