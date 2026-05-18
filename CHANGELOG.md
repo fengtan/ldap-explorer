@@ -6,6 +6,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Changed
+- Updated dependencies
+- Updated node environment from 20.x to 22.x
 
 ## [1.5.1] - 2025-02-21
 ### Changed
