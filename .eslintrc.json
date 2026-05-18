@@ -14,8 +14,7 @@
         "curly": "error",
         "eqeqeq": "error",
         "indent": ["error", 2],
-        "no-throw-literal": "error",
-        "semi": "error"
+        "no-throw-literal": "error"
     },
     "ignorePatterns": [
         "out",
