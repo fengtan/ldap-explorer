@@ -164,7 +164,7 @@ The dependency graph is located at https://github.com/fengtan/ldap-explorer/netw
 # Publishing a new release
 
 1. Verify
-    1. Verify tests pass in [Github Actions](https://github.com/fengtan/ldap-explorer/actions)
+    1. Verify tests pass in [Github Actions](https://github.com/fengtan/ldap-explorer/actions?query=branch%3Amaster+workflow%3ABuild)
     2. If ldapjs or its dependencies were updated, make sure they are listed in `.vscodeignore` (because of [ldapjs/node-ldapjs#421](https://github.com/ldapjs/node-ldapjs/issues/421))
     3. Update documentation ([README.md](https://github.com/fengtan/ldap-explorer/blob/master/README.md) and [CONTRIBUTING.md](https://github.com/fengtan/dap-explorer/blob/master/CONTRIBUTING.md) if applicable
 2. Package
