@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Changed
-- Updated dependencies
+- Updated dev dependencies
 - Updated build environment from node 20.x to 22.x
 
 ## [1.5.1] - 2025-02-21
