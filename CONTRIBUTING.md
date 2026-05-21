@@ -168,9 +168,10 @@ The dependency graph is located at https://github.com/fengtan/ldap-explorer/netw
     2. If ldapjs or its dependencies were updated, make sure they are listed in `.vscodeignore` (because of [ldapjs/node-ldapjs#421](https://github.com/ldapjs/node-ldapjs/issues/421))
     3. Update documentation ([README.md](https://github.com/fengtan/ldap-explorer/blob/master/README.md) and [CONTRIBUTING.md](https://github.com/fengtan/dap-explorer/blob/master/CONTRIBUTING.md) if applicable
 2. Package
-    1. Bump up version and update metadata (if applicable) in [package.json](https://github.com/fengtan/ldap-explorer/blob/master/package.json) and [package-lock.json](https://github.com/fengtan/ldap-explorer/blob/master/package-lock.json)
+    1. Bump up version and update metadata (if applicable) in [package.json](https://github.com/fengtan/ldap-explorer/blob/master/package.json) and [package-lock.json](https://github.com/fengtan/ldap-explorer/blob/master/package-lock.json) (version appears twice in the latter)
     2. Add record to [CHANGELOG.md](https://github.com/fengtan/ldap-explorer/blob/master/CHANGELOG.md)
-    3. Package extension: `vsce package`
+    3. Create git tag
+    4. Package extension: `vsce package`
 3. Release on [Github](https://github.com/fengtan/ldap-explorer/releases)
     1. [Create a release](https://github.com/fengtan/ldap-explorer/releases) on Github
     2. Attach the VSIX package to this release
